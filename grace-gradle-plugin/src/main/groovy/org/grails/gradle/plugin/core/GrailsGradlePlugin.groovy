@@ -713,7 +713,7 @@ withConfig(configuration) {
         SourceSetOutput output = mainSourceSet?.output
         FileCollection mainFiles = resolveClassesDirs(output, project)
         FileCollection fileCollection = project.files(project.layout.buildDirectory.dir('resources/main'),
-                project.layout.buildDirectory.dir('gsp-classes'), mainFiles)
+                project.layout.buildDirectory.dir('classes/gsp/main'), mainFiles)
         configurations.each {
             fileCollection = fileCollection + it.filter({ File file -> !file.name.startsWith('spring-boot-devtools') })
         }

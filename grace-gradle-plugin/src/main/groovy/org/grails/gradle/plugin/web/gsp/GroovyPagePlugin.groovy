@@ -15,10 +15,12 @@
  */
 package org.grails.gradle.plugin.web.gsp
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaPlugin
@@ -27,7 +29,6 @@ import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.bundling.War
 
 import org.grails.gradle.plugin.core.GrailsExtension
 import org.grails.gradle.plugin.core.GrailsGradlePlugin
@@ -51,7 +52,7 @@ class GroovyPagePlugin implements Plugin<Project> {
 
         SourceSetOutput output = mainSourceSet?.output
         FileCollection classesDirs = resolveClassesDirs(output, project)
-        File destDir = project.layout.buildDirectory.dir('gsp-classes/main').get().asFile
+        File destDir = project.layout.buildDirectory.dir('classes/gsp/main').get().asFile
 
         Configuration compileClasspath = project.configurations.findByName(JavaPlugin.COMPILE_CLASSPATH_CONFIGURATION_NAME)
         FileCollection allClasspath = compileClasspath + classesDirs
@@ -64,6 +65,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.description = "Compiles the Groovy server pages (GSP) in 'src/main/webapp'."
             task.destinationDirectory.set(destDir)
             task.source = project.file("src/main/webapp")
+            task.packageName = project.name
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/'
             task.classpath = allClasspath
@@ -75,6 +77,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.group = 'grace'
             task.description = 'Compiles the Groovy server pages (GSP).'
             task.destinationDirectory.set(destDir)
+            task.packageName = project.name
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/WEB-INF/grails-app/views/'
             task.classpath = allClasspath
@@ -101,29 +104,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             }
         }
 
-        tasks.withType(War) { War war ->
-            war.dependsOn compileGroovyPages
-            if (war.classpath) {
-                war.classpath = war.classpath + project.files(destDir)
-            }
-            else {
-                war.classpath = project.files(destDir)
-            }
-        }
-        tasks.withType(Jar) { Jar jar ->
-            if (!(jar instanceof War)) {
-                if (jar.name == 'bootJar') {
-                    jar.dependsOn compileGroovyPages
-                    jar.from(destDir) {
-                        into('BOOT-INF/classes')
-                    }
-                }
-                else if (jar.name == 'jar') {
-                    jar.dependsOn compileGroovyPages
-                    jar.from destDir
-                }
-            }
-        }
+        configureBootArchive(tasks, compileGroovyPages, destDir)
     }
 
     protected GrailsExtension registerGrailsExtension(Project project) {
@@ -133,11 +114,29 @@ class GroovyPagePlugin implements Plugin<Project> {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/main'))
+        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/groovy/main'))
     }
 
     protected String getTmpDirPath(Project project) {
-        project.layout.buildDirectory.dir('gsptmp').get().asFile.absolutePath
+        project.layout.buildDirectory.dir('tmp/gsp').get().asFile.absolutePath
+    }
+
+    /**
+     * Configure Spring Boot's BootArchive
+     *
+     * @param tasks the TaskContainer
+     * @param compileGroovyPages the GroovyPageForkCompileTask
+     * @param destDir the compiled gsp classes dir
+     * @see org.springframework.boot.gradle.tasks.bundling.BootArchive#classpath(Object... classpath)
+     */
+    @CompileDynamic
+    private void configureBootArchive(TaskContainer tasks, TaskProvider<? extends Task> compileGroovyPages, File destDir) {
+        tasks.withType(Jar).configureEach { Jar jar ->
+            if (jar.name in ['bootJar', 'bootWar']) {
+                jar.dependsOn(compileGroovyPages)
+                jar.classpath(destDir)
+            }
+        }
     }
 
 }

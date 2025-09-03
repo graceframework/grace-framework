@@ -97,7 +97,7 @@ class FindMainClassTask extends DefaultTask {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/main'))
+        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/groovy/main'))
     }
 
     protected MainClassFinder createMainClassFinder() {
