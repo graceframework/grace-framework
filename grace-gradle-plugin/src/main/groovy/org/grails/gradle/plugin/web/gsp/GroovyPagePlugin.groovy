@@ -133,7 +133,7 @@ class GroovyPagePlugin implements Plugin<Project> {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/main'))
+        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/groovy/main'))
     }
 
     protected String getTmpDirPath(Project project) {
