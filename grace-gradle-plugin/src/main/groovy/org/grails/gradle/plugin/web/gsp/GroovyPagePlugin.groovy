@@ -51,7 +51,7 @@ class GroovyPagePlugin implements Plugin<Project> {
 
         SourceSetOutput output = mainSourceSet?.output
         FileCollection classesDirs = resolveClassesDirs(output, project)
-        File destDir = project.layout.buildDirectory.dir('gsp-classes/main').get().asFile
+        File destDir = project.layout.buildDirectory.dir('classes/gsp/main').get().asFile
 
         Configuration compileClasspath = project.configurations.findByName(JavaPlugin.COMPILE_CLASSPATH_CONFIGURATION_NAME)
         FileCollection allClasspath = compileClasspath + classesDirs
@@ -137,7 +137,7 @@ class GroovyPagePlugin implements Plugin<Project> {
     }
 
     protected String getTmpDirPath(Project project) {
-        project.layout.buildDirectory.dir('gsptmp').get().asFile.absolutePath
+        project.layout.buildDirectory.dir('tmp/gsp').get().asFile.absolutePath
     }
 
 }
