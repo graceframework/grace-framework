@@ -184,33 +184,23 @@ class GrailsGradlePlugin extends GroovyPlugin {
         'web'
     }
 
-    @CompileDynamic
     protected void createBuildPropertiesTask(Project project) {
         if (project.tasks.findByName(BUILD_PROPERTIES_TASK_NAME) == null) {
             File resourcesDir = SourceSets.findMainSourceSet(project).output.resourcesDir
-            File buildInfoFile = new File(resourcesDir, 'META-INF/grails.build.info')
 
-            LinkedHashMap<String, Object> buildPropertiesContents = [
+            LinkedHashMap<String, Object> buildProperties = [
                     'grails.env': Environment.isSystemSet() ? Environment.current.getName() : Environment.PRODUCTION.getName(),
                     'info.app.name': project.name,
                     'info.app.version': project.version instanceof Serializable ? project.version : project.version.toString(),
                     'info.app.grailsVersion': grailsVersion]
 
-            TaskProvider<Task> buildPropertiesTask = project.tasks.register(BUILD_PROPERTIES_TASK_NAME) { Task task ->
+            TaskProvider<GenerateBuildInfo> buildPropertiesTask = project.tasks.register(BUILD_PROPERTIES_TASK_NAME, GenerateBuildInfo)
+                    { GenerateBuildInfo task ->
                 task.group = 'build'
                 task.description = "Build properties into 'META-INF/grails.build.info'."
-                task.inputs.properties(buildPropertiesContents)
-                task.outputs.file(buildInfoFile)
-                task.doLast {
-                    ant.mkdir(dir: buildInfoFile.parentFile)
-                    ant.propertyfile(file: buildInfoFile) {
-                        for (me in task.inputs.properties) {
-                            entry key: me.key, value: me.value
-                        }
-                    }
-                }
+                task.destinationDir.set(resourcesDir)
+                task.properties.set(buildProperties)
             }
-
             project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).configure {it.dependsOn(buildPropertiesTask) }
         }
     }
