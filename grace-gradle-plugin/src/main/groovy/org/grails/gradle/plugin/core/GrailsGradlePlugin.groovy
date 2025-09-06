@@ -133,7 +133,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         createBuildPropertiesTask(project)
 
-        configureGroovyASTMetadata(project)
+        configureGroovyCompiler(project)
     }
 
     protected void configureProfile(Project project) {
@@ -184,33 +184,23 @@ class GrailsGradlePlugin extends GroovyPlugin {
         'web'
     }
 
-    @CompileDynamic
     protected void createBuildPropertiesTask(Project project) {
         if (project.tasks.findByName(BUILD_PROPERTIES_TASK_NAME) == null) {
             File resourcesDir = SourceSets.findMainSourceSet(project).output.resourcesDir
-            File buildInfoFile = new File(resourcesDir, 'META-INF/grails.build.info')
 
-            LinkedHashMap<String, Object> buildPropertiesContents = [
+            LinkedHashMap<String, Object> buildProperties = [
                     'grails.env': Environment.isSystemSet() ? Environment.current.getName() : Environment.PRODUCTION.getName(),
                     'info.app.name': project.name,
                     'info.app.version': project.version instanceof Serializable ? project.version : project.version.toString(),
                     'info.app.grailsVersion': grailsVersion]
 
-            TaskProvider<Task> buildPropertiesTask = project.tasks.register(BUILD_PROPERTIES_TASK_NAME) { Task task ->
+            TaskProvider<GenerateBuildInfo> buildPropertiesTask = project.tasks.register(BUILD_PROPERTIES_TASK_NAME, GenerateBuildInfo)
+                    { GenerateBuildInfo task ->
                 task.group = 'build'
                 task.description = "Build properties into 'META-INF/grails.build.info'."
-                task.inputs.properties(buildPropertiesContents)
-                task.outputs.file(buildInfoFile)
-                task.doLast {
-                    ant.mkdir(dir: buildInfoFile.parentFile)
-                    ant.propertyfile(file: buildInfoFile) {
-                        for (me in task.inputs.properties) {
-                            entry key: me.key, value: me.value
-                        }
-                    }
-                }
+                task.destinationDir.set(resourcesDir)
+                task.properties.set(buildProperties)
             }
-
             project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).configure {it.dependsOn(buildPropertiesTask) }
         }
     }
@@ -659,40 +649,18 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    protected void configureGroovyASTMetadata(Project project) {
-        String projectName = getGrailsProjectName(project)
-        String projectVersion = project.version
-        String projectDir = project.projectDir.absolutePath
-        GrailsProjectType projectType = getGrailsProjectType()
+    protected void configureGroovyCompiler(Project project) {
         File configFile = project.layout.buildDirectory.file('config.groovy').get().asFile
 
-        TaskProvider<Task> configScriptTask = project.tasks.register('configScript') { Task configScript ->
+        TaskProvider<GenerateConfigScript> configScriptTask = project.tasks.register('configScript', GenerateConfigScript) {
+            GenerateConfigScript configScript ->
             configScript.group = 'Build Setup'
             configScript.description = 'Generates Groovy configuration script.'
-
-            configScript.outputs.file(configFile)
-            configScript.inputs.property('name', projectName)
-            configScript.inputs.property('version', projectVersion)
-            configScript.doLast {
-                String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
-                String grailsAppDir = grailsAppPath ? project.file(grailsAppPath).absolutePath : ''
-                if (System.getProperty('os.name').startsWith('Windows')) {
-                    projectDir = projectDir.replace('\\', '\\\\')
-                    grailsAppDir = grailsAppDir.replace('\\', '\\\\')
-                }
-                configFile.parentFile.mkdirs()
-                configFile.text = """
-withConfig(configuration) {
-    inline(phase: 'CONVERSION') { source, context, classNode ->
-        source.ast.putNodeMetaData('GRAILS_APP_DIR', '$grailsAppDir')
-        source.ast.putNodeMetaData('PROJECT_DIR', '$projectDir')
-        source.ast.putNodeMetaData('PROJECT_NAME', '$projectName')
-        source.ast.putNodeMetaData('PROJECT_TYPE', '$projectType')
-        source.ast.putNodeMetaData('PROJECT_VERSION', '$projectVersion')
-    }
-}
-"""
-            }
+            configScript.configFile.set(configFile)
+            configScript.projectDir.set(project.projectDir.absolutePath)
+            configScript.projectType.set(getGrailsProjectType().toString())
+            configScript.projectVersion.set(project.getVersion().toString())
+            configScript.grailsAppDir.set(project.file(SourceSets.resolveGrailsAppPath(project)).absolutePath)
         }
         project.tasks.named('compileGroovy', GroovyCompile).configure {
             it.dependsOn(configScriptTask)
