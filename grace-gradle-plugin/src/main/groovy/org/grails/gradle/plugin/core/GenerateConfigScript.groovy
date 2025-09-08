@@ -15,9 +15,12 @@
  */
 package org.grails.gradle.plugin.core
 
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -32,6 +35,9 @@ import org.gradle.api.tasks.TaskAction
  */
 @CompileStatic
 abstract class GenerateConfigScript extends DefaultTask {
+
+    @Inject
+    abstract FileSystemOperations getFs()
 
     @Input
     abstract Property<String> getProjectName()
@@ -58,13 +64,34 @@ abstract class GenerateConfigScript extends DefaultTask {
 
     @TaskAction
     void generateConfigScript() throws IOException {
+        File configFile = getConfigFile().getAsFile().get()
         String projectDir = getProjectDir().get()
         String grailsAppDir = getGrailsAppDir().get()
         if (System.getProperty('os.name').startsWith('Windows')) {
             projectDir = projectDir.replace('\\', '\\\\')
             grailsAppDir = grailsAppDir.replace('\\', '\\\\')
         }
-        File configFile = getConfigFile().getAsFile().get()
+
+        // Default node metadata used for Groovy compiler
+        Map<String, String> properties = [
+                'PROJECT_NAME': getProjectName().get(),
+                'PROJECT_TYPE': getProjectType().get(),
+                'PROJECT_VERSION': getProjectVersion().get(),
+                'PROJECT_DIR': projectDir,
+                'GRAILS_APP_DIR': grailsAppDir
+        ] as HashMap<String, String>
+
+        File groovyCompiler = new File(getProjectDir().get(), 'config/groovy/compiler.groovy')
+        if (groovyCompiler.exists()) {
+            fs.copy {
+                it.from groovyCompiler
+                it.into configFile.parentFile
+                it.rename { configFile.name }
+                it.expand(properties)
+            }
+            return
+        }
+
         configFile.parentFile.mkdirs()
         configFile.text = """// A Groovy script file that configures the compiler, allowing extensive control over how the code is compiled.
 // Please see the Groovy compiler customization builder documentation for more information about the compiler configuration DSL.
