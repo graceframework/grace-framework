@@ -22,6 +22,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
@@ -57,6 +58,9 @@ abstract class GenerateConfigScript extends DefaultTask {
     @OutputFile
     abstract RegularFileProperty getConfigFile()
 
+    @Input
+    abstract MapProperty<String, String> getMetaDataMap()
+
     GenerateConfigScript() {
         Project project = getProject()
         getProjectName().convention(project.provider(project::getName))
@@ -81,6 +85,9 @@ abstract class GenerateConfigScript extends DefaultTask {
                 'GRAILS_APP_DIR': grailsAppDir
         ] as HashMap<String, String>
 
+        // Add the user defined node metadata
+        properties.putAll(getMetaDataMap().get())
+
         File groovyCompiler = new File(getProjectDir().get(), 'config/groovy/compiler.groovy')
         if (groovyCompiler.exists()) {
             fs.copy {
@@ -92,17 +99,17 @@ abstract class GenerateConfigScript extends DefaultTask {
             return
         }
 
+        StringWriter sourceData = new StringWriter()
+        properties.each { name, value ->
+            sourceData.write("        source.ast.putNodeMetaData('${name}', '${value}')\r")
+        }
         configFile.parentFile.mkdirs()
         configFile.text = """// A Groovy script file that configures the compiler, allowing extensive control over how the code is compiled.
 // Please see the Groovy compiler customization builder documentation for more information about the compiler configuration DSL.
 // https://docs.groovy-lang.org/latest/html/documentation/#compilation-customizers
 withConfig(configuration) {
     inline(phase: 'CONVERSION') { source, context, classNode ->
-        source.ast.putNodeMetaData('PROJECT_NAME', '${getProjectName().get()}')
-        source.ast.putNodeMetaData('PROJECT_TYPE', '${getProjectType().get()}')
-        source.ast.putNodeMetaData('PROJECT_VERSION', '${getProjectVersion().get()}')
-        source.ast.putNodeMetaData('PROJECT_DIR', '${projectDir}')
-        source.ast.putNodeMetaData('GRAILS_APP_DIR', '${grailsAppDir}')
+${sourceData.toString()}
     }
 }
 """
