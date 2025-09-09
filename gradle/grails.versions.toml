@@ -1,5 +1,5 @@
 [plugins]
-asset-pipeline = "7.0.0-SNAPSHOT"
+asset-pipeline = "7.0.0-M1"
 cache = "7.0.0-SNAPSHOT"
 database-migration = "7.0.0-SNAPSHOT"
 fields = "7.0.0-SNAPSHOT"
