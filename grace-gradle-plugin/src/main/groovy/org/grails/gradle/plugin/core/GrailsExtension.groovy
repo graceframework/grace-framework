@@ -42,6 +42,18 @@ class GrailsExtension {
     String appPath = 'app'
 
     /**
+     * The default app source directories,
+     * eg. 'boot', 'commands', 'controllers', 'domain', 'services', 'taglib', 'util'.
+     */
+    String[] appSourceDirs = ['boot', 'commands', 'controllers', 'domain', 'services', 'taglib', 'util']
+
+    /**
+     * The default app resource directories,
+     * eg. 'i18n', 'conf'.
+     */
+    String[] appResourceDirs = ['i18n', 'conf']
+
+    /**
      * Whether to invoke native2ascii on resource bundles
      */
     boolean native2ascii = !Os.isFamily(Os.FAMILY_WINDOWS)
