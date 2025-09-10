@@ -86,8 +86,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     public static final String BUILD_PROPERTIES_TASK_NAME = 'buildProperties'
 
     List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin] as List<Class<Plugin>>
-    List<String> excludedGrailsAppSourceDirs = ['assets', 'scripts']
-    List<String> grailsAppResourceDirs = ['i18n', 'conf']
+
     private final ToolingModelBuilderRegistry registry
     String grailsVersion
 
@@ -279,43 +278,31 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    @CompileStatic
     protected void configureGrailsSourceDirs(Project project) {
-        project.afterEvaluate {
-            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
-            if (grailsAppPath) {
-                SourceSet mainSourceSet = project.extensions.getByType(JavaPluginExtension).getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-                mainSourceSet.extensions.getByType(GroovySourceDirectorySet).setSrcDirs(resolveGrailsSourceDirs(project, grailsAppPath))
-                mainSourceSet.getResources().setSrcDirs(resolveGrailsResourceDirs(project, grailsAppPath))
-            }
-        }
-    }
-
-    @CompileStatic
-    protected List<File> resolveGrailsResourceDirs(Project project, String grailsAppPath) {
-        List<File> grailsResourceDirs = [project.file('src/main/resources')]
-        for (String f in grailsAppResourceDirs) {
-            grailsResourceDirs.add(project.file("${grailsAppPath}/${f}"))
-        }
-        grailsResourceDirs
-    }
-
-    @CompileStatic
-    protected List<File> resolveGrailsSourceDirs(Project project, String grailsAppPath) {
         List<File> grailsSourceDirs = []
-        project.file(grailsAppPath).eachDir { File subdir ->
-            if (isGrailsSourceDirectory(subdir)) {
-                grailsSourceDirs.add(subdir)
+        List<File> grailsResourceDirs = []
+        project.afterEvaluate {
+            GrailsExtension grailsExtension = project.extensions.getByType(GrailsExtension)
+            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+            String[] grailsAppSourceDirs = grailsExtension.appSourceDirs
+            String[] grailsAppResourceDirs = grailsExtension.appResourceDirs
+            if (grailsAppPath) {
+                for (String f in grailsAppSourceDirs) {
+                    File subdir = project.file("${grailsAppPath}/${f}")
+                    if (!subdir.hidden && !subdir.name.startsWith('.')) {
+                        grailsSourceDirs.add(subdir)
+                    }
+                }
+                for (String f in grailsAppResourceDirs) {
+                    grailsResourceDirs.add(project.file("${grailsAppPath}/${f}"))
+                }
+                grailsSourceDirs.add(project.file('src/main/groovy'))
+                grailsResourceDirs.add(project.file('src/main/resources'))
+                SourceSet mainSourceSet = project.extensions.getByType(JavaPluginExtension).getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+                mainSourceSet.extensions.getByType(GroovySourceDirectorySet).setSrcDirs(grailsSourceDirs)
+                mainSourceSet.getResources().setSrcDirs(grailsResourceDirs)
             }
         }
-        grailsSourceDirs.add(project.file('src/main/groovy'))
-        grailsSourceDirs
-    }
-
-    @CompileStatic
-    protected boolean isGrailsSourceDirectory(File subdir) {
-        def dirName = subdir.name
-        !subdir.hidden && !dirName.startsWith('.') && !excludedGrailsAppSourceDirs.contains(dirName) && !grailsAppResourceDirs.contains(dirName)
     }
 
     protected String resolveGrailsVersion(Project project) {
