@@ -15,22 +15,28 @@
  */
 package org.grails.gradle.plugin.profiles.tasks
 
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.result.DependencyResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.FileVisitDetails
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
-import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
@@ -39,59 +45,65 @@ import org.yaml.snakeyaml.representer.Representer
 
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommandTransform
-import org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin
 
 /**
  * Compiles the classes for a profile
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @CompileStatic
-class ProfileCompilerTask extends AbstractCompile {
+abstract class ProfileCompilerTask extends AbstractCompile {
 
     public static final String DEFAULT_COMPATIBILITY = '17'
     public static final String PROFILE_NAME = 'name'
     public static final String PROFILE_COMMANDS = 'commands'
 
-    ProfileCompilerTask() {
-        setSourceCompatibility(DEFAULT_COMPATIBILITY)
-        setTargetCompatibility(DEFAULT_COMPATIBILITY)
-    }
+    private final ObjectFactory objectFactory
 
-    @InputFile
+    @Input
+    abstract Property<String> getProjectName()
+
     @Optional
-    File config
+    @InputFile
+    abstract RegularFileProperty getProfileConfig()
+
+    @Optional
+    @InputFiles
+    abstract DirectoryProperty getTemplatesDir()
+
+    @Input
+    abstract Property<ResolvedComponentResult> getProfileDependencyRoot()
 
     @OutputFile
-    File profileFile
-
-    @InputDirectory
-    @Optional
-    File templatesDir
+    abstract RegularFileProperty getProfileFile()
 
     @Override
     @InputFiles
     FileTree getSource() {
-        (super.getSource() + project.files(config)).asFileTree
+        (super.getSource() + this.objectFactory.fileTree().from(profileConfig)).asFileTree
     }
 
-    @Override
-    void setDestinationDir(File destinationDir) {
-        profileFile = new File(destinationDir, 'META-INF/grails-profile/profile.yml')
-        getDestinationDirectory().set(destinationDir)
+    @Inject
+    ProfileCompilerTask(ObjectFactory objectFactory) {
+        this.objectFactory = objectFactory
+        setSourceCompatibility(DEFAULT_COMPATIBILITY)
+        setTargetCompatibility(DEFAULT_COMPATIBILITY)
+        getProjectName().convention(project.provider(project::getName))
+        getProfileConfig().set(getDestinationDirectory().file('META-INF/grails-profile/profile.yml'))
     }
 
     @TaskAction
-    void execute(InputChanges inputChanges) {
-        boolean profileYmlExists = config?.exists()
+    void execute() {
+        boolean profileYmlExists = this.profileConfig.getAsFile().get().exists()
 
-        def options = new DumperOptions()
+        DumperOptions options = new DumperOptions()
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK)
-        def yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(new DumperOptions()), options)
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(new DumperOptions()), options)
         Map<String, Object> profileData
         if (profileYmlExists) {
-            profileData = (Map<String, Object>) config.withReader { BufferedReader r ->
+            profileData = (Map<String, Object>) this.profileConfig.getAsFile().get().withReader { BufferedReader r ->
                 yaml.load(r)
             }
         }
@@ -99,42 +111,42 @@ class ProfileCompilerTask extends AbstractCompile {
             profileData = new LinkedHashMap<String, Object>()
         }
 
-        profileData.put(PROFILE_NAME, project.name)
+        profileData.put(PROFILE_NAME, projectName.get())
 
-        profileFile.parentFile.mkdirs()
+        this.profileFile.getAsFile().get().parentFile.mkdirs()
 
         if (!profileData.containsKey('extends')) {
             List<String> dependencies = []
-            project.configurations.getByName(GrailsProfileGradlePlugin.PROFILE_CONFIGURATION_NAME).allDependencies.all { Dependency d ->
-                dependencies.add("${d.group}:${d.name}:${d.version}".toString())
+            getProfileDependencyRoot().get().dependencies.each { DependencyResult result ->
+                dependencies.add(result.requested.displayName)
             }
             profileData.put('extends', dependencies.join(','))
         }
 
-        def groovySourceFiles = getSource().files.findAll { File f ->
+        Set<File> groovySourceFiles = getSource().files.findAll { File f ->
             f.name.endsWith('.groovy')
-        } as File[]
-        def ymlSourceFiles = getSource().files.findAll { File f ->
+        }
+        Set<File> ymlSourceFiles = getSource().files.findAll { File f ->
             f.name.endsWith('.yml') && f.name != 'profile.yml'
-        } as File[]
+        }
 
-        Map<String, String> commandNames = [:]
+        LinkedHashMap<String, String> commandNames = new LinkedHashMap<>()
         for (File f in groovySourceFiles) {
-            def fn = f.name
+            String fn = f.name
             commandNames.put(fn - '.groovy', fn)
         }
         for (File f in ymlSourceFiles) {
-            def fn = f.name
+            String fn = f.name
             commandNames.put(fn - '.yml', fn)
         }
 
         if (commandNames) {
-            profileData.put(PROFILE_COMMANDS, commandNames)
+            profileData.put(PROFILE_COMMANDS, commandNames.sort { it.key })
         }
 
         if (profileYmlExists) {
-            def parentDir = config.parentFile.canonicalFile
-            def featureDirs = new File(parentDir, 'features').listFiles({ File f ->
+            File parentDir = this.profileConfig.getAsFile().get().parentFile.canonicalFile
+            File[] featureDirs = new File(parentDir, 'features').listFiles({ File f ->
                 f.isDirectory() && !f.name.startsWith('.') } as FileFilter)
 
             if (featureDirs) {
@@ -143,20 +155,20 @@ class ProfileCompilerTask extends AbstractCompile {
                     map = [:]
                     profileData.put('features', map)
                 }
-                List featureNames = []
+                List<String> featureNames = new ArrayList<>()
                 for (f in featureDirs) {
                     featureNames.add f.name
                 }
                 if (featureNames) {
-                    map.put('provided', featureNames)
+                    map.put('provided', featureNames.sort { it })
                 }
-                profileData.put('features', map)
+                profileData.put('features', map.sort { it.key })
             }
         }
 
         List<String> templates = []
-        if (templatesDir?.exists()) {
-            project.fileTree(templatesDir).visit { FileVisitDetails f ->
+        if (this.templatesDir.getAsFile().get().exists()) {
+            this.objectFactory.fileTree().from(this.templatesDir).visit { FileVisitDetails f ->
                 if (!f.isDirectory() && !f.name.startsWith('.')) {
                     templates.add f.relativePath.pathString
                 }
@@ -164,26 +176,26 @@ class ProfileCompilerTask extends AbstractCompile {
         }
 
         if (templates) {
-            profileData.put('templates', templates)
+            profileData.put('templates', templates.sort())
         }
 
-        profileFile.withWriter { BufferedWriter w ->
+        this.profileFile.getAsFile().get().withWriter { BufferedWriter w ->
             yaml.dump(profileData, w)
         }
 
         if (groovySourceFiles) {
             CompilerConfiguration configuration = new CompilerConfiguration()
             configuration.setScriptBaseClass(GroovyScriptCommand.name)
-            destinationDirectory.getAsFile().getOrNull()?.mkdirs()
-            configuration.setTargetDirectory(destinationDirectory.getAsFile().getOrNull())
+            this.destinationDirectory.getAsFile().getOrNull()?.mkdirs()
+            configuration.setTargetDirectory(this.destinationDirectory.getAsFile().getOrNull())
 
-            def importCustomizer = new ImportCustomizer()
+            ImportCustomizer importCustomizer = new ImportCustomizer()
             importCustomizer.addStarImports('org.grails.cli.interactive.completers')
             importCustomizer.addStarImports('grails.util')
             importCustomizer.addStarImports('grails.codegen.model')
             configuration.addCompilationCustomizers(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))
 
-            for (source in groovySourceFiles) {
+            for (File source in groovySourceFiles) {
                 CompilationUnit compilationUnit = new CompilationUnit(configuration)
                 configuration.compilationCustomizers.clear()
                 configuration.compilationCustomizers.addAll(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))
