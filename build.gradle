@@ -15,6 +15,8 @@ ext."signing.password" = project.hasProperty("signing.password") ? project.getPr
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : ("${System.properties['user.home']}${File.separator}.gnupg${File.separator}secring.gpg")
 ext.isReleaseVersion = !projectVersion.endsWith("SNAPSHOT")
 
+ext['selenium.version'] = '4.27.0'
+
 version = project.projectVersion
 group = "org.graceframework.plugins"
 
@@ -37,10 +39,9 @@ configurations {
 }
 
 dependencies {
+    api "org.apache.groovy.geb:geb-core:$gebVersion"
+    api "org.apache.groovy.geb:geb-spock:$gebVersion"
     compileOnly "org.graceframework:grace-core"
-    api "org.gebish:geb-spock:$gebSpock", {
-        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-    }
     compileOnly "org.graceframework:grace-boot"
     documentation "org.apache.groovy:groovy:$groovyVersion"
     documentation "org.apache.groovy:groovy-ant:$groovyVersion"
