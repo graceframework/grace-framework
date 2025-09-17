@@ -55,12 +55,16 @@ class GrailsExtension {
 
     /**
      * Whether to invoke native2ascii on resource bundles
+     * @deprecated since 2024.0.0 in favor of Gradle's {@link org.gradle.language.jvm.tasks.ProcessResources}
      */
+    @Deprecated(since = '2024.0.0', forRemoval = true)
     boolean native2ascii = !Os.isFamily(Os.FAMILY_WINDOWS)
 
     /**
      * Whether to use Ant to do the conversion
+     * @deprecated since 2024.0.0 in favor of Gradle's {@link org.gradle.language.jvm.tasks.ProcessResources}
      */
+    @Deprecated(since = '2024.0.0', forRemoval = true)
     boolean native2asciiAnt = false
 
     /**

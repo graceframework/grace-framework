@@ -19,6 +19,7 @@ import javax.inject.Inject
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.apache.tools.ant.filters.EscapeUnicode
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -199,6 +200,11 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
                 spec.include('**/*.groovy')
                 spec.include('**/*.yml')
                 spec.include('**/*.xml')
+            }
+            copy.from(mainSourceSet.resources) { CopySpec spec ->
+                spec.include('**/messages*.properties')
+                spec.filter(ReplaceTokens, tokens: replaceTokens)
+                spec.filter(EscapeUnicode)
             }
         }
     }

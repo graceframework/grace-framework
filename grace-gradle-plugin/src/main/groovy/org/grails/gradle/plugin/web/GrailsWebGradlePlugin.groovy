@@ -18,6 +18,7 @@ package org.grails.gradle.plugin.web
 import javax.inject.Inject
 
 import groovy.transform.CompileStatic
+import org.apache.tools.ant.filters.EscapeUnicode
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
@@ -81,6 +82,11 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
                 spec.include('**/*.groovy')
                 spec.include('**/*.yml')
                 spec.include('**/*.xml')
+            }
+            copy.from(mainSourceSet.resources) { CopySpec spec ->
+                spec.include('**/messages*.properties')
+                spec.filter(ReplaceTokens, tokens: replaceTokens)
+                spec.filter(EscapeUnicode)
             }
         }
     }
