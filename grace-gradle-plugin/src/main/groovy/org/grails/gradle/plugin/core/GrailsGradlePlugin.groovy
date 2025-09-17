@@ -451,11 +451,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
                             includes: '**/*.properties', encoding: 'UTF-8')
                 }
 
-                task.from(project.relativePath('src/main/templates')) {
-                    into('templates')
-                    include '**/*.gsp'
-                }
-
                 if (!native2ascii) {
                     task.from(sourceSet.resources) {
                         include '**/*.properties'
@@ -468,20 +463,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
                         filter(ReplaceTokens, tokens: replaceTokens)
                         filter(EscapeUnicode)
                     }
-                }
-
-                task.from(sourceSet.resources) {
-                    filter(ReplaceTokens, tokens: replaceTokens)
-                    include '**/*.groovy'
-                    include '**/*.yml'
-                    include '**/*.xml'
-                }
-
-                task.from(sourceSet.resources) {
-                    exclude '**/*.properties'
-                    exclude '**/*.groovy'
-                    exclude '**/*.yml'
-                    exclude '**/*.xml'
                 }
             }
         }
