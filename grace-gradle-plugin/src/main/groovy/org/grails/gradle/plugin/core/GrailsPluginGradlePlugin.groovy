@@ -19,11 +19,14 @@ import javax.inject.Inject
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.PublishArtifact
+import org.gradle.api.file.CopySpec
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.internal.tasks.DefaultTaskDependency
@@ -46,7 +49,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 import grails.util.Environment
-
+import grails.util.GrailsNameUtils
 import org.grails.gradle.plugin.util.SourceSets
 
 /**
@@ -58,6 +61,10 @@ import org.grails.gradle.plugin.util.SourceSets
  */
 @CompileStatic
 class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
+
+    public static final String PROCESS_PLUGIN_RESOURCES_TASK_NAME = 'processPluginResources'
+
+    public static final String PLUGIN_GROUP = 'plugin'
 
     @Inject
     GrailsPluginGradlePlugin(ToolingModelBuilderRegistry registry) {
@@ -163,21 +170,36 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
     }
 
     protected void configurePluginResources(Project project) {
-        project.afterEvaluate {
-            ProcessResources processResources = (ProcessResources) project.tasks.findByName(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
+        Map<String, String> replaceTokens = [
+                'info.app.name': GrailsNameUtils.getScriptName(getGrailsProjectName(project)),
+                'info.app.version': project.version?.toString(),
+                'info.app.grailsVersion': grailsVersion
+        ]
+        SourceSetContainer sourceSets = project.extensions.getByType(JavaPluginExtension).sourceSets
+        SourceSet mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+        File resourcesDir = mainSourceSet.getOutput().getResourcesDir()
+        Directory commandsDir = project.layout.projectDirectory.dir('src/main/scripts')
+        Directory templatesDir = project.layout.projectDirectory.dir('src/main/templates')
 
-            TaskProvider<Copy> copyCommands = project.tasks.register('copyCommands', Copy) {
-                it.from "${project.projectDir}/src/main/scripts"
-                it.into "${processResources.destinationDir}/META-INF/commands"
-            }
-            TaskProvider<Copy> copyTemplates = project.tasks.register('copyTemplates', Copy) {
-                it.from "${project.projectDir}/src/main/templates"
-                it.into "${processResources.destinationDir}/META-INF/templates"
-            }
+        TaskProvider<ProcessPluginResourcesTask> processPluginResources = project.tasks.register(PROCESS_PLUGIN_RESOURCES_TASK_NAME,
+                ProcessPluginResourcesTask) { ProcessPluginResourcesTask task ->
+            task.setGroup(PLUGIN_GROUP)
+            task.setDescription('Processes the Grace Plugin resources.')
+            task.commandsDir.set(commandsDir)
+            task.templatesDir.set(templatesDir)
+            task.destinationDir.set(resourcesDir)
+        }
 
-            processResources.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
-            processResources.dependsOn(copyCommands, copyTemplates)
-            processResources.exclude('spring/resources.groovy', '**/*.gsp')
+        project.tasks.named(mainSourceSet.getProcessResourcesTaskName(), Copy).configure { Copy copy ->
+            copy.dependsOn(processPluginResources)
+            copy.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
+            copy.exclude('spring/resources.groovy')
+            copy.from(mainSourceSet.resources) { CopySpec spec ->
+                spec.filter(ReplaceTokens, tokens: replaceTokens)
+                spec.include('**/*.groovy')
+                spec.include('**/*.yml')
+                spec.include('**/*.xml')
+            }
         }
     }
 
@@ -185,6 +207,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
         project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar).configure { Jar jarTask ->
             jarTask.enabled = true
             jarTask.archiveClassifier.set('plugin')
+            jarTask.includeEmptyDirs = false
             jarTask.exclude('application.yml', 'application.groovy', 'logback.groovy', 'logback.xml', 'logback-spring.xml')
         }
     }
