@@ -18,7 +18,15 @@ package org.grails.gradle.plugin.web
 import javax.inject.Inject
 
 import groovy.transform.CompileStatic
+import org.apache.tools.ant.filters.EscapeUnicode
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
+import org.gradle.api.file.CopySpec
+import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 
 import org.grails.gradle.plugin.core.GrailsGradlePlugin
@@ -51,9 +59,38 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
         configureRunCommand(project)
 
         configurePathingJar(project)
+
+        configureProcessResources(project)
     }
 
-    @Override
+    protected configureProcessResources(Project project) {
+        Map<String, String> replaceTokens = [
+                'info.app.name': project.name,
+                'info.app.version': project.version?.toString(),
+                'info.app.grailsVersion': grailsVersion
+        ]
+        SourceSetContainer sourceSets = project.extensions.getByType(JavaPluginExtension).sourceSets
+        SourceSet mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+        project.tasks.named(mainSourceSet.processResourcesTaskName, Copy).configure { Copy copy ->
+            copy.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
+            copy.from(project.relativePath('src/main/templates')) { CopySpec spec ->
+                spec.into('templates')
+                spec.include('**/*.gsp')
+            }
+            copy.from(mainSourceSet.resources) { CopySpec spec ->
+                spec.filter(ReplaceTokens, tokens: replaceTokens)
+                spec.include('**/*.groovy')
+                spec.include('**/*.yml')
+                spec.include('**/*.xml')
+            }
+            copy.from(mainSourceSet.resources) { CopySpec spec ->
+                spec.include('**/messages*.properties')
+                spec.filter(ReplaceTokens, tokens: replaceTokens)
+                spec.filter(EscapeUnicode)
+            }
+        }
+    }
+
     protected GrailsProjectType getGrailsProjectType() {
         GrailsProjectType.WEB_APP
     }

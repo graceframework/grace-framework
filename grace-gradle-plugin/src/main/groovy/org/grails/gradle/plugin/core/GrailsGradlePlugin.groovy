@@ -21,8 +21,6 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
-import org.apache.tools.ant.filters.EscapeUnicode
-import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -30,7 +28,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
-import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.ExtraPropertiesExtension
@@ -46,7 +43,6 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.testing.Test
-import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.gradle.util.GradleVersion
@@ -121,8 +117,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         applyBasePlugins(project)
 
         registerFindMainClassTask(project)
-
-        enableNative2Ascii(project, grailsVersion)
 
         configureSpringBootExtension(project)
 
@@ -417,72 +411,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 task.description = 'Finds the main class of the application.'
                 task.dependsOn(project.tasks.named(JavaPlugin.CLASSES_TASK_NAME), findMainClassTask)
                 findMainClassTask.finalizedBy(task)
-            }
-        }
-    }
-
-    /**
-     * Enables native2ascii processing of resource bundles
-     **/
-    @CompileDynamic
-    protected void enableNative2Ascii(Project project, String grailsVersion) {
-        Map<String, String> replaceTokens = [
-                'info.app.name': project.name,
-                'info.app.version': project.version?.toString(),
-                'info.app.grailsVersion': grailsVersion
-        ]
-
-        SourceSet sourceSet = SourceSets.findMainSourceSet(project)
-
-        project.afterEvaluate {
-            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
-            TaskContainer taskContainer = project.tasks
-
-            GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
-            boolean native2ascii = grailsExt.isNative2ascii()
-
-            taskContainer.named(sourceSet.processResourcesTaskName, ProcessResources).configure { ProcessResources task ->
-                task.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
-
-                if (native2ascii && grailsExt.isNative2asciiAnt()) {
-                    File i18nDir = project.file("${grailsAppPath}/i18n")
-                    File destinationDir = task.destinationDir
-                    ant.native2ascii(src: i18nDir, dest: destinationDir,
-                            includes: '**/*.properties', encoding: 'UTF-8')
-                }
-
-                task.from(project.relativePath('src/main/templates')) {
-                    into('templates')
-                    include '**/*.gsp'
-                }
-
-                if (!native2ascii) {
-                    task.from(sourceSet.resources) {
-                        include '**/*.properties'
-                        filter(ReplaceTokens, tokens: replaceTokens)
-                    }
-                }
-                else if (!grailsExt.isNative2asciiAnt()) {
-                    task.from(sourceSet.resources) {
-                        include '**/*.properties'
-                        filter(ReplaceTokens, tokens: replaceTokens)
-                        filter(EscapeUnicode)
-                    }
-                }
-
-                task.from(sourceSet.resources) {
-                    filter(ReplaceTokens, tokens: replaceTokens)
-                    include '**/*.groovy'
-                    include '**/*.yml'
-                    include '**/*.xml'
-                }
-
-                task.from(sourceSet.resources) {
-                    exclude '**/*.properties'
-                    exclude '**/*.groovy'
-                    exclude '**/*.yml'
-                    exclude '**/*.xml'
-                }
             }
         }
     }
