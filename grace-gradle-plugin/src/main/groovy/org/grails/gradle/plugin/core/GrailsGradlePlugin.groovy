@@ -236,16 +236,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    @CompileStatic
     protected void configureGrailsBuildSettings(Project project) {
-        project.afterEvaluate {
-            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
-            System.setProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
-            System.setProperty(BuildSettings.APP_DIR, grailsAppPath ? project.file(grailsAppPath).absolutePath : '')
-            System.setProperty(BuildSettings.PROJECT_TARGET_DIR, SourceSets.getBuildTargetDir(project).absolutePath)
-            System.setProperty(BuildSettings.PROJECT_RESOURCES_DIR, SourceSets.getBuildResourcesDir(project).absolutePath)
-            System.setProperty(BuildSettings.PROJECT_CLASSES_DIR, SourceSets.getBuildClassesDir(project).absolutePath)
-        }
+        // We removed the configuration of system properties
+        // because it causes errors when a project contains multiple plugin subprojects.
     }
 
     protected void configureApplicationCommands(Project project) {
