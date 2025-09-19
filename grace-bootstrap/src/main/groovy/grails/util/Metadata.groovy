@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2024 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,6 @@ class Metadata {
     public static final String FILE = 'application.yml'
     public static final String APPLICATION_VERSION = 'info.app.version'
     public static final String APPLICATION_NAME = 'info.app.name'
-    public static final String DEFAULT_APPLICATION_NAME = 'grailsApplication'
     public static final String APPLICATION_GRAILS_VERSION = 'info.app.grailsVersion'
     public static final String SERVLET_VERSION = 'info.app.servletVersion'
     public static final String DEFAULT_SERVLET_VERSION = '6.0'
@@ -173,7 +172,7 @@ class Metadata {
      * @return The application name
      */
     String getApplicationName() {
-        getProperty(APPLICATION_NAME, String, DEFAULT_APPLICATION_NAME)
+        getProperty(APPLICATION_NAME, String, null)
     }
 
     /**
