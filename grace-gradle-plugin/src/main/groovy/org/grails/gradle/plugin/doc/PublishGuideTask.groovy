@@ -15,15 +15,22 @@
  */
 package org.grails.gradle.plugin.doc
 
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
+import org.gradle.api.file.CopySpec
+import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.logging.Logger
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.gradle.work.InputChanges
 
 import grails.doc.DocPublisher
 import grails.doc.macros.HiddenMacro
@@ -36,7 +43,17 @@ import grails.doc.macros.HiddenMacro
  * @since 3.0
  */
 @CompileStatic
-class PublishGuideTask extends DefaultTask {
+abstract class PublishGuideTask extends DefaultTask {
+
+    private org.gradle.api.AntBuilder ant
+    private Logger logger
+    private final FileSystemOperations fileSystemOperations
+
+    @Internal
+    abstract Property<String> getProjectName()
+
+    @Internal
+    abstract Property<String> getProjectVersion()
 
     @InputDirectory
     File sourceDir
@@ -89,23 +106,28 @@ class PublishGuideTask extends DefaultTask {
     @Optional
     String singleHtml = 'single.html'
 
-    @TaskAction
-    void execute(InputChanges inputs) {
-        publishGuide()
+    @Inject
+    PublishGuideTask(Project project, FileSystemOperations fileSystemOperations) {
+        this.ant = project.ant
+        this.logger = project.logger
+        this.fileSystemOperations = fileSystemOperations
+        getProjectName().convention(project.provider(project::getName))
+        getProjectVersion().convention(project.provider(() -> project.getVersion().toString()))
     }
 
+    @TaskAction
     protected void publishGuide() {
-        DocPublisher docPublisher = new DocPublisher(sourceDir, targetDir, project.logger)
+        DocPublisher docPublisher = new DocPublisher(sourceDir, targetDir, this.logger)
 
         resourcesDir = resourcesDir ?: new File(sourceDir, 'resources')
         propertiesFile = propertiesFile ?: new File(resourcesDir, 'doc.properties')
 
-        docPublisher.ant = project.ant
+        docPublisher.ant = this.ant
         docPublisher.asciidoc = this.asciidoc
         docPublisher.bookmarks = this.bookmarks
         docPublisher.language = this.language
-        docPublisher.title = project.name
-        docPublisher.version = project.version
+        docPublisher.title = this.getProjectName().getOrNull()
+        docPublisher.version = this.getProjectVersion().getOrNull()
         docPublisher.workDir = this.workDir
         docPublisher.apiDir = this.targetDir
         docPublisher.sourceRepo = this.sourceRepo
@@ -128,15 +150,15 @@ class PublishGuideTask extends DefaultTask {
         docPublisher.publish()
 
         if (groovydocDir?.exists()) {
-            project.copy {
-                from groovydocDir
-                into "$targetDir/gapi"
+            this.fileSystemOperations.copy { CopySpec copy ->
+                copy.from groovydocDir
+                copy.into "$targetDir/gapi"
             }
         }
         if (javadocDir?.exists()) {
-            project.copy {
-                from javadocDir
-                into "$targetDir/api"
+            this.fileSystemOperations.copy { CopySpec copy ->
+                copy.from javadocDir
+                copy.into "$targetDir/api"
             }
         }
     }
