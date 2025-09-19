@@ -48,40 +48,52 @@ public class GrailsResourceBanner extends ResourceBanner {
     @Override
     protected List<PropertyResolver> getPropertyResolvers(Environment environment, Class<?> sourceClass) {
         List<PropertyResolver> resolvers = new ArrayList<>(super.getPropertyResolvers(environment, sourceClass));
-        resolvers.add(getGrailsVersionResolver(sourceClass));
+        resolvers.add(getGrailsVersionResolver(environment));
         return resolvers;
     }
 
-    private PropertyResolver getGrailsVersionResolver(Class<?> sourceClass) {
+    private PropertyResolver getGrailsVersionResolver(Environment environment) {
         MutablePropertySources propertySources = new MutablePropertySources();
-        propertySources.addLast(new MapPropertySource("grace-name", getNamesMap(sourceClass)));
-        propertySources.addLast(new MapPropertySource("grace-version", getVersionsMap(sourceClass)));
+        propertySources.addLast(new MapPropertySource("grace-name", getNamesMap(environment, "")));
+        propertySources.addLast(new MapPropertySource("grace-version", getVersionsMap(environment, "")));
         return new PropertySourcesPropertyResolver(propertySources);
     }
 
-    private Map<String, Object> getNamesMap(Class<?> sourceClass) {
-        String applicationName = Metadata.getCurrent().getApplicationName();
+    private Map<String, Object> getNamesMap(Environment environment, String defaultValue) {
+        String applicationName = environment.getProperty("info.app.name");
+        if (applicationName == null) {
+            applicationName = Metadata.getCurrent().getApplicationName();
+        }
+        if (applicationName == null) {
+            applicationName = defaultValue;
+        }
         Map<String, Object> names = new HashMap<>();
         names.put("application.name", applicationName);
         return names;
     }
 
-    private Map<String, Object> getVersionsMap(Class<?> sourceClass) {
+    private Map<String, Object> getVersionsMap(Environment environment, String defaultValue) {
+        String appVersion = getApplicationVersion(environment);
         Map<String, Object> versions = new HashMap<>();
         String grailsVersion = GrailsUtil.getGrailsVersion();
-        versions.put("grace.version", getVersionString(grailsVersion, false));
-        versions.put("grace.formatted-version", getVersionString(grailsVersion, true));
+        versions.put("application.version", getVersionString(appVersion, false, defaultValue));
+        versions.put("grace.version", getVersionString(grailsVersion, false, defaultValue));
+        versions.put("application.formatted-version", getVersionString(appVersion, true, defaultValue));
+        versions.put("grace.formatted-version", getVersionString(grailsVersion, true, defaultValue));
         return versions;
     }
 
-    protected String getApplicationVersion(Class<?> sourceClass) {
-        String applicationVersion = Metadata.getCurrent().getApplicationVersion();
-        return (applicationVersion != null) ? applicationVersion : super.getApplicationVersion(sourceClass);
+    private String getApplicationVersion(Environment environment) {
+        String appVersion = environment.getProperty("info.app.version");
+        if (appVersion == null) {
+            appVersion = Metadata.getCurrent().getApplicationVersion();
+        }
+        return appVersion;
     }
 
-    private String getVersionString(String version, boolean format) {
+    private String getVersionString(String version, boolean format, String fallback) {
         if (version == null) {
-            return "";
+            return fallback;
         }
         return format ? " (v" + version + ")" : version;
     }
