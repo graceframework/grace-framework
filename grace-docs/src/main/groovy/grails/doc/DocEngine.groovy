@@ -1,4 +1,4 @@
-/* Copyright 2004-2022 the original author or authors.
+/* Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,8 +59,8 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
     static final ALIAS = [:]
 
     private final basedir
-    private macroFilter
-    private macroLoader
+    private MacroFilter macroFilter
+    private MacroLoader macroLoader
 
     Properties engineProperties = new Properties()
 
@@ -138,7 +138,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
 
     boolean showCreate() { false }
 
-    void addMacro(macro) {
+    void addMacro(Object macro) {
         macroLoader.add(macroFilter.macroRepository, macro)
     }
 

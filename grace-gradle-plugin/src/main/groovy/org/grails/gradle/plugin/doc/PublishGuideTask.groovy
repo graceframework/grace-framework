@@ -15,128 +15,165 @@
  */
 package org.grails.gradle.plugin.doc
 
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
+import org.gradle.api.file.CopySpec
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logger
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
-import org.gradle.work.InputChanges
+import org.gradle.work.DisableCachingByDefault
 
 import grails.doc.DocPublisher
 import grails.doc.macros.HiddenMacro
 
 /**
- * A task used to publish the user guide if a publin that is in GDoc format
+ * A task used to publish the user guide if a publish that is in GDoc or Asciidoc format
  *
  * @author Graeme Rocher
  * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
-class PublishGuideTask extends DefaultTask {
+@DisableCachingByDefault(because = "DocPublisher use Ant tasks")
+abstract class PublishGuideTask extends DefaultTask {
 
-    @InputDirectory
-    File sourceDir
+    private org.gradle.api.AntBuilder ant
+    private Logger logger
+    private final FileSystemOperations fileSystemOperations
 
-    @InputDirectory
+    @Internal
+    abstract Property<String> getProjectName()
+
+    @Internal
+    abstract Property<String> getProjectVersion()
+
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract DirectoryProperty getSourceDir()
+
     @Optional
-    File resourcesDir
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract DirectoryProperty getResourcesDir()
 
+    @Optional
     @OutputDirectory
-    @Optional
-    File targetDir = new File(project.buildDir, 'docs/manual')
+    abstract DirectoryProperty getTargetDir()
 
+    @Optional
     @OutputDirectory
-    @Optional
-    File workDir = new File(project.buildDir, 'tmp')
+    abstract DirectoryProperty getWorkDir()
 
+    @Optional
     @InputFile
-    @Optional
-    File propertiesFile
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract RegularFileProperty getPropertiesFile()
 
-    @InputDirectory
     @Optional
-    File groovydocDir
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract DirectoryProperty getGroovydocDir()
 
-    @InputDirectory
     @Optional
-    File javadocDir
-
-    @Input
-    @Optional
-    Boolean asciidoc = true
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract DirectoryProperty getJavadocDir()
 
     @Input
     @Optional
-    Boolean bookmarks = false
+    abstract Property<Boolean> getAsciidoc()
 
     @Input
     @Optional
-    String language = ''
+    abstract Property<Boolean> getBookmarks()
 
     @Input
     @Optional
-    String sourceRepo
+    abstract Property<String> getLanguage()
 
     @Input
     @Optional
-    Collection macros = []
+    abstract Property<String> getSourceRepo()
 
     @Input
     @Optional
-    String singleHtml = 'single.html'
+    abstract ListProperty<Object> getMacros()
 
-    @TaskAction
-    void execute(InputChanges inputs) {
-        publishGuide()
+    @Input
+    @Optional
+    abstract Property<String> getSingleHtml()
+
+    @Inject
+    PublishGuideTask(Project project, FileSystemOperations fileSystemOperations) {
+        this.ant = project.ant
+        this.logger = project.logger
+        this.fileSystemOperations = fileSystemOperations
+        getProjectName().convention(project.provider(project::getName))
+        getProjectVersion().convention(project.provider(() -> project.getVersion().toString()))
+        getTargetDir().convention(project.layout.buildDirectory.dir('docs/manual'))
+        getWorkDir().convention(project.layout.buildDirectory.dir('tmp'))
+
+        if (!getResourcesDir().isPresent()) {
+            getResourcesDir().set(getSourceDir().dir('resources'))
+        }
     }
 
+    @TaskAction
     protected void publishGuide() {
-        DocPublisher docPublisher = new DocPublisher(sourceDir, targetDir, project.logger)
+        DocPublisher docPublisher = new DocPublisher(getSourceDir().get().asFile, getTargetDir().get().asFile, this.logger)
 
-        resourcesDir = resourcesDir ?: new File(sourceDir, 'resources')
-        propertiesFile = propertiesFile ?: new File(resourcesDir, 'doc.properties')
-
-        docPublisher.ant = project.ant
-        docPublisher.asciidoc = this.asciidoc
-        docPublisher.bookmarks = this.bookmarks
-        docPublisher.language = this.language
-        docPublisher.title = project.name
-        docPublisher.version = project.version
-        docPublisher.workDir = this.workDir
-        docPublisher.apiDir = this.targetDir
-        docPublisher.sourceRepo = this.sourceRepo
-        docPublisher.fonts = new File(resourcesDir, 'fonts')
-        docPublisher.images = new File(resourcesDir, 'img')
-        docPublisher.css = new File(resourcesDir, 'css')
-        docPublisher.js = new File(resourcesDir, 'js')
-        docPublisher.style = new File(resourcesDir, 'style')
-        docPublisher.propertiesFile = propertiesFile
-        docPublisher.singleHtml = this.singleHtml
+        docPublisher.ant = this.ant
+        docPublisher.asciidoc = getAsciidoc().getOrElse(true)
+        docPublisher.bookmarks = getBookmarks().getOrElse(false)
+        docPublisher.language = getLanguage().getOrElse('')
+        docPublisher.title = getProjectName().getOrNull()
+        docPublisher.version = getProjectVersion().getOrNull()
+        docPublisher.workDir = getWorkDir().get().asFile
+        docPublisher.apiDir = getTargetDir().get().asFile
+        docPublisher.sourceRepo = getSourceRepo().getOrElse(null)
+        docPublisher.fonts = getResourcesDir().file('fonts').get().asFile
+        docPublisher.images = getResourcesDir().file('img').get().asFile
+        docPublisher.css = getResourcesDir().file('css').get().asFile
+        docPublisher.js = getResourcesDir().file('js').get().asFile
+        docPublisher.style = getResourcesDir().file('style').get().asFile
+        docPublisher.propertiesFile = getPropertiesFile().getOrElse(getResourcesDir().file('doc.properties').get()).asFile
+        docPublisher.singleHtml = getSingleHtml().getOrElse('single.html')
 
         // Add custom macros.
         // {hidden} macro for enabling translations.
         docPublisher.registerMacro(new HiddenMacro())
 
-        for (m in macros) {
+        for (Object m in getMacros().get()) {
             docPublisher.registerMacro(m)
         }
 
         docPublisher.publish()
 
-        if (groovydocDir?.exists()) {
-            project.copy {
-                from groovydocDir
-                into "$targetDir/gapi"
+        if (getGroovydocDir().getOrNull()?.asFile?.exists()) {
+            this.fileSystemOperations.copy { CopySpec copy ->
+                copy.from(getGroovydocDir())
+                copy.into(getTargetDir().file('gapi'))
             }
         }
-        if (javadocDir?.exists()) {
-            project.copy {
-                from javadocDir
-                into "$targetDir/api"
+        if (getJavadocDir().getOrNull()?.asFile?.exists()) {
+            this.fileSystemOperations.copy { CopySpec copy ->
+                copy.from(getJavadocDir())
+                copy.into(getTargetDir().file('api'))
             }
         }
     }
