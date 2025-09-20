@@ -189,7 +189,7 @@ class DocPublisher {
     def output
     private BaseRenderContext context
     private WikiRenderEngine engine
-    private final customMacros = []
+    private final Object[] customMacros = []
 
     private final PdfBuilder pdfBuilder
 
@@ -674,7 +674,7 @@ class DocPublisher {
         context.renderEngine = engine
 
         // Add any custom macros registered with this publisher to the engine.
-        for (m in customMacros) {
+        for (Object m in customMacros) {
             if (m.metaClass.hasProperty(m, 'initialContext')) {
                 m.initialContext = context
             }
