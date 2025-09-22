@@ -118,6 +118,14 @@ abstract class PublishGuideTask extends DefaultTask {
     @Optional
     abstract Property<String> getSingleHtml()
 
+    @Input
+    @Optional
+    abstract Property<String> getSinglePdf()
+
+    @Input
+    @Optional
+    abstract Property<Boolean> getGeneratePdf()
+
     @Inject
     PublishGuideTask(Project project, FileSystemOperations fileSystemOperations) {
         this.ant = project.ant
@@ -153,6 +161,8 @@ abstract class PublishGuideTask extends DefaultTask {
         docPublisher.style = getResourcesDir().file('style').get().asFile
         docPublisher.propertiesFile = getPropertiesFile().getOrElse(getResourcesDir().file('doc.properties').get()).asFile
         docPublisher.singleHtml = getSingleHtml().getOrElse('single.html')
+        docPublisher.singlePdf = getSinglePdf().getOrElse('single.pdf')
+        docPublisher.generatePdf = getGeneratePdf().getOrElse(false)
 
         // Add custom macros.
         // {hidden} macro for enabling translations.

@@ -171,6 +171,8 @@ class DocPublisher {
 
     boolean asciidoc = false
 
+    boolean generatePdf = false
+
     /**
      * the file name of the generated html
      */
@@ -189,9 +191,7 @@ class DocPublisher {
     def output
     private BaseRenderContext context
     private WikiRenderEngine engine
-    private final Object[] customMacros = []
-
-    private final PdfBuilder pdfBuilder
+    private final List<Object> customMacros = new ArrayList<>()
 
     DocPublisher() {
         this(null, null)
@@ -201,8 +201,6 @@ class DocPublisher {
         this.src = src
         this.target = target
         this.output = out
-
-        this.pdfBuilder = new PdfBuilder()
 
         try {
             engineProperties.load(getClass().classLoader.getResourceAsStream('grails/doc/doc.properties'))
@@ -241,11 +239,16 @@ class DocPublisher {
         use(StringEscapeCategory) {
             generateGuide()
         }
+
+        if (this.generatePdf) {
+            generatePdfGuide()
+        }
     }
 
-    void publishPdf() {
+    protected void generatePdfGuide() {
+        PdfBuilder pdfBuilder = new PdfBuilder()
         File baseDir = new File(this.target, this.language)
-        this.pdfBuilder.build(baseDir.absolutePath, singleHtml, singlePdf)
+        pdfBuilder.build(baseDir.absolutePath, singleHtml, singlePdf)
         this.output.warn "Built user manual [${singlePdf}] at ${baseDir.absolutePath}/guide/${singlePdf}"
     }
 
