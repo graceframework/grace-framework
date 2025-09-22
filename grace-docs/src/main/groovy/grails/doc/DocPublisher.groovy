@@ -193,8 +193,6 @@ class DocPublisher {
     private WikiRenderEngine engine
     private final List<Object> customMacros = new ArrayList<>()
 
-    private final PdfBuilder pdfBuilder
-
     DocPublisher() {
         this(null, null)
     }
@@ -203,8 +201,6 @@ class DocPublisher {
         this.src = src
         this.target = target
         this.output = out
-
-        this.pdfBuilder = new PdfBuilder()
 
         try {
             engineProperties.load(getClass().classLoader.getResourceAsStream('grails/doc/doc.properties'))
@@ -245,13 +241,14 @@ class DocPublisher {
         }
 
         if (this.generatePdf) {
-            publishPdf()
+            generatePdfGuide()
         }
     }
 
-    void publishPdf() {
+    protected void generatePdfGuide() {
+        PdfBuilder pdfBuilder = new PdfBuilder()
         File baseDir = new File(this.target, this.language)
-        this.pdfBuilder.build(baseDir.absolutePath, singleHtml, singlePdf)
+        pdfBuilder.build(baseDir.absolutePath, singleHtml, singlePdf)
         this.output.warn "Built user manual [${singlePdf}] at ${baseDir.absolutePath}/guide/${singlePdf}"
     }
 
