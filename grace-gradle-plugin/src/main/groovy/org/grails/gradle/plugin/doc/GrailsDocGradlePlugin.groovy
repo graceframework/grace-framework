@@ -41,33 +41,27 @@ class GrailsDocGradlePlugin implements Plugin<Project> {
         verifyGradleVersion()
 
         TaskContainer tasks = project.tasks
-        tasks.register('docs', PublishGuideTask) { PublishGuideTask docsTask ->
-            docsTask.notCompatibleWithConfigurationCache('DocPublisher use Ant tasks')
-            docsTask.group = 'Documentation'
-            docsTask.description = 'Generates documentation for Grace Guides'
-            docsTask.getTargetDir().set(project.layout.buildDirectory.dir('docs/manual'))
-            docsTask.getWorkDir().set(project.layout.buildDirectory.dir('tmp'))
-            docsTask.getResourcesDir().set(docsTask.getSourceDir().dir('resources'))
+        tasks.register('publishGuide', PublishGuideTask) { PublishGuideTask task ->
+            task.notCompatibleWithConfigurationCache('DocPublisher use Ant tasks')
+            task.group = 'Documentation'
+            task.description = 'Generates documentation for Grace Guides'
+            task.getTargetDir().set(project.layout.buildDirectory.dir('docs/manual'))
+            task.getWorkDir().set(project.layout.buildDirectory.dir('tmp'))
+            task.getResourcesDir().set(task.getSourceDir().dir('resources'))
 
             if (project.file('docs').exists()) {
-                docsTask.getSourceDir().set(project.file('docs'))
+                task.getSourceDir().set(project.file('docs'))
             }
             if (project.file('src/docs').exists()) {
-                docsTask.getSourceDir().set(project.file('src/docs'))
+                task.getSourceDir().set(project.file('src/docs'))
             }
 
             if (tasks.names.contains(GroovyPlugin.GROOVYDOC_TASK_NAME)) {
-                docsTask.dependsOn(tasks.named(GroovyPlugin.GROOVYDOC_TASK_NAME, Groovydoc))
+                task.dependsOn(tasks.named(GroovyPlugin.GROOVYDOC_TASK_NAME, Groovydoc))
             }
             if (tasks.names.contains(JavaPlugin.JAVADOC_TASK_NAME)) {
-                docsTask.dependsOn(tasks.named(JavaPlugin.JAVADOC_TASK_NAME, Javadoc))
+                task.dependsOn(tasks.named(JavaPlugin.JAVADOC_TASK_NAME, Javadoc))
             }
-        }
-
-        tasks.register('docsPdf', PublishPdfTask).configure { PublishPdfTask docsPdfTask ->
-            docsPdfTask.dependsOn('docs')
-            docsPdfTask.group = 'Documentation'
-            docsPdfTask.description = 'Generates PDF documentation for Grace Guides'
         }
     }
 

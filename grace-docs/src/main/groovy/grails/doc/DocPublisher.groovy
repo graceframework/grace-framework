@@ -171,6 +171,8 @@ class DocPublisher {
 
     boolean asciidoc = false
 
+    boolean generatePdf = false
+
     /**
      * the file name of the generated html
      */
@@ -189,7 +191,7 @@ class DocPublisher {
     def output
     private BaseRenderContext context
     private WikiRenderEngine engine
-    private final Object[] customMacros = []
+    private final List<Object> customMacros = new ArrayList<>()
 
     private final PdfBuilder pdfBuilder
 
@@ -240,6 +242,10 @@ class DocPublisher {
         // methods to String.
         use(StringEscapeCategory) {
             generateGuide()
+        }
+
+        if (this.generatePdf) {
+            publishPdf()
         }
     }
 
