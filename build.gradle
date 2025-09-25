@@ -63,7 +63,7 @@ dependencies {
     compileOnly "org.graceframework:grace-cli"
     compileOnly 'jakarta.servlet:jakarta.servlet-api'
     implementation "org.graceframework:grace-datastore-gorm"
-    compileOnly "org.graceframework.plugins:hibernate"
+    implementation "org.graceframework.plugins:hibernate"
 
     testImplementation "org.graceframework:grace-shell"
     testImplementation "org.graceframework.plugins:hibernate"
