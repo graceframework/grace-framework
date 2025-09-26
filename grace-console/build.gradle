@@ -5,6 +5,7 @@ dependencies {
     api project(":grace-cli")
     api project(":grace-core")
 
+    implementation libs.grace.datastore.gorm.support
     compileOnly libs.jakarta.servlet
     api libs.groovy.console
     api libs.groovy.groovysh

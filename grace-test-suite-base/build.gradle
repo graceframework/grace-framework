@@ -10,5 +10,6 @@ dependencies {
     api project(":grace-test")
 
     compileOnly libs.jakarta.servlet
+    compileOnly libs.grace.datastore.gorm.support
     testImplementation libs.jakarta.servlet
 }

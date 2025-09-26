@@ -27,6 +27,7 @@ dependencies {
     testImplementation libs.assertj.core
     testImplementation libs.mockito.core
     testImplementation libs.mockito.junit
+    testImplementation libs.grace.datastore.gorm.support
     testImplementation libs.spring.boot.test
     testImplementation libs.tomcat.embed.core
     testRuntimeOnly project(":grace-plugin-i18n")

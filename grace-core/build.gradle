@@ -15,11 +15,11 @@ dependencies {
     compileOnly libs.spring.tx
 
     testImplementation project(":grace-test")
+    testImplementation project(":grace-plugin-domain-class")
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test
     testImplementation libs.jakarta.persistence.api
-    testImplementation libs.grace.datastore.gorm.support
 }
 
 eclipse {
