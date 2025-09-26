@@ -1,1 +1,6 @@
-grails.compiler.traits.TraitInjector=grails.compiler.traits.DomainClassTraitInjector
+grails.compiler.traits.TraitInjector=\
+grails.compiler.traits.DomainClassTraitInjector,\
+org.grails.compiler.gorm.EntityTraitInjector
+
+grails.compiler.ast.ClassInjector=\
+org.grails.compiler.gorm.GormTransformer

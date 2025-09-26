@@ -7,7 +7,6 @@ dependencies {
     api libs.jakarta.persistence.api
     api(libs.grace.datastore.core)
     api(libs.grace.datastore.gorm)
-    api(libs.grace.datastore.gorm.support)
     api(libs.grace.datastore.gorm.validation)
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
