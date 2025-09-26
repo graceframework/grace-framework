@@ -13,6 +13,7 @@ dependencies {
     api project(":grace-web-gsp")
     api libs.groovy.test.junit5
     api libs.grace.datastore.gorm
+    api libs.grace.datastore.gorm.support
     api libs.grace.datastore.gorm.test
     api libs.junit.jupiter.api
     api libs.junit.platform.runner

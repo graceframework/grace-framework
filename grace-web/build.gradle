@@ -18,6 +18,7 @@ dependencies {
     }
 
     compileOnlyApi libs.jakarta.servlet
+    compileOnly libs.grace.datastore.gorm.support
 
     testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test")

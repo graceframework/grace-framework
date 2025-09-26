@@ -9,4 +9,5 @@ dependencies {
     annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation project(":grace-test-support")
+    testImplementation libs.grace.datastore.gorm.support
 }

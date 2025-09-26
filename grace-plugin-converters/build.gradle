@@ -15,11 +15,13 @@ dependencies {
     compileOnly(libs.grace.datastore.gorm) {
         transitive = false
     }
+    compileOnly libs.grace.datastore.gorm.support
 
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
+    testImplementation libs.grace.datastore.gorm.support
     testImplementation libs.jakarta.servlet
     testImplementation libs.json.unit
     testRuntimeOnly libs.gson
