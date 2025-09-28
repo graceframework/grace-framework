@@ -16,6 +16,7 @@
 package org.grails.plugins.web.async
 
 import grails.plugins.Plugin
+import grails.util.GrailsUtil
 
 /**
  * Async support for the Grails 2.0. Doesn't do much right now, most logic handled
@@ -26,13 +27,10 @@ import grails.plugins.Plugin
  */
 class ControllersAsyncGrailsPlugin extends Plugin {
 
+    def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = "2023.0.0 > *"
     def loadAfter = ['controllers']
     def title = "Grace Async Plugin"
     def description = 'Grace Async Plugin'
-    def documentation = "https://graceframework.org/grace-async/6.3.x/"
-    def license = "APACHE"
-    def issueManagement = [system: "Github Issues", url: "https://github.com/graceframework/grace-async"]
-    def scm = [url: "https://github.com/graceframework/grace-async"]
 
 }

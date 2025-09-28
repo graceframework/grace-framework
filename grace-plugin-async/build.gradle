@@ -1,19 +1,16 @@
 dependencies {
-    compileOnly "jakarta.servlet:jakarta.servlet-api"
-    implementation "org.graceframework:grace-plugin-controllers"
-    api project(':grace-async-core')
+    compileOnly libs.jakarta.servlet
+    implementation project(":grace-plugin-controllers")
+    api libs.grace.async.core
+    api(libs.grace.datastore.gorm.support) {
+        transitive = false
+    }
 
-    api("org.springframework.boot:spring-boot-autoconfigure")
-    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
-    testImplementation "jakarta.servlet:jakarta.servlet-api"
-    testImplementation "org.graceframework:grace-test"
-    testImplementation "org.springframework:spring-test"
-}
-
-jar {
-    enabled = true
-    archiveClassifier.set('plugin')
-    includeEmptyDirs = false
+    testImplementation project(":grace-test")
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
 }

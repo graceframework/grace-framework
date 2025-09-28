@@ -39,6 +39,7 @@ include (
 
         // Plugins
         'grace-plugin-api',
+        'grace-plugin-async',
         'grace-plugin-codecs',
         'grace-plugin-controllers',
         'grace-plugin-converters',
@@ -47,6 +48,7 @@ include (
         'grace-plugin-datasource',
         'grace-plugin-domain-class',
         'grace-plugin-dynamic-modules',
+        'grace-plugin-events',
         'grace-plugin-gsp',
         'grace-plugin-interceptors',
         'grace-plugin-i18n',

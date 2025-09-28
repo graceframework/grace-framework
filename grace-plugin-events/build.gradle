@@ -1,16 +1,10 @@
 dependencies {
-    api "org.graceframework:grace-core"
-    api project(":grace-events-core")
-    api project(":grace-events-spring")
-    api project(":grace-events-transform")
+    api project(":grace-core")
+    api libs.grace.events.core
+    api libs.grace.events.spring
+    api libs.grace.events.transform
 
-    api("org.springframework.boot:spring-boot-autoconfigure")
-    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-}
-
-jar {
-    enabled = true
-    archiveClassifier.set('plugin')
-    includeEmptyDirs = false
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 }

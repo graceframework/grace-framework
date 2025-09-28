@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 SpringSource
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,14 @@
  */
 package grails.async.services
 
+import java.lang.reflect.Method
+
 import groovy.transform.CompileStatic
 import org.springframework.beans.BeanWrapper
-import org.springframework.beans.MutablePropertyValues
 import org.springframework.beans.PropertyAccessorFactory
+import org.springframework.util.ReflectionUtils
 
 import grails.async.decorator.PromiseDecorator
-//import org.springframework.beans.annotation.AnnotationBeanUtils
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.annotation.Transactional
@@ -33,6 +34,7 @@ import org.springframework.transaction.support.TransactionTemplate
  * A {@link PromiseDecorator} that wraps a {@link grails.async.Promise} in a transaction
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
@@ -52,18 +54,25 @@ class TransactionalPromiseDecorator implements PromiseDecorator, TransactionDefi
 
     TransactionalPromiseDecorator(PlatformTransactionManager transactionManager, Transactional transactionDefinition) {
         this.transactionManager = transactionManager
-        final definition = new DefaultTransactionDefinition()
-//        AnnotationBeanUtils.copyPropertiesToBean(transactionDefinition, definition)
+        TransactionDefinition definition = new DefaultTransactionDefinition()
+        Method[] annotationProperties = transactionDefinition.annotationType().getDeclaredMethods()
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(definition)
-        bw.setPropertyValues(new MutablePropertyValues(transactionDefinition.getProperties()))
+        for (Method annotationProperty : annotationProperties) {
+            String propertyName = annotationProperty.getName()
+            if (bw.isWritableProperty(propertyName)) {
+                Object value = ReflectionUtils.invokeMethod(annotationProperty, transactionDefinition)
+                bw.setPropertyValue(propertyName, value)
+            }
+        }
         this.transactionDefinition = definition
     }
 
     @Override
-    def <D> Closure<D> decorate(Closure<D> original) {
-        if (transactionManager != null) {
+    <D> Closure<D> decorate(Closure<D> original) {
+        if (this.transactionManager != null) {
             return (Closure<D>){ args ->
-                def transactionTemplate = transactionDefinition != null ? new TransactionTemplate(transactionManager, transactionDefinition) : new TransactionTemplate(transactionManager)
+                TransactionTemplate transactionTemplate = this.transactionDefinition != null ?
+                        new TransactionTemplate(this.transactionManager, this.transactionDefinition) : new TransactionTemplate(this.transactionManager)
                 transactionTemplate.execute({
                     original.call(args)
                 } as TransactionCallback)

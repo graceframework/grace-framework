@@ -1,2 +1,2 @@
-## grails-plugin-events
+## grace-plugin-events
 

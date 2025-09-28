@@ -16,6 +16,7 @@
 package org.grails.plugins.events
 
 import grails.plugins.Plugin
+import grails.util.GrailsUtil
 
 /**
  * A plugin that integrates Reactor into Grails
@@ -25,11 +26,8 @@ import grails.plugins.Plugin
  */
 class EventBusGrailsPlugin extends Plugin {
 
+    def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = "2023.0.0 > *"
     def description = 'Grace Events Plugin'
-    def documentation = "https://graceframework.org/grace-events/7.0.x/"
-    def license = "APACHE"
-    def issueManagement = [system: "Github Issues", url: "https://github.com/graceframework/grace-events"]
-    def scm = [url: "https://github.com/graceframework/grace-events"]
 
 }
