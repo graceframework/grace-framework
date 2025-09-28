@@ -1,0 +1,10 @@
+dependencies {
+    api project(":grace-core")
+    api libs.grace.events.core
+    api libs.grace.events.spring
+    api libs.grace.events.transform
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+}

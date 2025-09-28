@@ -1,0 +1,12 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.events.spring",
+      "type": "java.lang.Boolean",
+      "description": "Whether enable spring events translation.",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

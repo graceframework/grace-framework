@@ -1,0 +1,3 @@
+<plugin name='eventBus'>
+  <type>org.grails.plugins.events.EventBusGrailsPlugin</type>
+</plugin>

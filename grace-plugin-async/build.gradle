@@ -1,0 +1,16 @@
+dependencies {
+    compileOnly libs.jakarta.servlet
+    implementation project(":grace-plugin-controllers")
+    api libs.grace.async.core
+    api(libs.grace.datastore.gorm.support) {
+        transitive = false
+    }
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation project(":grace-test")
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
+}
