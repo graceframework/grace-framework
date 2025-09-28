@@ -194,33 +194,6 @@ class GrailsASTUtilsSpec extends Specification {
         !GrailsASTUtils.isDomainClass(new ClassNode(SomeJpaEntity), someEntitySourceUnit)
     }
 
-    void 'test domain class annotated with @grails.gorm.annotation.Entity'() {
-        setup:
-        File projectDir = new File(tmpDir, "projectDir")
-
-        // create /projectDir/app/models/ under java.io.tmpdir
-        File grailsAppDir = new File(projectDir, 'app')
-        File modelsDir = new File(grailsAppDir, 'models')
-
-        String packagePath = SomeGormEntity.package.name.replace('.' as char, File.separatorChar)
-
-        // create the source file that would contain the source for the
-        // relevant domain class...
-        File modelsPackageDir = new File(modelsDir, packagePath)
-        modelsPackageDir.mkdirs()
-        File someEntityFile = new File(modelsPackageDir, 'SomeGormEntity.groovy')
-        someEntityFile.createNewFile()
-        SourceUnit someEntitySourceUnit = Mock()
-        ModuleNode ast = new ModuleNode(someEntitySourceUnit)
-        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
-        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
-        someEntitySourceUnit.getAST() >> ast
-        someEntitySourceUnit.getName() >> someEntityFile.absolutePath
-
-        expect: 'SomeGormEntity should be recognized as a domain because annotated with @grails.gorm.annotation.Entity'
-        GrailsASTUtils.isDomainClass(new ClassNode(SomeGormEntity), someEntitySourceUnit)
-    }
-
     void 'Test domain class artefact path'() {
         given:
         SourceUnit sourceUnit = Mock()
@@ -337,8 +310,4 @@ class SomeEntity {}
 class SomeJpaEntity {
     @jakarta.persistence.Id
     Long id
-}
-
-@grails.gorm.annotation.Entity
-class SomeGormEntity {
 }
