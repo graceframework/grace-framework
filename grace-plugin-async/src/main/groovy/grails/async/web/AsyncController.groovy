@@ -1,4 +1,22 @@
+/*
+ * Copyright 2013-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.async.web
+
+import jakarta.servlet.AsyncContext
+import jakarta.servlet.http.HttpServletRequest
 
 import org.grails.plugins.web.async.GrailsAsyncContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
@@ -8,9 +26,6 @@ import org.springframework.web.context.request.async.AsyncWebRequest
 import org.springframework.web.context.request.async.WebAsyncManager
 import org.springframework.web.context.request.async.WebAsyncUtils
 
-import jakarta.servlet.AsyncContext
-import jakarta.servlet.http.HttpServletRequest
-
 /**
  * Exposes a startAsync() method for access to the Servlet 3.x API
  *
@@ -18,6 +33,7 @@ import jakarta.servlet.http.HttpServletRequest
  * @since 3.3
  */
 trait AsyncController {
+
     /**
      * Raw access to the Servlet 3.0 startAsync method
      *
@@ -36,4 +52,5 @@ trait AsyncController {
         request.setAttribute(GrailsApplicationAttributes.ASYNC_STARTED, true)
         new GrailsAsyncContext(asyncWebRequest.asyncContext, webRequest)
     }
+
 }

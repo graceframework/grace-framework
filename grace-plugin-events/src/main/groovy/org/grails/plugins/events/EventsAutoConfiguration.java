@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import grails.events.bus.EventBus;
+
 import org.grails.events.bus.spring.EventBusFactoryBean;
 import org.grails.events.gorm.GormDispatcherRegistrar;
 import org.grails.events.spring.SpringEventTranslator;
@@ -32,7 +33,7 @@ import org.grails.events.spring.SpringEventTranslator;
  * {@link EnableAutoConfiguration Auto-configuration} for Events.
  *
  * @author Michael Yan
- * @since 6.1
+ * @since 2023.1
  */
 @AutoConfiguration
 public class EventsAutoConfiguration {

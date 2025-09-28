@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,21 +15,23 @@
  */
 package org.grails.plugins.web.async
 
-import grails.async.web.AsyncGrailsWebRequest
-
+import com.opensymphony.sitemesh.Content
+import com.opensymphony.sitemesh.Decorator
+import jakarta.servlet.ServletContext
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.AsyncContext
 import jakarta.servlet.AsyncListener
+import com.opensymphony.sitemesh.webapp.SiteMeshWebAppContext
+import org.springframework.context.ApplicationContext
 
+import grails.async.web.AsyncGrailsWebRequest
 import grails.persistence.support.PersistenceContextInterceptor
+
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.sitemesh.GrailsContentBufferingResponse
 import org.grails.web.sitemesh.GroovyPageLayoutFinder
 import org.grails.web.util.WebUtils
-
-import com.opensymphony.sitemesh.webapp.SiteMeshWebAppContext
-
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 
 /**
  * Wraps an AsyncContext providing additional logic to provide the appropriate context to a Grails application.
@@ -48,30 +50,32 @@ class GrailsAsyncContext implements AsyncContext {
 
     GrailsAsyncContext(AsyncContext delegate, GrailsWebRequest webRequest, AsyncGrailsWebRequest asyncGrailsWebRequest = null) {
         this.delegate = delegate
-        originalWebRequest = webRequest
-        def applicationContext = webRequest.getApplicationContext()
-        if (applicationContext && applicationContext.containsBean("groovyPageLayoutFinder")) {
-            groovyPageLayoutFinder = applicationContext.getBean("groovyPageLayoutFinder", GroovyPageLayoutFinder)
+        this.originalWebRequest = webRequest
+        ApplicationContext applicationContext = webRequest.getApplicationContext()
+        if (applicationContext && applicationContext.containsBean('groovyPageLayoutFinder')) {
+            this.groovyPageLayoutFinder = applicationContext.getBean('groovyPageLayoutFinder', GroovyPageLayoutFinder)
         }
         this.asyncGrailsWebRequest = asyncGrailsWebRequest
     }
 
-    def <T extends AsyncListener> T createListener(Class<T> tClass) {
+    <T extends AsyncListener> T createListener(Class<T> tClass) {
         delegate.createListener(tClass)
     }
 
     void start(Runnable runnable) {
         delegate.start {
-            GrailsWebRequest webRequest =  asyncGrailsWebRequest ?: new GrailsWebRequest((HttpServletRequest)request, (HttpServletResponse)response, request.getServletContext())
+            GrailsWebRequest webRequest =  asyncGrailsWebRequest ?:
+                    new GrailsWebRequest((HttpServletRequest) request, (HttpServletResponse) response, request.getServletContext())
             WebUtils.storeGrailsWebRequest(webRequest)
-            def interceptors = getPersistenceInterceptors(webRequest)
+            Collection<PersistenceContextInterceptor> interceptors = getPersistenceInterceptors(webRequest)
 
             for (PersistenceContextInterceptor i in interceptors) {
                 i.init()
             }
             try {
                 runnable.run()
-            } finally {
+            }
+            finally {
                 for (PersistenceContextInterceptor i in interceptors) {
                     i.destroy()
                 }
@@ -84,16 +88,16 @@ class GrailsAsyncContext implements AsyncContext {
     void complete() {
         if (response instanceof GrailsContentBufferingResponse) {
             GrailsContentBufferingResponse bufferingResponse = (GrailsContentBufferingResponse) response
-            def targetResponse = bufferingResponse.getTargetResponse()
-            def content = bufferingResponse.getContent()
-            final httpRequest = (HttpServletRequest) request
+            HttpServletResponse targetResponse = bufferingResponse.getTargetResponse()
+            Content content = bufferingResponse.getContent()
+            HttpServletRequest httpRequest = (HttpServletRequest) request
             if (content != null && groovyPageLayoutFinder != null) {
-                com.opensymphony.sitemesh.Decorator decorator = (com.opensymphony.sitemesh.Decorator)groovyPageLayoutFinder?.findLayout(httpRequest, content)
+                Decorator decorator = (Decorator) groovyPageLayoutFinder?.findLayout(httpRequest, content)
                 if (decorator) {
-                    decorator.render content,
-                        new SiteMeshWebAppContext(httpRequest, targetResponse, request.servletContext)
-                } else {
-                   content.writeOriginal(targetResponse.getWriter())
+                    decorator.render(content, new SiteMeshWebAppContext(httpRequest, targetResponse, request.servletContext))
+                }
+                else {
+                    content.writeOriginal(targetResponse.getWriter())
                 }
             }
         }
@@ -101,12 +105,14 @@ class GrailsAsyncContext implements AsyncContext {
      }
 
     protected Collection<PersistenceContextInterceptor> getPersistenceInterceptors(GrailsWebRequest webRequest) {
-        def servletContext = webRequest.servletContext
-        Collection<PersistenceContextInterceptor> interceptors = (Collection<PersistenceContextInterceptor>)servletContext?.getAttribute(PERSISTENCE_INTERCEPTORS)
+        ServletContext servletContext = webRequest.servletContext
+        Collection<PersistenceContextInterceptor> interceptors =
+                (Collection<PersistenceContextInterceptor>) servletContext?.getAttribute(PERSISTENCE_INTERCEPTORS)
         if (interceptors == null) {
             interceptors = webRequest.applicationContext?.getBeansOfType(PersistenceContextInterceptor)?.values() ?: []
             servletContext.setAttribute(PERSISTENCE_INTERCEPTORS, interceptors)
         }
         return interceptors
     }
+
 }

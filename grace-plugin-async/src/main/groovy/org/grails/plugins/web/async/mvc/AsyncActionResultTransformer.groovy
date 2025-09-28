@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-2024 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,23 +15,24 @@
  */
 package org.grails.plugins.web.async.mvc
 
+import jakarta.servlet.AsyncContext
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+
+import groovy.transform.CompileStatic
+import org.springframework.web.context.request.async.WebAsyncManager
+import org.springframework.web.context.request.async.WebAsyncUtils
+import org.springframework.web.servlet.ModelAndView
+
 import grails.async.Promise
 import grails.async.PromiseList
 import grails.async.web.AsyncGrailsWebRequest
-import groovy.transform.CompileStatic
+
 import org.grails.plugins.web.async.GrailsAsyncContext
 import org.grails.web.errors.GrailsExceptionResolver
 import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.servlet.mvc.ActionResultTransformer
 import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.springframework.web.context.request.async.AsyncWebRequest
-import org.springframework.web.context.request.async.WebAsyncManager
-import org.springframework.web.context.request.async.WebAsyncUtils
-import org.springframework.web.servlet.ModelAndView
-
-import jakarta.servlet.AsyncContext
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 
 /**
  * Handles an Async response from a controller
@@ -59,8 +60,8 @@ class AsyncActionResultTransformer implements ActionResultTransformer {
             AsyncGrailsWebRequest asyncWebRequest
             if (asyncManager.isConcurrentHandlingStarted()) {
                 asyncWebRequest = AsyncGrailsWebRequest.lookup(request)
-                if(asyncWebRequest == null) {
-                    throw new IllegalStateException("Concurrency handling already started by another process")
+                if (asyncWebRequest == null) {
+                    throw new IllegalStateException('Concurrency handling already started by another process')
                 }
             }
             else {
@@ -79,33 +80,36 @@ class AsyncActionResultTransformer implements ActionResultTransformer {
                     p.onComplete { List results ->
                         handleComplete(request, response, asyncContext)
                     }
-                } else {
+                }
+                else {
                     p.onComplete {
                         if (it instanceof Map) {
-                            def modelAndView = new ModelAndView(viewName, it)
+                            ModelAndView modelAndView = new ModelAndView(viewName, it)
                             asyncContext.getRequest().setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, modelAndView)
 
                             asyncContext.dispatch()
-                        } else {
-                            final modelAndView = asyncContext.getRequest().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
+                        }
+                        else {
+                            Object modelAndView = asyncContext.getRequest().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
                             if (modelAndView) {
                                 asyncContext.dispatch()
-                            } else {
+                            }
+                            else {
                                 handleComplete(request, response, asyncContext)
                             }
                         }
                     }
                 }
                 p.onError { Throwable t ->
-                    if (!response.isCommitted()) {
-                        GrailsExceptionResolver exceptionResolver = createExceptionResolver(webRequest)
-                        request.setAttribute(GrailsExceptionResolver.EXCEPTION_ATTRIBUTE, t)
-                        def modelAndView = exceptionResolver.resolveException(request, response, this, (Exception) t)
-                        asyncContext.getRequest().setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, modelAndView)
-                        asyncContext.dispatch()
+                    if (response.isCommitted()) {
+                        asyncContext.complete()
                     }
                     else {
-                        asyncContext.complete()
+                        GrailsExceptionResolver exceptionResolver = createExceptionResolver(webRequest)
+                        request.setAttribute(GrailsExceptionResolver.EXCEPTION_ATTRIBUTE, t)
+                        ModelAndView modelAndView = exceptionResolver.resolveException(request, response, this, (Exception) t)
+                        asyncContext.getRequest().setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, modelAndView)
+                        asyncContext.dispatch()
                     }
                 }
             }
@@ -119,15 +123,16 @@ class AsyncActionResultTransformer implements ActionResultTransformer {
     }
 
     private GrailsExceptionResolver createExceptionResolver(GrailsWebRequest webRequest) {
-        if (!exceptionResolver) {
-            exceptionResolver = new GrailsExceptionResolver()
-            exceptionResolver.servletContext = webRequest.servletContext
-            exceptionResolver.grailsApplication = webRequest.attributes.grailsApplication
-            exceptionResolver.mappedHandlers = [this] as Set
-            def properties = new Properties()
+        if (!this.exceptionResolver) {
+            this.exceptionResolver = new GrailsExceptionResolver()
+            this.exceptionResolver.servletContext = webRequest.servletContext
+            this.exceptionResolver.grailsApplication = webRequest.attributes.grailsApplication
+            this.exceptionResolver.mappedHandlers = [this] as Set
+            Properties properties = new Properties()
             properties['java.lang.Exception'] = '/error'
-            exceptionResolver.exceptionMappings = properties
+            this.exceptionResolver.exceptionMappings = properties
         }
-        return exceptionResolver
+        return this.exceptionResolver
     }
+
 }

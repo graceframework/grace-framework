@@ -28,9 +28,9 @@ import grails.util.GrailsUtil
 class ControllersAsyncGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def grailsVersion = "2023.0.0 > *"
+    def grailsVersion = '2023.0.0 > *'
     def loadAfter = ['controllers']
-    def title = "Grace Async Plugin"
+    def title = 'Grace Async Plugin'
     def description = 'Grace Async Plugin'
 
 }

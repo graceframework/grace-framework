@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 
 import grails.async.PromiseFactory;
+
 import org.grails.plugins.web.async.mvc.AsyncActionResultTransformer;
 import org.grails.plugins.web.async.spring.PromiseFactoryBean;
 import org.grails.plugins.web.controllers.ControllersPluginConfiguration;
@@ -33,7 +34,7 @@ import org.grails.web.errors.GrailsExceptionResolver;
  * {@link EnableAutoConfiguration Auto-configuration} for Async Controllers.
  *
  * @author Michael Yan
- * @since 6.1
+ * @since 2024.0.0
  */
 @AutoConfiguration(after = ControllersPluginConfiguration.class)
 @ConditionalOnWebApplication(type = Type.SERVLET)

@@ -27,7 +27,7 @@ import grails.util.GrailsUtil
 class EventBusGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def grailsVersion = "2023.0.0 > *"
+    def grailsVersion = '2023.0.0 > *'
     def description = 'Grace Events Plugin'
 
 }
