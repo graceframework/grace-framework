@@ -15,8 +15,6 @@
  */
 package org.grails.compiler.gorm;
 
-import java.util.Collection;
-
 import groovy.transform.Canonical;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
@@ -27,7 +25,6 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.datastore.mapping.reflect.AstUtils;
 
 /**
  * Transforms GORM entities making the GORM API available to Java.
@@ -42,10 +39,6 @@ public class GormTransformer implements GrailsArtefactClassInjector {
     @Override
     public String[] getArtefactTypes() {
         return new String[] { DomainClassArtefactHandler.TYPE };
-    }
-
-    public static Collection<String> getKnownEntityNames() {
-        return AstUtils.getKnownEntityNames();
     }
 
     @Override
@@ -64,11 +57,6 @@ public class GormTransformer implements GrailsArtefactClassInjector {
             GrailsASTUtils.error(source, classNode, "Class [" + classNode.getName() + "] is marked with @groovy.transform.Canonical which is not supported for GORM entities.", true);
         }
         new GormEntityTransformation().visit(classNode, source);
-    }
-
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        performInjection(source, classNode);
     }
 
 }

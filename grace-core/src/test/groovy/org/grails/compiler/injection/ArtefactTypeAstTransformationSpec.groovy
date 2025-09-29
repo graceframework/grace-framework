@@ -249,12 +249,11 @@ class Post {
         def expectInjectors = [
                 'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
                 'org.grails.compiler.web.converters.ConvertersDomainTransformer',
-                'org.grails.compiler.web.ControllerDomainTransformer',
-                'org.grails.compiler.gorm.GormTransformer'
+                'org.grails.compiler.web.ControllerDomainTransformer'
         ]
 
         expect:
-        domainClassInjectors.length == 4
+        domainClassInjectors.length == 3
         domainClassInjectors*.class.name.containsAll(expectInjectors)
     }
 

@@ -18,6 +18,7 @@ package org.grails.compiler.gorm
 import groovy.transform.CompileStatic
 
 import grails.compiler.traits.TraitInjector
+import grails.compiler.traits.TraitInjectorAdapter
 import grails.gorm.Entity
 
 import org.grails.core.artefact.DomainClassArtefactHandler
@@ -30,8 +31,9 @@ import org.grails.core.artefact.DomainClassArtefactHandler
  * @since 4.0
  */
 @CompileStatic
-class EntityTraitInjector implements TraitInjector {
+class EntityTraitInjector extends TraitInjectorAdapter {
 
+    @Override
     Class getTrait() {
         Entity
     }

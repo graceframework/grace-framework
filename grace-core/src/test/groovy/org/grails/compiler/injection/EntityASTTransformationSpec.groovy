@@ -29,7 +29,6 @@ class Message {
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.DefaultGrailsDomainClassInjector')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.converters.ConvertersDomainTransformer')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerDomainTransformer')
-        classNode.getNodeMetaData('APPLIED_org.grails.compiler.gorm.GormTransformer')
     }
 
 }

@@ -45,23 +45,6 @@ class TestEntity {
         handler.isArtefact(clazz)
     }
 
-    void "Check TestEntity annotated with GORM '@Entity'"() {
-        given:
-        ArtefactHandler handler = new DomainClassArtefactHandler()
-        GroovyClassLoader gcl = new GroovyClassLoader()
-        Class<?> clazz = gcl.parseClass('''
-@grails.gorm.annotation.Entity
-class TestEntity {
-}
-''')
-
-        ClassNode classNode = new ClassNode(clazz)
-
-        expect:
-        handler.isArtefact(classNode)
-        handler.isArtefact(clazz)
-    }
-
     void "Check TestEntity annotated with JPA '@Entity'"() {
         given:
         ArtefactHandler handler = new DomainClassArtefactHandler()
