@@ -103,7 +103,7 @@ class BuildSettings {
     /**
      * The base directory of the application
      */
-    public static final String APP_BASE_DIR = 'base.dir'
+    public static final String APP_BASE_DIR = 'grails.base.dir'
 
     /**
      * The app directory of the application
@@ -269,11 +269,11 @@ class BuildSettings {
         else if (System.getenv(APP_BASE_DIR)) {
             BASE_DIR = new File(System.getenv(APP_BASE_DIR))
         }
-        if (System.getProperty('BASE_DIR')) {
-            BASE_DIR = new File(System.getProperty('BASE_DIR'))
+        else if (System.getProperty('GRAILS_BASE_DIR')) {
+            BASE_DIR = new File(System.getProperty('GRAILS_BASE_DIR'))
         }
-        else if (System.getenv('BASE_DIR')) {
-            BASE_DIR = new File(System.getenv('BASE_DIR'))
+        else if (System.getenv('GRAILS_BASE_DIR')) {
+            BASE_DIR = new File(System.getenv('GRAILS_BASE_DIR'))
         }
         else {
             BASE_DIR = new File('.')

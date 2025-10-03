@@ -209,14 +209,14 @@ grails:
         assertFalse Environment.getCurrent().isReloadEnabled(), "reload should be disabled by default in production"
 
         System.setProperty("grails.env", "dev")
-        assertFalse Environment.getCurrent().isReloadEnabled(), "reload should be disabled by default in development unless base.dir set"
+        assertFalse Environment.getCurrent().isReloadEnabled(), "reload should be disabled by default in development unless grails.base.dir set"
 
-        System.setProperty("base.dir", ".")
-        assertTrue Environment.getCurrent().isReloadEnabled(), "reload should be enabled by default in development if base.dir set"
+        System.setProperty("grails.base.dir", ".")
+        assertTrue Environment.getCurrent().isReloadEnabled(), "reload should be enabled by default in development if grails.base.dir set"
 
-        System.clearProperty("base.dir")
+        System.clearProperty("grails.base.dir")
         System.setProperty("grails.env", "prod")
-        assertFalse Environment.getCurrent().isReloadEnabled(), "reload should be disabled by default in production if base.dir set"
+        assertFalse Environment.getCurrent().isReloadEnabled(), "reload should be disabled by default in production if grails.base.dir set"
 
         System.setProperty(Environment.RELOAD_ENABLED, "true")
         assertFalse Environment.getCurrent().isReloadEnabled(), "reload should be disabled by default in production if reload enabled set but not location"

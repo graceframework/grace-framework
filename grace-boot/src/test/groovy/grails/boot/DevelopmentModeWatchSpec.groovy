@@ -18,7 +18,7 @@ class DevelopmentModeWatchSpec extends Specification {
     void "test root watchPattern"() {
         setup:
         System.setProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-        System.setProperty("base.dir", ".")
+        System.setProperty("grails.base.dir", ".")
         Grails app = new Grails(GrailsAutoConfiguration, WatchedResourcesGrailsPlugin)
         app.webApplicationType = WebApplicationType.NONE
         ConfigurableApplicationContext context = app.run("--server.port=0")
@@ -36,7 +36,7 @@ class DevelopmentModeWatchSpec extends Specification {
         }
 
         cleanup:
-        System.clearProperty("base.dir")
+        System.clearProperty("grails.base.dir")
         System.setProperty(Environment.KEY, Environment.TEST.getName())
         if(watchedFile != null) {
             watchedFile.delete()

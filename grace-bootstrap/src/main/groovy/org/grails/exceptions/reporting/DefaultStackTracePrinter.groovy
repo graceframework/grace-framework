@@ -125,7 +125,7 @@ class DefaultStackTracePrinter implements StackTracePrinter {
     }
 
     static String makeRelativeIfPossible(String fileName) {
-        String base = System.getProperty('base.dir')
+        String base = System.getProperty('grails.base.dir')
         if (base) {
             fileName = fileName - base
         }

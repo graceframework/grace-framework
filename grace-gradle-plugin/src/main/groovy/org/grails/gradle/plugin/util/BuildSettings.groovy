@@ -31,7 +31,7 @@ class BuildSettings {
     /**
      * The base directory of the application
      */
-    public static final String APP_BASE_DIR = 'base.dir'
+    public static final String APP_BASE_DIR = 'grails.base.dir'
 
     /**
      * The app directory of the application
