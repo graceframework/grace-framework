@@ -149,7 +149,6 @@ class Post {
         then:
         clazz.getAnnotationsByType(Artefact)
         classNode.getAnnotations(ClassHelper.make(Artefact))
-        classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.DefaultGrailsDomainClassInjector')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.converters.ConvertersDomainTransformer')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerDomainTransformer')
     }
@@ -176,7 +175,6 @@ class Post {
         then:
         !clazz.getAnnotationsByType(Artefact)
         !classNode.getAnnotations(ClassHelper.make(Artefact))
-        !classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.DefaultGrailsDomainClassInjector')
         !classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.converters.ConvertersDomainTransformer')
         !classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerDomainTransformer')
     }
@@ -199,7 +197,6 @@ class Post {
         then:
         clazz.getAnnotationsByType(Artefact)
         classNode.getAnnotations(ClassHelper.make(Artefact))
-        classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.DefaultGrailsDomainClassInjector')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.converters.ConvertersDomainTransformer')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerDomainTransformer')
     }

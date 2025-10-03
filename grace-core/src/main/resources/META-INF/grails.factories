@@ -6,5 +6,4 @@ org.grails.core.artefact.ServiceArtefactHandler,\
 org.grails.core.artefact.UrlMappingsArtefactHandler
 
 grails.compiler.ast.ClassInjector=\
-org.grails.compiler.injection.ApplicationClassInjector,\
-org.grails.compiler.injection.DefaultGrailsDomainClassInjector
+org.grails.compiler.injection.ApplicationClassInjector
