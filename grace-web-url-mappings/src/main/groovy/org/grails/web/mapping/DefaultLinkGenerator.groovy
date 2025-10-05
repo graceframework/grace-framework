@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ import grails.web.mapping.UrlCreator
 import grails.web.mapping.UrlMapping
 import grails.web.mapping.UrlMappingsHolder
 
-import org.grails.core.artefact.AnnotationDomainClassArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -54,6 +53,7 @@ import org.grails.web.util.WebUtils
  * A link generating service for applications to use when generating links.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @CompileStatic
@@ -181,8 +181,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                             resource = persistentEntity.getDecapitalizedName()
                             hasId = true
                         }
-                        else if (DomainClassArtefactHandler.isDomainClass(resourceAttribute.getClass(), true) ||
-                                AnnotationDomainClassArtefactHandler.isJPADomainClass(resourceAttribute.getClass())) {
+                        else if (DomainClassArtefactHandler.isDomainClass(resourceAttribute.getClass(), true)) {
                             resource = GrailsNameUtils.getPropertyName(resourceAttribute.getClass())
                             hasId = true
                         }
