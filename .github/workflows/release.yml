@@ -33,7 +33,7 @@ jobs:
       GIT_USER_EMAIL: rain@rainboyan.com
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup JDK
