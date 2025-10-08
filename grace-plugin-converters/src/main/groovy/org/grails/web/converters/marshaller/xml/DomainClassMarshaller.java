@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,12 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.StringUtils;
 
+import grails.artefact.ArtefactTypes;
 import grails.converters.XML;
 import grails.core.GrailsApplication;
 import grails.core.support.proxy.EntityProxyHandler;
 import grails.core.support.proxy.ProxyHandler;
 
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.core.util.IncludeExcludeSupport;
 import org.grails.datastore.mapping.model.PersistentEntity;
@@ -99,7 +99,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
 
     public boolean supports(Object object) {
         String name = ConverterUtil.trimProxySuffix(object.getClass().getName());
-        return this.application.isArtefactOfType(DomainClassArtefactHandler.TYPE, name);
+        return this.application.isArtefactOfType(ArtefactTypes.DOMAIN_CLASS, name);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

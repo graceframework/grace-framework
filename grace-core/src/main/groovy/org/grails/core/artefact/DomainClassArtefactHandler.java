@@ -19,6 +19,7 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
 import org.springframework.core.Ordered;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsClass;
 import grails.core.GrailsDomainClass;
@@ -38,7 +39,7 @@ import org.grails.datastore.mapping.model.MappingContext;
 @SuppressWarnings({"deprecation"})
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements Ordered {
 
-    public static final String TYPE = "Domain";
+    public static final String TYPE = ArtefactTypes.DOMAIN_CLASS;
 
     public static final String PATH = "domain";
 

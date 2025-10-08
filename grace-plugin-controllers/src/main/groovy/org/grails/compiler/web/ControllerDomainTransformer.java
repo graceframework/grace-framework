@@ -20,10 +20,10 @@ import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
+import grails.artefact.ArtefactTypes;
 import grails.compiler.ast.AstTransformer;
 
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.plugins.web.controllers.api.ControllersDomainBindingApi;
 import org.grails.web.databinding.DefaultASTDatabindingHelper;
 
@@ -39,7 +39,7 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
 
     @Override
     public String getArtefactType() {
-        return DomainClassArtefactHandler.TYPE;
+        return ArtefactTypes.DOMAIN_CLASS;
     }
 
     @Override

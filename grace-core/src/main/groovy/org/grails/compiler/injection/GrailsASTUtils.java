@@ -94,6 +94,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import grails.artefact.Artefact;
+import grails.artefact.ArtefactTypes;
 import grails.artefact.Enhanced;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.GrailsNameUtils;
@@ -120,8 +121,6 @@ public final class GrailsASTUtils {
     public static final String META_DATA_KEY_PROJECT_TYPE = "PROJECT_TYPE";
 
     public static final String META_DATA_KEY_PROJECT_VERSION = "PROJECT_VERSION";
-
-    public static final String DOMAIN_CLASS = "Domain";
 
     public static final String DOMAIN_DIR = "domain";
 
@@ -923,7 +922,7 @@ public final class GrailsASTUtils {
 
         try {
             Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
-            if (artefactAnn != null && artefactAnn.value().equals(DOMAIN_CLASS)) {
+            if (artefactAnn != null && artefactAnn.value().equals(ArtefactTypes.DOMAIN_CLASS)) {
                 return true;
             }
         }

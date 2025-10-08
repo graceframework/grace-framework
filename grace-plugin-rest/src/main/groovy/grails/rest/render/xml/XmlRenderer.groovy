@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.springframework.beans.factory.annotation.Autowired
 
+import grails.artefact.ArtefactTypes
 import grails.converters.XML
 import grails.core.GrailsApplication
 import grails.core.support.proxy.DefaultProxyHandler
@@ -28,7 +29,6 @@ import grails.core.support.proxy.ProxyHandler
 import grails.rest.render.RenderContext
 import grails.web.mime.MimeType
 
-import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.web.rest.render.xml.DefaultXmlRenderer
 import org.grails.web.converters.marshaller.ObjectMarshaller
 import org.grails.web.converters.marshaller.xml.DeepDomainClassMarshaller
@@ -69,7 +69,7 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
 
     @PostConstruct
     void registerCustomConverter() {
-        def domain = grailsApplication != null ? grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, targetType.name) : null
+        def domain = grailsApplication != null ? grailsApplication.getArtefact(ArtefactTypes.DOMAIN_CLASS, targetType.name) : null
 
         ObjectMarshaller<XML> marshaller = null
 

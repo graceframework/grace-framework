@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,8 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
+import grails.artefact.ArtefactTypes;
 import grails.persistence.Entity;
-
-import org.grails.core.artefact.DomainClassArtefactHandler;
 
 /**
  * Injects the necessary fields and behaviors into a domain class in order to make it a property GORM entity.
@@ -36,7 +35,7 @@ public class EntityASTTransformation extends ArtefactTypeAstTransformation {
 
     @Override
     protected String resolveArtefactType(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode) {
-        return DomainClassArtefactHandler.TYPE;
+        return ArtefactTypes.DOMAIN_CLASS;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import org.springframework.web.servlet.support.RequestDataValueProcessor
 
+import grails.artefact.ArtefactTypes
 import grails.artefact.TagLibrary
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
@@ -38,7 +39,6 @@ import grails.web.mapping.LinkGenerator
 
 import org.grails.buffer.FastStringWriter
 import org.grails.buffer.GrailsPrintWriter
-import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.encoder.CodecLookup
 import org.grails.encoder.Encoder
 import org.grails.plugins.web.GrailsTagDateHelper
@@ -1375,7 +1375,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
                 if (optionKey instanceof Closure) {
                     keyValue = optionKey(el)
                 }
-                else if (el != null && optionKey == 'id' && grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, el.getClass().name)) {
+                else if (el != null && optionKey == 'id' && grailsApplication.getArtefact(ArtefactTypes.DOMAIN_CLASS, el.getClass().name)) {
                     keyValue = el.ident()
                     keyValueObject = el
                 }
