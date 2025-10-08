@@ -25,10 +25,9 @@ import grails.compiler.ast.ClassInjector
  */
 class GrailsAwareInjectionOperationSpec extends Specification {
 
-    def "Test Grails have 8 class injectors"() {
+    def "Test Grails have 7 class injectors"() {
         given:
         def classInjectors = [
-                'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
                 'org.grails.compiler.injection.ApplicationClassInjector',
                 'org.grails.compiler.boot.BootInitializerClassInjector',
                 'org.grails.compiler.web.converters.ConvertersDomainTransformer',
@@ -39,7 +38,7 @@ class GrailsAwareInjectionOperationSpec extends Specification {
         ]
 
         expect:
-        GrailsAwareInjectionOperation.classInjectors.length == 8
+        GrailsAwareInjectionOperation.classInjectors.length == 7
         GrailsAwareInjectionOperation.classInjectors*.class.name.containsAll(classInjectors)
     }
 

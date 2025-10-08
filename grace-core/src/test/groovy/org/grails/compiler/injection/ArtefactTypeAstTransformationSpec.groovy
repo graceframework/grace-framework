@@ -247,13 +247,12 @@ class Post {
         then:
         ClassInjector[] domainClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }
         def expectInjectors = [
-                'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
                 'org.grails.compiler.web.converters.ConvertersDomainTransformer',
                 'org.grails.compiler.web.ControllerDomainTransformer'
         ]
 
         expect:
-        domainClassInjectors.length == 3
+        domainClassInjectors.length == 2
         domainClassInjectors*.class.name.containsAll(expectInjectors)
     }
 

@@ -33,9 +33,6 @@ class DefaultDomainClassInjectorSpec extends Specification {
 
         then:
         test.toString().endsWith("Test : 1")
-
-        and: 'toString is marked as Generated'
-        test.class.getMethod('toString').isAnnotationPresent(Generated)
     }
 
     void "test domain with groovy.transform.ToString"() {

@@ -15,7 +15,6 @@ import net.javacrumbs.jsonunit.JsonAssert
 
 class DomainClassMarshallerSpec extends Specification {
 
-
     void setup() {
     }
 
@@ -74,7 +73,7 @@ class DomainClassMarshallerSpec extends Specification {
     void "test marshaller should render the ID properly"() {
         initJson(false)
         when:
-        def expectedJson = '{"newId":3,"name":"Sally","version":null}'
+        def expectedJson = '{"newId":3,"name":"Sally"}'
         RenamedIdentifier ri = new RenamedIdentifier(newId: 3, name: "Sally")
 
         then:

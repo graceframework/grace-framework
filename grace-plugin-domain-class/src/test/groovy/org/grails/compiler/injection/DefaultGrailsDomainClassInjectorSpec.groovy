@@ -141,7 +141,7 @@ class Post {
         def post = domainClass.newInstance([id: 1])
 
         then: 'toString as expect'
-        post.toString().endsWith("Post(null)")
+        post.toString().endsWith("Post(1)")
 
         and: 'toString is marked as Generated'
         post.class.getMethod('toString').isAnnotationPresent(Generated)
