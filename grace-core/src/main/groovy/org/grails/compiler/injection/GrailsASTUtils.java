@@ -121,6 +121,8 @@ public final class GrailsASTUtils {
 
     public static final String META_DATA_KEY_PROJECT_VERSION = "PROJECT_VERSION";
 
+    public static final String DOMAIN_CLASS = "Domain";
+
     public static final String DOMAIN_DIR = "domain";
 
     public static final String GRAILS_APP_DIR = "grails-app";
@@ -889,6 +891,46 @@ public final class GrailsASTUtils {
             return false;
         }
         return isDomainClass(classNode, classNode.getModule().getContext());
+    }
+
+    /**
+     * Checks whether the specified class is a Grails domain class.
+     *
+     * @param clazz the domain class
+     * @param allowProxyClass allow the proxy class
+     * @return true if it's domain class
+     * @since 2024.0.0
+     */
+    public static boolean isDomainClass(Class<?> clazz, boolean allowProxyClass) {
+        boolean retval = isDomainClass(clazz);
+        if (!retval && allowProxyClass && clazz != null && clazz.getSimpleName().contains("$")) {
+            retval = isDomainClass(clazz.getSuperclass());
+        }
+        return retval;
+    }
+
+    /**
+     * Checks whether the specified class is a Grails domain class.
+     *
+     * @param clazz the domain class
+     * @return true if it's domain class
+     * @since 2024.0.0
+     */
+    public static boolean isDomainClass(Class<?> clazz) {
+        if (clazz == null || Closure.class.isAssignableFrom(clazz) || clazz.isEnum()) {
+            return false;
+        }
+
+        try {
+            Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
+            if (artefactAnn != null && artefactAnn.value().equals(DOMAIN_CLASS)) {
+                return true;
+            }
+        }
+        catch (Exception ignored) {
+        }
+
+        return false;
     }
 
     @SuppressWarnings("unchecked")

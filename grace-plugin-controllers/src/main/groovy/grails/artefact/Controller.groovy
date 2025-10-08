@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,8 +49,8 @@ import grails.web.api.WebAttributes
 import grails.web.databinding.DataBinder
 import grails.web.databinding.DataBindingUtils
 
+import org.grails.compiler.injection.GrailsASTUtils
 import org.grails.compiler.web.ControllerActionTransformer
-import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.datastore.mapping.model.config.GormProperties
 import org.grails.plugins.web.api.MimeTypesApiSupport
 import org.grails.plugins.web.controllers.ControllerExceptionHandlerMetaData
@@ -66,9 +66,9 @@ import org.grails.web.util.GrailsApplicationAttributes
  *
  * @author Jeff Brown
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @since 3.0
- *
  */
 @CompileStatic
 trait Controller implements ResponseRenderer, ResponseRedirector, RequestForwarder, DataBinder, WebAttributes, ServletAttributes {
@@ -385,8 +385,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                 isDomainClass = ClassHelper.make(type).implementsInterface(ClassHelper.make('grails.artefact.DomainClass'))
             }
             else {
-                isDomainClass = DomainClassArtefactHandler
-                        .isDomainClass(type)
+                isDomainClass = GrailsASTUtils.isDomainClass(type)
             }
             if (isDomainClass) {
                 entityIdentifierValue = commandObjectBindingSource.getIdentifierValue()
