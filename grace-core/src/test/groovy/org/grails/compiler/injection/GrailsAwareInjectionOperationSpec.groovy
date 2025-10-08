@@ -34,11 +34,13 @@ class GrailsAwareInjectionOperationSpec extends Specification {
                 'org.grails.compiler.web.ControllerDomainTransformer',
                 'org.grails.compiler.web.ControllerActionTransformer',
                 'org.grails.compiler.web.taglib.TagLibraryTransformer',
-                'org.grails.gsp.compiler.transform.GroovyPageBytecodeOptimizer'
+                'org.grails.gsp.compiler.transform.GroovyPageBytecodeOptimizer',
+                'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
+                'org.grails.compiler.gorm.GormTransformer'
         ]
 
         expect:
-        GrailsAwareInjectionOperation.classInjectors.length == 7
+        GrailsAwareInjectionOperation.classInjectors.length == 9
         GrailsAwareInjectionOperation.classInjectors*.class.name.containsAll(classInjectors)
     }
 

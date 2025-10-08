@@ -228,7 +228,7 @@ class PostController {
         controllerClassInjectors*.class.name.containsAll(expectInjectors)
     }
 
-    void "Domain artefact should be injected by 3 class injectors"() {
+    void "Domain artefact should be injected by 4 class injectors"() {
         given:
         def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
         gcl.disabledGlobalASTTransformations = true
@@ -248,11 +248,13 @@ class Post {
         ClassInjector[] domainClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }
         def expectInjectors = [
                 'org.grails.compiler.web.converters.ConvertersDomainTransformer',
-                'org.grails.compiler.web.ControllerDomainTransformer'
+                'org.grails.compiler.web.ControllerDomainTransformer',
+                'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
+                'org.grails.compiler.gorm.GormTransformer'
         ]
 
         expect:
-        domainClassInjectors.length == 2
+        domainClassInjectors.length == 4
         domainClassInjectors*.class.name.containsAll(expectInjectors)
     }
 
