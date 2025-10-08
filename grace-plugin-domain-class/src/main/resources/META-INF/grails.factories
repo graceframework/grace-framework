@@ -1,3 +1,6 @@
+grails.core.ArtefactHandler=\
+org.grails.core.artefact.DomainClassArtefactHandler
+
 grails.compiler.traits.TraitInjector=\
 grails.compiler.traits.DomainClassTraitInjector,\
 org.grails.compiler.gorm.EntityTraitInjector

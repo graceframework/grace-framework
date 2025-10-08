@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,6 @@ import grails.util.GrailsUtil;
 
 import org.grails.config.PropertySourcesConfig;
 import org.grails.core.AbstractGrailsApplication;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.datastore.mapping.model.MappingContext;
@@ -80,6 +79,7 @@ import org.grails.io.support.GrailsResourceUtils;
  * @author Marc Palmer
  * @author Steven Devijver
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @see grails.plugins.GrailsPluginManager
  * @see grails.core.ArtefactHandler
@@ -820,13 +820,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     protected GrailsClass addArtefact(String artefactType, Class<?> artefactClass, boolean overrideable) {
         ArtefactHandler handler = this.artefactHandlersByName.get(artefactType);
         if (handler != null && handler.isArtefact(artefactClass)) {
-            GrailsClass artefactGrailsClass;
-            if (handler instanceof DomainClassArtefactHandler) {
-                artefactGrailsClass = ((DomainClassArtefactHandler) handler).newArtefactClass(artefactClass, this.proxyMappingContext);
-            }
-            else {
-                artefactGrailsClass = handler.newArtefactClass(artefactClass);
-            }
+            GrailsClass artefactGrailsClass = handler.newArtefactClass(artefactClass);
             artefactGrailsClass.setGrailsApplication(this);
 
             // Store the GrailsClass in cache

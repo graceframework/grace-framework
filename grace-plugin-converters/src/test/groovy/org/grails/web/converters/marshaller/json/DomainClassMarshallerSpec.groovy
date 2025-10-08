@@ -73,7 +73,7 @@ class DomainClassMarshallerSpec extends Specification {
     void "test marshaller should render the ID properly"() {
         initJson(false)
         when:
-        def expectedJson = '{"newId":3,"name":"Sally"}'
+        def expectedJson = '{"newId":3,"name":"Sally","version":null}'
         RenamedIdentifier ri = new RenamedIdentifier(newId: 3, name: "Sally")
 
         then:

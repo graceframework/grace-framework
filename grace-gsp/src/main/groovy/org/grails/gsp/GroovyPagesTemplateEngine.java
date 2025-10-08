@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ import org.springframework.scripting.ScriptSource;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.util.Assert;
 
+import grails.artefact.ArtefactTypes;
 import grails.config.Config;
 import grails.config.Settings;
 import grails.core.GrailsApplication;
@@ -61,7 +62,6 @@ import grails.util.CacheEntry;
 import grails.util.Environment;
 import grails.util.GrailsUtil;
 
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.core.exceptions.DefaultErrorsPrinter;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.exceptions.ExceptionUtils;
@@ -797,7 +797,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
     private Map<String, Class<?>> createDomainClassMap() {
         Map<String, Class<?>> domainsWithoutPackage = new HashMap<>();
         if (this.grailsApplication != null) {
-            GrailsClass[] domainClasses = this.grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE);
+            GrailsClass[] domainClasses = this.grailsApplication.getArtefacts(ArtefactTypes.DOMAIN_CLASS);
             for (GrailsClass domainClass : domainClasses) {
                 final Class<?> theClass = domainClass.getClazz();
                 domainsWithoutPackage.put(theClass.getName(), theClass);

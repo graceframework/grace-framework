@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,11 @@
  */
 package org.grails.core.artefact;
 
-import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
 import org.springframework.core.Ordered;
 
-import grails.artefact.Artefact;
+import grails.artefact.ArtefactTypes;
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsClass;
 import grails.core.GrailsDomainClass;
@@ -40,7 +39,7 @@ import org.grails.datastore.mapping.model.MappingContext;
 @SuppressWarnings({"deprecation"})
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements Ordered {
 
-    public static final String TYPE = "Domain";
+    public static final String TYPE = ArtefactTypes.DOMAIN_CLASS;
 
     public static final String PATH = "domain";
 
@@ -76,36 +75,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     @Override
     public boolean isArtefactClass(Class<?> clazz) {
-        return isDomainClass(clazz);
-    }
-
-    public static boolean isDomainClass(Class<?> clazz, boolean allowProxyClass) {
-        boolean retval = isDomainClass(clazz);
-        if (!retval && allowProxyClass && clazz != null && clazz.getSimpleName().contains("$")) {
-            retval = isDomainClass(clazz.getSuperclass());
-        }
-        return retval;
-    }
-
-    public static boolean isDomainClass(Class<?> clazz) {
-        return clazz != null && doIsDomainClassCheck(clazz);
-    }
-
-    private static boolean doIsDomainClassCheck(Class<?> clazz) {
-        if (Closure.class.isAssignableFrom(clazz) || clazz.isEnum()) {
-            return false;
-        }
-
-        try {
-            Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
-            if (artefactAnn != null && artefactAnn.value().equals(DomainClassArtefactHandler.TYPE)) {
-                return true;
-            }
-        }
-        catch (Exception ignored) {
-        }
-
-        return false;
+        return GrailsASTUtils.isDomainClass(clazz);
     }
 
     @Override

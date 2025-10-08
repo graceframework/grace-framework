@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.plugins.web.rest.plugin
 import groovy.transform.CompileStatic
 import org.springframework.core.PriorityOrdered
 
+import grails.artefact.ArtefactTypes
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
 import grails.plugins.Plugin
@@ -25,7 +26,6 @@ import grails.rest.Resource
 import grails.util.GrailsUtil
 
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.DomainClassArtefactHandler
 
 /**
  * @since 2.3
@@ -57,7 +57,7 @@ class RestResponderGrailsPlugin extends Plugin implements PriorityOrdered {
 
     @CompileStatic
     static void registryResourceControllers(GrailsApplication app) {
-        for (GrailsClass grailsClass in app.getArtefacts(DomainClassArtefactHandler.TYPE)) {
+        for (GrailsClass grailsClass in app.getArtefacts(ArtefactTypes.DOMAIN_CLASS)) {
             Class<?> clazz = grailsClass.clazz
             if (clazz.getAnnotation(Resource)) {
                 String controllerClassName = "${clazz.name}Controller"

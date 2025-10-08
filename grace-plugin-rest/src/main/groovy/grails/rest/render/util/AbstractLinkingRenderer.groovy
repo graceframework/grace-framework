@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import grails.util.GrailsWebUtil
 import grails.web.mapping.LinkGenerator
 import grails.web.mime.MimeType
 
-import org.grails.core.artefact.DomainClassArtefactHandler
+import org.grails.compiler.injection.GrailsASTUtils
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
@@ -51,6 +51,7 @@ import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
  * Abstract base class for HAL renderers
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
@@ -123,7 +124,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
         if (mappingContext != null) {
             return mappingContext.isPersistentEntity(clazz)
         }
-        DomainClassArtefactHandler.isDomainClass(clazz, true)
+        GrailsASTUtils.isDomainClass(clazz, true)
     }
 
     protected String getLinkTitle(PersistentEntity entity, Locale locale) {

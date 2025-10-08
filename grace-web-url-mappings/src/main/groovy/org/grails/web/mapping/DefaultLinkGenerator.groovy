@@ -41,7 +41,7 @@ import grails.web.mapping.UrlCreator
 import grails.web.mapping.UrlMapping
 import grails.web.mapping.UrlMappingsHolder
 
-import org.grails.core.artefact.DomainClassArtefactHandler
+import org.grails.compiler.injection.GrailsASTUtils
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.web.servlet.mvc.DefaultRequestStateLookupStrategy
@@ -181,7 +181,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                             resource = persistentEntity.getDecapitalizedName()
                             hasId = true
                         }
-                        else if (DomainClassArtefactHandler.isDomainClass(resourceAttribute.getClass(), true)) {
+                        else if (GrailsASTUtils.isDomainClass(resourceAttribute.getClass(), true)) {
                             resource = GrailsNameUtils.getPropertyName(resourceAttribute.getClass())
                             hasId = true
                         }

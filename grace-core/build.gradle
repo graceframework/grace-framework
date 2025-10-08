@@ -15,6 +15,7 @@ dependencies {
     compileOnly libs.spring.tx
 
     testImplementation project(":grace-test")
+    testImplementation project(":grace-plugin-domain-class")
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test

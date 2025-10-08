@@ -36,15 +36,16 @@ import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
 import grails.artefact.Artefact;
+import grails.artefact.ArtefactTypes;
 import grails.compiler.ast.ClassInjector;
 import grails.compiler.traits.TraitInjector;
 import grails.core.ArtefactHandler;
 import grails.core.ArtefactInfo;
 import grails.core.GrailsClass;
+
 import org.grails.compiler.injection.ArtefactTypeAstTransformation;
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.compiler.injection.TraitInjectionUtils;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 
 /**
@@ -122,7 +123,7 @@ public class GrailsArtefactClassTransformation implements ASTTransformation, Com
                     || classNode.isAbstract()) {
                 return false;
             }
-            if (getType().equals(DomainClassArtefactHandler.TYPE)) {
+            if (getType().equals(ArtefactTypes.DOMAIN_CLASS)) {
                 return GrailsASTUtils.hasAnnotation(classNode, Artefact.class);
             }
             String name = classNode.getName();

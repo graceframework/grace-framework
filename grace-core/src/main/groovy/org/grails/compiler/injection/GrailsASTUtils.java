@@ -94,6 +94,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import grails.artefact.Artefact;
+import grails.artefact.ArtefactTypes;
 import grails.artefact.Enhanced;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.GrailsNameUtils;
@@ -889,6 +890,46 @@ public final class GrailsASTUtils {
             return false;
         }
         return isDomainClass(classNode, classNode.getModule().getContext());
+    }
+
+    /**
+     * Checks whether the specified class is a Grails domain class.
+     *
+     * @param clazz the domain class
+     * @param allowProxyClass allow the proxy class
+     * @return true if it's domain class
+     * @since 2024.0.0
+     */
+    public static boolean isDomainClass(Class<?> clazz, boolean allowProxyClass) {
+        boolean retval = isDomainClass(clazz);
+        if (!retval && allowProxyClass && clazz != null && clazz.getSimpleName().contains("$")) {
+            retval = isDomainClass(clazz.getSuperclass());
+        }
+        return retval;
+    }
+
+    /**
+     * Checks whether the specified class is a Grails domain class.
+     *
+     * @param clazz the domain class
+     * @return true if it's domain class
+     * @since 2024.0.0
+     */
+    public static boolean isDomainClass(Class<?> clazz) {
+        if (clazz == null || Closure.class.isAssignableFrom(clazz) || clazz.isEnum()) {
+            return false;
+        }
+
+        try {
+            Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
+            if (artefactAnn != null && artefactAnn.value().equals(ArtefactTypes.DOMAIN_CLASS)) {
+                return true;
+            }
+        }
+        catch (Exception ignored) {
+        }
+
+        return false;
     }
 
     @SuppressWarnings("unchecked")
