@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 import org.springframework.validation.Validator;
 
+import grails.core.GrailsApplication;
 import grails.core.GrailsDomainClass;
 import grails.util.GrailsNameUtils;
 import grails.validation.Constrained;
@@ -38,6 +39,7 @@ import org.grails.validation.discovery.ConstrainedDiscovery;
  * Default implementation of the {@link GrailsDomainClass} interface
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.1
  */
 @Deprecated
@@ -65,6 +67,14 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
      */
     public DefaultGrailsDomainClass(Class<?> clazz) {
         super(clazz, "");
+    }
+
+    @Override
+    public void setGrailsApplication(GrailsApplication grailsApplication) {
+        super.setGrailsApplication(grailsApplication);
+        if (this.mappingContext == null) {
+            this.mappingContext = grailsApplication.getMappingContext();
+        }
     }
 
     private void verifyContextIsInitialized() {
