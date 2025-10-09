@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2024 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
 
+import grails.artefact.ArtefactTypes;
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
@@ -38,7 +39,6 @@ import grails.web.UrlConverter;
 import grails.web.mapping.UrlMapping;
 import grails.web.mapping.UrlMappings;
 
-import org.grails.core.artefact.UrlMappingsArtefactHandler;
 import org.grails.web.mapping.mvc.GrailsControllerUrlMappings;
 
 /**
@@ -85,7 +85,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         List urlMappings = new ArrayList();
         List excludePatterns = new ArrayList();
 
-        GrailsClass[] mappings = this.grailsApplication.getArtefacts(UrlMappingsArtefactHandler.TYPE);
+        GrailsClass[] mappings = this.grailsApplication.getArtefacts(ArtefactTypes.URL_MAPPINGS);
 
         DefaultUrlMappingEvaluator mappingEvaluator = new DefaultUrlMappingEvaluator(this.applicationContext);
         mappingEvaluator.setPluginManager(this.pluginManager);

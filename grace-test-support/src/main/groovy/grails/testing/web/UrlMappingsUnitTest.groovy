@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import groovy.transform.CompileDynamic
 import junit.framework.AssertionFailedError
 import junit.framework.ComparisonFailure
 
+import grails.artefact.ArtefactTypes
 import grails.core.GrailsControllerClass
 import grails.web.UrlConverter
 import grails.web.mapping.UrlCreator
@@ -27,7 +28,6 @@ import grails.web.mapping.UrlMappingInfo
 import grails.web.mapping.UrlMappingsHolder
 
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.grails.gsp.GroovyPagesTemplateEngine
 import org.grails.testing.ParameterizedGrailsUnitTest
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean
@@ -446,7 +446,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
 
     @CompileDynamic
     void mockArtefact(Class<?> urlMappingsClass) {
-        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, urlMappingsClass)
+        grailsApplication.addArtefact(ArtefactTypes.URL_MAPPINGS, urlMappingsClass)
 
         defineBeans {
             grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) {
