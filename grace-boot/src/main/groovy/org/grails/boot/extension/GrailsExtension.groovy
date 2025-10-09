@@ -24,8 +24,6 @@ import grails.util.Environment
 import grails.util.Holders
 import grails.util.Metadata
 
-import org.grails.core.artefact.ServiceArtefactHandler
-
 /**
  * An extension that adds methods to the {@link Grails} object.
  *
@@ -53,7 +51,7 @@ class GrailsExtension {
     }
 
     static List<String> getServices(Grails grails) {
-        Holders.getGrailsApplication().getArtefacts(ServiceArtefactHandler.TYPE)*.name?.toSorted()
+        Holders.getGrailsApplication().getArtefacts(ArtefactTypes.SERVICE)*.name?.toSorted()
     }
 
     static List<String> getTaglibs(Grails grails) {

@@ -29,4 +29,6 @@ public final class ArtefactTypes {
 
     public static final String URL_MAPPINGS = "UrlMappings";
 
+    public static final String SERVICE = "Service";
+
 }

@@ -40,7 +40,6 @@ import grails.core.GrailsApplication;
 import grails.util.GrailsStringUtils;
 
 import org.grails.buffer.FastStringPrintWriter;
-import org.grails.core.artefact.ServiceArtefactHandler;
 import org.grails.core.exceptions.GrailsException;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.exceptions.reporting.SourceCodeAware;
@@ -187,7 +186,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                         else if (application.isArtefactOfType("TagLib", this.className)) {
                             urlPrefix += "/taglib/";
                         }
-                        else if (application.isArtefactOfType(ServiceArtefactHandler.TYPE, this.className)) {
+                        else if (application.isArtefactOfType(ArtefactTypes.SERVICE, this.className)) {
                             urlPrefix += "/services/";
                         }
                         url = URL_PREFIX + urlPrefix + this.fileName;
