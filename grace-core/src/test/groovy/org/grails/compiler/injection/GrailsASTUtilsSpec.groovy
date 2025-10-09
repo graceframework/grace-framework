@@ -27,8 +27,8 @@ import spock.lang.Specification
 import spock.lang.TempDir
 
 import grails.artefact.Artefact
+import grails.artefact.ArtefactTypes
 import grails.persistence.Entity
-import org.grails.core.artefact.ControllerArtefactHandler
 
 /**
  * @author Jeff Scott Brown
@@ -288,7 +288,7 @@ class Post {
         ClassNode classNode = ClassHelper.make(Object)
         AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Artefact))
         annotationNode.addMember("value", new PropertyExpression(
-                new ClassExpression(ClassHelper.make(ControllerArtefactHandler)), "TYPE"))
+                new ClassExpression(ClassHelper.make(ArtefactTypes)), "CONTROLLER"))
         classNode.addAnnotation(annotationNode)
 
         when:

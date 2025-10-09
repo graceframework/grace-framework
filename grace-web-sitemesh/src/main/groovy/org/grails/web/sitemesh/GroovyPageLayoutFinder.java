@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,12 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
+import grails.artefact.ArtefactTypes;
 import grails.util.Environment;
 import grails.util.GrailsClassUtils;
 import grails.util.GrailsNameUtils;
 import grails.util.GrailsStringUtils;
 
-import org.grails.core.artefact.ControllerArtefactHandler;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
 import org.grails.web.servlet.view.AbstractGrailsView;
@@ -137,7 +137,7 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
                     GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
                     String controllerName = webRequest.getControllerName();
                     if (controllerName == null) {
-                        controllerName = GrailsNameUtils.getLogicalPropertyName(controller.getClass().getName(), ControllerArtefactHandler.TYPE);
+                        controllerName = GrailsNameUtils.getLogicalPropertyName(controller.getClass().getName(), ArtefactTypes.CONTROLLER);
                     }
                     String actionUri = webRequest.getAttributes().getControllerActionUri(request);
 

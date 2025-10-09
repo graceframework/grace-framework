@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.core;
+package grails.web;
 
-import java.util.List;
-
-import groovy.lang.Closure;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Loads the UrlMappings.
+ * An annotation to mark controller methods as actions.
+ *
+ * @author Stephane Maldini
+ * @since 2.0
  */
-public interface GrailsUrlMappingsClass extends GrailsClass {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
+public @interface Action {
 
-    /**
-     * Returns the mappings closure which is called to evaluate the url mappings.
-     *
-     * @return A Closure instance
-     */
-    Closure<?> getMappingsClosure();
-
-    /**
-     * Returns a List of URI patterns to exclude.
-     * @return the patterns (Strings)
-     */
-    List<?> getExcludePatterns();
+    Class<?>[] commandObjects() default {};
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,18 @@ package org.grails.web.pages;
 
 import groovy.lang.GroovyObject;
 
+import grails.artefact.ArtefactTypes;
 import grails.util.GrailsNameUtils;
 import grails.web.pages.GroovyPagesUriService;
 
 import org.grails.buffer.FastStringWriter;
-import org.grails.core.artefact.ControllerArtefactHandler;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
 
 /**
  * Methods to establish template names, paths and so on.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.2
  */
 public class GroovyPagesUriSupport implements GroovyPagesUriService {
@@ -96,12 +97,12 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
         }
         else {
             String simpleName = controller.getClass().getSimpleName();
-            if (!simpleName.endsWith(ControllerArtefactHandler.TYPE)) {
+            if (!simpleName.endsWith(ArtefactTypes.CONTROLLER)) {
                 GrailsWebRequest webRequest = GrailsWebRequest.lookup();
                 return webRequest != null ? webRequest.getControllerName() : null;
             }
             else {
-                return GrailsNameUtils.getLogicalPropertyName(simpleName, ControllerArtefactHandler.TYPE);
+                return GrailsNameUtils.getLogicalPropertyName(simpleName, ArtefactTypes.CONTROLLER);
             }
         }
     }

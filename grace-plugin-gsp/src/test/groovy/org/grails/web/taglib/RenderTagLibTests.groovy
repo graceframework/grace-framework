@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.opensymphony.module.sitemesh.html.util.CharArray
 import com.opensymphony.module.sitemesh.parser.HTMLPageParser
 import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage
 import grails.artefact.Artefact
+import grails.artefact.ArtefactTypes
 import grails.testing.web.UrlMappingsUnitTest
 import grails.util.GrailsUtil
 import org.grails.buffer.FastStringWriter
@@ -180,7 +181,7 @@ class RenderTagLibTests extends Specification implements UrlMappingsUnitTest<Ren
     }
             ''')
 
-            grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, mappingClass)
+            grailsApplication.addArtefact(ArtefactTypes.URL_MAPPINGS, mappingClass)
         } else if (name in ['testSortableColumnNamespaceNull', 'testSortableColumnNamespaceNullWithIndexAction', 'testSortableColumnWithCustomNamespace', 'testSortableColumnWithCustomNamespaceFromRequest']) {
             def mappingClass = gcl.parseClass('''
     class TestUrlMappings {

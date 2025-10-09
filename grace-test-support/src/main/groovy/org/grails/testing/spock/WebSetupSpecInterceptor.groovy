@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2024 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.springframework.util.ClassUtils
 import org.springframework.web.multipart.support.StandardServletMultipartResolver
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 
+import grails.artefact.ArtefactTypes
 import grails.config.Config
 import grails.config.Settings
 import grails.core.GrailsApplication
@@ -31,7 +32,6 @@ import grails.testing.web.controllers.ControllerUnitTest
 import grails.web.CamelCaseUrlConverter
 import grails.web.HyphenatedUrlConverter
 
-import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
@@ -97,12 +97,12 @@ class WebSetupSpecInterceptor implements IMethodInterceptor {
             grailsLinkGenerator(DefaultLinkGenerator, config?.getProperty('grails.serverURL') ?: 'http://localhost:8080')
 
             if (ClassUtils.isPresent('UrlMappings', classLoader)) {
-                grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, classLoader.loadClass('UrlMappings'))
+                grailsApplication.addArtefact(ArtefactTypes.URL_MAPPINGS, classLoader.loadClass('UrlMappings'))
             }
 
             def urlMappingsClass = "${config.getProperty('grails.codegen.defaultPackage', 'null')}.UrlMappings"
             if (ClassUtils.isPresent(urlMappingsClass, classLoader)) {
-                grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, classLoader.loadClass(urlMappingsClass))
+                grailsApplication.addArtefact(ArtefactTypes.URL_MAPPINGS, classLoader.loadClass(urlMappingsClass))
             }
 
             try {

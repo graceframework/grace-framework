@@ -15,12 +15,11 @@
  */
 package org.grails.compiler.logging
 
-import groovy.util.logging.Slf4j
-import org.codehaus.groovy.ast.ClassNode
 import org.slf4j.Logger
 import spock.lang.Specification
 
 import grails.compiler.ast.ClassInjector
+
 import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
@@ -29,133 +28,6 @@ import org.grails.compiler.injection.GrailsAwareClassLoader
  * @since 2.0
  */
 class LoggingTransformerSpec extends Specification {
-
-    def "Test log field with inheritance and base class with log property"() {
-        given:
-        def transformer = new LoggingTransformer()
-        def gcl = new GrailsAwareClassLoader()
-        gcl.disabledGlobalASTTransformations = true
-        gcl.classInjectors = [transformer] as ClassInjector[]
-        gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
-                'PROJECT_TYPE': 'WEB_APP'
-        ]
-
-        when:
-        gcl.parseClass('''
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-class BaseController {
-    protected Logger log = LoggerFactory.getLogger(getClass())
-
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/BaseController.groovy')
-
-        def cls = gcl.parseClass('''
-class LoggingController extends BaseController {
-    def index() {
-        log.debug "message"
-        return log
-    }
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/LoggingController.groovy')
-        def controller = cls.newInstance()
-        Logger log = controller.index()
-
-        then:
-        log instanceof Logger
-    }
-
-    def "Test log field with inheritance"() {
-        given:
-        def transformer = new LoggingTransformer()
-        def gcl = new GrailsAwareClassLoader()
-        gcl.disabledGlobalASTTransformations = true
-        gcl.classInjectors = [transformer] as ClassInjector[]
-        gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
-                'PROJECT_TYPE': 'WEB_APP'
-        ]
-
-        when:
-        gcl.parseClass('''
-class BaseController {
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/BaseController.groovy')
-        def cls = gcl.parseClass('''
-
-class LoggingController extends BaseController {
-    def index() {
-        log.debug "message"
-        return log
-    }
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/LoggingController.groovy')
-        def controller = cls.newInstance()
-        Logger log = controller.index()
-
-        then:
-        log instanceof Logger
-    }
-
-    def "Test added log field"() {
-        given:
-        def transformer = new LoggingTransformer()
-        def gcl = new GrailsAwareClassLoader()
-        gcl.disabledGlobalASTTransformations = true
-        gcl.classInjectors = [transformer] as ClassInjector[]
-        gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
-                'PROJECT_TYPE': 'WEB_APP'
-        ]
-
-        when:
-        def cls = gcl.parseClass('''
-class LoggingController {
-    def index() {
-        log.debug "message"
-        return log
-    }
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/LoggingController.groovy')
-        def controller = cls.newInstance()
-        Logger log = controller.index()
-
-        then:
-        log instanceof Logger
-    }
-
-    def "Test adding log field via Artefact annotation"() {
-        given:
-        def transformer = new LoggingTransformer()
-        def gcl = new GrailsAwareClassLoader()
-        gcl.disabledGlobalASTTransformations = true
-        gcl.classInjectors = [transformer] as ClassInjector[]
-        gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
-                'PROJECT_TYPE': 'WEB_APP'
-        ]
-
-        when:
-        def cls = gcl.parseClass('''
-@grails.artefact.Artefact("Controller")
-class LoggingController {
-    def index() {
-        log.debug "message"
-        return log
-    }
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/LoggingController.groovy')
-        def controller = cls.newInstance()
-        Logger log = controller.index()
-
-        then:
-        log instanceof Logger
-    }
 
     def "Test log field is added to Application classes in 'app/boot'"() {
         given:
@@ -209,59 +81,6 @@ class Application {
 
         then:
         log instanceof Logger
-    }
-
-    def "Test Controller class was injected on '@Slf4j'"() {
-        given:
-        def transformer = new LoggingTransformer()
-        def gcl = new GrailsAwareClassLoader()
-        gcl.disabledGlobalASTTransformations = true
-        gcl.classInjectors = [transformer] as ClassInjector[]
-        gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
-                'PROJECT_TYPE': 'WEB_APP'
-        ]
-
-        when:
-        def clazz = gcl.parseClass('''
-class PostController {
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/PostController.groovy')
-
-        def classNode = gcl.getClassNode('PostController')
-
-        then:
-        !classNode.getAnnotations(new ClassNode(Slf4j))
-        classNode.getField("log")
-        classNode.getNodeMetaData(Slf4j.class)
-    }
-
-    def "Test Controller class was already annotated '@Slf4j'"() {
-        given:
-        def transformer = new LoggingTransformer()
-        def gcl = new GrailsAwareClassLoader()
-        gcl.disabledGlobalASTTransformations = true
-        gcl.classInjectors = [transformer] as ClassInjector[]
-        gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
-                'PROJECT_TYPE': 'WEB_APP'
-        ]
-
-        when:
-        def clazz = gcl.parseClass('''
-@groovy.util.logging.Slf4j
-class PostController {
-}
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/PostController.groovy')
-
-        def classNode = gcl.getClassNode('PostController')
-
-        then:
-        classNode.getAnnotations(new ClassNode(Slf4j))
-        classNode.getField("log")
-        !classNode.getNodeMetaData(Slf4j.class)
     }
 
 }

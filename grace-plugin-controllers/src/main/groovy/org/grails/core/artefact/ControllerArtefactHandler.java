@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.core.artefact;
 import org.codehaus.groovy.ast.ClassNode;
 import org.springframework.stereotype.Controller;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsControllerClass;
 
@@ -37,7 +38,7 @@ import org.grails.core.DefaultGrailsControllerClass;
  */
 public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final String TYPE = "Controller";
+    public static final String TYPE = ArtefactTypes.CONTROLLER;
 
     public static final String PATH = "controllers";
 

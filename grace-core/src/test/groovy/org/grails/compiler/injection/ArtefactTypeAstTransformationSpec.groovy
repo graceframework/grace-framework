@@ -25,9 +25,9 @@ import spock.lang.Issue
 import spock.lang.Specification
 
 import grails.artefact.Artefact
+import grails.artefact.ArtefactTypes
 import grails.compiler.ast.ClassInjector
 import grails.compiler.traits.TraitInjector
-import org.grails.core.artefact.ControllerArtefactHandler
 
 /**
  * @author James Kleeh
@@ -56,7 +56,7 @@ class ArtefactTypeAstTransformationSpec extends Specification {
         AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Artefact))
         annotationNode.addMember("value",
                 new PropertyExpression(
-                        new ClassExpression(ClassHelper.make(ControllerArtefactHandler)), "TYPE"))
+                        new ClassExpression(ClassHelper.make(ArtefactTypes)), "CONTROLLER"))
 
         when:
         String returnValue = ast.resolveArtefactType(null, annotationNode, classNode)
@@ -290,7 +290,7 @@ class PostTagLib {
     class Test {
     }
 
-    @Artefact(ControllerArtefactHandler.TYPE)
+    @Artefact("Controller")
     class Test2 {
 
     }

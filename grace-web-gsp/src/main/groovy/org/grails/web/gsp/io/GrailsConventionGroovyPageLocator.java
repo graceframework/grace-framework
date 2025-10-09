@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.GrailsApplication;
 import grails.core.GrailsControllerClass;
 import grails.core.support.GrailsApplicationAware;
@@ -27,7 +28,6 @@ import grails.web.mime.MimeType;
 import grails.web.mime.MimeTypeResolver;
 import grails.web.pages.GroovyPagesUriService;
 
-import org.grails.core.artefact.ControllerArtefactHandler;
 import org.grails.gsp.io.DefaultGroovyPageLocator;
 import org.grails.gsp.io.GroovyPageScriptSource;
 import org.grails.io.support.GrailsResourceUtils;
@@ -41,6 +41,7 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * for controllers names, view names and template names
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator implements GrailsApplicationAware {
@@ -145,7 +146,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
         GroovyPageScriptSource scriptSource = null;
         final String controllerClassName = GrailsNameUtils.getFullClassName(controller.getClass());
         Object controllerArtefact = this.grailsApplication != null
-                ? this.grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) : null;
+                ? this.grailsApplication.getArtefact(ArtefactTypes.CONTROLLER, controllerClassName) : null;
         if (controllerArtefact instanceof GrailsControllerClass) {
             GrailsControllerClass gcc = (GrailsControllerClass) controllerArtefact;
             String namespace = gcc.getNamespace();
@@ -199,7 +200,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
         final String templateURI = this.uriService.getTemplateURI(controllerName, templateName);
         final String fullClassName = GrailsNameUtils.getFullClassName(controller.getClass());
         Object controllerArtefact = this.grailsApplication != null
-                ? this.grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, fullClassName) : null;
+                ? this.grailsApplication.getArtefact(ArtefactTypes.CONTROLLER, fullClassName) : null;
         if (controllerArtefact instanceof GrailsControllerClass) {
             GrailsControllerClass gcc = (GrailsControllerClass) controllerArtefact;
             String namespace = gcc.getNamespace();
@@ -267,7 +268,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
             }
             return findPageInBinding(pluginName, this.uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
         }
-        final GrailsControllerClass controllerClass = (GrailsControllerClass) this.grailsApplication.getArtefact(ControllerArtefactHandler.TYPE,
+        final GrailsControllerClass controllerClass = (GrailsControllerClass) this.grailsApplication.getArtefact(ArtefactTypes.CONTROLLER,
                         GrailsNameUtils.getFullClassName(controller.getClass()));
 
         String templateURI;
@@ -350,7 +351,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
 
     protected String getNameForController(Object controller) {
         final Class<?> cls = controller.getClass();
-        return GrailsNameUtils.getLogicalPropertyName(GrailsNameUtils.getFullClassName(cls), ControllerArtefactHandler.TYPE);
+        return GrailsNameUtils.getLogicalPropertyName(GrailsNameUtils.getFullClassName(cls), ArtefactTypes.CONTROLLER);
     }
 
     @Override

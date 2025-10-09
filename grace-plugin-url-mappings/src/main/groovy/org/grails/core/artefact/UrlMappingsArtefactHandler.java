@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.grails.core.artefact;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsUrlMappingsClass;
 
@@ -29,11 +30,13 @@ import org.grails.core.DefaultGrailsUrlMappingsClass;
  */
 public class UrlMappingsArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final String TYPE = "UrlMappings";
+    public static final String TYPE = ArtefactTypes.URL_MAPPINGS;
+
+    public static final String PATH = "controllers";
 
     public UrlMappingsArtefactHandler() {
         super(TYPE, GrailsUrlMappingsClass.class, DefaultGrailsUrlMappingsClass.class,
-                DefaultGrailsUrlMappingsClass.URL_MAPPINGS, ControllerArtefactHandler.PATH);
+                DefaultGrailsUrlMappingsClass.URL_MAPPINGS, PATH);
     }
 
 }

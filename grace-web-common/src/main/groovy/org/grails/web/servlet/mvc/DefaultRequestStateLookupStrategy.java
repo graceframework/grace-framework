@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@ package org.grails.web.servlet.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.GrailsApplication;
 import grails.core.GrailsControllerClass;
-
-import org.grails.core.artefact.ControllerArtefactHandler;
 
 /**
  * Default implementation that uses the web request to obtain information about the currently
  * executing request.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLookupStrategy {
@@ -115,7 +115,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     private String getActionName(GrailsApplication application, String controllerName) {
         if (application != null) {
             GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(
-                    ControllerArtefactHandler.TYPE, controllerName);
+                    ArtefactTypes.CONTROLLER, controllerName);
             if (controllerClass != null) {
                 return controllerClass.getDefaultAction();
             }

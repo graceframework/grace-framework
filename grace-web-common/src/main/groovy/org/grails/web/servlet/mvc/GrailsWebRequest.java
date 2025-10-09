@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import org.springframework.web.servlet.handler.DispatcherServletWebRequest;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UrlPathHelper;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.GrailsApplication;
 import grails.core.GrailsControllerClass;
 import grails.validation.DeferredBindingActions;
@@ -45,7 +46,6 @@ import grails.web.mvc.FlashScope;
 import grails.web.servlet.mvc.GrailsHttpSession;
 import grails.web.servlet.mvc.GrailsParameterMap;
 
-import org.grails.core.artefact.ControllerArtefactHandler;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.encoder.CodecLookupHelper;
 import org.grails.encoder.DefaultEncodingStateRegistry;
@@ -65,6 +65,7 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * def webRequest = RequestContextHolder.currentRequestAttributes()
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 public class GrailsWebRequest extends DispatcherServletWebRequest {
@@ -365,8 +366,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
             if (controllerNameObject != null) {
                 controllerClass = (GrailsControllerClass) getAttributes()
                         .getGrailsApplication()
-                        .getArtefactByLogicalPropertyName(
-                                ControllerArtefactHandler.TYPE, controllerNameObject.toString());
+                        .getArtefactByLogicalPropertyName(ArtefactTypes.CONTROLLER, controllerNameObject.toString());
                 if (controllerClass != null) {
                     currentRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS, controllerClass);
                 }

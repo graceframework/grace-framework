@@ -1,3 +1,6 @@
+grails.core.ArtefactHandler=\
+org.grails.core.artefact.ControllerArtefactHandler
+
 grails.compiler.traits.TraitInjector=\
 grails.compiler.traits.ControllerTraitInjector
 

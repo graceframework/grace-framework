@@ -13,6 +13,7 @@ dependencies {
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
+    testImplementation project(":grace-logging")
     testImplementation project(":grace-test")
     testImplementation libs.jakarta.servlet
 }
