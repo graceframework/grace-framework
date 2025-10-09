@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core.artefact
+package org.grails.boot.artefact
 
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ModuleNode
