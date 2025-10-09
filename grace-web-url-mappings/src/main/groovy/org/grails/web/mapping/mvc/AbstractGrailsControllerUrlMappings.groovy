@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import groovy.transform.Canonical
 import groovy.transform.CompileStatic
 import org.springframework.http.HttpMethod
 
+import grails.artefact.ArtefactTypes
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
 import grails.core.GrailsControllerClass
@@ -31,7 +32,6 @@ import grails.web.mapping.UrlMapping
 import grails.web.mapping.UrlMappingInfo
 import grails.web.mapping.UrlMappings
 
-import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
@@ -53,7 +53,7 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
                                         UrlConverter urlConverter = null) {
         this.urlMappingsHolderDelegate = urlMappingsHolderDelegate
         this.urlConverter = urlConverter
-        GrailsClass[] controllerArtefacts = grailsApplication.getArtefacts(ControllerArtefactHandler.TYPE)
+        GrailsClass[] controllerArtefacts = grailsApplication.getArtefacts(ArtefactTypes.CONTROLLER)
         for (GrailsClass gc in controllerArtefacts) {
             registerController((GrailsControllerClass) gc)
         }

@@ -25,11 +25,12 @@ import grails.plugins.Plugin
 import grails.rest.Resource
 import grails.util.GrailsUtil
 
-import org.grails.core.artefact.ControllerArtefactHandler
-
 /**
- * @since 2.3
+ * Configures restful controllers.
+ *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 2.3
  */
 class RestResponderGrailsPlugin extends Plugin implements PriorityOrdered {
 
@@ -61,9 +62,9 @@ class RestResponderGrailsPlugin extends Plugin implements PriorityOrdered {
             Class<?> clazz = grailsClass.clazz
             if (clazz.getAnnotation(Resource)) {
                 String controllerClassName = "${clazz.name}Controller"
-                if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName)) {
+                if (!app.getArtefact(ArtefactTypes.CONTROLLER, controllerClassName)) {
                     try {
-                        app.addArtefact(ControllerArtefactHandler.TYPE, app.classLoader.loadClass(controllerClassName))
+                        app.addArtefact(ArtefactTypes.CONTROLLER, app.classLoader.loadClass(controllerClassName))
                     }
                     catch (ClassNotFoundException ignored) {
                     }

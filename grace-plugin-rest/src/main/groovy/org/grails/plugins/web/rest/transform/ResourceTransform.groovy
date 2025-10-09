@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2024 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,6 +61,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 
 import grails.artefact.Artefact
+import grails.artefact.ArtefactTypes
 import grails.compiler.ast.ClassInjector
 import grails.io.IOUtils
 import grails.rest.Resource
@@ -73,7 +74,6 @@ import org.grails.compiler.injection.ArtefactTypeAstTransformation
 import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
-import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
 
 import static org.grails.compiler.injection.GrailsASTUtils.VOID_CLASS_NODE
@@ -124,7 +124,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             return
         }
 
-        String className = "${parent.name}${ControllerArtefactHandler.TYPE}"
+        String className = "${parent.name}${ArtefactTypes.CONTROLLER}"
         File resource = IOUtils.findSourceFile(className)
         LinkableTransform.addLinkingMethods(parent)
 
@@ -150,7 +150,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             newControllerClassNode.addAnnotation(transactionalAnn)
 
             AnnotationNode artefactAnnotation = new AnnotationNode(new ClassNode(Artefact))
-            artefactAnnotation.addMember('value', new ConstantExpression(ControllerArtefactHandler.TYPE))
+            artefactAnnotation.addMember('value', new ConstantExpression(ArtefactTypes.CONTROLLER))
             newControllerClassNode.addAnnotation(artefactAnnotation)
 
             Expression readOnlyAttr = annotationNode.getMember(ATTR_READY_ONLY)

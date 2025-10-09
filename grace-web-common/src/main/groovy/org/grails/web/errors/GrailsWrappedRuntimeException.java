@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,11 +35,11 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.GrailsApplication;
 import grails.util.GrailsStringUtils;
 
 import org.grails.buffer.FastStringPrintWriter;
-import org.grails.core.artefact.ControllerArtefactHandler;
 import org.grails.core.artefact.ServiceArtefactHandler;
 import org.grails.core.exceptions.GrailsException;
 import org.grails.core.io.support.GrailsFactoriesLoader;
@@ -53,6 +53,7 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * from the stack trace.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.1
  */
 public class GrailsWrappedRuntimeException extends GrailsException {
@@ -180,7 +181,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                         GrailsApplication application = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
                                 .getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                         // @todo Refactor this to get the urlPrefix from the ArtefactHandler
-                        if (application.isArtefactOfType(ControllerArtefactHandler.TYPE, this.className)) {
+                        if (application.isArtefactOfType(ArtefactTypes.CONTROLLER, this.className)) {
                             urlPrefix += "/controllers/";
                         }
                         else if (application.isArtefactOfType("TagLib", this.className)) {

@@ -24,7 +24,6 @@ import grails.util.Environment
 import grails.util.Holders
 import grails.util.Metadata
 
-import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.ServiceArtefactHandler
 
 /**
@@ -46,7 +45,7 @@ class GrailsExtension {
     }
 
     static List<String> getControllers(Grails grails) {
-        Holders.getGrailsApplication().getArtefacts(ControllerArtefactHandler.TYPE)*.name?.toSorted()
+        Holders.getGrailsApplication().getArtefacts(ArtefactTypes.CONTROLLER)*.name?.toSorted()
     }
 
     static List<String> getDomains(Grails grails) {

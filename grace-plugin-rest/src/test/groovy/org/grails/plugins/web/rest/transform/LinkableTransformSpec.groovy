@@ -1,6 +1,5 @@
 package org.grails.plugins.web.rest.transform
 
-import grails.web.Action
 import groovy.transform.Generated
 import spock.lang.Specification
 

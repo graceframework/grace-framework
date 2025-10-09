@@ -25,4 +25,6 @@ public final class ArtefactTypes {
 
     public static final String DOMAIN_CLASS = "Domain";
 
+    public static final String CONTROLLER = "Controller";
+
 }
