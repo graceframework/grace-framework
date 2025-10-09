@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core.artefact
+package org.grails.boot.artefact
 
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
@@ -21,6 +21,7 @@ import org.codehaus.groovy.ast.InnerClassNode
 import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.control.SourceUnit
 
+import grails.artefact.ArtefactTypes
 import grails.core.ArtefactHandlerAdapter
 import grails.core.DefaultGrailsClass
 import grails.core.GrailsClass
@@ -37,7 +38,7 @@ import org.grails.compiler.injection.GrailsASTUtils
 @CompileStatic
 class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final String TYPE = 'Application'
+    public static final String TYPE = ArtefactTypes.APPLICATION
     public static final String PATH = 'boot'
 
     ApplicationArtefactHandler() {

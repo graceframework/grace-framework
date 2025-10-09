@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.compiler.injection
+package org.grails.compiler.boot
 
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassHelper
@@ -27,7 +27,8 @@ import grails.compiler.ast.AstTransformer
 import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.util.BuildSettings
 
-import org.grails.core.artefact.ApplicationArtefactHandler
+import org.grails.boot.artefact.ApplicationArtefactHandler
+import org.grails.compiler.injection.GrailsASTUtils
 
 import static org.codehaus.groovy.ast.tools.GeneralUtils.args
 import static org.codehaus.groovy.ast.tools.GeneralUtils.callX

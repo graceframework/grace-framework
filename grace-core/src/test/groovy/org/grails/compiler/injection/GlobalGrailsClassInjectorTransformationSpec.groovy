@@ -48,7 +48,7 @@ class Application {
         then:
         clazz.getAnnotationsByType(Artefact)
         classNode.getAnnotations(ClassHelper.make(Artefact))
-        classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.ApplicationClassInjector')
+        classNode.getNodeMetaData('APPLIED_org.grails.compiler.boot.ApplicationClassInjector')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.boot.BootInitializerClassInjector')
     }
 

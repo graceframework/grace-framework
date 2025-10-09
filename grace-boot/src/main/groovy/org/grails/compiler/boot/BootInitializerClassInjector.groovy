@@ -41,9 +41,9 @@ import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.plugins.metadata.PluginSource
 import grails.util.Environment
 
+import org.grails.boot.artefact.ApplicationArtefactHandler
 import org.grails.boot.context.web.GrailsServletInitializer
 import org.grails.compiler.injection.GrailsASTUtils
-import org.grails.core.artefact.ApplicationArtefactHandler
 
 /**
  * A transformation that automatically produces a Spring servlet initializer for a class that extends GrailsConfiguration.

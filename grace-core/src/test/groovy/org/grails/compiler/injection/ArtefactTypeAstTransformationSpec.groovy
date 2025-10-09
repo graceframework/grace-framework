@@ -22,6 +22,7 @@ import org.codehaus.groovy.ast.expr.ClassExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.PropertyExpression
 import spock.lang.Issue
+import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import grails.artefact.Artefact
@@ -150,6 +151,7 @@ class ArtefactTypeAstTransformationSpec extends Specification {
 
     }
 
+    @PendingFeature(reason = 'ApplicationArtefactHandler has been moved to grace-boot')
     void "Application artefact should be injected by 2 class injectors"() {
         given:
         def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())

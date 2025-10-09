@@ -23,6 +23,8 @@ package grails.artefact;
  */
 public final class ArtefactTypes {
 
+    public static final String APPLICATION = "Application";
+
     public static final String DOMAIN_CLASS = "Domain";
 
     public static final String CONTROLLER = "Controller";

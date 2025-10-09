@@ -1,5 +1,0 @@
-grails.core.ArtefactHandler=\
-org.grails.core.artefact.ApplicationArtefactHandler
-
-grails.compiler.ast.ClassInjector=\
-org.grails.compiler.injection.ApplicationClassInjector

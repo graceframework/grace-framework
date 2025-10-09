@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.compiler.injection
+package org.grails.compiler.boot
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import spock.lang.Specification
 
 import grails.compiler.ast.ClassInjector
+import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
  * @author Michael Yan

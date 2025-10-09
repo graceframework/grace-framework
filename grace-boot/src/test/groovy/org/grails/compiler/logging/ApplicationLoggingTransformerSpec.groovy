@@ -23,11 +23,10 @@ import grails.compiler.ast.ClassInjector
 import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
- * @author Graeme Rocher
  * @author Michael Yan
- * @since 2.0
+ * @since 2024.0.0
  */
-class LoggingTransformerSpec extends Specification {
+class ApplicationLoggingTransformerSpec extends Specification {
 
     def "Test log field is added to Application classes in 'app/boot'"() {
         given:
@@ -36,8 +35,8 @@ class LoggingTransformerSpec extends Specification {
         gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': '/Users/grace/grace-demo-project/app',
+                'PROJECT_DIR': '/Users/grace/grace-demo-project',
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -48,7 +47,7 @@ class Application {
         return log
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+''', '/Users/grace/grace-demo-project/app/boot/org/demo/Application.groovy')
         def controller = cls.newInstance()
         Logger log = controller.index()
 
@@ -63,8 +62,8 @@ class Application {
         gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': '/Users/grace/grace-demo-project/app',
+                'PROJECT_DIR': '/Users/grace/grace-demo-project',
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -75,7 +74,7 @@ class Application {
         return log
     }
 }
-''', '/Users/grails/grails-demo-project/src/main/groovy/org/demo/Application.groovy')
+''', '/Users/grace/grace-demo-project/src/main/groovy/org/demo/Application.groovy')
         def controller = cls.newInstance()
         Logger log = controller.index()
 

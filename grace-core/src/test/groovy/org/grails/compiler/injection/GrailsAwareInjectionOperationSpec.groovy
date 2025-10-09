@@ -25,10 +25,10 @@ import grails.compiler.ast.ClassInjector
  */
 class GrailsAwareInjectionOperationSpec extends Specification {
 
-    def "Test Grails have 7 class injectors"() {
+    def "Test Grails have 9 class injectors"() {
         given:
         def classInjectors = [
-                'org.grails.compiler.injection.ApplicationClassInjector',
+                'org.grails.compiler.boot.ApplicationClassInjector',
                 'org.grails.compiler.boot.BootInitializerClassInjector',
                 'org.grails.compiler.web.converters.ConvertersDomainTransformer',
                 'org.grails.compiler.web.ControllerDomainTransformer',
@@ -46,10 +46,10 @@ class GrailsAwareInjectionOperationSpec extends Specification {
 
     def "Test Grails set local class injectors"() {
         given:
-        def injector = new ApplicationClassInjector()
+        def injector = new DefaultGrailsDomainClassInjector()
         def injectionOperation = new GrailsAwareInjectionOperation([injector] as ClassInjector[])
         def classInjectors = [
-                'org.grails.compiler.injection.ApplicationClassInjector'
+                'org.grails.compiler.injection.DefaultGrailsDomainClassInjector'
         ]
 
         expect:

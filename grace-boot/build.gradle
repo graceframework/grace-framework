@@ -21,6 +21,7 @@ dependencies {
     compileOnly libs.jsr305
     compileOnly libs.spring.boot.devtools
 
+    testImplementation project(":grace-logging")
     testImplementation project(":grace-plugin-controllers")
     testImplementation project(":grace-test")
 
