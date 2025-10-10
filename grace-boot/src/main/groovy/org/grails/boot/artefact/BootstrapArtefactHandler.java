@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.boostrap;
+package org.grails.boot.artefact;
 
 import grails.artefact.ArtefactTypes;
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.core.ArtefactHandlerAdapter;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
+
+import org.grails.boot.web.servlet.DefaultGrailsBootstrapClass;
 
 /**
  * Handler for Bootstrap Artefact

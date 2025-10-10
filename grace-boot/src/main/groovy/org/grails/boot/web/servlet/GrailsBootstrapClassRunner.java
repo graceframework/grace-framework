@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.boot.context.web;
+package org.grails.boot.web.servlet;
 
 import java.util.Map;
 
@@ -27,15 +27,13 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.WebApplicationContext;
 
 import grails.artefact.ArtefactTypes;
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.core.GrailsApplication;
 import grails.core.GrailsApplicationLifeCycleAdapter;
 import grails.core.GrailsClass;
 import grails.core.support.GrailsApplicationAware;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
-
-import org.grails.web.servlet.context.GrailsConfigUtils;
 
 /**
  * Runs the Bootstrap classes on startup

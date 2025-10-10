@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.context;
+package org.grails.boot.web.servlet;
 
 import jakarta.servlet.ServletContext;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.core.ApplicationAttributes;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.persistence.support.PersistenceContextInterceptor;
 import grails.plugins.GrailsPluginManager;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
 
-import org.grails.web.servlet.boostrap.BootstrapArtefactHandler;
+import org.grails.boot.artefact.BootstrapArtefactHandler;
 
 /**
  * A common class where shared configurational methods can reside.
@@ -112,7 +112,7 @@ public final class GrailsConfigUtils {
         if (servletContext == null) {
             return;
         }
-        servletContext .setAttribute(ApplicationAttributes.PLUGIN_MANAGER, pluginManager);
+        servletContext.setAttribute(ApplicationAttributes.PLUGIN_MANAGER, pluginManager);
         // use config file locations if available
         servletContext.setAttribute(ApplicationAttributes.PARENT_APPLICATION_CONTEXT, webContext.getParent());
         servletContext.setAttribute(GrailsApplication.APPLICATION_ID, application);

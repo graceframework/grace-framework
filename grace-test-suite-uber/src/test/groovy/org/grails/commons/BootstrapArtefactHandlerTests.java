@@ -17,7 +17,7 @@ package org.grails.commons;
 
 import grails.core.ArtefactHandler;
 import groovy.lang.GroovyClassLoader;
-import org.grails.web.servlet.boostrap.BootstrapArtefactHandler;
+import org.grails.boot.artefact.BootstrapArtefactHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

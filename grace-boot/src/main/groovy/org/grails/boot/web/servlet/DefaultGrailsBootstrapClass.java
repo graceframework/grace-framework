@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.boostrap;
+package org.grails.boot.web.servlet;
 
 import jakarta.servlet.ServletContext;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.util.Environment;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
 
 import org.grails.core.AbstractGrailsClass;
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;

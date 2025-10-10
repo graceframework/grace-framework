@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import grails.boot.config.GrailsAutoConfiguration;
 import grails.core.GrailsApplication;
 
-import org.grails.boot.context.web.GrailsBootstrapClassRunner;
+import org.grails.boot.web.servlet.GrailsBootstrapClassRunner;
 
 /**
  * {@link org.springframework.boot.autoconfigure.EnableAutoConfiguration
