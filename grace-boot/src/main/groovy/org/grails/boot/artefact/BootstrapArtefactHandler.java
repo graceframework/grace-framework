@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.boostrap;
+package org.grails.boot.artefact;
 
+import grails.artefact.ArtefactTypes;
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.core.ArtefactHandlerAdapter;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
+
+import org.grails.boot.web.servlet.DefaultGrailsBootstrapClass;
 
 /**
  * Handler for Bootstrap Artefact
@@ -27,12 +30,12 @@ import grails.web.servlet.bootstrap.GrailsBootstrapClass;
  */
 public class BootstrapArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final String TYPE = "Bootstrap";
+    public static final String TYPE = ArtefactTypes.BOOTSTRAP;
     public static final String PATH = "boot";
 
     public BootstrapArtefactHandler() {
         super(TYPE, GrailsBootstrapClass.class, DefaultGrailsBootstrapClass.class,
-                DefaultGrailsBootstrapClass.BOOT_STRAP, PATH);
+                DefaultGrailsBootstrapClass.BOOTSTRAP, PATH);
     }
 
 }

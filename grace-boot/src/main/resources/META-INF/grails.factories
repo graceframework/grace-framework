@@ -1,5 +1,6 @@
 grails.core.ArtefactHandler=\
-org.grails.boot.artefact.ApplicationArtefactHandler
+org.grails.boot.artefact.ApplicationArtefactHandler,\
+org.grails.boot.artefact.BootstrapArtefactHandler
 
 grails.compiler.ast.ClassInjector=\
 org.grails.compiler.boot.ApplicationClassInjector,\

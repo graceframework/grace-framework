@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.context;
+package org.grails.boot.web.servlet;
 
 import jakarta.servlet.ServletContext;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.core.ApplicationAttributes;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.persistence.support.PersistenceContextInterceptor;
 import grails.plugins.GrailsPluginManager;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
 
-import org.grails.web.servlet.boostrap.BootstrapArtefactHandler;
+import org.grails.boot.artefact.BootstrapArtefactHandler;
 
 /**
  * A common class where shared configurational methods can reside.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.1
  */
 public final class GrailsConfigUtils {
 
@@ -62,7 +64,9 @@ public final class GrailsConfigUtils {
      */
     public static void executeGrailsBootstraps(GrailsApplication application, WebApplicationContext webContext,
             ServletContext servletContext, GrailsPluginManager grailsPluginManager) {
-
+        if (servletContext == null && webContext != null) {
+            servletContext = webContext.getServletContext();
+        }
         configureServletContextAttributes(
                 servletContext,
                 application,
@@ -105,7 +109,9 @@ public final class GrailsConfigUtils {
 
     public static void configureServletContextAttributes(ServletContext servletContext, GrailsApplication application,
             GrailsPluginManager pluginManager, WebApplicationContext webContext) {
-
+        if (servletContext == null) {
+            return;
+        }
         servletContext.setAttribute(ApplicationAttributes.PLUGIN_MANAGER, pluginManager);
         // use config file locations if available
         servletContext.setAttribute(ApplicationAttributes.PARENT_APPLICATION_CONTEXT, webContext.getParent());

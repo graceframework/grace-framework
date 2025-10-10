@@ -1,2 +1,3 @@
 grails.boot.config.GrailsAutoConfiguration
+org.grails.boot.config.GrailsBootstrapAutoConfiguration
 org.grails.boot.devtools.GrailsDevToolsConfiguration

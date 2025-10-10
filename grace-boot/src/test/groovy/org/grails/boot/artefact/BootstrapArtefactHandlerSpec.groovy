@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.bootstrap
+package org.grails.boot.artefact
 
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ModuleNode
@@ -21,7 +21,6 @@ import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
 
 import grails.core.ArtefactHandler
-import org.grails.web.servlet.boostrap.BootstrapArtefactHandler
 
 /**
  * @author Michael Yan

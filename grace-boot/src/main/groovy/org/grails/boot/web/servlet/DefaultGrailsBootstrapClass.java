@@ -13,22 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.web.servlet.boostrap;
+package org.grails.boot.web.servlet;
 
 import jakarta.servlet.ServletContext;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
+import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.util.Environment;
-import grails.web.servlet.bootstrap.GrailsBootstrapClass;
 
 import org.grails.core.AbstractGrailsClass;
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
 
+/**
+ * Default Bootstrap class.
+ *
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.1
+ */
 public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements GrailsBootstrapClass {
 
-    public static final String BOOT_STRAP = "Bootstrap";
+    public static final String BOOTSTRAP = "Bootstrap";
 
     private static final String INIT_CLOSURE = "init";
 
@@ -39,7 +46,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
     private final Object instance;
 
     public DefaultGrailsBootstrapClass(Class<?> clazz) {
-        super(clazz, BOOT_STRAP);
+        super(clazz, BOOTSTRAP);
         this.instance = super.getReferenceInstance();
     }
 

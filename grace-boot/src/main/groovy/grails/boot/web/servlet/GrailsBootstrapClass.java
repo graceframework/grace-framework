@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.web.servlet.bootstrap;
+package grails.boot.web.servlet;
 
 import jakarta.servlet.ServletContext;
 
