@@ -6,7 +6,6 @@ dependencies {
     api project(":grace-plugin-mimetypes")
     api project(":grace-plugin-validation")
     api project(":grace-util")
-    api project(":grace-web")
 
     compileOnly libs.jakarta.servlet
     api(libs.spring.boot.autoconfigure)

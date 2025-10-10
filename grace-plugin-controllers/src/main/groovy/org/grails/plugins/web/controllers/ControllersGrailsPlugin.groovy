@@ -26,12 +26,12 @@ import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.plugins.web.servlet.context.BootstrapClassRunner
 
 /**
  * Handles the configuration of controllers for Grails.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 @Slf4j
@@ -53,11 +53,6 @@ class ControllersGrailsPlugin extends Plugin implements PriorityOrdered {
             def config = application.config
 
             boolean useJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
-
-            boolean skipBootstrap = Boolean.parseBoolean(System.getProperty(Settings.SETTING_SKIP_BOOTSTRAP))
-            if (!skipBootstrap) {
-                bootstrapClassRunner(BootstrapClassRunner)
-            }
 
             def controllerClasses = application.getArtefacts(ControllerArtefactHandler.TYPE)
             for (controller in controllerClasses) {

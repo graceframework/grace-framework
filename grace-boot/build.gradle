@@ -6,6 +6,7 @@ dependencies {
     api project(":grace-plugin-core")
     api project(":grace-spring")
     api project(":grace-spring-boot")
+    api project(":grace-web")
 
     api libs.jakarta.annotation.api
     compileOnly libs.jakarta.servlet

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ import org.grails.web.servlet.boostrap.BootstrapArtefactHandler;
  * A common class where shared configurational methods can reside.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.1
  */
 public final class GrailsConfigUtils {
 
@@ -62,7 +64,9 @@ public final class GrailsConfigUtils {
      */
     public static void executeGrailsBootstraps(GrailsApplication application, WebApplicationContext webContext,
             ServletContext servletContext, GrailsPluginManager grailsPluginManager) {
-
+        if (servletContext == null && webContext != null) {
+            servletContext = webContext.getServletContext();
+        }
         configureServletContextAttributes(
                 servletContext,
                 application,
@@ -105,8 +109,10 @@ public final class GrailsConfigUtils {
 
     public static void configureServletContextAttributes(ServletContext servletContext, GrailsApplication application,
             GrailsPluginManager pluginManager, WebApplicationContext webContext) {
-
-        servletContext.setAttribute(ApplicationAttributes.PLUGIN_MANAGER, pluginManager);
+        if (servletContext == null) {
+            return;
+        }
+        servletContext .setAttribute(ApplicationAttributes.PLUGIN_MANAGER, pluginManager);
         // use config file locations if available
         servletContext.setAttribute(ApplicationAttributes.PARENT_APPLICATION_CONTEXT, webContext.getParent());
         servletContext.setAttribute(GrailsApplication.APPLICATION_ID, application);

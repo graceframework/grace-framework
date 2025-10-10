@@ -26,6 +26,11 @@
     {
       "name": "grails.codegen.defaultPackage",
       "type": "java.lang.String"
+    },
+    {
+      "name": "grails.bootstrap.skip",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
     }
   ],
   "hints": [
