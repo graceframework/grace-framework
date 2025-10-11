@@ -1,6 +1,5 @@
-package grails.config
+package org.grails.config
 
-import org.grails.config.PropertySourcesConfig
 import spock.lang.Specification
 
 /**
