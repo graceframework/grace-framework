@@ -62,8 +62,8 @@ import grails.util.GrailsUtil;
 import org.grails.config.PropertySourcesConfig;
 import org.grails.core.AbstractGrailsApplication;
 import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.datastore.mapping.model.MappingContext;
+import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.io.support.GrailsResourceUtils;
 
 /**

@@ -41,9 +41,9 @@ import grails.util.GrailsStringUtils;
 
 import org.grails.buffer.FastStringPrintWriter;
 import org.grails.core.exceptions.GrailsException;
-import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.exceptions.reporting.SourceCodeAware;
 import org.grails.gsp.ResourceAwareTemplateEngine;
+import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
 import org.grails.web.util.GrailsApplicationAttributes;
 

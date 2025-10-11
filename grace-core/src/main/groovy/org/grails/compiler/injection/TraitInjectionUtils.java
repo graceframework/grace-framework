@@ -33,7 +33,7 @@ import org.springframework.core.OrderComparator;
 
 import grails.compiler.traits.TraitInjector;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.io.support.GrailsFactoriesLoader;
 
 /**
  * Utilities for {@link grails.compiler.traits.TraitInjector}

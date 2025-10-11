@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.io.support.GrailsFactoriesLoader;
 
 /**
  * A registry of {@link ApplicationCommand} instances
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 public final class ApplicationContextCommandRegistry {

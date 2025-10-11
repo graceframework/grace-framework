@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.springframework.core.Ordered;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.taglib.encoder.AbstractOutputContextLookup;
 import org.grails.taglib.encoder.OutputContext;
 import org.grails.taglib.encoder.OutputContextLookup;
@@ -29,6 +29,7 @@ import org.grails.taglib.encoder.OutputContextLookup;
  * Support customizing through {@link WebOutputContextInitializer}
  *
  * @author Lari Hotari
+ * @author Michael Yan
  * @since 3.0
  * @see WebOutputContext
  */
