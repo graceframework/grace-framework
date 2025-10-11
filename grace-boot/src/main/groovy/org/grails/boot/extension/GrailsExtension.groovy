@@ -55,11 +55,11 @@ class GrailsExtension {
     }
 
     static List<String> getTaglibs(Grails grails) {
-        Holders.getGrailsApplication().getArtefacts('TagLib')*.name?.toSorted()
+        Holders.getGrailsApplication().getArtefacts(ArtefactTypes.TAG_LIBRARY)*.name?.toSorted()
     }
 
     static List<String> getUrlMappings(Grails grails) {
-        Holders.getGrailsApplication().getArtefacts('UrlMappings')*.name?.toSorted()
+        Holders.getGrailsApplication().getArtefacts(ArtefactTypes.URL_MAPPINGS)*.name?.toSorted()
     }
 
     static List<GrailsPlugin> getPlugins(Grails grails) {

@@ -31,8 +31,10 @@ public final class ArtefactTypes {
 
     public static final String DOMAIN_CLASS = "Domain";
 
-    public static final String URL_MAPPINGS = "UrlMappings";
-
     public static final String SERVICE = "Service";
+
+    public static final String TAG_LIBRARY = "TagLib";
+
+    public static final String URL_MAPPINGS = "UrlMappings";
 
 }
