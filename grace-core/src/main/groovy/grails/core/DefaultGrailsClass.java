@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.grails.core.AbstractGrailsClass;
 public class DefaultGrailsClass extends AbstractGrailsClass {
 
     /**
-     * Contructor to be used by all child classes to create a
+     * Constructor to be used by all child classes to create a
      * new instance and get the name right.
      *
      * @param clazz        the Grails class
