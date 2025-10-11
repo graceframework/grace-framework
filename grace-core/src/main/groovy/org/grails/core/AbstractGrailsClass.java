@@ -35,7 +35,7 @@ import grails.plugins.metadata.GrailsPlugin;
 import grails.util.GrailsMetaClassUtils;
 import grails.util.GrailsNameUtils;
 
-import org.grails.core.exceptions.NewInstanceCreationException;
+import org.grails.core.exceptions.GrailsClassCreationException;
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
 
 /**
@@ -136,7 +136,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
             else {
                 targetException = e;
             }
-            throw new NewInstanceCreationException("Could not create a new instance of class [" +
+            throw new GrailsClassCreationException("Could not create a new instance of class [" +
                     getClazz().getName() + "]!", targetException);
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,9 @@ import org.grails.exceptions.reporting.StackTracePrinter
 /**
  * Default implementation of the {@link StackTracePrinter} interface.
  *
- * @since 2.0
- *
  * @author Graeme Rocher
  * @author Marc Palmer
+ * @since 2.0
  */
 class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnippetPrinter {
 
@@ -45,11 +44,13 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
         this.resourceLocator = resourceLocator
     }
 
+    @Override
     protected String getFileName(StackTraceElement te) {
         Resource res = resourceLocator?.findResourceForClassName(te.className)
         res == null ? te.className : res.getFilename()
     }
 
+    @Override
     String prettyPrintCodeSnippet(Throwable exception) {
         if (exception == null) {
             return ''

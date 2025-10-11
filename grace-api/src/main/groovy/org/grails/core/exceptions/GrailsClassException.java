@@ -16,27 +16,29 @@
 package org.grails.core.exceptions;
 
 /**
- * Occurs when the creation of a new instance fails.
+ * Thrown when creation of the Grails domain from the Grails domain classes fails.
  *
- * @author Steven Devijver
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.1
  */
-public class NewInstanceCreationException extends GrailsException {
+public class GrailsClassException extends GrailsException {
 
-    private static final long serialVersionUID = -877948309600522419L;
+    private static final long serialVersionUID = -3824320541041888143L;
 
-    public NewInstanceCreationException() {
+    public GrailsClassException() {
         super();
     }
 
-    public NewInstanceCreationException(String message) {
-        super(message);
-    }
-
-    public NewInstanceCreationException(String message, Throwable cause) {
+    public GrailsClassException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public NewInstanceCreationException(Throwable cause) {
+    public GrailsClassException(String message) {
+        super(message);
+    }
+
+    public GrailsClassException(Throwable cause) {
         super(cause);
     }
 

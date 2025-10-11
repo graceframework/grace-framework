@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,26 @@ package org.grails.core.exceptions;
  * Thrown when a property of a Grails class is invalidated.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.1
  */
-public class InvalidPropertyException extends GrailsException {
+public class GrailsPropertyInvalidException extends GrailsException {
 
     private static final long serialVersionUID = 132133525035378206L;
 
-    public InvalidPropertyException() {
+    public GrailsPropertyInvalidException() {
         super();
     }
 
-    public InvalidPropertyException(String message, Throwable cause) {
+    public GrailsPropertyInvalidException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public InvalidPropertyException(String message) {
+    public GrailsPropertyInvalidException(String message) {
         super(message);
     }
 
-    public InvalidPropertyException(Throwable cause) {
+    public GrailsPropertyInvalidException(Throwable cause) {
         super(cause);
     }
 
