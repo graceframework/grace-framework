@@ -2,7 +2,6 @@ dependencies {
     compileOnly libs.ant
     compileOnlyApi libs.jakarta.servlet
     api project(":grace-gsp")
-    compileOnly project(":grace-plugin-domain-class")
     api project(":grace-web-common")
     api project(":grace-web-taglib")
     api project(":grace-web-sitemesh")

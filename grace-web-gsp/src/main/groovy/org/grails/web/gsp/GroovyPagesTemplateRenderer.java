@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ package org.grails.web.gsp;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,18 +27,14 @@ import java.util.concurrent.ConcurrentMap;
 import groovy.text.Template;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils;
 
-import grails.core.GrailsDomainClass;
 import grails.util.CacheEntry;
 import grails.util.Environment;
 import grails.util.GrailsNameUtils;
 import grails.util.GrailsStringUtils;
 
 import org.grails.buffer.CodecPrintWriter;
-import org.grails.buffer.FastStringWriter;
 import org.grails.encoder.EncodedAppenderWriterFactory;
 import org.grails.encoder.Encoder;
 import org.grails.encoder.StreamingEncoder;
@@ -70,7 +64,6 @@ import org.grails.web.util.GrailsApplicationAttributes;
  *
  * @since 2.0
  */
-@SuppressWarnings("deprecation")
 public class GroovyPagesTemplateRenderer implements InitializingBean {
 
     private GrailsConventionGroovyPageLocator groovyPageLocator;
@@ -79,24 +72,11 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
 
     private ConcurrentMap<String, CacheEntry<Template>> templateCache = new ConcurrentHashMap<>();
 
-    private Object scaffoldingTemplateGenerator;
-
-    private Map<String, Collection<String>> scaffoldedActionMap;
-
-    private Map<String, GrailsDomainClass> controllerToScaffoldedDomainClassMap;
-
-    private Method generateViewMethod;
-
     private boolean reloadEnabled;
 
     private boolean cacheEnabled = !Environment.isDevelopmentMode();
 
     public void afterPropertiesSet() throws Exception {
-        if (this.scaffoldingTemplateGenerator != null) {
-            // use reflection to locate method (would cause cyclic dependency otherwise)
-            this.generateViewMethod = ReflectionUtils.findMethod(this.scaffoldingTemplateGenerator.getClass(), "generateView", new Class<?>[] {
-                    GrailsDomainClass.class, String.class, Writer.class });
-        }
         this.reloadEnabled = this.groovyPagesTemplateEngine.isReloadEnabled();
     }
 
@@ -183,19 +163,10 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
                             }
 
                             @Override
-                            protected Template updateValue(Template oldValue, Callable<Template> updater, Object cacheRequestObject)
-                                    throws Exception {
+                            protected Template updateValue(Template oldValue, Callable<Template> updater, Object cacheRequestObject) {
                                 Template t = null;
                                 if (scriptSource != null) {
                                     t = GroovyPagesTemplateRenderer.this.groovyPagesTemplateEngine.createTemplate(scriptSource);
-                                }
-                                if (t == null && GroovyPagesTemplateRenderer.this.scaffoldingTemplateGenerator != null) {
-                                    t = generateScaffoldedTemplate(GrailsWebRequest.lookup(), uri);
-                                    // always enable caching for generated
-                                    // scaffolded template
-                                    this.allowCaching = true;
-                                    // never expire scaffolded entry since scaffolding plugin flushes the whole cache on any change
-                                    this.neverExpire = true;
                                 }
                                 return t;
                             }
@@ -275,26 +246,6 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
         return out;
     }
 
-    private Template generateScaffoldedTemplate(GrailsWebRequest webRequest, String uri) throws IOException {
-        Template t = null;
-        Collection<String> controllerActions = this.scaffoldedActionMap.get(webRequest.getControllerName());
-        if (controllerActions != null && controllerActions.contains(webRequest.getActionName())) {
-            GrailsDomainClass domainClass = this.controllerToScaffoldedDomainClassMap.get(webRequest.getControllerName());
-            if (domainClass != null) {
-                int i = uri.lastIndexOf('/');
-                String scaffoldedtemplateName = i > -1 ? uri.substring(i) : uri;
-                if (scaffoldedtemplateName.toLowerCase().endsWith(".gsp")) {
-                    scaffoldedtemplateName = scaffoldedtemplateName.substring(0, scaffoldedtemplateName.length() - 4);
-                }
-                FastStringWriter sw = new FastStringWriter();
-                ReflectionUtils.invokeMethod(this.generateViewMethod, this.scaffoldingTemplateGenerator, domainClass, scaffoldedtemplateName, sw);
-                t = this.groovyPagesTemplateEngine.createTemplate(
-                        new ByteArrayResource(sw.toString().getBytes("UTF-8"), uri), false);
-            }
-        }
-        return t;
-    }
-
     private String getStringValue(Map<String, Object> attrs, String key) {
         Object val = attrs.get(key);
         if (val == null) {
@@ -309,20 +260,6 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
 
     public void setGroovyPagesTemplateEngine(GroovyPagesTemplateEngine engine) {
         this.groovyPagesTemplateEngine = engine;
-    }
-
-    public void setScaffoldingTemplateGenerator(Object generator) {
-        this.scaffoldingTemplateGenerator = generator;
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void setScaffoldedActionMap(Map map) {
-        this.scaffoldedActionMap = map;
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void setControllerToScaffoldedDomainClassMap(Map map) {
-        this.controllerToScaffoldedDomainClassMap = map;
     }
 
     public boolean isCacheEnabled() {
