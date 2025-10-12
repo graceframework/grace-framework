@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@ package org.grails.taglib.encoder;
 
 import java.util.List;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.io.support.GrailsFactoriesLoader;
 
 /**
  * Used to load the {@link OutputContextLookup} class for GSP
  *
  * @author Lari Hotari
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 public final class OutputContextLookupHelper {
 

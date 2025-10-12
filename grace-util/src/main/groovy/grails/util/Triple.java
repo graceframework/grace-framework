@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,18 @@
  */
 package grails.util;
 
-public class Pair<A, B> {
+public class Triple<A, B, C> {
 
     final A aValue;
 
     final B bValue;
 
-    public Pair(A aValue, B bValue) {
+    final C cValue;
+
+    public Triple(A aValue, B bValue, C cValue) {
         this.aValue = aValue;
         this.bValue = bValue;
+        this.cValue = cValue;
     }
 
     public A getaValue() {
@@ -34,11 +37,16 @@ public class Pair<A, B> {
         return this.bValue;
     }
 
+    public C getcValue() {
+        return this.cValue;
+    }
+
     @Override
     public int hashCode() {
         int result = 1;
         result = 31 * result + ((this.aValue == null) ? 0 : this.aValue.hashCode());
         result = 31 * result + ((this.bValue == null) ? 0 : this.bValue.hashCode());
+        result = 31 * result + ((this.cValue == null) ? 0 : this.cValue.hashCode());
         return result;
     }
 
@@ -53,7 +61,7 @@ public class Pair<A, B> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Pair other = (Pair) obj;
+        Triple other = (Triple) obj;
         if (this.aValue == null) {
             if (other.aValue != null) {
                 return false;
@@ -63,16 +71,27 @@ public class Pair<A, B> {
             return false;
         }
         if (this.bValue == null) {
-            return other.bValue == null;
+            if (other.bValue != null) {
+                return false;
+            }
         }
-        else {
-            return this.bValue.equals(other.bValue);
+        else if (!this.bValue.equals(other.bValue)) {
+            return false;
         }
+        if (this.cValue == null) {
+            if (other.cValue != null) {
+                return false;
+            }
+        }
+        else if (!this.cValue.equals(other.cValue)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "TupleKey [aValue=" + this.aValue + ", bValue=" + this.bValue + "]";
+        return "Triple [aValue=" + this.aValue + ", bValue=" + this.bValue + ", cValue=" + this.cValue + "]";
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Wrapper for a value inside a cache that adds timestamp information
  * for expiration and prevents "cache storms" with a Lock.
@@ -37,8 +34,6 @@ import org.slf4j.LoggerFactory;
  * @since 2.3.4
  */
 public class CacheEntry<V> {
-
-    private static final Logger logger = LoggerFactory.getLogger(CacheEntry.class);
 
     private final AtomicReference<V> valueRef = new AtomicReference<>(null);
 
@@ -143,15 +138,11 @@ public class CacheEntry<V> {
                             return getValueWhileUpdating(cacheRequestObject);
                         }
                         else {
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Locking cache for update");
-                            }
                             this.writeLock.lock();
                         }
                     }
                 }
                 else {
-                    logger.debug("Locking cache for update");
                     this.writeLock.lock();
                 }
 
@@ -160,9 +151,6 @@ public class CacheEntry<V> {
                 if (!isInitialized() || shouldUpdate(beforeLockingCreatedMillis, cacheRequestObject)) {
                     try {
                         value = updateValue(getValue(), updater, cacheRequestObject);
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Updating cache for value [{}]", value);
-                        }
                         setValue(value);
                     }
                     catch (Exception e) {
@@ -177,9 +165,6 @@ public class CacheEntry<V> {
             }
             finally {
                 if (lockAcquired) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Unlocking cache for update");
-                    }
                     this.writeLock.unlock();
                 }
             }

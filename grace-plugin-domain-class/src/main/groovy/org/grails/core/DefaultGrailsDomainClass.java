@@ -29,10 +29,10 @@ import grails.util.GrailsNameUtils;
 import grails.validation.Constrained;
 
 import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.datastore.mapping.model.PersistentEntity;
+import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.validation.discovery.ConstrainedDiscovery;
 
 /**

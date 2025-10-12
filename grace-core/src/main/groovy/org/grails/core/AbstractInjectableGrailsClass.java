@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core.exceptions;
+package org.grails.core;
+
+import grails.core.InjectableGrailsClass;
 
 /**
- * Thrown when a property of a Grails class is invalidated.
+ * Configures Grails classes to be autowired by name, always.
  *
  * @author Graeme Rocher
+ * @author Steven Devijver
+ *
+ * @since 0.1
  */
-public class InvalidPropertyException extends GrailsException {
+public abstract class AbstractInjectableGrailsClass extends AbstractGrailsClass implements InjectableGrailsClass {
 
-    private static final long serialVersionUID = 132133525035378206L;
-
-    public InvalidPropertyException() {
-        super();
+    public AbstractInjectableGrailsClass(Class<?> clazz, String trailingName) {
+        super(clazz, trailingName);
     }
 
-    public InvalidPropertyException(String message, Throwable cause) {
-        super(message, cause);
+    public boolean byName() {
+        return true;
     }
 
-    public InvalidPropertyException(String message) {
-        super(message);
+    public boolean byType() {
+        return false;
     }
 
-    public InvalidPropertyException(Throwable cause) {
-        super(cause);
+    public boolean getAvailable() {
+        return true;
     }
 
 }

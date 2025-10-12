@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,29 @@
 package org.grails.core.exceptions;
 
 /**
- * Thrown when creation of the Grails domain from the Grails domain classes fails.
+ * Thrown when a property of a Grails class is invalidated.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.1
  */
-public class GrailsDomainException extends GrailsException {
+public class GrailsPropertyInvalidException extends GrailsException {
 
-    private static final long serialVersionUID = -3824320541041888143L;
+    private static final long serialVersionUID = 132133525035378206L;
 
-    public GrailsDomainException() {
+    public GrailsPropertyInvalidException() {
         super();
     }
 
-    public GrailsDomainException(String message, Throwable cause) {
+    public GrailsPropertyInvalidException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public GrailsDomainException(String message) {
+    public GrailsPropertyInvalidException(String message) {
         super(message);
     }
 
-    public GrailsDomainException(Throwable cause) {
+    public GrailsPropertyInvalidException(Throwable cause) {
         super(cause);
     }
 

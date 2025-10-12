@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,26 @@ package org.grails.core.exceptions;
  * Occurs when the creation of a new instance fails.
  *
  * @author Steven Devijver
+ * @author Michael Yan
+ * @since 0.1
  */
-public class NewInstanceCreationException extends GrailsException {
+public class GrailsClassCreationException extends GrailsClassException {
 
     private static final long serialVersionUID = -877948309600522419L;
 
-    public NewInstanceCreationException() {
+    public GrailsClassCreationException() {
         super();
     }
 
-    public NewInstanceCreationException(String message) {
+    public GrailsClassCreationException(String message) {
         super(message);
     }
 
-    public NewInstanceCreationException(String message, Throwable cause) {
+    public GrailsClassCreationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public NewInstanceCreationException(Throwable cause) {
+    public GrailsClassCreationException(Throwable cause) {
         super(cause);
     }
 

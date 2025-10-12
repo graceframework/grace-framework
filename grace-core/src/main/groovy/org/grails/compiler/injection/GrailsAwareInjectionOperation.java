@@ -31,7 +31,7 @@ import grails.artefact.Artefact;
 import grails.compiler.ast.ClassInjector;
 import grails.core.ArtefactHandler;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.io.support.GrailsFactoriesLoader;
 
 /**
  * A Groovy compiler injection operation that uses a specified array of

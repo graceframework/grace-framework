@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,15 @@ import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.plugins.GrailsPluginManager;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.core.support.GrailsApplicationDiscoveryStrategy;
+import org.grails.io.support.GrailsFactoriesLoader;
 
 /**
  * Allows looking up key classes in a static context
  *
  * @author Burt Beckwith
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @since 2.0
  */

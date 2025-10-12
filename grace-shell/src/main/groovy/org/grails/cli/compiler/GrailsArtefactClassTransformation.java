@@ -46,7 +46,7 @@ import grails.core.GrailsClass;
 import org.grails.compiler.injection.ArtefactTypeAstTransformation;
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.compiler.injection.TraitInjectionUtils;
-import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.io.support.GrailsFactoriesLoader;
 
 /**
  * {@link ASTTransformation} for applying Grails' transformations to the Grails Artefacts.

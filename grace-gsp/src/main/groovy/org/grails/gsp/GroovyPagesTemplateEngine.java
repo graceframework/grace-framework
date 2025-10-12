@@ -63,7 +63,6 @@ import grails.util.Environment;
 import grails.util.GrailsUtil;
 
 import org.grails.core.exceptions.DefaultErrorsPrinter;
-import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.exceptions.ExceptionUtils;
 import org.grails.gsp.compiler.GroovyPageParser;
 import org.grails.gsp.io.DefaultGroovyPageLocator;
@@ -72,6 +71,7 @@ import org.grails.gsp.io.GroovyPageLocator;
 import org.grails.gsp.io.GroovyPageResourceScriptSource;
 import org.grails.gsp.io.GroovyPageScriptSource;
 import org.grails.gsp.jsp.TagLibraryResolver;
+import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.taglib.TagInvocationContextCustomizer;
 import org.grails.taglib.TagLibraryLookup;
 
@@ -88,6 +88,7 @@ import org.grails.taglib.TagLibraryLookup;
  *
  * @author Graeme Rocher
  * @author Lari Hotari
+ * @author Michael Yan
  *
  * @since 0.1
  */

@@ -13,34 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core;
-
-import grails.core.InjectableGrailsClass;
+package org.grails.core.exceptions;
 
 /**
- * Configures Grails classes to be autowirable by name, always.
+ * Thrown when creation of the Grails domain from the Grails domain classes fails.
  *
  * @author Graeme Rocher
- * @author Steven Devijver
- *
+ * @author Michael Yan
  * @since 0.1
  */
-public abstract class AbstractInjectableGrailsClass extends AbstractGrailsClass implements InjectableGrailsClass {
+public class GrailsClassException extends GrailsException {
 
-    public AbstractInjectableGrailsClass(Class<?> clazz, String trailingName) {
-        super(clazz, trailingName);
+    private static final long serialVersionUID = -3824320541041888143L;
+
+    public GrailsClassException() {
+        super();
     }
 
-    public boolean byName() {
-        return true;
+    public GrailsClassException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public boolean byType() {
-        return false;
+    public GrailsClassException(String message) {
+        super(message);
     }
 
-    public boolean getAvailable() {
-        return true;
+    public GrailsClassException(Throwable cause) {
+        super(cause);
     }
 
 }

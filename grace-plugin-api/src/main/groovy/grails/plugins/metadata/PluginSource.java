@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2025 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,35 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugins.exceptions;
+package grails.plugins.metadata;
 
-import org.grails.core.exceptions.GrailsException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Plugin related exception.
+ * Source level annotation that indicates that a given source file is part of a plugin
  *
  * @author Graeme Rocher
  * @author Michael Yan
- * @since 1.0
+ * @since 3.1.7
  */
-public class PluginException extends GrailsException {
-
-    private static final long serialVersionUID = -3041972956196552302L;
-
-    public PluginException() {
-        super();
-    }
-
-    public PluginException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public PluginException(String message) {
-        super(message);
-    }
-
-    public PluginException(Throwable cause) {
-        super(cause);
-    }
+@Retention(RetentionPolicy.SOURCE)
+@Target({ ElementType.TYPE })
+public @interface PluginSource {
 
 }

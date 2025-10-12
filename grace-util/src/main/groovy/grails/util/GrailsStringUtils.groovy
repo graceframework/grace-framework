@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package grails.util
 
 import groovy.transform.CompileStatic
-import org.springframework.lang.Nullable
 import org.springframework.util.ObjectUtils
 import org.springframework.util.StringUtils
 
@@ -181,8 +180,7 @@ abstract class GrailsStringUtils extends StringUtils {
         hasText(str)
     }
 
-    @Override
-    static boolean isEmpty(@Nullable Object str) {
+    static boolean isEmpty(Object str) {
         ObjectUtils.isEmpty(str)
     }
 

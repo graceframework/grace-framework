@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@ package org.grails.exceptions.reporting
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
 
 /**
- * @since 2.2
  * @author Graeme Rocher
+ * @since 2.2
  */
 class DefaultStackTracePrinter implements StackTracePrinter {
 
+    @Override
     String prettyPrint(Throwable t) {
         if (t == null) {
             return ''

@@ -57,13 +57,13 @@ import grails.util.Metadata
 
 import org.grails.build.parsing.CommandLineParser
 import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
-import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.commands.ApplicationContextScriptTask
 import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
 import org.grails.gradle.plugin.run.FindMainClassTask
 import org.grails.gradle.plugin.util.BuildSettings
 import org.grails.gradle.plugin.util.SourceSets
+import org.grails.io.support.GrailsFactoriesLoader
 
 /**
  * The main Grails gradle plugin implementation

@@ -46,13 +46,13 @@ import grails.web.mvc.FlashScope;
 import grails.web.servlet.mvc.GrailsHttpSession;
 import grails.web.servlet.mvc.GrailsParameterMap;
 
-import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.encoder.CodecLookupHelper;
 import org.grails.encoder.DefaultEncodingStateRegistry;
 import org.grails.encoder.Encoder;
 import org.grails.encoder.EncodingStateRegistry;
 import org.grails.encoder.EncodingStateRegistryLookup;
 import org.grails.encoder.EncodingStateRegistryLookupHolder;
+import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.web.beans.PropertyEditorRegistryUtils;
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings;
 import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;

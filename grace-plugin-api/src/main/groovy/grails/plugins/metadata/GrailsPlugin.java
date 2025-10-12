@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Source level annotation that indicates that a given source file is part of a plugin
+ * Annotation that appears on classes of a particular plugin.
  *
  * @author Graeme Rocher
- * @since 3.1.7
+ * @author Michael Yan
+ * @since 1.2
  */
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
-public @interface PluginSource {
+public @interface GrailsPlugin {
+
+    String name();
+
+    String version();
 
 }

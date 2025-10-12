@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugins.metadata;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package grails.plugins;
 
 /**
- * Annotation that appears on classes of a particular plugin.
+ * Throw when a specified version number is invalid.
  *
  * @author Graeme Rocher
  * @since 1.2
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
-public @interface GrailsPlugin {
+public class InvalidVersionException extends RuntimeException {
 
-    String name();
+    private static final long serialVersionUID = 7913782067211066121L;
 
-    String version();
+    public InvalidVersionException() {
+        // default
+    }
+
+    public InvalidVersionException(String message) {
+        super(message);
+    }
+
+    public InvalidVersionException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+    public InvalidVersionException(Throwable throwable) {
+        super(throwable);
+    }
 
 }
