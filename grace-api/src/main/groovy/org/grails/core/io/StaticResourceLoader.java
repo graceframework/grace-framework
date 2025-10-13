@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
  * A ResourceLoader that loads resources from a statically defined base resource.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.5
  */
 public class StaticResourceLoader implements ResourceLoader {
@@ -34,6 +35,13 @@ public class StaticResourceLoader implements ResourceLoader {
     private static final Logger logger = LoggerFactory.getLogger(StaticResourceLoader.class);
 
     private Resource baseResource;
+
+    public StaticResourceLoader() {
+    }
+
+    public StaticResourceLoader(Resource baseResource) {
+        this.baseResource = baseResource;
+    }
 
     public void setBaseResource(Resource baseResource) {
         this.baseResource = baseResource;

@@ -35,13 +35,13 @@ import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
+import org.springframework.util.AntPathMatcher
 
 import grails.core.ArtefactHandler
 import grails.plugins.GrailsPluginInfo
 import grails.plugins.metadata.GrailsPlugin
 import grails.util.GrailsNameUtils
 
-import org.grails.io.support.AntPathMatcher
 import org.grails.io.support.GrailsFactoriesLoader
 import org.grails.io.support.SpringIOUtils
 

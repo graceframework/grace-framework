@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
 import grails.util.Environment;
 
 /**
  * Used to locate resources at build / development time
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 public class ResourceLocator {
@@ -102,7 +109,7 @@ public class ResourceLocator {
         this.resourceSearchDirectories.add(searchLocationPlusSlash);
     }
 
-    public Resource findResourceForURI(String uri) {
+    public Resource findResourceForURI(String uri) throws IOException {
         Resource resource = this.uriToResourceCache.get(uri);
         if (resource == null) {
             PluginResourceInfo info = inferPluginNameFromURI(uri);

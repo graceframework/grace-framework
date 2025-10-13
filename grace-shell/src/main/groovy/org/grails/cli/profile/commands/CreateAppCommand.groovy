@@ -40,6 +40,8 @@ import org.apache.tools.ant.types.resources.URLResource
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
+import org.springframework.core.io.FileSystemResource
+import org.springframework.core.io.Resource
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
@@ -62,8 +64,6 @@ import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.commands.io.GradleDependency
 import org.grails.cli.profile.repository.MavenProfileRepository
 import org.grails.config.NavigableMap
-import org.grails.io.support.FileSystemResource
-import org.grails.io.support.Resource
 
 import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
 import static org.grails.build.parsing.CommandLine.QUIET_ARGUMENT
@@ -574,7 +574,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File skeletonDir
             File tmpDir
             if (location instanceof FileSystemResource) {
-                skeletonDir = location.createRelative('skeleton').file
+                skeletonDir = location.createRelative('skeleton').getFile()
             }
             else {
                 tmpDir = unzipProfile(ant, unzippedDirectories, location)

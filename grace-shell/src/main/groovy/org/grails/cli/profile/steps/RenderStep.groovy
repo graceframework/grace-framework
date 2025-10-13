@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.cli.profile.steps
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
+import org.springframework.core.io.Resource
 
 import grails.build.logging.GrailsConsole
 import grails.util.GrailsNameUtils
@@ -28,13 +29,13 @@ import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.templates.SimpleTemplate
 import org.grails.cli.profile.support.ArtefactVariableResolver
-import org.grails.io.support.Resource
 
 /**
  * A {@link org.grails.cli.profile.Step} that renders a template
  *
  * @author Lari Hotari
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @since 3.0
  */

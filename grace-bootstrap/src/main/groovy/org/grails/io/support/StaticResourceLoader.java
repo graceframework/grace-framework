@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,16 @@
  */
 package org.grails.io.support;
 
+import java.io.IOException;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
 /**
  * Loads relative to a static base resource
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 public class StaticResourceLoader implements ResourceLoader {
@@ -30,7 +36,12 @@ public class StaticResourceLoader implements ResourceLoader {
     }
 
     public Resource getResource(String location) {
-        return this.baseResource.createRelative(location);
+        try {
+            return this.baseResource.createRelative(location);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ClassLoader getClassLoader() {

@@ -197,25 +197,6 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     }
 
     /**
-     * Loads a GrailsApplication using the given ResourceLocator instance which will search for appropriate class names
-     *
-     */
-    public DefaultGrailsApplication(org.grails.io.support.Resource[] resources) {
-        this();
-        for (org.grails.io.support.Resource resource : resources) {
-
-            Class<?> aClass;
-            try {
-                aClass = this.classLoader.loadClass(GrailsResourceUtils.getClassName(resource.getFile().getAbsolutePath()));
-            }
-            catch (ClassNotFoundException | IOException e) {
-                throw new GrailsConfigurationException("Class not found loading Grails application: " + e.getMessage(), e);
-            }
-            this.loadedClasses.add(aClass);
-        }
-    }
-
-    /**
      * @return The application class
      */
     public GrailsApplicationClass getApplicationClass() {

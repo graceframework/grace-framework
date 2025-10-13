@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ConcurrentSkipListSet
 
 import groovy.transform.CompileStatic
-
-import org.grails.io.support.PathMatchingResourcePatternResolver
-import org.grails.io.support.Resource
+import org.springframework.core.io.Resource
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
 /**
  * A completer that completes class names
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -82,7 +82,7 @@ class ClassNameCompleter extends StringsCompleter {
                     def resources = resourcePatternResolver.getResources(pattern)
                     for (res in resources) {
                         if (isValidResource(res)) {
-                            def path = res.file.canonicalPath
+                            def path = res.getFile().getCanonicalPath()
                             def basePath = baseDir.canonicalPath
                             path = (path - basePath)[1..-8]
                             path = path.replace(File.separatorChar, '.' as char)

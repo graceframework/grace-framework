@@ -21,9 +21,9 @@ import java.util.Set;
 
 import jline.console.completer.Completer;
 import org.eclipse.aether.graph.Dependency;
+import org.springframework.core.io.Resource;
 
 import org.grails.config.NavigableMap;
-import org.grails.io.support.Resource;
 
 /**
  * A Profile defines an active code generation and command execution policy. For example the "web" profile allows

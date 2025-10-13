@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.grails.core.io.StaticResourceLoader;
  * @see org.grails.core.io.StaticResourceLoader
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.5
  */
 public class GroovyPageResourceLoader extends StaticResourceLoader {
@@ -41,6 +42,14 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
     private static final Log logger = LogFactory.getLog(GroovyPageResourceLoader.class);
 
     private static final String PLUGINS_PATH = "/plugins/";
+
+    public GroovyPageResourceLoader() {
+        super();
+    }
+
+    public GroovyPageResourceLoader(Resource baseResource) {
+        super(baseResource);
+    }
 
     @Override
     public void setBaseResource(Resource baseResource) {

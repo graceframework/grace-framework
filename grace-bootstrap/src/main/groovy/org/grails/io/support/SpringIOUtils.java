@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import groovy.xml.FactorySupport;
 import groovy.xml.XmlSlurper;
+import org.springframework.core.io.Resource;
 import org.xml.sax.SAXException;
 
 /**
@@ -54,6 +55,7 @@ import org.xml.sax.SAXException;
  *
  * @author Juergen Hoeller
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @since 06.10.2003
  */

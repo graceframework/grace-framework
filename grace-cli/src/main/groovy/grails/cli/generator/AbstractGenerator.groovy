@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,17 @@ package grails.cli.generator
 
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.FromString
+import org.springframework.core.io.DefaultResourceLoader
+import org.springframework.core.io.Resource
 
 import grails.build.logging.GrailsConsole
 import grails.dev.commands.io.FileSystemInteraction
 import grails.dev.commands.io.FileSystemInteractionImpl
 import grails.dev.commands.template.TemplateRenderer
 import grails.dev.commands.template.TemplateRendererImpl
+
 import org.grails.build.parsing.CommandLine
 import org.grails.config.CodeGenConfig
-import org.grails.io.support.DefaultResourceLoader
-import org.grails.io.support.Resource
 import org.grails.io.support.SpringIOUtils
 
 /**
