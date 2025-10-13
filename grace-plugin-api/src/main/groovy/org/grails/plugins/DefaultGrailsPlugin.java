@@ -66,7 +66,6 @@ import grails.util.GrailsArrayUtils;
 import grails.util.GrailsClassUtils;
 import grails.util.GrailsUtil;
 
-import org.grails.core.io.CachingPathMatchingResourcePatternResolver;
 import org.grails.plugins.support.WatchPattern;
 import org.grails.plugins.support.WatchPatternParser;
 import org.grails.spring.RuntimeSpringConfiguration;
@@ -141,7 +140,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         // create properties
         this.dependencies = Collections.emptyMap();
         this.pluginDescriptor = resource;
-        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = new PathMatchingResourcePatternResolver();
 
         try {
             initialisePlugin(pluginClass);

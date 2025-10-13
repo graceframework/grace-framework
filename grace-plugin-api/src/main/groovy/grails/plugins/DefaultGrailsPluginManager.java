@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,6 @@ import grails.util.Environment;
 import grails.util.GrailsClassUtils;
 
 import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.core.io.CachingPathMatchingResourcePatternResolver;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.AbstractGrailsPluginManager;
 import org.grails.plugins.BinaryGrailsPlugin;
@@ -100,6 +99,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * depends on and which ones it is incompatible with and should evict
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
@@ -141,7 +141,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         super(application);
         Assert.notNull(application, "Argument [application] cannot be null!");
 
-        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = new PathMatchingResourcePatternResolver();
         try {
             this.pluginResources = this.resolver.getResources(resourcePath);
         }
@@ -154,7 +154,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     public DefaultGrailsPluginManager(String[] pluginResources, GrailsApplication application) {
         super(application);
-        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = new PathMatchingResourcePatternResolver();
 
         List<Resource> resourceList = new ArrayList<>();
         for (String resourcePath : pluginResources) {
@@ -174,14 +174,14 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     public DefaultGrailsPluginManager(Class<?>[] plugins, GrailsApplication application) {
         super(application);
         this.pluginClasses.addAll(Set.of(plugins));
-        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = new PathMatchingResourcePatternResolver();
         this.application = application;
         setPluginFilter();
     }
 
     public DefaultGrailsPluginManager(Resource[] pluginFiles, GrailsApplication application) {
         super(application);
-        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = new PathMatchingResourcePatternResolver();
         this.pluginResources = pluginFiles;
         this.application = application;
         setPluginFilter();
