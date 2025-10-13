@@ -1,5 +1,7 @@
 package org.grails.io.support
 
+import org.springframework.core.io.Resource
+import org.springframework.core.io.UrlResource
 import spock.lang.Specification
 
 import grails.util.BuildSettings

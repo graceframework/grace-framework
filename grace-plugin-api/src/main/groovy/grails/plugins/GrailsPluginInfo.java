@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,12 @@ package grails.plugins;
 
 import java.util.Map;
 
-import org.grails.io.support.Resource;
+import org.springframework.core.io.Resource;
 
 /**
  * Base interface that just contains information about a particular plugin.
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.3
  */
 public interface GrailsPluginInfo {

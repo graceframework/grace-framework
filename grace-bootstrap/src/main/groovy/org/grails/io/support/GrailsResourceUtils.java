@@ -37,6 +37,10 @@ import java.util.regex.Pattern;
 import groovy.lang.Closure;
 import groovy.util.ConfigObject;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.util.ReflectionUtils;
 
 import grails.util.BuildSettings;
@@ -46,6 +50,7 @@ import grails.util.BuildSettings;
  *
  * @author Graeme Rocher
  * @author Juergen Hoeller
+ * @author Michael Yan
  * @since 2.0
  */
 public final class GrailsResourceUtils {
@@ -840,7 +845,12 @@ public final class GrailsResourceUtils {
         if (appDir == null) {
             return null;
         }
-        return appDir.createRelative("views");
+        try {
+            return appDir.createRelative("views");
+        }
+        catch (IOException ignored) {
+        }
+        return null;
     }
 
     public static Resource getAppDir(Resource resource) {
@@ -1074,11 +1084,26 @@ public final class GrailsResourceUtils {
         if (configName instanceof CharSequence) {
             className = configName.toString();
         }
-        return ReflectionUtils.accessibleConstructor(forName(className, DefaultResourceLoader.getDefaultClassLoader())).newInstance();
+        return ReflectionUtils.accessibleConstructor(forName(className, getDefaultClassLoader())).newInstance();
     }
 
     private static Class<?> forName(String className, ClassLoader defaultClassLoader) throws ClassNotFoundException {
         return defaultClassLoader.loadClass(className);
+    }
+
+    private static ClassLoader getDefaultClassLoader() {
+        ClassLoader cl = null;
+        try {
+            cl = Thread.currentThread().getContextClassLoader();
+        }
+        catch (Throwable ignored) {
+            // Cannot access thread context ClassLoader - falling back to system class loader...
+        }
+        if (cl == null) {
+            // No thread context class loader -> use class loader of this class.
+            cl = DefaultResourceLoader.class.getClassLoader();
+        }
+        return cl;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2007-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,57 @@
  */
 package org.grails.io.support;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.Assert;
+
 /**
- * Loads relative to a static base resource
+ * A ResourceLoader that loads resources from a statically defined base resource.
  *
  * @author Graeme Rocher
- * @since 3.1
+ * @author Michael Yan
+ * @since 0.5
  */
 public class StaticResourceLoader implements ResourceLoader {
 
-    private final Resource baseResource;
+    private static final Logger logger = LoggerFactory.getLogger(StaticResourceLoader.class);
+
+    private Resource baseResource;
+
+    public StaticResourceLoader() {
+    }
 
     public StaticResourceLoader(Resource baseResource) {
         this.baseResource = baseResource;
     }
 
+    public void setBaseResource(Resource baseResource) {
+        this.baseResource = baseResource;
+    }
+
     public Resource getResource(String location) {
-        return this.baseResource.createRelative(location);
+        Assert.state(this.baseResource != null, "Property [baseResource] not set!");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Loading resource for path [{}] from base resource {}", location, this.baseResource);
+        }
+        try {
+            Resource resource = this.baseResource.createRelative(location);
+            if (logger.isDebugEnabled() && resource.exists()) {
+                logger.debug("Found resource for path [{}] from base resource {}", location, this.baseResource);
+            }
+            return resource;
+        }
+        catch (IOException e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Error loading resource for path: " + location, e);
+            }
+            return null;
+        }
     }
 
     public ClassLoader getClassLoader() {
@@ -38,4 +73,3 @@ public class StaticResourceLoader implements ResourceLoader {
     }
 
 }
-

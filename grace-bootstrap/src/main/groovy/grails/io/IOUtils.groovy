@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,18 @@ import java.nio.file.Paths
 import groovy.io.FileType
 import groovy.transform.CompileStatic
 import groovy.transform.Memoized
+import org.springframework.core.io.Resource
+import org.springframework.core.io.UrlResource
 
 import grails.util.BuildSettings
 
-import org.grails.io.support.Resource
 import org.grails.io.support.SpringIOUtils
-import org.grails.io.support.UrlResource
 
 /**
  * Utility methods for performing I/O operations.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.4
  */
 @CompileStatic
@@ -267,7 +268,7 @@ class IOUtils {
         URL rootResource = findRootResource(targetClass)
         if (rootResource != null) {
             try {
-                File rootFile = new UrlResource(rootResource).file.canonicalFile
+                File rootFile = new UrlResource(rootResource).getFile().getCanonicalFile()
                 String rootPath = rootFile.path
                 String buildClasspath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
                 if (rootPath.contains(buildClasspath)) {

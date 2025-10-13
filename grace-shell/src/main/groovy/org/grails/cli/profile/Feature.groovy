@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
 package org.grails.cli.profile
 
 import org.eclipse.aether.graph.Dependency
+import org.springframework.core.io.Resource
 
 import org.grails.config.NavigableMap
-import org.grails.io.support.Resource
 
 /**
  * An interface that describes a feature of a profile. Different profiles may share many common features even if the profile itself is different.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 interface Feature {

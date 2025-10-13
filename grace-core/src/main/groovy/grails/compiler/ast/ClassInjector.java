@@ -23,9 +23,8 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 import org.springframework.core.Ordered;
-
-import org.grails.io.support.FileSystemResource;
-import org.grails.io.support.Resource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 
 /**
  * When implemented allows additional properties to be injected into Grails

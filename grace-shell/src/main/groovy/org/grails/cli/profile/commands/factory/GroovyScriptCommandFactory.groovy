@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
+import org.springframework.core.io.Resource
 
 import grails.build.logging.GrailsConsole
 import grails.util.GrailsNameUtils
@@ -30,12 +31,12 @@ import org.grails.cli.profile.Command
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommandTransform
-import org.grails.io.support.Resource
 
 /**
  * A {@link CommandFactory} that creates {@link Command} instances from Groovy scripts
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -54,6 +55,7 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
         catch (Throwable e) {
             GrailsConsole.getInstance().error("Failed to compile ${resource.filename}: " + e.getMessage(), e)
         }
+        return null
     }
 
     @CompileDynamic

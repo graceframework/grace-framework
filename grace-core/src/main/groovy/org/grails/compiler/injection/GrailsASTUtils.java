@@ -90,6 +90,8 @@ import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
 import org.codehaus.groovy.transform.sc.StaticCompileTransformation;
 import org.codehaus.groovy.transform.trait.Traits;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -100,8 +102,6 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.GrailsNameUtils;
 
 import org.grails.datastore.mapping.model.config.GormProperties;
-import org.grails.io.support.FileSystemResource;
-import org.grails.io.support.Resource;
 
 /**
  * Helper methods for working with Groovy AST trees.

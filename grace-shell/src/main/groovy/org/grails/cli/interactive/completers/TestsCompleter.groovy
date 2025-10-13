@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 package org.grails.cli.interactive.completers
 
 import groovy.transform.CompileStatic
+import org.springframework.core.io.Resource
 
 import grails.util.BuildSettings
-
-import org.grails.io.support.Resource
 
 /**
  * A completer that completes the names of the tests in the project
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic

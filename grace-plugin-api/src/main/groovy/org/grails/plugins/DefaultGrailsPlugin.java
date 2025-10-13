@@ -66,8 +66,6 @@ import grails.util.GrailsArrayUtils;
 import grails.util.GrailsClassUtils;
 import grails.util.GrailsUtil;
 
-import org.grails.core.io.CachingPathMatchingResourcePatternResolver;
-import org.grails.core.io.SpringResource;
 import org.grails.plugins.support.WatchPattern;
 import org.grails.plugins.support.WatchPatternParser;
 import org.grails.spring.RuntimeSpringConfiguration;
@@ -142,7 +140,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         // create properties
         this.dependencies = Collections.emptyMap();
         this.pluginDescriptor = resource;
-        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = new PathMatchingResourcePatternResolver();
 
         try {
             initialisePlugin(pluginClass);
@@ -728,7 +726,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     @Override
     public void refresh() {
         // do nothing
-        org.grails.io.support.Resource descriptor = getDescriptor();
+        Resource descriptor = getDescriptor();
         if (this.grailsApplication == null || descriptor == null) {
             return;
         }
@@ -919,17 +917,17 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         return getName() + '-' + getVersion();
     }
 
-    public org.grails.io.support.Resource getDescriptor() {
-        return new SpringResource(this.pluginDescriptor);
+    public Resource getDescriptor() {
+        return this.pluginDescriptor;
     }
 
     public void setDescriptor(Resource descriptor) {
         this.pluginDescriptor = descriptor;
     }
 
-    public org.grails.io.support.Resource getPluginDir() {
+    public Resource getPluginDir() {
         try {
-            return new SpringResource(this.pluginDescriptor.createRelative("."));
+            return this.pluginDescriptor.createRelative(".");
         }
         catch (IOException ignored) {
             return null;

@@ -14,10 +14,11 @@
  */
 package org.grails.support;
 
-import org.grails.core.io.StaticResourceLoader;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+
+import org.grails.io.support.StaticResourceLoader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 /**
  * Loads Resources from Strings that are registered as Mock resources.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 public class MockStringResourceLoader extends MockResourceLoader {
@@ -59,7 +61,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      * @param contents The contents of the resource
      */
     public void registerMockResource(String location, String contents) {
-        this.mockResources.put(location, new GrailsByteArrayResource(contents.getBytes(StandardCharsets.UTF_8), location));
+        this.mockResources.put(location, new ByteArrayResource(contents.getBytes(StandardCharsets.UTF_8), location));
     }
 
     /**
@@ -70,7 +72,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      * @param contents The contents of the resource
      */
     public void registerMockResource(String location, byte[] contents) {
-        this.mockResources.put(location, new GrailsByteArrayResource(contents, location));
+        this.mockResources.put(location, new ByteArrayResource(contents, location));
     }
 
 }

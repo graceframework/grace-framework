@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.cli.profile.commands.factory
 import groovy.json.JsonParserType
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
+import org.springframework.core.io.Resource
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
@@ -25,12 +26,12 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
-import org.grails.io.support.Resource
 
 /**
  * A {@link CommandFactory} that can discover commands defined in YAML or JSON
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -63,6 +64,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
         data
     }
 
+    @Override
     protected Command createCommand(Profile profile, String commandName, Resource resource, Map data) {
         if (!data.profile || profile.name == data.profile?.toString()) {
             Command command = new DefaultMultiStepCommand(commandName, profile, data)

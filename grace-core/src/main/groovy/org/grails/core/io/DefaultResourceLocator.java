@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ import org.grails.plugins.BinaryGrailsPlugin;
  * Default ResourceLocator implementation that doesn't take into account servlet loading.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAware, PluginManagerAware {
@@ -74,7 +75,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
 
     public void setSearchLocation(String searchLocation) {
         ResourceLoader resourceLoader = getDefaultResourceLoader();
-        this.patchMatchingResolver = new CachingPathMatchingResourcePatternResolver(resourceLoader);
+        this.patchMatchingResolver = new PathMatchingResourcePatternResolver(resourceLoader);
         initializeForSearchLocation(searchLocation);
     }
 
@@ -83,7 +84,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
     }
 
     public void setSearchLocations(Collection<String> searchLocations) {
-        this.patchMatchingResolver = new CachingPathMatchingResourcePatternResolver(getDefaultResourceLoader());
+        this.patchMatchingResolver = new PathMatchingResourcePatternResolver(getDefaultResourceLoader());
         for (String searchLocation : searchLocations) {
             initializeForSearchLocation(searchLocation);
         }

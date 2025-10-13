@@ -26,6 +26,7 @@ import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
 import org.eclipse.aether.graph.Exclusion
 import org.eclipse.aether.util.graph.selector.ExclusionDependencySelector
+import org.springframework.core.io.Resource
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
@@ -40,7 +41,6 @@ import org.grails.cli.profile.commands.CommandRegistry
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.config.NavigableMap
-import org.grails.io.support.Resource
 
 import static org.grails.cli.profile.ProfileUtil.createDependency
 

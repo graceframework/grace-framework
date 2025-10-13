@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2024 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,14 @@ import groovy.text.GStringTemplateEngine
 import groovy.text.Template
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.springframework.core.io.DefaultResourceLoader
+import org.springframework.core.io.Resource
+import org.springframework.core.io.ResourceLoader
 
 import grails.build.logging.GrailsConsole
 import grails.codegen.model.Model
 import grails.dev.commands.io.FileSystemInteraction
 import grails.dev.commands.io.FileSystemInteractionImpl
-
-import org.grails.io.support.DefaultResourceLoader
-import org.grails.io.support.Resource
-import org.grails.io.support.ResourceLoader
 
 /**
  * API for locating and rendering templates in the code generation layer
