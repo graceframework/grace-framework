@@ -20,7 +20,7 @@ import org.springframework.core.io.Resource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
 import org.grails.cli.profile.Profile
-import org.grails.core.io.StaticResourceLoader
+import org.grails.io.support.StaticResourceLoader
 
 /**
  * A {@link CommandResourceResolver} that resolves from the file system
