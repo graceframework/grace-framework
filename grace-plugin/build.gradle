@@ -6,6 +6,11 @@ dependencies {
     compileOnly "org.graceframework:grace-core", {
         exclude group: 'org.graceframework', module: 'grace-datastore-core'
     }
+    compileOnly "org.graceframework:grace-plugin-domain-class", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-core'
+        exclude group: 'org.graceframework', module: 'grace-datastore-gorm'
+        exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
+    }
     compileOnly("org.graceframework:grace-cli")
 
     api "jakarta.persistence:jakarta.persistence-api"
