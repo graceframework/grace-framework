@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.grails.gsp.jsp
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 
-import org.grails.io.support.SpringIOUtils
+import grails.io.IOUtils
 
 /**
  * reads the tag library definitions from a web.xml file
@@ -33,7 +33,7 @@ class WebXmlTagLibraryReader {
      */
     Map<String, String> tagLocations = [:]
 
-    public WebXmlTagLibraryReader(InputStream inputStream) {
+    WebXmlTagLibraryReader(InputStream inputStream) {
         inputStream.withStream {
             init(new BufferedInputStream(inputStream))
         }
@@ -41,7 +41,7 @@ class WebXmlTagLibraryReader {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     private init(InputStream inputStream) {
-        def rootNode = SpringIOUtils.createXmlSlurper().parse(inputStream)
+        def rootNode = IOUtils.createXmlSlurper().parse(inputStream)
         rootNode.taglib.each { taglib ->
             String uri = taglib.'taglib-uri'.text()
             String location = taglib.'taglib-location'.text()

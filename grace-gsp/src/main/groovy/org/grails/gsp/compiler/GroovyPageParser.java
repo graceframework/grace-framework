@@ -56,7 +56,6 @@ import org.grails.gsp.GroovyPage;
 import org.grails.gsp.ModelRecordingGroovyPage;
 import org.grails.gsp.compiler.tags.GrailsTagRegistry;
 import org.grails.gsp.compiler.tags.GroovySyntaxTag;
-import org.grails.io.support.SpringIOUtils;
 import org.grails.taglib.GrailsTagException;
 import org.grails.taglib.encoder.OutputEncodingSettings;
 
@@ -68,6 +67,7 @@ import org.grails.taglib.encoder.OutputEncodingSettings;
  * @author Troy Heninger
  * @author Graeme Rocher
  * @author Lari Hotari
+ * @author Michael Yan
  */
 public class GroovyPageParser implements Tokens {
 
@@ -451,7 +451,7 @@ public class GroovyPageParser implements Tokens {
             return byteOutputBuffer.getInputStream();
         }
         finally {
-            SpringIOUtils.closeQuietly(keepGeneratedWriter);
+            IOUtils.closeQuietly(keepGeneratedWriter);
         }
     }
 
@@ -498,7 +498,7 @@ public class GroovyPageParser implements Tokens {
             }
         }
         finally {
-            SpringIOUtils.closeQuietly(dataOut);
+            IOUtils.closeQuietly(dataOut);
         }
     }
 
@@ -515,7 +515,7 @@ public class GroovyPageParser implements Tokens {
             }
         }
         finally {
-            SpringIOUtils.closeQuietly(dataOut);
+            IOUtils.closeQuietly(dataOut);
         }
     }
 
@@ -1406,7 +1406,7 @@ public class GroovyPageParser implements Tokens {
         if (gspEncoding == null) {
             gspEncoding = DEFAULT_ENCODING;
         }
-        return IOUtils.toString(in, gspEncoding);
+        return IOUtils.copyToString(in, gspEncoding);
     }
 
     public static String getGspEncoding() {

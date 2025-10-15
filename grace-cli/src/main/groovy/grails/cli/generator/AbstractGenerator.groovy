@@ -25,10 +25,10 @@ import grails.dev.commands.io.FileSystemInteraction
 import grails.dev.commands.io.FileSystemInteractionImpl
 import grails.dev.commands.template.TemplateRenderer
 import grails.dev.commands.template.TemplateRendererImpl
+import grails.io.IOUtils
 
 import org.grails.build.parsing.CommandLine
 import org.grails.config.CodeGenConfig
-import org.grails.io.support.SpringIOUtils
 
 /**
  * @author Michael Yan
@@ -111,7 +111,7 @@ class AbstractGenerator implements Generator {
 
     void copyFile(String source, String destination) {
         this.console.addStatus('create '.padLeft(13), destination, 'GREEN')
-        SpringIOUtils.copy(this.templateRenderer.template(getTemplateRoot(), source), file(destination))
+        IOUtils.copy(this.templateRenderer.template(getTemplateRoot(), source), file(destination))
     }
 
     void removeFile(String destination) {

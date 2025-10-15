@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,6 @@ import grails.web.mime.MimeType
 import grails.web.mime.MimeUtility
 
 import org.grails.gsp.GroovyPageTemplate
-import org.grails.io.support.SpringIOUtils
 import org.grails.web.json.JSONElement
 import org.grails.web.servlet.mvc.ActionResultTransformer
 import org.grails.web.servlet.mvc.GrailsWebRequest
@@ -401,7 +400,7 @@ trait ResponseRenderer extends WebAttributes {
                     else {
                         input = IOUtils.openStream(new File(o.toString()))
                     }
-                    SpringIOUtils.copy input, response.getOutputStream()
+                    IOUtils.copy(input, response.getOutputStream())
                 }
                 catch (IOException e) {
                     throw new ControllerExecutionException(

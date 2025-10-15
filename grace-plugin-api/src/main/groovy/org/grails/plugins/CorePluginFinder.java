@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,15 +40,16 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import grails.core.GrailsApplication;
 import grails.core.support.ParentApplicationContextAware;
+import grails.io.IOUtils;
 
 import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.io.support.SpringIOUtils;
 
 /**
  * Loads binary plugin classes. Contains functionality moved in from <code>DefaultGrailsPluginManager</code>.
  *
  * @author Graeme Rocher
  * @author Phil Zoio
+ * @author Michael Yan
  */
 public class CorePluginFinder implements ParentApplicationContextAware {
 
@@ -106,7 +107,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
 
     private void loadCorePluginsFromResources(Resource[] resources) throws IOException {
         try {
-            SAXParser saxParser = SpringIOUtils.newSAXParser();
+            SAXParser saxParser = IOUtils.newSAXParser();
             for (Resource resource : resources) {
                 try (InputStream input = resource.getInputStream()) {
                     PluginHandler ph = new PluginHandler();

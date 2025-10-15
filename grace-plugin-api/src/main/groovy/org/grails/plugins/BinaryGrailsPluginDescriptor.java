@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,9 @@ import java.util.List;
 import groovy.xml.slurpersupport.GPathResult;
 import org.springframework.core.io.Resource;
 
+import grails.io.IOUtils;
+
 import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.io.support.SpringIOUtils;
 
 /**
  * Holds a reference to the parsed grails-plugin.xml descriptor and the
@@ -72,7 +73,7 @@ public class BinaryGrailsPluginDescriptor {
                 throw new GrailsConfigurationException("Error parsing plugin descriptor: " + this.resource.getFilename(), e);
             }
             try {
-                this.parsedXml = SpringIOUtils.createXmlSlurper().parse(inputStream);
+                this.parsedXml = IOUtils.createXmlSlurper().parse(inputStream);
             }
             catch (Throwable e) {
                 throw new GrailsConfigurationException("Error parsing plugin descriptor: " + this.resource.getFilename(), e);

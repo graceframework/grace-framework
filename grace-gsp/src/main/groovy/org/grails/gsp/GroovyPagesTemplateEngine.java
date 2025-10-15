@@ -526,7 +526,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         GroovyPageParser parser;
         String path = getPathForResource(res);
         try {
-            String gspSource = IOUtils.toString(inputStream, getGspEncoding());
+            String gspSource = IOUtils.copyToString(inputStream, getGspEncoding());
             parser = new GroovyPageParser(name, path, path, decorateGroovyPageSource(new StringBuilder(gspSource)).toString());
 
             if (this.grailsApplication != null) {

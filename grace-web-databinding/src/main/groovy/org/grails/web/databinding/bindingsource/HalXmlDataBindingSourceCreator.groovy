@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ import groovy.xml.slurpersupport.GPathResult
 
 import grails.databinding.DataBindingSource
 import grails.databinding.SimpleMapDataBindingSource
+import grails.io.IOUtils
 import grails.web.mime.MimeType
-
-import org.grails.io.support.SpringIOUtils
 
 /**
  * @author Jeff Brown
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
@@ -38,7 +38,7 @@ class HalXmlDataBindingSourceCreator extends XmlDataBindingSourceCreator {
 
     @Override
     protected DataBindingSource createBindingSource(Reader reader) {
-        GPathResult gpath = SpringIOUtils.createXmlSlurper().parse(reader)
+        GPathResult gpath = IOUtils.createXmlSlurper().parse(reader)
         HalGPathResultMap gpathMap = new HalGPathResultMap(gpath)
         new SimpleMapDataBindingSource(gpathMap)
     }

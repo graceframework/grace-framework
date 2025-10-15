@@ -15,17 +15,25 @@
  */
 package grails.io
 
+import java.nio.file.Files
 import java.nio.file.Paths
+
+import javax.xml.XMLConstants
+import javax.xml.parsers.ParserConfigurationException
+import javax.xml.parsers.SAXParser
+import javax.xml.parsers.SAXParserFactory
 
 import groovy.io.FileType
 import groovy.transform.CompileStatic
 import groovy.transform.Memoized
+import groovy.xml.FactorySupport
+import groovy.xml.XmlSlurper
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
+import org.springframework.util.FileCopyUtils
+import org.xml.sax.SAXException
 
 import grails.util.BuildSettings
-
-import org.grails.io.support.SpringIOUtils
 
 /**
  * Utility methods for performing I/O operations.
@@ -36,6 +44,11 @@ import org.grails.io.support.SpringIOUtils
  */
 @CompileStatic
 class IOUtils {
+
+    /**
+     * The default buffer size used when copying bytes.
+     */
+    public static final int BUFFER_SIZE = 8192
 
     public static final String RESOURCE_JAR_PREFIX = '.jar!'
     public static final String RESOURCE_WAR_PREFIX = '.war!'
@@ -69,10 +82,35 @@ class IOUtils {
      * Convert a reader to a String, reading the data from the reader
      * @param reader The reader
      * @return The string
+     * @deprecated since 2024.0.0 in favor of {@link #copyToString(Reader)}
      */
+    @Deprecated(since = '2024.0.0', forRemoval = true)
     static String toString(Reader reader) {
-        StringWriter writer = new StringWriter()
-        SpringIOUtils.copy reader, writer
+        copyToString(reader)
+    }
+
+    /**
+     * Convert a stream to a String, reading the data from the stream
+     * @param stream The stream
+     * @return The string
+     * @deprecated since 2024.0.0 in favor of {@link #copyToString(InputStream, String)}
+     */
+    @Deprecated(since = '2024.0.0', forRemoval = true)
+    static String toString(InputStream stream, String encoding = null) {
+
+    }
+
+    /**
+     * Convert a reader to a String, reading the data from the reader
+     * @param reader The reader
+     * @return The string
+     */
+    static String copyToString(Reader reader) {
+        if (!reader) {
+            return ''
+        }
+        StringWriter writer = new StringWriter(BUFFER_SIZE)
+        copy(reader, writer)
         writer.toString()
     }
 
@@ -81,9 +119,12 @@ class IOUtils {
      * @param stream The stream
      * @return The string
      */
-    static String toString(InputStream stream, String encoding = null) {
-        StringWriter writer = new StringWriter()
-        copy stream, writer, encoding
+    static String copyToString(InputStream stream, String encoding = null) {
+        if (!stream) {
+            return ''
+        }
+        StringWriter writer = new StringWriter(BUFFER_SIZE)
+        copy(stream, writer, encoding)
         writer.toString()
     }
 
@@ -95,7 +136,108 @@ class IOUtils {
      */
     static void copy(InputStream input, Writer output, String encoding = null) {
         InputStreamReader reader = encoding ? new InputStreamReader(input, encoding) : new InputStreamReader(input)
-        SpringIOUtils.copy(reader, output)
+        FileCopyUtils.copy(reader, output)
+    }
+
+    /**
+     * Copy the contents of the given input File to the given output File.
+     * @param resource the resource to copy from
+     * @param out the file to copy to
+     * @return the number of bytes copied
+     * @throws java.io.IOException in case of I/O errors
+     */
+    static int copy(Resource resource, File out) throws IOException {
+        return FileCopyUtils.copy(resource.getInputStream(), Files.newOutputStream(out.toPath()))
+    }
+
+    /**
+     * Copy the contents of the given Reader to the given Writer.
+     * Closes both when done.
+     * @param reader the Reader to copy from
+     * @param writer the Writer to copy to
+     * @return the number of characters copied
+     * @throws IOException in case of I/O errors
+     */
+    static int copy(Reader reader, Writer writer) throws IOException {
+        return FileCopyUtils.copy(reader, writer)
+    }
+
+    /**
+     * Copy the contents of the given InputStream to the given OutputStream.
+     * Closes both streams when done.
+     * @param is the stream to copy from
+     * @param os the stream to copy to
+     * @return the number of bytes copied
+     * @throws IOException in case of I/O errors
+     */
+    static int copy(InputStream is, OutputStream os) throws IOException {
+        return FileCopyUtils.copy(is, os)
+    }
+
+    private static SAXParserFactory saxParserFactory = null
+
+    /**
+     * Closes a closeable gracefully without throwing exceptions etc.
+     *
+     * @param closeable The closeable
+     */
+    static void closeQuietly(Closeable closeable) {
+        try {
+            if (closeable != null) {
+                closeable.close()
+            }
+        }
+        catch (IOException ignored) {
+        }
+    }
+
+    static XmlSlurper createXmlSlurper() throws ParserConfigurationException, SAXException {
+        return new XmlSlurper(newSAXParser())
+    }
+
+    static SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
+        SAXParserFactory factory = createParserFactory()
+        return factory.newSAXParser()
+    }
+
+    private static SAXParserFactory createParserFactory() throws ParserConfigurationException {
+        if (saxParserFactory == null) {
+            saxParserFactory = FactorySupport.createSaxParserFactory();
+            saxParserFactory.setNamespaceAware(true);
+            saxParserFactory.setValidating(false);
+
+            try {
+                saxParserFactory.setFeature('http://apache.org/xml/features/disallow-doctype-decl', false)
+            }
+            catch (Exception ignored) {
+            }
+            try {
+                saxParserFactory.setFeature('http://xml.org/sax/features/external-general-entities', false)
+            }
+            catch (Exception ignored) {
+            }
+            try {
+                saxParserFactory.setFeature('http://xml.org/sax/features/external-parameter-entities', false)
+            }
+            catch (Exception ignored) {
+            }
+            try {
+                saxParserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)
+            }
+            catch (Exception ignored) {
+            }
+            try {
+                saxParserFactory.setFeature('http://apache.org/xml/features/nonvalidating/load-dtd-grammar', false)
+            }
+            catch (Exception ignored) {
+            }
+            try {
+                saxParserFactory.setFeature('http://apache.org/xml/features/nonvalidating/load-external-dtd', false)
+            }
+            catch (Exception ignored) {
+            }
+        }
+        return saxParserFactory
     }
 
     /**

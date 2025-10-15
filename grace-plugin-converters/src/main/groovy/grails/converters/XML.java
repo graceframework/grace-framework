@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2023 the original author or authors.
+ * Copyright 2006-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,12 +35,12 @@ import org.springframework.util.Assert;
 
 import grails.core.support.proxy.EntityProxyHandler;
 import grails.core.support.proxy.ProxyHandler;
+import grails.io.IOUtils;
 import grails.util.GrailsNameUtils;
 import grails.util.GrailsWebUtil;
 import grails.web.mime.MimeType;
 
 import org.grails.buffer.FastStringWriter;
-import org.grails.io.support.SpringIOUtils;
 import org.grails.web.converters.AbstractConverter;
 import org.grails.web.converters.Converter;
 import org.grails.web.converters.ConverterUtil;
@@ -322,7 +322,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
      */
     public static GPathResult parse(String source) throws ConverterException {
         try {
-            return SpringIOUtils.createXmlSlurper().parseText(source);
+            return IOUtils.createXmlSlurper().parseText(source);
         }
         catch (Exception e) {
             throw new ConverterException("Error parsing XML", e);
@@ -340,7 +340,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     public static GPathResult parse(InputStream is, String encoding) throws ConverterException {
         try {
             InputStreamReader reader = new InputStreamReader(is, encoding);
-            return SpringIOUtils.createXmlSlurper().parse(reader);
+            return IOUtils.createXmlSlurper().parse(reader);
         }
         catch (Exception e) {
             throw new ConverterException("Error parsing XML", e);
