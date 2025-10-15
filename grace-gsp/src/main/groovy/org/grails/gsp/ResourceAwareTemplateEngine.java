@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,16 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport;
 import org.springframework.core.io.Resource;
 
+import grails.io.IOUtils;
+
 import org.grails.buffer.StreamByteBuffer;
-import org.grails.io.support.SpringIOUtils;
 
 /**
  * An abstract TemplateEngine that extends the default Groovy TemplateEngine (@see groovy.text.TemplateEngine) and
  * provides the ability to create templates from the Spring Resource API
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 public abstract class ResourceAwareTemplateEngine extends TemplateEngine {
@@ -72,7 +74,7 @@ public abstract class ResourceAwareTemplateEngine extends TemplateEngine {
     @Override
     public final Template createTemplate(Reader reader) throws IOException {
         StreamByteBuffer buf = new StreamByteBuffer();
-        SpringIOUtils.copy(reader, new OutputStreamWriter(buf.getOutputStream(), GROOVY_SOURCE_CHAR_ENCODING));
+        IOUtils.copy(reader, new OutputStreamWriter(buf.getOutputStream(), GROOVY_SOURCE_CHAR_ENCODING));
         return createTemplate(buf.getInputStream());
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import org.xml.sax.SAXParseException
 import grails.databinding.CollectionDataBindingSource
 import grails.databinding.DataBindingSource
 import grails.databinding.SimpleMapDataBindingSource
+import grails.io.IOUtils
 import grails.web.mime.MimeType
 
 import org.grails.databinding.bindingsource.DataBindingSourceCreationException
 import org.grails.databinding.bindingsource.DataBindingSourceCreator
 import org.grails.databinding.xml.GPathResultCollectionDataBindingSource
 import org.grails.databinding.xml.GPathResultMap
-import org.grails.io.support.SpringIOUtils
 
 /**
  * Creates DataBindingSource objects from XML in the request body
@@ -56,7 +56,7 @@ class XmlDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceCr
 
     @Override
     protected DataBindingSource createBindingSource(Reader reader) {
-        GPathResult gpath = SpringIOUtils.createXmlSlurper().parse(reader)
+        GPathResult gpath = IOUtils.createXmlSlurper().parse(reader)
         GPathResultMap gpathMap = new GPathResultMap(gpath)
         new SimpleMapDataBindingSource(gpathMap)
     }
@@ -72,7 +72,7 @@ class XmlDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceCr
 
     @Override
     protected CollectionDataBindingSource createCollectionBindingSource(Reader reader) {
-        GPathResult gpath = SpringIOUtils.createXmlSlurper().parse(reader)
+        GPathResult gpath = IOUtils.createXmlSlurper().parse(reader)
         new GPathResultCollectionDataBindingSource(gpath)
     }
 

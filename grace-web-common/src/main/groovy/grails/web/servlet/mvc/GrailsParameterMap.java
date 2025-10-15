@@ -99,7 +99,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                 try {
                     Reader reader = request.getReader();
                     if (reader != null) {
-                        String contents = IOUtils.toString(reader);
+                        String contents = IOUtils.copyToString(reader);
                         request.setAttribute(REQUEST_BODY_PARSED, true);
                         requestMap.putAll(WebUtils.fromQueryString(contents));
                     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2023 the original author or authors.
+ * Copyright 2008-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.util.ReflectionUtils
 
 import grails.converters.JSON
+import grails.io.IOUtils
 
-import org.grails.io.support.SpringIOUtils
 import org.grails.web.json.JSONElement
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
@@ -82,7 +82,7 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
      * @return The response XML
      */
     GPathResult getXml() {
-        SpringIOUtils.createXmlSlurper().parseText(contentAsString)
+        IOUtils.createXmlSlurper().parseText(contentAsString)
     }
 
     /**

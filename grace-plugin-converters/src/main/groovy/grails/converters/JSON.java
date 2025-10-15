@@ -262,7 +262,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      * @throws ConverterException when the JSON content is not valid
      */
     public static JSONElement parse(Reader reader) throws ConverterException {
-        return parse(IOUtils.toString(reader));
+        return parse(IOUtils.copyToString(reader));
     }
 
     /**
@@ -296,7 +296,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      * @throws ConverterException when the JSON content is not valid
      */
     public static JSONElement parse(InputStream is, String encoding) throws ConverterException {
-        return parse(IOUtils.toString(is, encoding));
+        return parse(IOUtils.copyToString(is, encoding));
     }
 
     /**

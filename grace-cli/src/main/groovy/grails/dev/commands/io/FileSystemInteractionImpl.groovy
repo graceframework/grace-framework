@@ -22,11 +22,11 @@ import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
+import grails.io.IOUtils
 import grails.util.BuildSettings
 
 import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.ResourceLocator
-import org.grails.io.support.SpringIOUtils
 
 /**
  * Utility methods exposed to scripts for interacting with resources (found on the file system or jars) and the file system
@@ -146,7 +146,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
                 mkdir(to)
                 to = new File(to, from.filename)
             }
-            SpringIOUtils.copy(from, to)
+            IOUtils.copy(from, to)
             println("Copied ${from.filename} to location ${to.canonicalPath}")
         }
         this

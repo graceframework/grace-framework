@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import groovy.transform.TypeCheckingMode
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
-import org.grails.io.support.SpringIOUtils
+import grails.io.IOUtils
 
 /**
  * A SAX parser implementation that reads the contents of a tag library definition (TLD) into two properties
@@ -42,7 +42,7 @@ class TldReader {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     private init(InputStream inputStream) {
-        def rootNode = SpringIOUtils.createXmlSlurper().parse(inputStream)
+        def rootNode = IOUtils.createXmlSlurper().parse(inputStream)
         uri = rootNode.uri.text()
         rootNode.tag.each { tag ->
             String tagName = tag.name.text()
