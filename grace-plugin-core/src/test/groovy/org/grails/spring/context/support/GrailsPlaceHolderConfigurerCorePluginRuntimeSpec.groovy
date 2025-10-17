@@ -1,4 +1,4 @@
-package grails.spring
+package org.grails.spring.context.support
 
 import org.springframework.context.ApplicationContext
 
@@ -6,7 +6,7 @@ import grails.core.DefaultGrailsApplication
 import spock.lang.Issue
 import spock.lang.Specification
 
-import org.grails.spring.context.support.GrailsPlaceholderConfigurer
+import grails.spring.BeanBuilder
 
 /**
  * @author Graeme Rocher

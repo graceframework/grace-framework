@@ -7,7 +7,6 @@ dependencies {
     api libs.spring.boot
     api libs.spring.context
     api libs.spring.core
-    compileOnly libs.spring.tx
 
     testImplementation project(":grace-test-support")
 }

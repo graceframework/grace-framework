@@ -14,6 +14,7 @@ dependencies {
     api libs.spring.boot.autoconfigure
     api libs.spring.context
     api libs.spring.core
+    compileOnly libs.spring.tx
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
