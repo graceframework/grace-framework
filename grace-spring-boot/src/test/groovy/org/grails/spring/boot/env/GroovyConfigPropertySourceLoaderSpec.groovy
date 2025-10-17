@@ -1,4 +1,4 @@
-package org.grails.core.cfg
+package org.grails.spring.boot.env
 
 import org.grails.config.PropertySourcesConfig
 import org.springframework.core.env.MutablePropertySources
@@ -6,8 +6,6 @@ import org.springframework.core.env.PropertySources
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import spock.lang.Specification
-
-import org.grails.spring.boot.env.GroovyConfigPropertySourceLoader
 
 @SuppressWarnings("GrMethodMayBeStatic")
 class GroovyConfigPropertySourceLoaderSpec extends Specification {

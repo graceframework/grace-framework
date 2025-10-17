@@ -8,5 +8,5 @@ dependencies {
     api libs.spring.context
     api libs.spring.core
 
-    testImplementation project(":grace-test-support")
+    testImplementation project(":grace-core")
 }
