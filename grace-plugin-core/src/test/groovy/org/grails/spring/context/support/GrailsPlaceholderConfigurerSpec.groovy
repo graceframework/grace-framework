@@ -1,8 +1,8 @@
-package grails.spring
+package org.grails.spring.context.support
 
+import grails.spring.BeanBuilder
 import grails.util.Holders
 import grails.core.DefaultGrailsApplication
-import org.grails.spring.context.support.GrailsPlaceholderConfigurer
 import spock.lang.Issue
 import spock.lang.Specification
 

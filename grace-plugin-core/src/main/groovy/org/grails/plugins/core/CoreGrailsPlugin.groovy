@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2024 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@ import grails.plugins.Plugin
 import grails.util.Environment
 import grails.util.GrailsUtil
 
-import org.grails.beans.support.PropertiesEditor
-import org.grails.core.support.ClassEditor
 import org.grails.dev.support.DevelopmentShutdownHook
 import org.grails.spring.DefaultRuntimeSpringConfiguration
 import org.grails.spring.RuntimeSpringConfigUtilities
 import org.grails.spring.RuntimeSpringConfiguration
+import org.grails.spring.beans.support.ClassEditor
+import org.grails.spring.beans.support.PropertiesEditor
 
 /**
  * Configures the core shared beans within the Grails application context.
