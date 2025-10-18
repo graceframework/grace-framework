@@ -55,7 +55,8 @@ import org.grails.spring.context.support.GrailsPlaceholderConfigurer
 import org.grails.transaction.TransactionManagerPostProcessor
 
 /**
- * Created by jameskleeh on 5/31/17.
+ * @author James Kleeh
+ * @author Michael Yan
  */
 class GrailsApplicationBuilder {
 
@@ -189,8 +190,8 @@ class GrailsApplicationBuilder {
             proxyHandler(DefaultProxyHandler)
             messageSource(StaticMessageSource)
             transactionManagerAwarePostProcessor(TransactionManagerPostProcessor)
-            grailsPlaceholderConfigurer(GrailsPlaceholderConfigurer, '${', grailsApplication.config.toProperties())
-            mapBasedSmartPropertyOverrideConfigurer(GrailsBeanPropertyOverrideConfigurer, grailsApplication)
+            propertySourcesPlaceholderConfigurer(GrailsPlaceholderConfigurer, '${', grailsApplication.config.toProperties())
+            beanPropertyOverrideConfigurer(GrailsBeanPropertyOverrideConfigurer, grailsApplication)
         }
     }
 
@@ -257,7 +258,7 @@ class GrailsApplicationBuilder {
         void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
             super.postProcessBeanDefinitionRegistry(registry)
             PropertySourcesPlaceholderConfigurer propertySourcePlaceholderConfigurer =
-                    (PropertySourcesPlaceholderConfigurer) grailsApplication.mainContext.getBean('grailsPlaceholderConfigurer')
+                    (PropertySourcesPlaceholderConfigurer) grailsApplication.mainContext.getBean('propertySourcesPlaceholderConfigurer')
             propertySourcePlaceholderConfigurer.order = Ordered.HIGHEST_PRECEDENCE
             propertySourcePlaceholderConfigurer.setLocalOverride(localOverride)
         }
