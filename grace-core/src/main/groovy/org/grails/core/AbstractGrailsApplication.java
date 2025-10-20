@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import grails.core.GrailsApplication;
 import grails.core.support.GrailsConfigurationAware;
 import grails.util.Environment;
 import grails.util.Holders;
-import grails.util.Metadata;
 
 import org.grails.config.PropertySourcesConfig;
 
@@ -47,8 +46,6 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
 
     protected ApplicationContext parentContext;
 
-    protected final Metadata applicationMeta = Metadata.getCurrent();
-
     protected boolean contextInitialized;
 
     @Override
@@ -57,11 +54,6 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
         if (applicationContext instanceof ConfigurableApplicationContext) {
             ((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
         }
-    }
-
-    @Override
-    public Metadata getMetadata() {
-        return this.applicationMeta;
     }
 
     @Override

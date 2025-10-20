@@ -55,7 +55,7 @@ class DefaultGrailsPluginManagerSpec extends Specification {
 
     def stubGrailsApplicationWithVersion(def version) {
         GrailsApplication app = Mock(GrailsApplication)
-        app.getMetadata() >> Metadata.getInstance(new ByteArrayInputStream("""
+        Metadata.getCurrent() >> Metadata.getInstance(new ByteArrayInputStream("""
 info:
     app:
         grailsVersion: $version

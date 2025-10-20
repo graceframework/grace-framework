@@ -20,7 +20,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 
 import grails.config.Config;
-import grails.util.Metadata;
 
 import org.grails.datastore.mapping.model.MappingContext;
 
@@ -41,7 +40,7 @@ import org.grails.datastore.mapping.model.MappingContext;
  *
  * @author Graeme Rocher
  * @author Steven Devijver
- *
+ * @author Michael Yan
  * @since 0.1
  */
 public interface GrailsApplication extends ApplicationContextAware {
@@ -276,14 +275,6 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @return true if it has been initialised
      */
     boolean isInitialised();
-
-    /**
-     * <p>Get access to the project's metadata, specified in application.yml and grails.build.info if it is present</p>
-     * <p>This provides access to information like required grails version, application name, version etc
-     * but <b>NOT</b> general application settings.</p>
-     * @return A read-only Map of data about the application, not environment specific
-     */
-    Metadata getMetadata();
 
     /**
      * Retrieves an artefact by its logical property name. For example the logical property name of

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2024 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,6 +68,7 @@ import grails.plugins.module.ModuleType;
 import grails.util.BuildSettings;
 import grails.util.Environment;
 import grails.util.GrailsNameUtils;
+import grails.util.Metadata;
 
 import org.grails.config.NavigableMap;
 import org.grails.io.support.GrailsResourceUtils;
@@ -627,8 +628,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         binding.put(CONFIG_BINDING_USER_HOME, System.getProperty("user.home"));
         binding.put(CONFIG_BINDING_GRAILS_HOME, System.getProperty("grails.home"));
         if (application != null) {
-            binding.put(CONFIG_BINDING_APP_NAME, application.getMetadata().getApplicationName());
-            binding.put(CONFIG_BINDING_APP_VERSION, application.getMetadata().getApplicationVersion());
+            binding.put(CONFIG_BINDING_APP_NAME, Metadata.getCurrent().getApplicationName());
+            binding.put(CONFIG_BINDING_APP_VERSION, Metadata.getCurrent().getApplicationVersion());
             binding.put(GrailsApplication.APPLICATION_ID, application);
         }
         configSlurper.setBinding(binding);
