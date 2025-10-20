@@ -1,5 +1,4 @@
 dependencies {
-    api project(":grace-bootstrap")
     api project(":grace-util")
 
     compileOnly(libs.grace.datastore.core) {
@@ -12,5 +11,4 @@ dependencies {
         exclude group: 'io.micrometer', module: 'micrometer-observation'
     }
     api(libs.spring.core)
-    testImplementation(libs.spring.boot)
 }

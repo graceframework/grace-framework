@@ -1,6 +1,5 @@
-package grails.config
+package org.grails.config
 
-import org.grails.config.CodeGenConfig
 import spock.lang.Specification
 
 class CodeGenConfigSpec extends Specification {
