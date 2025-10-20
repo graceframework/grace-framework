@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,24 +50,6 @@ public interface GrailsApplication extends ApplicationContextAware {
      * The id of the grails application within a bean context
      */
     String APPLICATION_ID = "grailsApplication";
-
-    /**
-     * The name of the class that provides configuration
-     */
-    @Deprecated
-    String CONFIG_CLASS = "Config";
-
-    /**
-     * The name of the DataSource class
-     */
-    @Deprecated
-    String DATA_SOURCE_CLASS = "DataSource";
-
-    /**
-     * The name of the project metadata file
-     */
-    @Deprecated
-    String PROJECT_META_FILE = "application.properties";
 
     /**
      * The name of the transaction manager bean
