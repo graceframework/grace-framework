@@ -25,6 +25,7 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
 import grails.config.ConfigMap
+import grails.util.BuildSettings
 import grails.util.Environment
 
 /**
@@ -39,6 +40,9 @@ import grails.util.Environment
 @CompileStatic
 @Canonical
 class CodeGenConfig implements Cloneable, ConfigMap {
+
+    private static final String DEFAULT_APPLICATION_YML = 'application.yml'
+    private static final String DEFAULT_APPLICATION_GROOVY = 'application.groovy'
 
     final NavigableMap configMap
 
@@ -162,6 +166,17 @@ class CodeGenConfig implements Cloneable, ConfigMap {
             if (yamlObject instanceof Map) { // problem here with CompileStatic
                 mergeMap((Map) yamlObject)
             }
+        }
+    }
+
+    void loadDefaultConfig() {
+        File applicationYml = new File(BuildSettings.GRAILS_APP_DIR, 'conf/' + DEFAULT_APPLICATION_YML)
+        File applicationGroovy = new File(BuildSettings.GRAILS_APP_DIR, 'conf/' + DEFAULT_APPLICATION_GROOVY)
+        if (applicationYml.exists()) {
+            loadYml(applicationYml)
+        }
+        if (applicationGroovy.exists()) {
+            loadGroovy(applicationGroovy)
         }
     }
 

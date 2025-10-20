@@ -57,14 +57,7 @@ class AbstractGenerator implements Generator {
 
     protected CodeGenConfig loadApplicationConfig() {
         CodeGenConfig config = new CodeGenConfig()
-        File applicationYml = new File(getBaseDir(), 'app/conf/application.yml')
-        File applicationGroovy = new File(getBaseDir(), 'app/conf/application.groovy')
-        if (applicationYml.exists()) {
-            config.loadYml(applicationYml)
-        }
-        if (applicationGroovy.exists()) {
-            config.loadGroovy(applicationGroovy)
-        }
+        config.loadDefaultConfig()
         config
     }
 
