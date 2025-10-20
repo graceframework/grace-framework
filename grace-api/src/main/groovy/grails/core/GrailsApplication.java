@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 
 import grails.config.Config;
-import grails.util.Metadata;
 
 import org.grails.datastore.mapping.model.MappingContext;
 
@@ -29,11 +28,11 @@ import org.grails.datastore.mapping.model.MappingContext;
  * main purpose is to provide a mechanism for analysing the conventions within a Grails
  * application as well as providing metadata and information about the execution environment.
  *
- * <p>The GrailsApplication interface interfacts with {@link ArtefactHandler} instances
+ * <p>The GrailsApplication interface interacts with {@link ArtefactHandler} instances
  * which are capable of analysing different artefact types (controllers, domain classes etc.) and introspecting
  * the artefact conventions
  *
- * <p>Implementors of this inteface should be aware that a GrailsApplication is only initialised when the initialise() method
+ * <p>Implementors of this interface should be aware that a GrailsApplication is only initialised when the initialise() method
  * is called. In other words GrailsApplication instances are lazily initialised by the Grails runtime.
  *
  * @see #initialise()
@@ -41,7 +40,7 @@ import org.grails.datastore.mapping.model.MappingContext;
  *
  * @author Graeme Rocher
  * @author Steven Devijver
- *
+ * @author Michael Yan
  * @since 0.1
  */
 public interface GrailsApplication extends ApplicationContextAware {
@@ -50,24 +49,6 @@ public interface GrailsApplication extends ApplicationContextAware {
      * The id of the grails application within a bean context
      */
     String APPLICATION_ID = "grailsApplication";
-
-    /**
-     * The name of the class that provides configuration
-     */
-    @Deprecated
-    String CONFIG_CLASS = "Config";
-
-    /**
-     * The name of the DataSource class
-     */
-    @Deprecated
-    String DATA_SOURCE_CLASS = "DataSource";
-
-    /**
-     * The name of the project metadata file
-     */
-    @Deprecated
-    String PROJECT_META_FILE = "application.properties";
 
     /**
      * The name of the transaction manager bean
@@ -118,7 +99,7 @@ public interface GrailsApplication extends ApplicationContextAware {
 
     /**
      * Returns the Spring context for this application. Note that this
-     * will return <code>null</code> until the application is fully
+     * will return {@code null} until the application is fully
      * initialised. This context contains all the application artifacts,
      * plugin beans, the works.
      */
@@ -149,7 +130,7 @@ public interface GrailsApplication extends ApplicationContextAware {
     ApplicationContext getParentContext();
 
     /**
-     * Retrieves a class for the given name within the GrailsApplication or returns null
+     * Retrieves a class for the given name within the GrailsApplication or returns {@code null}
      *
      * @param className The name of the class
      * @return The class or null
@@ -164,7 +145,7 @@ public interface GrailsApplication extends ApplicationContextAware {
     /**
      * Rebuilds this Application throwing away the class loader and re-constructing it from the loaded
      * resources again. Can only be called in development mode and an error will be thrown if called
-     * in a different enivronment
+     * in a different environment
      */
     void rebuild();
 
@@ -205,7 +186,7 @@ public interface GrailsApplication extends ApplicationContextAware {
 
     /**
      * <p>Gets the GrailsClass associated with the named artefact class</p>
-     * <p>i.e. to get the GrailsClass for  controller called "BookController" you pass the name "BookController"</p>
+     * <p>i.e. to get the GrailsClass for controller called "BookController" you pass the name "BookController"</p>
      * @param artefactType The type of artefact to retrieve, i.e. "Controller"
      * @param name The name of an artefact such as "BookController"
      * @return The associated GrailsClass or null
@@ -296,16 +277,8 @@ public interface GrailsApplication extends ApplicationContextAware {
     boolean isInitialised();
 
     /**
-     * <p>Get access to the project's metadata, specified in application.yml and grails.build.info if it is present</p>
-     * <p>This provides access to information like required grails version, application name, version etc
-     * but <b>NOT</b> general application settings.</p>
-     * @return A read-only Map of data about the application, not environment specific
-     */
-    Metadata getMetadata();
-
-    /**
      * Retrieves an artefact by its logical property name. For example the logical property name of
-     * BookController would be book.
+     * BookController would be 'book'.
      * @param type The artefact type
      * @param logicalName The logical name
      * @return The GrailsClass or null if it doesn't exist
@@ -326,13 +299,13 @@ public interface GrailsApplication extends ApplicationContextAware {
     boolean isWarDeployed();
 
     /**
-     * Adds an artefact that can be overriden by user defined classes
+     * Adds an artefact that can be overridden by user defined classes
      * @param artefact An overridable artefact
      */
     void addOverridableArtefact(Class<?> artefact);
 
     /**
-     * Fired to inform the application when the Config.groovy file changes.
+     * Fired to inform the application when the config files changed.
      */
     void configChanged();
 

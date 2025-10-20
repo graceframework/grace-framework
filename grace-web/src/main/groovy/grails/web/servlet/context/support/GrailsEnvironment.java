@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,13 @@ import org.springframework.web.context.support.StandardServletEnvironment;
 
 import grails.core.GrailsApplication;
 import grails.util.Environment;
+import grails.util.Metadata;
 
 /**
  * Bridges Grails' existing environment API with the new Spring 3.1 environment profiles API.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class GrailsEnvironment extends StandardServletEnvironment {
@@ -51,8 +53,8 @@ public class GrailsEnvironment extends StandardServletEnvironment {
     protected class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
 
         public GrailsConfigPropertySource() {
-            super(StringUtils.hasText(GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName())
-                    ? GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName()
+            super(StringUtils.hasText(Metadata.getCurrent().getApplicationName())
+                    ? Metadata.getCurrent().getApplicationName()
                     : "grailsApplication", GrailsEnvironment.this.grailsApplication);
         }
 

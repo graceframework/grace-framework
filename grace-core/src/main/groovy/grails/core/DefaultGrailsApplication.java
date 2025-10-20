@@ -366,7 +366,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     }
 
     /**
-     * Refreshes this GrailsApplication, rebuilding all of the artefact definitions as
+     * Refreshes this GrailsApplication, rebuilding all the artefact definitions as
      * defined by the registered ArtefactHandler instances.
      */
     public void refresh() {
@@ -473,7 +473,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     }
 
     /**
-     * Returns all of the GrailsClass instances for the given artefactType as defined by the ArtefactHandler
+     * Returns all the GrailsClass instances for the given artefactType as defined by the ArtefactHandler
      *
      * @param artefactType The type of the artefact defined by the ArtefactHandler
      * @return An array of classes for the given artefact
@@ -525,7 +525,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
      * Registers a new ArtefactHandler that is responsible for identifying and managing a
      * particular artefact type that is defined by some convention.
      *
-     * @param handler The ArtefactHandler to regster
+     * @param handler The ArtefactHandler to register
      */
     public void registerArtefactHandler(ArtefactHandler handler) {
         this.artefactHandlersByName.put(handler.getType(), handler);

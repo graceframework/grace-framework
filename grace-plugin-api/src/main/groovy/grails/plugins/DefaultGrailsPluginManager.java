@@ -53,6 +53,7 @@ import grails.core.support.ParentApplicationContextAware;
 import grails.plugins.exceptions.PluginException;
 import grails.util.Environment;
 import grails.util.GrailsClassUtils;
+import grails.util.Metadata;
 
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.io.support.GrailsResourceUtils;
@@ -453,7 +454,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             return true;
         }
 
-        String appGrailsVersion = this.application.getMetadata().getGrailsVersion();
+        String appGrailsVersion = Metadata.getCurrent().getGrailsVersion();
         String pluginMinGrailsVersion = GrailsVersionUtils.getLowerVersion(pluginGrailsVersion);
         String pluginMaxGrailsVersion = GrailsVersionUtils.getUpperVersion(pluginGrailsVersion);
 
