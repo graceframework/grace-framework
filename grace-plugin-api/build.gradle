@@ -2,7 +2,6 @@ dependencies {
     api project(":grace-api")
     api project(":grace-bootstrap")
     api project(":grace-spring")
-    api project(":grace-spring-boot")
     api project(":grace-util")
 
     api libs.commons.lang3

@@ -2,6 +2,7 @@ dependencies {
     api project(":grace-api")
     api project(":grace-cli")
     api project(":grace-util")
+    api project(":grace-spring-boot")
     api project(":grace-web-common")
 
     api(libs.grace.datastore.gorm.validation)
