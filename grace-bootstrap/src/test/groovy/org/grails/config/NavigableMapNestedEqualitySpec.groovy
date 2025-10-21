@@ -1,6 +1,6 @@
 package org.grails.config
 
-import org.grails.spring.boot.env.YamlPropertySourceLoader
+import org.grails.config.loader.YamlPropertySourceLoader
 import org.springframework.core.env.MutablePropertySources
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource

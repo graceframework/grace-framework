@@ -1,7 +1,8 @@
-package org.grails.config
+package org.grails.config.loader
 
 import grails.util.Environment
-import org.grails.spring.boot.env.YamlPropertySourceLoader
+import org.grails.config.PropertySourcesConfig
+
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import spock.lang.Specification

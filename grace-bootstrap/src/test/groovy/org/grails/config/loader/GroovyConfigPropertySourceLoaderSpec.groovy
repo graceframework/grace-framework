@@ -1,4 +1,4 @@
-package org.grails.spring.boot.env
+package org.grails.config.loader
 
 import org.grails.config.PropertySourcesConfig
 import org.springframework.core.env.MutablePropertySources

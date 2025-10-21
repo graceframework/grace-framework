@@ -19,6 +19,7 @@ dependencies {
     compileOnly libs.jansi
     compileOnly libs.jline
 
+    testImplementation libs.jakarta.persistence.api
     testImplementation libs.jansi
     testImplementation libs.jline
     testImplementation libs.spring.boot

@@ -1,7 +1,6 @@
 dependencies {
     api project(":grace-core")
     api project(':grace-plugin-api')
-    api project(":grace-spring-boot")
 
     api libs.grace.datastore.core
     api libs.grace.datastore.gorm
