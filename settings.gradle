@@ -17,7 +17,7 @@ include (
         'grace-shell',
         // 'grace-sitemesh',
         'grace-spring',
-        'grace-spring-boot',
+        // 'grace-spring-boot',
         'grace-taglib',
         'grace-test',
         'grace-test-support',
