@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.spring.boot.env;
+package org.grails.config.loader;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -45,8 +45,8 @@ import grails.util.GrailsClassUtils;
 import grails.util.GrailsNameUtils;
 
 import org.grails.plugins.support.WatchPattern;
-import org.grails.spring.boot.env.GroovyConfigPropertySourceLoader;
-import org.grails.spring.boot.env.YamlPropertySourceLoader;
+import org.grails.config.loader.GroovyConfigPropertySourceLoader;
+import org.grails.config.loader.YamlPropertySourceLoader;
 
 /**
  * Abstract implementation that provides some default behaviours

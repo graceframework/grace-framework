@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.spring.boot.env
+package org.grails.config.loader
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
@@ -33,15 +33,19 @@ import org.grails.core.exceptions.GrailsConfigurationException
  * Adds support for defining a 'application.groovy' file in ConfigSlurper format in order to configure Spring Boot within Grails
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
 @Slf4j
 class GroovyConfigPropertySourceLoader implements PropertySourceLoader {
 
-    final String[] fileExtensions = ['groovy'] as String[]
+    private final Set<String> loadedFiles = new HashSet<>(1)
 
-    final Set<String> loadedFiles = new HashSet<>(1)
+    @Override
+    String[] getFileExtensions() {
+        return new String[] { "groovy" }
+    }
 
     @Override
     List<PropertySource<?>> load(String name, Resource resource) throws IOException {
