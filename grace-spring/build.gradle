@@ -1,5 +1,8 @@
 dependencies {
     api libs.groovy.xml
+    compileOnly libs.spring.aop
+    api libs.spring.core
+    api libs.spring.beans
     api libs.spring.context
     compileOnly libs.spring.tx
     compileOnly libs.spring.web

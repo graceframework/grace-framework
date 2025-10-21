@@ -3,7 +3,6 @@ dependencies {
     api project(":grace-core")
     api project(":grace-plugin-api")
     api project(":grace-spring")
-    api project(":grace-spring-boot")
 
     compileOnly libs.aspectj.rt
     api libs.grace.datastore.gorm.support, {
