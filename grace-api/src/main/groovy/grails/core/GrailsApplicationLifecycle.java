@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,57 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.core
+package grails.core;
+
+import java.util.Map;
+
+import groovy.lang.Closure;
 
 /**
  * API which plugins implement to provide behavior in defined application lifecycle hooks.
  *
- * The {@link GrailsApplicationLifeCycle#doWithSpring()} method can be used register Spring beans.
+ * The {@link GrailsApplicationLifecycle#doWithSpring()} method can be used register Spring beans.
  *
+ * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
- * @see {@link grails.plugins.Plugin}
  */
-interface GrailsApplicationLifeCycle {
+public interface GrailsApplicationLifecycle {
 
     /**
-     * Sub classes should override to provide implementations
+     * Subclasses should override to provide implementations
      *
      * @return A closure that defines beans to be registered by Spring
      */
-    Closure doWithSpring()
+    default Closure<?> doWithSpring() {
+        return null;
+    }
 
     /**
      * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed in a phase
      * where plugins can add dynamic methods. Subclasses should override
      */
-    void doWithDynamicMethods()
+    default void doWithDynamicMethods() {
+    }
 
     /**
      * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed
      * and after {#doWithDynamicMethods()} is invoked. Subclasses should override
      */
-    void doWithApplicationContext()
+    default void doWithApplicationContext() {
+    }
 
     /**
      * Invoked when the application configuration changes
      *
      * @param event The event
      */
-    void onConfigChange(Map<String, Object> event)
+    default void onConfigChange(Map<String, Object> event) {
+    }
 
     /**
-     * Invoked once all prior initialization hooks: {@link GrailsApplicationLifeCycle#doWithSpring()},
-     * {@link GrailsApplicationLifeCycle#doWithDynamicMethods()} and {@link GrailsApplicationLifeCycle#doWithApplicationContext()}
+     * Invoked once all prior initialization hooks: {@link GrailsApplicationLifecycle#doWithSpring()},
+     * {@link GrailsApplicationLifecycle#doWithDynamicMethods()} and {@link GrailsApplicationLifecycle#doWithApplicationContext()}
      *
      * @param event The event
      */
-    void onStartup(Map<String, Object> event)
+    default void onStartup(Map<String, Object> event) {
+    }
 
     /**
      * Invoked when the {@link org.springframework.context.ApplicationContext} is closed
      *
      * @param event The event
      */
-    void onShutdown(Map<String, Object> event)
+    default void onShutdown(Map<String, Object> event) {
+    }
 
 }

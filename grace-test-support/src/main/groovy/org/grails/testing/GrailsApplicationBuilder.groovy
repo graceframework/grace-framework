@@ -38,7 +38,7 @@ import org.springframework.util.ClassUtils
 import grails.boot.config.GrailsApplicationPostProcessor
 import grails.boot.config.GrailsAutoConfiguration
 import grails.core.GrailsApplication
-import grails.core.GrailsApplicationLifeCycle
+import grails.core.GrailsApplicationLifecycle
 import grails.core.support.proxy.DefaultProxyHandler
 import grails.plugins.GrailsPluginManager
 import grails.spring.BeanBuilder
@@ -236,7 +236,7 @@ class GrailsApplicationBuilder {
 
         TestRuntimeGrailsApplicationPostProcessor(Closure doWithSpringClosure, Set includedPlugins) {
             super()
-            setGrailsApplicationLifeCycle([doWithSpring: { -> doWithSpringClosure }] as GrailsApplicationLifeCycle)
+            setGrailsApplicationLifecycle([doWithSpring: { -> doWithSpringClosure }] as GrailsApplicationLifecycle)
             loadExternalBeans = false
             reloadingEnabled = false
             this.includedPlugins = includedPlugins

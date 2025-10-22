@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
 
 import grails.core.GrailsApplication;
-import grails.core.GrailsApplicationLifeCycle;
+import grails.core.GrailsApplicationLifecycle;
 import grails.plugins.GrailsPluginManager;
 import grails.util.Environment;
 import grails.util.Holders;
@@ -42,7 +42,7 @@ import org.grails.core.lifecycle.ShutdownOperations;
 import org.grails.datastore.mapping.model.MappingContext;
 
 /**
- * A {@link ApplicationListener} to initialize Grails with Plugins and GrailsApplicationLifeCycles
+ * A {@link ApplicationListener} to initialize Grails with Plugins and GrailsApplicationLifecycles
  * when an {@link ApplicationContext} gets refreshed or closed.
  *
  * @author Graeme Rocher
@@ -67,8 +67,8 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
         GrailsApplication grailsApplication = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
         GrailsPluginManager pluginManager = applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
 
-        List<GrailsApplicationLifeCycle> lifeCycleBeans =
-                applicationContext.getBeansOfType(GrailsApplicationLifeCycle.class)
+        List<GrailsApplicationLifecycle> lifecycleBeans =
+                applicationContext.getBeansOfType(GrailsApplicationLifecycle.class)
                         .values()
                         .stream().sorted(OrderComparator.INSTANCE)
                         .collect(Collectors.toList());
@@ -84,15 +84,15 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             StartupStep dynamicMethods = this.applicationStartup.start("grails.application.context.dynamic-methods");
             pluginManager.setApplicationContext(applicationContext);
             pluginManager.doDynamicMethods();
-            for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
-                lifeCycle.doWithDynamicMethods();
+            for (GrailsApplicationLifecycle lifecycle : lifecycleBeans) {
+                lifecycle.doWithDynamicMethods();
             }
             dynamicMethods.end();
 
             StartupStep postProcessing = this.applicationStartup.start("grails.application.context.post-processing");
             pluginManager.doPostProcessing(applicationContext);
-            for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
-                lifeCycle.doWithApplicationContext();
+            for (GrailsApplicationLifecycle lifecycle : lifecycleBeans) {
+                lifecycle.doWithApplicationContext();
             }
             postProcessing.end();
 
@@ -102,8 +102,8 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             Map<String, Object> eventMap = new HashMap<>();
             eventMap.put("source", pluginManager);
             pluginManager.onStartup(eventMap);
-            for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
-                lifeCycle.onStartup(eventMap);
+            for (GrailsApplicationLifecycle lifecycle : lifecycleBeans) {
+                lifecycle.onStartup(eventMap);
             }
             startupStep.end();
         }
@@ -112,10 +112,10 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             Map<String, Object> eventMap = new HashMap<>();
             eventMap.put("source", pluginManager);
 
-            List<GrailsApplicationLifeCycle> reversedLifeCycleBeans = new ArrayList<>(lifeCycleBeans);
-            Collections.reverse(reversedLifeCycleBeans);
-            for (GrailsApplicationLifeCycle lifeCycle : reversedLifeCycleBeans) {
-                lifeCycle.onShutdown(eventMap);
+            List<GrailsApplicationLifecycle> reversedLifecycleBeans = new ArrayList<>(lifecycleBeans);
+            Collections.reverse(reversedLifecycleBeans);
+            for (GrailsApplicationLifecycle lifecycle : reversedLifecycleBeans) {
+                lifecycle.onShutdown(eventMap);
             }
 
             pluginManager.shutdown();
