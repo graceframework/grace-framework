@@ -29,7 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import grails.artefact.ArtefactTypes;
 import grails.boot.web.servlet.GrailsBootstrapClass;
 import grails.core.GrailsApplication;
-import grails.core.GrailsApplicationLifeCycleAdapter;
+import grails.core.GrailsApplicationLifecycle;
 import grails.core.GrailsClass;
 import grails.core.support.GrailsApplicationAware;
 import grails.plugins.GrailsPluginManager;
@@ -41,8 +41,8 @@ import grails.plugins.PluginManagerAware;
  * @author Michael Yan
  * @since 2024.0.0
  */
-public class GrailsBootstrapClassRunner extends GrailsApplicationLifeCycleAdapter
-        implements GrailsApplicationAware, ServletContextAware, ApplicationContextAware, PluginManagerAware {
+public class GrailsBootstrapClassRunner
+        implements GrailsApplicationLifecycle, GrailsApplicationAware, ServletContextAware, ApplicationContextAware, PluginManagerAware {
 
     private static final Logger log = LoggerFactory.getLogger(GrailsBootstrapClassRunner.class);
 

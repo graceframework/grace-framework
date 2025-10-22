@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.springframework.core.io.DescriptiveResource
 import grails.config.Config
 import grails.core.ArtefactHandler
 import grails.core.GrailsApplication
-import grails.core.GrailsApplicationLifeCycle
+import grails.core.GrailsApplicationLifecycle
 import grails.core.support.GrailsApplicationAware
 import grails.spring.BeanBuilder
 import grails.util.Environment
@@ -36,10 +36,11 @@ import grails.util.Environment
  * (doWithSpring, doWithApplicationContext, doWithDynamicMethods etc.)
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
-abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAware, ApplicationContextAware, PluginManagerAware {
+abstract class Plugin implements GrailsApplicationLifecycle, GrailsApplicationAware, ApplicationContextAware, PluginManagerAware {
 
     /**
      * The {@link GrailsApplication} instance
@@ -106,63 +107,11 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
     }
 
     /**
-     * Sub classes should override to provide implementations
-     *
-     * @return A closure that defines beans to be executed by Spring
-     */
-    @Override
-    Closure doWithSpring() {
-        null
-    }
-
-    /**
-     * Invoked in a phase where plugins can add dynamic methods. Subclasses should override
-     */
-    @Override
-    void doWithDynamicMethods() {
-        // no-op
-    }
-
-    /**
-     * Invokes once the {@link ApplicationContext} has been refreshed and after {#doWithDynamicMethods()} is invoked.
-     * Subclasses should override
-     */
-    @Override
-    void doWithApplicationContext() {
-        // no-op
-    }
-
-    /**
      * Invoked when a object this plugin is watching changes
      *
      * @param event The event
      */
     void onChange(Map<String, Object> event) {
-        // no-op
-    }
-
-    /**
-     * Invoked when the application configuration changes
-     *
-     * @param event The event
-     */
-    @Override
-    void onConfigChange(Map<String, Object> event) {
-        // no-op
-    }
-
-    @Override
-    void onStartup(Map<String, Object> event) {
-        // no-op
-    }
-
-    /**
-     * Invoked when the {@link ApplicationContext} is closed
-     *
-     * @param event The event
-     */
-    @Override
-    void onShutdown(Map<String, Object> event) {
         // no-op
     }
 

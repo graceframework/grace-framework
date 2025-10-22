@@ -55,7 +55,7 @@ import grails.artefact.Artefact;
 import grails.config.Settings;
 import grails.core.DefaultGrailsApplication;
 import grails.core.GrailsApplication;
-import grails.core.GrailsApplicationLifeCycle;
+import grails.core.GrailsApplicationLifecycle;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.spring.BeanBuilder;
@@ -101,7 +101,7 @@ public class GrailsApplicationPostProcessor
 
     protected ApplicationContext applicationContext;
 
-    protected GrailsApplicationLifeCycle lifeCycle;
+    protected GrailsApplicationLifecycle lifecycle;
 
     protected Set<Class<?>> classes;
 
@@ -116,8 +116,8 @@ public class GrailsApplicationPostProcessor
         this.grailsApplicationEventListener = new GrailsApplicationEventListener();
     }
 
-    public void setGrailsApplicationLifeCycle(GrailsApplicationLifeCycle lifeCycle) {
-        this.lifeCycle = lifeCycle;
+    public void setGrailsApplicationLifecycle(GrailsApplicationLifecycle lifecycle) {
+        this.lifecycle = lifecycle;
     }
 
     public void setLoadExternalBeans(boolean loadExternalBeans) {
@@ -315,26 +315,26 @@ public class GrailsApplicationPostProcessor
         b.setVariable(GrailsApplication.APPLICATION_ID, this.grailsApplication);
         b.setVariable("application", this.grailsApplication);
         b.setVariable("manager", this.pluginManager);
-        if (this.lifeCycle != null) {
-            Closure<?> withSpring = this.lifeCycle.doWithSpring();
+        if (this.lifecycle != null) {
+            Closure<?> withSpring = this.lifecycle.doWithSpring();
             if (withSpring != null) {
                 BeanBuilder bb = new BeanBuilder(null, springConfig, application.getClassLoader());
-                bb.setBeanBuildResource(new DescriptiveResource(this.lifeCycle.getClass().getName()));
+                bb.setBeanBuildResource(new DescriptiveResource(this.lifecycle.getClass().getName()));
                 bb.setBinding(b);
                 bb.beans(withSpring);
             }
         }
 
-        Collection<GrailsApplicationLifeCycle> lifeCycles = this.applicationContext.getBeansOfType(GrailsApplicationLifeCycle.class)
+        Collection<GrailsApplicationLifecycle> lifecycles = this.applicationContext.getBeansOfType(GrailsApplicationLifecycle.class)
                 .values()
                 .stream()
                 .sorted(OrderComparator.INSTANCE)
                 .collect(Collectors.toList());
-        for (GrailsApplicationLifeCycle lifeCycle : lifeCycles) {
-            Closure<?> withSpring = lifeCycle.doWithSpring();
+        for (GrailsApplicationLifecycle lifecycle : lifecycles) {
+            Closure<?> withSpring = lifecycle.doWithSpring();
             if (withSpring != null) {
                 BeanBuilder bb = new BeanBuilder(null, springConfig, application.getClassLoader());
-                bb.setBeanBuildResource(new DescriptiveResource(lifeCycle.getClass().getName()));
+                bb.setBeanBuildResource(new DescriptiveResource(lifecycle.getClass().getName()));
                 bb.setBinding(b);
                 bb.beans(withSpring);
             }
