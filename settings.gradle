@@ -4,6 +4,7 @@ include (
         'docs',
         'grace-api',
         'grace-boot',
+        'grace-boot-web',
         'grace-bootstrap',
         'grace-cli',
         'grace-codecs',
