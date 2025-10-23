@@ -16,7 +16,7 @@ package grails.plugin.cache
 
 import org.springframework.cache.support.SimpleValueWrapper
 import org.apache.groovy.util.concurrent.concurrentlinkedhashmap.ConcurrentLinkedHashMap
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 /**
  * @author Jakob Drangmeister

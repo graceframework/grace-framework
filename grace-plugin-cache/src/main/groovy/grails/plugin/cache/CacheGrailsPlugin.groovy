@@ -15,28 +15,19 @@
  */
 package grails.plugin.cache
 
-import grails.plugins.Plugin
 import groovy.transform.CompileStatic
+
+import grails.plugins.Plugin
+import grails.util.GrailsUtil
 
 @CompileStatic
 class CacheGrailsPlugin extends Plugin {
 
-    def grailsVersion = "2023.0.0 > *"
+    def version = GrailsUtil.getGrailsVersion()
+    def grailsVersion = '2023.0.0 > *'
     def observe = ['controllers', 'services']
     def loadAfter = ['controllers', 'services']
-    def authorEmail = 'rain@rainboyan.com'
     def title = 'Grace Cache Plugin'
     def description = 'Provides AST transformations for caching method calls'
-    def documentation = 'https://github.com/graceframework/grace-cache'
-    def license = 'APACHE'
-    def issueManagement = [system: 'Github', url: 'https://github.com/graceframework/grace-cache/issues']
-    def scm = [url: 'https://github.com/graceframework/grace-cache']
-
-    def pluginExcludes = [
-            'cache/Application',
-            '**/com/demo/**',
-            'grails-app/views/**',
-            '**/*.gsp'
-    ]
 
 }

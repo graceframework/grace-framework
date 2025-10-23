@@ -6,6 +6,7 @@ include (
         'grace-boot',
         'grace-boot-web',
         'grace-bootstrap',
+        'grace-cache-core',
         'grace-cli',
         'grace-codecs',
         'grace-console',
@@ -41,6 +42,7 @@ include (
         // Plugins
         'grace-plugin-api',
         'grace-plugin-async',
+        'grace-plugin-cache',
         'grace-plugin-codecs',
         'grace-plugin-controllers',
         'grace-plugin-converters',

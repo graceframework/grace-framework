@@ -15,7 +15,7 @@
 package grails.plugin.cache
 
 import groovyx.gpars.GParsPool
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 /**
  * @author Burt Beckwith

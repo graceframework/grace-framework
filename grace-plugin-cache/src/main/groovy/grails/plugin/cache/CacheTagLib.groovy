@@ -14,6 +14,7 @@
  */
 package grails.plugin.cache
 
+import grails.gsp.TagLib
 import grails.plugin.cache.util.ClassUtils
 import groovy.transform.Memoized
 import groovy.util.logging.Slf4j
@@ -25,6 +26,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.springframework.web.context.request.RequestContextHolder
 
 @Slf4j
+@TagLib
 class CacheTagLib {
 
 
