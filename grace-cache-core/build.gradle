@@ -1,0 +1,9 @@
+dependencies {
+    api project(":grace-core")
+    api libs.spring.aop
+    api libs.spring.context
+    api libs.grace.datastore.core
+    api libs.grace.datastore.gorm, {
+        exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
+    }
+}

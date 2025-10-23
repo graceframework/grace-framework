@@ -1,0 +1,15 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-cache-core")
+    api project(":grace-core")
+    implementation project(":grace-web-gsp")
+    implementation project(":grace-web-taglib")
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+    testImplementation project(":grace-test")
+    testImplementation project(":grace-test-support")
+    testImplementation libs.assertj.core
+    testImplementation libs.gpars
+}
