@@ -1,1 +1,1 @@
-grails.plugin.cache.CacheAutoConfiguration
+org.grails.cache.CacheAutoConfiguration
