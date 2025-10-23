@@ -1,1 +1,0 @@
-Counter value: ${counter}

@@ -1,0 +1,13 @@
+dependencies {
+    api "org.graceframework:grace-datastore-core:$gormVersion"
+    api "org.graceframework:grace-datastore-gorm:$gormVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
+    }
+    api "org.graceframework:grace-core"
+    api "org.graceframework:grace-web-gsp"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
+    compileOnly "org.graceframework:grace-boot"
+}

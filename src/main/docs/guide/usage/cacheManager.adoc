@@ -1,3 +1,0 @@
-The plugin registers an instance of the link:{springApi}/org/springframework/cache/CacheManager.html[CacheManager] interface as the `grailsCacheManager` Spring bean, so it's easy to access using dependency injection.
-
-The most common method you would call on the `grailsCacheManager` is `getCache(String name)` to access a link:{springApi}/org/springframework/cache/Cache.html[Cache] instance programmatically. This shouldn't be needed often however. From the `Cache` instance you can also access the underlying cache implementation using `cache.getNativeCache()`.
