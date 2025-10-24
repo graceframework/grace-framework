@@ -1,0 +1,2 @@
+grails.plugin.scaffolding.ScaffoldingAutoConfiguration
+org.grails.scaffolding.ScaffoldingBeanConfiguration

@@ -1,0 +1,16 @@
+group = "org.graceframework.plugins"
+
+dependencies {
+    api project(":grace-scaffolding-core")
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
+    compileOnly "org.graceframework:grace-boot"
+    api "org.graceframework:grace-core", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-core'
+    }
+    api "org.graceframework:grace-plugin-rest"
+    api "org.graceframework:grace-web-gsp"
+    compileOnly "org.graceframework:grace-cli"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+}
