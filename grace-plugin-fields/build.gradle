@@ -1,0 +1,35 @@
+dependencies {
+    api "org.graceframework:grace-web-databinding"
+    api "org.graceframework:grace-web-gsp"
+    api "org.graceframework:grace-plugin-validation"
+    api "org.graceframework:grace-datastore-core:$gormVersion"
+    api "org.graceframework:grace-datastore-gorm:$gormVersion"
+    api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
+    api "org.apache.commons:commons-lang3"
+    compileOnly "org.graceframework:grace-boot"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
+
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    testImplementation "org.apache.groovy:groovy-dateutil"
+    testImplementation "org.graceframework:grace-test-support"
+    testImplementation "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
+    testImplementation "org.spockframework:spock-core", {
+        exclude group: "org.junit.platform", module: "junit-platform-engine"
+    }
+    testImplementation "net.bytebuddy:byte-buddy"
+    testImplementation "org.objenesis:objenesis:$objenesisVersion"
+    testImplementation "org.apache.groovy:groovy-test-junit5:${groovyVersion}", {
+        exclude group: "org.junit.platform", module: "junit-platform-launcher"
+        exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
+    }
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.platform:junit-platform-runner"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation("org.jodd:jodd-wot:$joddWotVersion") {
+        exclude module: 'slf4j-api'
+        exclude module: 'asm'
+    }
+}
