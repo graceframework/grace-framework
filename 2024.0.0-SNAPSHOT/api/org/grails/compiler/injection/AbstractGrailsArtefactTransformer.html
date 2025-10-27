@@ -99,7 +99,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
             <dl>
                 <dt>All Implemented Interfaces and Traits:</dt>
-                <dd><a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'>AnnotatedClassInjector</a>, <a href='../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a></dd>
+                <dd><a href='../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a></dd>
             </dl>
     
 
@@ -109,12 +109,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 <pre>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/SuppressWarnings.html' title='SuppressWarnings'>SuppressWarnings</a>("rawtypes")
 public abstract class AbstractGrailsArtefactTransformer
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a>
-implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'>AnnotatedClassInjector</a>, <a href='../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a></pre>
+implements <a href='../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a></pre>
 
     <p> Abstract transformer that takes an implementation class and creates methods
  in a target ClassNode that delegate to that implementation class. Subclasses
  should override to provide the implementation class details
-  <DL><DT><B>Since:</B></DT><DD>2.0</DD></DL><DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>2.0</DD></DL></p>
 
           </li>
     </ul>
@@ -155,7 +155,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#OBJECT_CLASS">OBJECT_CLASS</a></code></td>
                             <td class="colLast"></td>
                         </tr>
@@ -205,25 +205,25 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#addApiLookupFieldAndSetter(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.ClassNode, java.lang.String, org.codehaus.groovy.ast.expr.Expression)">addApiLookupFieldAndSetter</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> initialValueExpression)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#addApiLookupFieldAndSetter(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.ClassNode, java.lang.String, org.codehaus.groovy.ast.expr.Expression)">addApiLookupFieldAndSetter</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> initialValueExpression)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#addDelegateInstanceMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.expr.Expression, org.codehaus.groovy.ast.MethodNode, org.codehaus.groovy.ast.AnnotationNode, Map)">addDelegateInstanceMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> delegate, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a> markerAnnotation, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#addDelegateInstanceMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.expr.Expression, org.codehaus.groovy.ast.MethodNode, org.codehaus.groovy.ast.AnnotationNode, Map)">addDelegateInstanceMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> delegate, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a> markerAnnotation, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#addDelegateStaticMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.expr.MethodCallExpression, org.codehaus.groovy.ast.MethodNode, Map)">addDelegateStaticMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/expr/MethodCallExpression.html' title='MethodCallExpression'>MethodCallExpression</a> apiLookupMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#addDelegateStaticMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.expr.MethodCallExpression, org.codehaus.groovy.ast.MethodNode, Map)">addDelegateStaticMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/expr/MethodCallExpression.html' title='MethodCallExpression'>MethodCallExpression</a> apiLookupMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#addEnhancedAnnotation(org.codehaus.groovy.ast.ClassNode)">addEnhancedAnnotation</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#addEnhancedAnnotation(org.codehaus.groovy.ast.ClassNode)">addEnhancedAnnotation</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -241,7 +241,8 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;int</code></td>
-                            <td class="colLast"><code><strong><a href="#compareTo(java.lang.Object)">compareTo</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> o)</code><br>Used for ordering not equality.</td>
+                            <td class="colLast"><code><strong><a href="#compareTo(java.lang.Object)">compareTo</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> o)</code><br>Used for ordering not equality.
+ </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -264,7 +265,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a></code></td>
                             <td class="colLast"><code><strong><a href="#getMarkerAnnotation()">getMarkerAnnotation</a></strong>()</code><br>A marker annotation to be applied to added methods, defaults to null</td>
                         </tr>
                         
@@ -283,97 +284,73 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#hasArtefactAnnotation(org.codehaus.groovy.ast.ClassNode)">hasArtefactAnnotation</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isCandidateInstanceMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isCandidateInstanceMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isCandidateInstanceMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isCandidateInstanceMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isStaticCandidateMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isStaticCandidateMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isStaticCandidateMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isStaticCandidateMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isStaticMethodExcluded(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isStaticMethodExcluded</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isStaticMethodExcluded(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isStaticMethodExcluded</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isStaticMethodIncluded(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isStaticMethodIncluded</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isValidArtefactType()">isValidArtefactType</a></strong>()</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isValidTargetClassNode(org.codehaus.groovy.ast.ClassNode)">isValidTargetClassNode</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#isStaticMethodIncluded(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)">isStaticMethodIncluded</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjectionInternal(java.lang.String, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjectionInternal</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br>Subclasses can override to provide additional transformation</td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjectionOnAnnotatedClass</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjectionOnAnnotatedClass</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInstanceImplementationInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, Map, java.lang.Class)">performInstanceImplementationInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> instanceImplementation)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#performInjectionInternal(java.lang.String, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjectionInternal</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br>Subclasses can override to provide additional transformation</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjectionOnAnnotatedClass</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#performInstanceImplementationInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, Map, java.lang.Class)">performInstanceImplementationInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> instanceImplementation)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performStaticImplementationInjection(org.codehaus.groovy.ast.ClassNode, Map, java.lang.Class)">performStaticImplementationInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> staticImplementation)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#performStaticImplementationInjection(org.codehaus.groovy.ast.ClassNode, Map, java.lang.Class)">performStaticImplementationInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> staticImplementation)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a></code></td>
-                            <td class="colLast"><code><strong><a href="#populateAutowiredApiLookupMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.ClassNode, java.lang.String, java.lang.String, org.codehaus.groovy.ast.stmt.BlockStatement)">populateAutowiredApiLookupMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</code><br></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a></code></td>
+                            <td class="colLast"><code><strong><a href="#populateAutowiredApiLookupMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.ClassNode, java.lang.String, java.lang.String, org.codehaus.groovy.ast.stmt.BlockStatement)">populateAutowiredApiLookupMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a></code></td>
-                            <td class="colLast"><code><strong><a href="#populateDefaultApiLookupMethod(org.codehaus.groovy.ast.ClassNode, java.lang.String, java.lang.String, org.codehaus.groovy.ast.stmt.BlockStatement)">populateDefaultApiLookupMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</code><br></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a></code></td>
+                            <td class="colLast"><code><strong><a href="#populateDefaultApiLookupMethod(org.codehaus.groovy.ast.ClassNode, java.lang.String, java.lang.String, org.codehaus.groovy.ast.stmt.BlockStatement)">populateDefaultApiLookupMethod</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -391,14 +368,8 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#resolveGenericsPlaceHolders(org.codehaus.groovy.ast.ClassNode)">resolveGenericsPlaceHolders</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#shouldSkipInjection(org.codehaus.groovy.ast.ClassNode)">shouldSkipInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#resolveGenericsPlaceHolders(org.codehaus.groovy.ast.ClassNode)">resolveGenericsPlaceHolders</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                     </table>
@@ -461,7 +432,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="OBJECT_CLASS"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;static&nbsp;final&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> <strong>OBJECT_CLASS</strong></h4>
+                                <h4>protected&nbsp;static&nbsp;final&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> <strong>OBJECT_CLASS</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -504,7 +475,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="addApiLookupFieldAndSetter(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.ClassNode, java.lang.String, org.codehaus.groovy.ast.expr.Expression)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>addApiLookupFieldAndSetter</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> initialValueExpression)</h4>
+                                <h4>protected&nbsp;void <strong>addApiLookupFieldAndSetter</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> initialValueExpression)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -512,7 +483,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="addDelegateInstanceMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.expr.Expression, org.codehaus.groovy.ast.MethodNode, org.codehaus.groovy.ast.AnnotationNode, Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>addDelegateInstanceMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> delegate, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a> markerAnnotation, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</h4>
+                                <h4>protected&nbsp;void <strong>addDelegateInstanceMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/expr/Expression.html' title='Expression'>Expression</a> delegate, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a> markerAnnotation, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -520,7 +491,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="addDelegateStaticMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.expr.MethodCallExpression, org.codehaus.groovy.ast.MethodNode, Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>addDelegateStaticMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/expr/MethodCallExpression.html' title='MethodCallExpression'>MethodCallExpression</a> apiLookupMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</h4>
+                                <h4>protected&nbsp;void <strong>addDelegateStaticMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/expr/MethodCallExpression.html' title='MethodCallExpression'>MethodCallExpression</a> apiLookupMethod, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -528,7 +499,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="addEnhancedAnnotation(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>addEnhancedAnnotation</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>protected&nbsp;void <strong>addEnhancedAnnotation</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -552,9 +523,8 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="compareTo(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;int <strong>compareTo</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> o)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;int <strong>compareTo</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> o)</h4>
                                 <p> Used for ordering not equality.
-
  Note: this class has a natural ordering that is inconsistent with equals.
       <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html#compareTo(java.lang.Object)' title='Comparable.compareTo'>Comparable.compareTo</a></DD></DL></p>
                             </li>
@@ -571,7 +541,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="getArtefactTypes()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[] <strong>getArtefactTypes</strong>()</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[] <strong>getArtefactTypes</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -588,7 +558,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="getMarkerAnnotation()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a> <strong>getMarkerAnnotation</strong>()</h4>
+                                <h4>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/AnnotationNode.html' title='AnnotationNode'>AnnotationNode</a> <strong>getMarkerAnnotation</strong>()</h4>
                                 <p> A marker annotation to be applied to added methods, defaults to null
       <DL><DT><B>Returns:</B></DT><DD>The annotation node</DD></DL></p>
                             </li>
@@ -611,18 +581,10 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                             </li>
                         </ul>
                     
-                        <a name="hasArtefactAnnotation(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>hasArtefactAnnotation</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="isCandidateInstanceMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>isCandidateInstanceMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
+                                <h4>protected&nbsp;boolean <strong>isCandidateInstanceMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -630,7 +592,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="isStaticCandidateMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>isStaticCandidateMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
+                                <h4>protected&nbsp;boolean <strong>isStaticCandidateMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -638,7 +600,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="isStaticMethodExcluded(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>isStaticMethodExcluded</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
+                                <h4>protected&nbsp;boolean <strong>isStaticMethodExcluded</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -646,23 +608,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="isStaticMethodIncluded(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.MethodNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>isStaticMethodIncluded</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="isValidArtefactType()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>isValidArtefactType</strong>()</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="isValidTargetClassNode(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>isValidTargetClassNode</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>protected&nbsp;boolean <strong>isStaticMethodIncluded</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> declaredMethod)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -670,7 +616,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -678,7 +624,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -686,24 +632,16 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="performInjectionInternal(java.lang.String, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>performInjectionInternal</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>protected&nbsp;void <strong>performInjectionInternal</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p> Subclasses can override to provide additional transformation
       <DL><DT><B>Parameters:</B></DT><DD>apiInstanceProperty</DD><DD><code>source</code> -  The source</DD><DD><code>classNode</code> -  The class node</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjectionOnAnnotatedClass</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
-                                <p></p>
                             </li>
                         </ul>
                     
                         <a name="performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>performInjectionOnAnnotatedClass</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>public&nbsp;void <strong>performInjectionOnAnnotatedClass</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -711,7 +649,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="performInstanceImplementationInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, Map, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>performInstanceImplementationInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> instanceImplementation)</h4>
+                                <h4>protected&nbsp;void <strong>performInstanceImplementationInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> instanceImplementation)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -719,7 +657,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="performStaticImplementationInjection(org.codehaus.groovy.ast.ClassNode, Map, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>performStaticImplementationInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> staticImplementation)</h4>
+                                <h4>protected&nbsp;void <strong>performStaticImplementationInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; genericsPlaceholders, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> staticImplementation)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -727,7 +665,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="populateAutowiredApiLookupMethod(org.codehaus.groovy.ast.ClassNode, org.codehaus.groovy.ast.ClassNode, java.lang.String, java.lang.String, org.codehaus.groovy.ast.stmt.BlockStatement)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> <strong>populateAutowiredApiLookupMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> <strong>populateAutowiredApiLookupMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -735,7 +673,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="populateDefaultApiLookupMethod(org.codehaus.groovy.ast.ClassNode, java.lang.String, java.lang.String, org.codehaus.groovy.ast.stmt.BlockStatement)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> <strong>populateDefaultApiLookupMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/MethodNode.html' title='MethodNode'>MethodNode</a> <strong>populateDefaultApiLookupMethod</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> implementationNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> apiInstanceProperty, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> methodName, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/stmt/BlockStatement.html' title='BlockStatement'>BlockStatement</a> methodBody)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -763,15 +701,7 @@ implements <a href='../../../../grails/compiler/ast/AnnotatedClassInjector.html'
                         <a name="resolveGenericsPlaceHolders(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; <strong>resolveGenericsPlaceHolders</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="shouldSkipInjection(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;boolean <strong>shouldSkipInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a>&gt; <strong>resolveGenericsPlaceHolders</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>

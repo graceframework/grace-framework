@@ -102,7 +102,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <pre>interface FileSystemInteraction</pre>
 
-    <p> Utility methods exposed to scripts for interacting with resources (found on the file system or jars) and the file system <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
+    <p> Utility methods exposed to scripts for interacting with resources (found on the file system or jars) and the file system <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
 
           </li>
     </ul>
@@ -168,13 +168,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
-                            <td class="colLast"><code><strong><a href="#className(org.grails.io.support.Resource)">className</a></strong>(<a href='../../../../org/grails/io/support/Resource.html'>Resource</a> resource)</code><br>The class name of the given resource</td>
+                            <td class="colLast"><code><strong><a href="#className(org.springframework.core.io.Resource)">className</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</code><br>The class name of the given resource</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>abstract&nbsp;<a href='../../../../grails/dev/commands/io/FileSystemInteraction.html'>FileSystemInteraction</a></code></td>
-                            <td class="colLast"><code><strong><a href="#copy(groovy.lang.Closure)">copy</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> callable)</code><br>Allows Gradle style simple copy specs</td>
+                            <td class="colLast"><code><strong><a href="#copy(groovy.lang.Closure)">copy</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> callable)</code><br>Allows Gradle style simple copy specs</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -186,7 +186,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>abstract&nbsp;<a href='../../../../grails/dev/commands/io/FileSystemInteraction.html'>FileSystemInteraction</a></code></td>
-                            <td class="colLast"><code><strong><a href="#copy(org.grails.io.support.Resource, java.io.File)">copy</a></strong>(<a href='../../../../org/grails/io/support/Resource.html'>Resource</a> from, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> to)</code><br>Copy a Resource from the given location to the given directory or location</td>
+                            <td class="colLast"><code><strong><a href="#copy(org.springframework.core.io.Resource, java.io.File)">copy</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> from, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> to)</code><br>Copy a Resource from the given location to the given directory or location</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -245,19 +245,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>abstract&nbsp;<a href='../../../../org/grails/io/support/Resource.html'>Resource</a></code></td>
+                            <td class="colLast"><code>abstract&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
                             <td class="colLast"><code><strong><a href="#resource(java.lang.Object)">resource</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> path)</code><br>Obtain a resource for the given path</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html' title='Collection'>Collection</a>&lt;Resource&gt;</code></td>
+                            <td class="colLast"><code>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html' title='Collection'>Collection</a>&lt;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#resources(java.lang.String)">resources</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> pattern)</code><br>Obtain resources for the given pattern</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>abstract&nbsp;<a href='../../../../org/grails/io/support/Resource.html'>Resource</a></code></td>
+                            <td class="colLast"><code>abstract&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
                             <td class="colLast"><code><strong><a href="#source(java.lang.String)">source</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</code><br>Finds a source file for the given class name</td>
                         </tr>
                         
@@ -293,10 +293,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="className(org.grails.io.support.Resource)"><!-- --></a>
+                        <a name="className(org.springframework.core.io.Resource)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>className</strong>(<a href='../../../../org/grails/io/support/Resource.html'>Resource</a> resource)</h4>
+                                <h4>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>className</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</h4>
                                 <p> The class name of the given resource <DL><DT><B>Parameters:</B></DT><DD><code>resource</code> -  The resource</DD></DL><DL><DT><B>Returns:</B></DT><DD>The class name</DD></DL></p>
                             </li>
                         </ul>
@@ -304,7 +304,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="copy(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>abstract&nbsp;<a href='../../../../grails/dev/commands/io/FileSystemInteraction.html'>FileSystemInteraction</a> <strong>copy</strong>(@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/lang/DelegatesTo.html' title='DelegatesTo'>DelegatesTo</a>(value: CopySpec)<br><a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> callable)</h4>
+                                <h4>abstract&nbsp;<a href='../../../../grails/dev/commands/io/FileSystemInteraction.html'>FileSystemInteraction</a> <strong>copy</strong>(@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/DelegatesTo.html' title='DelegatesTo'>DelegatesTo</a>(value: CopySpec)<br><a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> callable)</h4>
                                 <p> Allows Gradle style simple copy specs <DL><DT><B>Parameters:</B></DT><DD><code>callable</code> -  The callable</DD></DL><DL><DT><B>Returns:</B></DT><DD>this</DD></DL></p>
                             </li>
                         </ul>
@@ -317,10 +317,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="copy(org.grails.io.support.Resource, java.io.File)"><!-- --></a>
+                        <a name="copy(org.springframework.core.io.Resource, java.io.File)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>abstract&nbsp;<a href='../../../../grails/dev/commands/io/FileSystemInteraction.html'>FileSystemInteraction</a> <strong>copy</strong>(<a href='../../../../org/grails/io/support/Resource.html'>Resource</a> from, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> to)</h4>
+                                <h4>abstract&nbsp;<a href='../../../../grails/dev/commands/io/FileSystemInteraction.html'>FileSystemInteraction</a> <strong>copy</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> from, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> to)</h4>
                                 <p> Copy a Resource from the given location to the given directory or location <DL><DT><B>Parameters:</B></DT><DD><code>from</code> -  The resource to copy</DD><DD><code>to</code> -  The location to copy to</DD></DL><DL><DT><B>Returns:</B></DT><DD>The {@FileSystemInteraction} instance</DD></DL></p>
                             </li>
                         </ul>
@@ -400,7 +400,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="resource(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>abstract&nbsp;<a href='../../../../org/grails/io/support/Resource.html'>Resource</a> <strong>resource</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> path)</h4>
+                                <h4>abstract&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>resource</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> path)</h4>
                                 <p> Obtain a resource for the given path <DL><DT><B>Parameters:</B></DT><DD><code>path</code> -  The path</DD></DL><DL><DT><B>Returns:</B></DT><DD>The resource</DD></DL></p>
                             </li>
                         </ul>
@@ -408,7 +408,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="resources(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html' title='Collection'>Collection</a>&lt;Resource&gt; <strong>resources</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> pattern)</h4>
+                                <h4>abstract&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html' title='Collection'>Collection</a>&lt;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>&gt; <strong>resources</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> pattern)</h4>
                                 <p> Obtain resources for the given pattern <DL><DT><B>Parameters:</B></DT><DD><code>pattern</code> -  The pattern</DD></DL><DL><DT><B>Returns:</B></DT><DD>The resources</DD></DL></p>
                             </li>
                         </ul>
@@ -416,7 +416,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="source(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>abstract&nbsp;<a href='../../../../org/grails/io/support/Resource.html'>Resource</a> <strong>source</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</h4>
+                                <h4>abstract&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>source</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</h4>
                                 <p> Finds a source file for the given class name <DL><DT><B>Parameters:</B></DT><DD><code>className</code> -  The class name</DD></DL><DL><DT><B>Returns:</B></DT><DD>The source resource</DD></DL></p>
                             </li>
                         </ul>

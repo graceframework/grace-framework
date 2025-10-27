@@ -106,17 +106,17 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <pre>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/SuppressWarnings.html' title='SuppressWarnings'>SuppressWarnings</a>("rawtypes")
 public interface GrailsPlugin
-extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></pre>
+extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></pre>
 
-    <p> <p>Plugin interface that adds Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/beans/factory/config/BeanDefinition.html' title='BeanDefinition'>BeanDefinition</a>s
+    <p> <p>Plugin interface that adds Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/beans/factory/config/BeanDefinition.html' title='BeanDefinition'>BeanDefinition</a>s
  to a registry based on a GrailsApplication object. After all <code>GrailsPlugin</code> classes
- have been processed the <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/beans/factory/config/BeanDefinition.html' title='BeanDefinition'>BeanDefinition</a>s in the registry are
- loaded in a Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> that's the singular
+ have been processed the <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/beans/factory/config/BeanDefinition.html' title='BeanDefinition'>BeanDefinition</a>s in the registry are
+ loaded in a Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> that's the singular
  configuration unit of Grails applications.</p>
 
  <p>It's up to implementation classes to determine where <code>GrailsPlugin</code> instances are loaded
  from.</p>
-  <DL><DT><B>Authors:</B></DT><DD>Steven Devijver</DD><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>0.2</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/beans/factory/support/BeanDefinitionRegistry.html' title='BeanDefinitionRegistry'>BeanDefinitionRegistry</a></DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Steven Devijver</DD><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>0.2</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/beans/factory/support/BeanDefinitionRegistry.html' title='BeanDefinitionRegistry'>BeanDefinitionRegistry</a></DD></DL></p>
 
           </li>
     </ul>
@@ -142,7 +142,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                             <th class="colLast" scope="col">Fields</th>
                         </tr>
                                                 <tr class="rowColor">
-                            <td class="colFirst"><strong><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></code></strong></td>
+                            <td class="colFirst"><strong><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></code></strong></td>
                             <td class="colLast"><code>HIGHEST_PRECEDENCE, LOWEST_PRECEDENCE</code></td>
                         </tr>
 
@@ -192,13 +192,13 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#doWithApplicationContext(org.springframework.context.ApplicationContext)">doWithApplicationContext</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#doWithApplicationContext(org.springframework.context.ApplicationContext)">doWithApplicationContext</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#doWithDynamicMethods(org.springframework.context.ApplicationContext)">doWithDynamicMethods</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</code><br>Calls a "doWithDynamicMethods" closure that allows a plugin to register dynamic methods at runtime</td>
+                            <td class="colLast"><code><strong><a href="#doWithDynamicMethods(org.springframework.context.ApplicationContext)">doWithDynamicMethods</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</code><br>Calls a "doWithDynamicMethods" closure that allows a plugin to register dynamic methods at runtime</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -247,7 +247,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/lang/GroovyObject.html' title='GroovyObject'>GroovyObject</a></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/GroovyObject.html' title='GroovyObject'>GroovyObject</a></code></td>
                             <td class="colLast"><code><strong><a href="#getInstance()">getInstance</a></strong>()</code><br>Retrieves the wrapped plugin instance for this plugin</td>
                         </tr>
                         
@@ -301,7 +301,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/env/PropertySource.html' title='PropertySource'>PropertySource</a>&lt;?&gt;</code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/env/PropertySource.html' title='PropertySource'>PropertySource</a>&lt;?&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getPropertySource()">getPropertySource</a></strong>()</code><br></td>
                         </tr>
                         
@@ -376,7 +376,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDescriptor(org.springframework.core.io.Resource)">setDescriptor</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> descriptor)</code><br>Sets the plugin descriptor for this plugin</td>
+                            <td class="colLast"><code><strong><a href="#setDescriptor(org.springframework.core.io.Resource)">setDescriptor</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> descriptor)</code><br>Sets the plugin descriptor for this plugin</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -416,16 +416,16 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                             <td class="colLast"><code><a href='../../grails/plugins/GrailsPluginInfo.html#getDescriptor()'>getDescriptor</a>, <a href='../../grails/plugins/GrailsPluginInfo.html#getFullName()'>getFullName</a>, <a href='../../grails/plugins/GrailsPluginInfo.html#getName()'>getName</a>, <a href='../../grails/plugins/GrailsPluginInfo.html#getPluginDir()'>getPluginDir</a>, <a href='../../grails/plugins/GrailsPluginInfo.html#getProperties()'>getProperties</a>, <a href='../../grails/plugins/GrailsPluginInfo.html#getVersion()'>getVersion</a></code></td>
                         </tr>
                         <tr class="rowColor">
-                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a></code></td>
-                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContextAware.html#setApplicationContext(org.springframework.context.ApplicationContext)' title='setApplicationContext'>setApplicationContext</a></code></td>
+                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a></code></td>
+                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContextAware.html#setApplicationContext(org.springframework.context.ApplicationContext)' title='setApplicationContext'>setApplicationContext</a></code></td>
                         </tr>
                         <tr class="altColor">
                             <td class="colFirst"><code>interface <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html' title='Comparable'>Comparable</a></code></td>
                             <td class="colLast"><code><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Comparable.html#compareTo(java.lang.Object)' title='compareTo'>compareTo</a></code></td>
                         </tr>
                         <tr class="rowColor">
-                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></code></td>
-                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/Ordered.html#getOrder()' title='getOrder'>getOrder</a></code></td>
+                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></code></td>
+                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html#getOrder()' title='getOrder'>getOrder</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -482,9 +482,9 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <a name="doWithApplicationContext(org.springframework.context.ApplicationContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>doWithApplicationContext</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</h4>
-                                <p> <p>This method is called to allow the plugin to add <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/beans/factory/config/BeanDefinition.html' title='BeanDefinition'>BeanDefinition</a>s
- to the <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/beans/factory/support/BeanDefinitionRegistry.html' title='BeanDefinitionRegistry'>BeanDefinitionRegistry</a>.</p>
+                                <h4>public&nbsp;void <strong>doWithApplicationContext</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</h4>
+                                <p> <p>This method is called to allow the plugin to add <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/beans/factory/config/BeanDefinition.html' title='BeanDefinition'>BeanDefinition</a>s
+ to the <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/beans/factory/support/BeanDefinitionRegistry.html' title='BeanDefinitionRegistry'>BeanDefinitionRegistry</a>.</p>
       <DL><DT><B>Parameters:</B></DT><DD><code>applicationContext</code> -  The Spring ApplicationContext instance</DD></DL></p>
                             </li>
                         </ul>
@@ -492,7 +492,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <a name="doWithDynamicMethods(org.springframework.context.ApplicationContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>doWithDynamicMethods</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</h4>
+                                <h4>public&nbsp;void <strong>doWithDynamicMethods</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> applicationContext)</h4>
                                 <p> Calls a "doWithDynamicMethods" closure that allows a plugin to register dynamic methods at runtime
       <DL><DT><B>Parameters:</B></DT><DD><code>applicationContext</code> -  The Spring ApplicationContext instance</DD></DL></p>
                             </li>
@@ -566,7 +566,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <a name="getInstance()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/lang/GroovyObject.html' title='GroovyObject'>GroovyObject</a> <strong>getInstance</strong>()</h4>
+                                <h4>public&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/GroovyObject.html' title='GroovyObject'>GroovyObject</a> <strong>getInstance</strong>()</h4>
                                 <p> Retrieves the wrapped plugin instance for this plugin
       <DL><DT><B>Returns:</B></DT><DD>The plugin instance</DD></DL></p>
                             </li>
@@ -650,7 +650,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <a name="getPropertySource()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/env/PropertySource.html' title='PropertySource'>PropertySource</a>&lt;?&gt; <strong>getPropertySource</strong>()</h4>
+                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/env/PropertySource.html' title='PropertySource'>PropertySource</a>&lt;?&gt; <strong>getPropertySource</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -759,7 +759,7 @@ extends <a href='../../grails/plugins/GrailsPluginInfo.html'>GrailsPluginInfo</a
                         <a name="setDescriptor(org.springframework.core.io.Resource)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>setDescriptor</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> descriptor)</h4>
+                                <h4>public&nbsp;void <strong>setDescriptor</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> descriptor)</h4>
                                 <p> Sets the plugin descriptor for this plugin
       <DL><DT><B>Parameters:</B></DT><DD><code>descriptor</code> -  The descriptor</DD></DL></p>
                             </li>

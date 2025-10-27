@@ -91,7 +91,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>grails.compiler.traits.RestResponderTraitInjector
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>grails.compiler.traits.RestResponderTraitInjector
 </ul>
 <div class="description">
     <ul class="blockList">
@@ -101,11 +101,11 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>class RestResponderTraitInjector
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+class RestResponderTraitInjector
 extends <a href='../../../grails/compiler/traits/ControllerTraitInjector.html'>ControllerTraitInjector</a></pre>
 
-    <p>
- <DL><DT><B>Authors:</B></DT><DD>Jeff Brown</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
+    <p> A <a href='../../../grails/compiler/traits/TraitInjector.html' title='TraitInjector'>TraitInjector</a> that injects controllers with the <a href='../../../grails/artefact/controller/RestResponder.html' title='RestResponder'>RestResponder</a> trait <DL><DT><B>Authors:</B></DT><DD>Jeff Brown</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
 
           </li>
     </ul>
@@ -168,7 +168,7 @@ extends <a href='../../../grails/compiler/traits/ControllerTraitInjector.html'>C
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a></code></td>
+                            <td class="colLast"><code><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getTrait()">getTrait</a></strong>()</code><br></td>
                         </tr>
                         
@@ -189,6 +189,10 @@ extends <a href='../../../grails/compiler/traits/ControllerTraitInjector.html'>C
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../grails/compiler/traits/ControllerTraitInjector.html'>ControllerTraitInjector</a></code></td>
                             <td class="colLast"><code><a href='../../../grails/compiler/traits/ControllerTraitInjector.html#getArtefactTypes()'>getArtefactTypes</a>, <a href='../../../grails/compiler/traits/ControllerTraitInjector.html#getTrait()'>getTrait</a></code></td>
+                        </tr>
+                        <tr class="altColor">
+                            <td class="colFirst"><code>class <a href='../../../grails/compiler/traits/TraitInjectorAdapter.html'>TraitInjectorAdapter</a></code></td>
+                            <td class="colLast"><code><a href='../../../grails/compiler/traits/TraitInjectorAdapter.html#getArtefactTypes()'>getArtefactTypes</a>, <a href='../../../grails/compiler/traits/TraitInjectorAdapter.html#supports(org.codehaus.groovy.ast.ClassNode)'>supports</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -243,7 +247,7 @@ extends <a href='../../../grails/compiler/traits/ControllerTraitInjector.html'>C
                         <a name="getTrait()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> <strong>getTrait</strong>()</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; <strong>getTrait</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>

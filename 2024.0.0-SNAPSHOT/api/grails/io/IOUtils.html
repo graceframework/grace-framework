@@ -101,11 +101,11 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
 class IOUtils
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a></pre>
 
-    <p> Utility methods for performing I/O operations. <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>2.4</DD></DL></p>
+    <p> Utility methods for performing I/O operations. <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>2.4</DD></DL></p>
 
           </li>
     </ul>
@@ -134,12 +134,18 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>static&nbsp;int</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#BUFFER_SIZE">BUFFER_SIZE</a></code></td>
+                            <td class="colLast">The default buffer size used when copying bytes.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#RESOURCE_JAR_PREFIX">RESOURCE_JAR_PREFIX</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#RESOURCE_WAR_PREFIX">RESOURCE_WAR_PREFIX</a></code></td>
                             <td class="colLast"></td>
@@ -199,86 +205,136 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#closeQuietly(java.io.Closeable)">closeQuietly</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Closeable.html' title='Closeable'>Closeable</a> closeable)</code><br>Closes a closeable gracefully without throwing exceptions etc.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#copy(java.io.InputStream, java.io.Writer, java.lang.String)">copy</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> input, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Writer.html' title='Writer'>Writer</a> output, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> encoding)</code><br>Copy an InputStream to the given writer with the given encoding</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;int</code></td>
+                            <td class="colLast"><code><strong><a href="#copy(org.springframework.core.io.Resource, java.io.File)">copy</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> out)</code><br>Copy the contents of the given input File to the given output File.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;int</code></td>
+                            <td class="colLast"><code><strong><a href="#copy(java.io.Reader, java.io.Writer)">copy</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Reader.html' title='Reader'>Reader</a> reader, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Writer.html' title='Writer'>Writer</a> writer)</code><br>Copy the contents of the given Reader to the given Writer.
+ </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;int</code></td>
+                            <td class="colLast"><code><strong><a href="#copy(java.io.InputStream, java.io.OutputStream)">copy</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> is, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/OutputStream.html' title='OutputStream'>OutputStream</a> os)</code><br>Copy the contents of the given InputStream to the given OutputStream.
+ </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findApplicationDirectory()">findApplicationDirectory</a></strong>()</code><br>Finds the directory where the Application class is contained</td>
+                            <td class="colLast"><code><strong><a href="#copyToString(java.io.Reader)">copyToString</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Reader.html' title='Reader'>Reader</a> reader)</code><br>Convert a reader to a String, reading the data from the reader</td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
+                            <td class="colLast"><code><strong><a href="#copyToString(java.io.InputStream, java.lang.String)">copyToString</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> stream, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> encoding)</code><br>Convert a stream to a String, reading the data from the stream</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/xml/XmlSlurper.html' title='XmlSlurper'>XmlSlurper</a></code></td>
+                            <td class="colLast"><code><strong><a href="#createXmlSlurper()">createXmlSlurper</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
+                            <td class="colLast"><code><strong><a href="#findApplicationDirectory()">findApplicationDirectory</a></strong>()</code><br>Finds the directory where the Application class is contained</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
                             <td class="colLast"><code><strong><a href="#findApplicationDirectoryFile()">findApplicationDirectoryFile</a></strong>()</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
                             <td class="colLast"><code><strong><a href="#findApplicationDirectoryFile(java.lang.Class)">findApplicationDirectoryFile</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass)</code><br>Finds the application directory for the given class</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a></code></td>
                             <td class="colLast"><code><strong><a href="#findClassResource(java.lang.Class)">findClassResource</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass)</code><br>Returns the URL resource for the location on disk of the given class or null if it cannot be found</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
                             <td class="colLast"><code><strong><a href="#findJarFile(java.lang.Class)">findJarFile</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass)</code><br>Finds a JAR file for the given class</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findJarFile(org.grails.io.support.Resource)">findJarFile</a></strong>(<a href='../../org/grails/io/support/Resource.html'>Resource</a> resource)</code><br>Finds a JAR for the given resource</td>
+                            <td class="colLast"><code><strong><a href="#findJarFile(org.springframework.core.io.Resource)">findJarFile</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</code><br>Finds a JAR for the given resource</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
                             <td class="colLast"><code><strong><a href="#findJarFile(java.net.URL)">findJarFile</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a> resource)</code><br>Finds a JAR for the given resource</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a></code></td>
                             <td class="colLast"><code><strong><a href="#findJarResource(java.lang.Class)">findJarResource</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass)</code><br>Returns the URL resource for the location on disk of the given class or null if it cannot be found</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a></code></td>
                             <td class="colLast"><code><strong><a href="#findResourceRelativeToClass(java.lang.Class, java.lang.String)">findResourceRelativeToClass</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> path)</code><br>Finds a URL within a JAR relative (from the root) to the given class</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a></code></td>
                             <td class="colLast"><code><strong><a href="#findRootResource(java.lang.Class)">findRootResource</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass)</code><br>Returns a URL that represents the root classpath resource where the given class was loaded from</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a></code></td>
                             <td class="colLast"><code><strong><a href="#findRootResourcesURL(java.lang.Class)">findRootResourcesURL</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> targetClass)</code><br>This method differs from <a href='#findRootResource(java.lang.Class)'>findRootResource(java.lang.Class)</a> in that
  it will find the root URL where to load resources defined in src/main/resources</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
                             <td class="colLast"><code><strong><a href="#findSourceFile(java.lang.String)">findSourceFile</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</code><br>Finds a source file for the given class name</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isWithinBinary(java.net.URL)">isWithinBinary</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a> url)</code><br>Whether the given URL is within a binary like a JAR or WAR file</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;javax.xml.parsers.SAXParser</code></td>
+                            <td class="colLast"><code><strong><a href="#newSAXParser()">newSAXParser</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -340,6 +396,14 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                 </a>
                     <h3>Field Detail</h3>
                     
+                        <a name="BUFFER_SIZE"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;int <strong>BUFFER_SIZE</strong></h4>
+                                <p> The default buffer size used when copying bytes.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="RESOURCE_JAR_PREFIX"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -393,6 +457,14 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                 </a>
                     <h3>Method Detail</h3>
                     
+                        <a name="closeQuietly(java.io.Closeable)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;void <strong>closeQuietly</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Closeable.html' title='Closeable'>Closeable</a> closeable)</h4>
+                                <p> Closes a closeable gracefully without throwing exceptions etc. <DL><DT><B>Parameters:</B></DT><DD><code>closeable</code> -  The closeable</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="copy(java.io.InputStream, java.io.Writer, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -401,10 +473,60 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                             </li>
                         </ul>
                     
+                        <a name="copy(org.springframework.core.io.Resource, java.io.File)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;int <strong>copy</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> out)</h4>
+                                <p> Copy the contents of the given input File to the given output File.<DL><DT><B>throws:</B></DT><DD>java.io.IOException in case of I/O errors</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>resource</code> -  the resource to copy from</DD><DD><code>out</code> -  the file to copy to</DD></DL><DL><DT><B>Returns:</B></DT><DD>the number of bytes copied</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="copy(java.io.Reader, java.io.Writer)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;int <strong>copy</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Reader.html' title='Reader'>Reader</a> reader, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Writer.html' title='Writer'>Writer</a> writer)</h4>
+                                <p> Copy the contents of the given Reader to the given Writer.
+ Closes both when done.<DL><DT><B>throws:</B></DT><DD>IOException in case of I/O errors</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>reader</code> -  the Reader to copy from</DD><DD><code>writer</code> -  the Writer to copy to</DD></DL><DL><DT><B>Returns:</B></DT><DD>the number of characters copied</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="copy(java.io.InputStream, java.io.OutputStream)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;int <strong>copy</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> is, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/OutputStream.html' title='OutputStream'>OutputStream</a> os)</h4>
+                                <p> Copy the contents of the given InputStream to the given OutputStream.
+ Closes both streams when done.<DL><DT><B>throws:</B></DT><DD>IOException in case of I/O errors</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>is</code> -  the stream to copy from</DD><DD><code>os</code> -  the stream to copy to</DD></DL><DL><DT><B>Returns:</B></DT><DD>the number of bytes copied</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="copyToString(java.io.Reader)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>copyToString</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Reader.html' title='Reader'>Reader</a> reader)</h4>
+                                <p> Convert a reader to a String, reading the data from the reader <DL><DT><B>Parameters:</B></DT><DD><code>reader</code> -  The reader</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="copyToString(java.io.InputStream, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>copyToString</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> stream, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> encoding)</h4>
+                                <p> Convert a stream to a String, reading the data from the stream <DL><DT><B>Parameters:</B></DT><DD><code>stream</code> -  The stream</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="createXmlSlurper()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/xml/XmlSlurper.html' title='XmlSlurper'>XmlSlurper</a> <strong>createXmlSlurper</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="findApplicationDirectory()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/Memoized.html' title='Memoized'>Memoized</a><br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>findApplicationDirectory</strong>()</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/Memoized.html' title='Memoized'>Memoized</a><br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>findApplicationDirectory</strong>()</h4>
                                 <p> Finds the directory where the Application class is contained <DL><DT><B>Returns:</B></DT><DD>The application directory</DD></DL></p>
                             </li>
                         </ul>
@@ -412,7 +534,7 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="findApplicationDirectoryFile()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/Memoized.html' title='Memoized'>Memoized</a><br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>findApplicationDirectoryFile</strong>()</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/Memoized.html' title='Memoized'>Memoized</a><br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>findApplicationDirectoryFile</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -441,10 +563,10 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                             </li>
                         </ul>
                     
-                        <a name="findJarFile(org.grails.io.support.Resource)"><!-- --></a>
+                        <a name="findJarFile(org.springframework.core.io.Resource)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>findJarFile</strong>(<a href='../../org/grails/io/support/Resource.html'>Resource</a> resource)</h4>
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>findJarFile</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</h4>
                                 <p> Finds a JAR for the given resource <DL><DT><B>Parameters:</B></DT><DD><code>resource</code> -  The resource</DD></DL><DL><DT><B>Returns:</B></DT><DD>The JAR file or null if it can't be found</DD></DL></p>
                             </li>
                         </ul>
@@ -497,7 +619,7 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="findSourceFile(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/Memoized.html' title='Memoized'>Memoized</a><br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>findSourceFile</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/Memoized.html' title='Memoized'>Memoized</a><br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>findSourceFile</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</h4>
                                 <p> Finds a source file for the given class name <DL><DT><B>Parameters:</B></DT><DD><code>className</code> -  The class name</DD></DL><DL><DT><B>Returns:</B></DT><DD>The source file</DD></DL></p>
                             </li>
                         </ul>
@@ -507,6 +629,14 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                             <li class="blockList">
                                 <h4>static&nbsp;boolean <strong>isWithinBinary</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a> url)</h4>
                                 <p> Whether the given URL is within a binary like a JAR or WAR file <DL><DT><B>Parameters:</B></DT><DD><code>url</code> -  The URL</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if it is</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="newSAXParser()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;javax.xml.parsers.SAXParser <strong>newSAXParser</strong>()</h4>
+                                <p></p>
                             </li>
                         </ul>
                     
@@ -521,16 +651,16 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="toString(java.io.Reader)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>toString</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Reader.html' title='Reader'>Reader</a> reader)</h4>
-                                <p> Convert a reader to a String, reading the data from the reader <DL><DT><B>Parameters:</B></DT><DD><code>reader</code> -  The reader</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string</DD></DL></p>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Deprecated.html' title='Deprecated'>Deprecated</a>(since: 2024.0.0, forRemoval: true)<br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>toString</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Reader.html' title='Reader'>Reader</a> reader)</h4>
+                                <p> Convert a reader to a String, reading the data from the reader<DL><DT><B>deprecated:</B></DT><DD>since 2024.0.0 in favor of <a href='#copyToString(java.io.Reader)'>copyToString(Reader)</a></DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>reader</code> -  The reader</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="toString(java.io.InputStream, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>toString</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> stream, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> encoding)</h4>
-                                <p> Convert a stream to a String, reading the data from the stream <DL><DT><B>Parameters:</B></DT><DD><code>stream</code> -  The stream</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string</DD></DL></p>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Deprecated.html' title='Deprecated'>Deprecated</a>(since: 2024.0.0, forRemoval: true)<br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>toString</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/InputStream.html' title='InputStream'>InputStream</a> stream, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> encoding)</h4>
+                                <p> Convert a stream to a String, reading the data from the stream<DL><DT><B>deprecated:</B></DT><DD>since 2024.0.0 in favor of <a href='#copyToString(java.io.InputStream, java.lang.String)'>copyToString(InputStream, String)</a></DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>stream</code> -  The stream</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string</DD></DL></p>
                             </li>
                         </ul>
                     

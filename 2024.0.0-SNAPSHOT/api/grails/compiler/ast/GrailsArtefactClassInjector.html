@@ -108,7 +108,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 extends <a href='../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a></pre>
 
     <p> Interface specific to Grails artefacts that returns the artefact type.
-  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>2.0</DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>2.0</DD></DL></p>
 
           </li>
     </ul>
@@ -154,6 +154,12 @@ extends <a href='../../../grails/compiler/ast/ClassInjector.html'>ClassInjector<
                             <td class="colLast"><code><strong><a href="#getArtefactTypes()">getArtefactTypes</a></strong>()</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#shouldInject(org.codehaus.groovy.ast.ClassNode)">shouldInject</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -170,7 +176,7 @@ extends <a href='../../../grails/compiler/ast/ClassInjector.html'>ClassInjector<
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>interface <a href='../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a></code></td>
-                            <td class="colLast"><code><a href='../../../grails/compiler/ast/ClassInjector.html#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)'>performInjection</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)'>performInjection</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)'>performInjectionOnAnnotatedClass</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#shouldInject(java.net.URL)'>shouldInject</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#shouldInject(org.codehaus.groovy.ast.ClassNode)'>shouldInject</a></code></td>
+                            <td class="colLast"><code><a href='../../../grails/compiler/ast/ClassInjector.html#getOrder()'>getOrder</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)'>performInjection</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)'>performInjection</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)'>performInjectionOnAnnotatedClass</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#shouldInject(java.net.URL)'>shouldInject</a>, <a href='../../../grails/compiler/ast/ClassInjector.html#shouldInject(org.codehaus.groovy.ast.ClassNode)'>shouldInject</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -208,6 +214,14 @@ extends <a href='../../../grails/compiler/ast/ClassInjector.html'>ClassInjector<
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[] <strong>getArtefactTypes</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="shouldInject(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;boolean <strong>shouldInject</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>

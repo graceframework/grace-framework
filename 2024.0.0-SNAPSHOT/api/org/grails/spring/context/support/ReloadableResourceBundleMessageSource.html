@@ -99,7 +99,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
             <dl>
                 <dt>All Implemented Interfaces and Traits:</dt>
-                <dd><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ResourceLoaderAware.html' title='ResourceLoaderAware'>ResourceLoaderAware</a></dd>
+                <dd><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ResourceLoaderAware.html' title='ResourceLoaderAware'>ResourceLoaderAware</a></dd>
             </dl>
     
 
@@ -107,21 +107,21 @@ if (location.href.indexOf('is-external=true') == -1) {
             <hr>
 
 <pre>public class ReloadableResourceBundleMessageSource
-extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html' title='AbstractMessageSource'>AbstractMessageSource</a>
-implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ResourceLoaderAware.html' title='ResourceLoaderAware'>ResourceLoaderAware</a></pre>
+extends <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html' title='AbstractMessageSource'>AbstractMessageSource</a>
+implements <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ResourceLoaderAware.html' title='ResourceLoaderAware'>ResourceLoaderAware</a></pre>
 
-    <p> Spring-specific <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/MessageSource.html' title='MessageSource'>MessageSource</a> implementation
+    <p> Spring-specific <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/MessageSource.html' title='MessageSource'>MessageSource</a> implementation
  that accesses resource bundles using specified basenames, participating in the
- Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a>'s resource loading.
+ Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a>'s resource loading.
 
- <p>In contrast to the JDK-based <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>, this class uses
+ <p>In contrast to the JDK-based <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>, this class uses
  <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Properties.html' title='Properties'>Properties</a> instances as its custom data structure for messages,
  loading them via a org.springframework.util.PropertiesPersister strategy
- from Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> handles. This strategy is not only capable of
+ from Spring <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> handles. This strategy is not only capable of
  reloading files based on timestamp changes, but also of loading properties files
  with a specific character encoding. It will detect XML property files as well.
 
- <p>In contrast to <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>, this class supports
+ <p>In contrast to <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>, this class supports
  reloading of properties files through the <a href='#setCacheSeconds'>"cacheSeconds"</a>
  setting, and also through programmatically clearing the properties cache.
  Since application servers typically cache all files loaded from the classpath,
@@ -131,28 +131,28 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
 
  <p>Note that the base names set as <a href='#setBasenames'>"basenames"</a> property
  are treated in a slightly different fashion than the "basenames" property of
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>. It follows the basic ResourceBundle rule of not
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>. It follows the basic ResourceBundle rule of not
  specifying file extension or language codes, but can refer to any Spring resource
  location (instead of being restricted to classpath resources). With a "classpath:"
  prefix, resources can still be loaded from the classpath, but "cacheSeconds" values
  other than "-1" (caching forever) will not work in this case.
 
  <p>This MessageSource implementation is usually slightly faster than
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>, which builds on <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/ResourceBundle.html' title='ResourceBundle'>ResourceBundle</a>
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a>, which builds on <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/ResourceBundle.html' title='ResourceBundle'>ResourceBundle</a>
  - in the default mode, i.e. when caching forever. With "cacheSeconds" set to 1,
  message lookup takes about twice as long - with the benefit that changes in
  individual properties files are detected with a maximum delay of 1 second.
  Higher "cacheSeconds" values usually <i>do not</i> make a significant difference.
 
  <p>This MessageSource can easily be used outside of an
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a>: It will use a
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/DefaultResourceLoader.html' title='DefaultResourceLoader'>DefaultResourceLoader</a> as default,
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a>: It will use a
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/DefaultResourceLoader.html' title='DefaultResourceLoader'>DefaultResourceLoader</a> as default,
  simply getting overridden with the ApplicationContext's resource loader
  if running in a context. It does not have any other specific dependencies.
 
  <p>Thanks to Thomas Achleitner for providing the initial implementation of
  this message source!
-  <DL><DT><B>Authors:</B></DT><DD>Juergen Hoeller</DD><DD>Lari Hotari</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='#setCacheSeconds'>setCacheSeconds</a></DD><DD><a href='#setBasenames'>setBasenames</a></DD><DD><a href='#setDefaultEncoding'>setDefaultEncoding</a></DD><DD><a href='#setFileEncodings'>setFileEncodings</a></DD><DD><a href='#setPropertiesPersister'>setPropertiesPersister</a></DD><DD><a href='#setResourceLoader'>setResourceLoader</a></DD><DD>org.springframework.util.DefaultPropertiesPersister</DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/DefaultResourceLoader.html' title='DefaultResourceLoader'>DefaultResourceLoader</a></DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a></DD><DD><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/ResourceBundle.html' title='ResourceBundle'>ResourceBundle</a></DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Juergen Hoeller</DD><DD>Lari Hotari</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='#setCacheSeconds'>setCacheSeconds</a></DD><DD><a href='#setBasenames'>setBasenames</a></DD><DD><a href='#setDefaultEncoding'>setDefaultEncoding</a></DD><DD><a href='#setFileEncodings'>setFileEncodings</a></DD><DD><a href='#setPropertiesPersister'>setPropertiesPersister</a></DD><DD><a href='#setResourceLoader'>setResourceLoader</a></DD><DD>org.springframework.util.DefaultPropertiesPersister</DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/DefaultResourceLoader.html' title='DefaultResourceLoader'>DefaultResourceLoader</a></DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a></DD><DD><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/ResourceBundle.html' title='ResourceBundle'>ResourceBundle</a></DD></DL></p>
 
           </li>
     </ul>
@@ -254,7 +254,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;Pair&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>&gt;&gt;</code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;Pair&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#calculateAllFilenames(java.lang.String, java.util.Locale)">calculateAllFilenames</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basename, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Locale.html' title='Locale'>Locale</a> locale)</code><br>Calculate all filenames for the given bundle basename and Locale.
  </td>
                         </tr>
@@ -288,7 +288,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../PropertiesHolder.html'>PropertiesHolder</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/grails/spring/context/support/ReloadableResourceBundleMessageSource.PropertiesHolder.html'>ReloadableResourceBundleMessageSource.PropertiesHolder</a></code></td>
                             <td class="colLast"><code><strong><a href="#getMergedProperties(java.util.Locale)">getMergedProperties</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Locale.html' title='Locale'>Locale</a> locale)</code><br>Get a PropertiesHolder that contains the actually visible properties
  for a Locale, after merging all specified resource bundles.
  </td>
@@ -296,8 +296,8 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../PropertiesHolder.html'>PropertiesHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getProperties(java.lang.String, org.springframework.core.io.Resource)">getProperties</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</code><br>Get a PropertiesHolder for the given filename, either from the
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/grails/spring/context/support/ReloadableResourceBundleMessageSource.PropertiesHolder.html'>ReloadableResourceBundleMessageSource.PropertiesHolder</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getProperties(java.lang.String, org.springframework.core.io.Resource)">getProperties</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</code><br>Get a PropertiesHolder for the given filename, either from the
  cache or freshly loaded.</td>
                         </tr>
                         
@@ -310,18 +310,18 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Properties.html' title='Properties'>Properties</a></code></td>
-                            <td class="colLast"><code><strong><a href="#loadProperties(org.springframework.core.io.Resource, java.lang.String)">loadProperties</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</code><br>Load the properties from the given resource.</td>
+                            <td class="colLast"><code><strong><a href="#loadProperties(org.springframework.core.io.Resource, java.lang.String)">loadProperties</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</code><br>Load the properties from the given resource.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
                             <td class="colLast"><code><strong><a href="#locateResource(java.lang.String)">locateResource</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
                             <td class="colLast"><code><strong><a href="#locateResourceWithoutCache(java.lang.String)">locateResourceWithoutCache</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</code><br></td>
                         </tr>
                         
@@ -344,7 +344,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setBasename(java.lang.String)">setBasename</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basename)</code><br>Set a single basename, following the basic ResourceBundle convention of
  not specifying file extension or language codes, but in contrast to
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
  e.g. </td>
                         </tr>
                         
@@ -353,7 +353,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setBasenames(java.lang.String)">setBasenames</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basenames)</code><br>Set an array of basenames, each following the basic ResourceBundle convention
  of not specifying file extension or language codes, but in contrast to
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
  e.g. </td>
                         </tr>
                         
@@ -400,7 +400,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#setResourceLoader(org.springframework.core.io.ResourceLoader)">setResourceLoader</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/ResourceLoader.html' title='ResourceLoader'>ResourceLoader</a> resourceLoader)</code><br>Set the ResourceLoader to use for loading bundle properties files.</td>
+                            <td class="colLast"><code><strong><a href="#setResourceLoader(org.springframework.core.io.ResourceLoader)">setResourceLoader</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/ResourceLoader.html' title='ResourceLoader'>ResourceLoader</a> resourceLoader)</code><br>Set the ResourceLoader to use for loading bundle properties files.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -424,8 +424,8 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code>class <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html' title='AbstractMessageSource'>AbstractMessageSource</a></code></td>
-                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#equals(java.lang.Object)' title='equals'>equals</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getClass()' title='getClass'>getClass</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getMessage(java.lang.String, [Ljava.lang.Object;, java.lang.String, java.util.Locale)' title='getMessage'>getMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getMessage(java.lang.String, [Ljava.lang.Object;, java.util.Locale)' title='getMessage'>getMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getMessage(org.springframework.context.MessageSourceResolvable, java.util.Locale)' title='getMessage'>getMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getParentMessageSource()' title='getParentMessageSource'>getParentMessageSource</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#hashCode()' title='hashCode'>hashCode</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#notify()' title='notify'>notify</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#notifyAll()' title='notifyAll'>notifyAll</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setAlwaysUseMessageFormat(boolean)' title='setAlwaysUseMessageFormat'>setAlwaysUseMessageFormat</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setCommonMessages(java.util.Properties)' title='setCommonMessages'>setCommonMessages</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setParentMessageSource(org.springframework.context.MessageSource)' title='setParentMessageSource'>setParentMessageSource</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setUseCodeAsDefaultMessage(boolean)' title='setUseCodeAsDefaultMessage'>setUseCodeAsDefaultMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#toString()' title='toString'>toString</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#wait()' title='wait'>wait</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#wait(long)' title='wait'>wait</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#wait(long, int)' title='wait'>wait</a></code></td>
+                            <td class="colFirst"><code>class <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html' title='AbstractMessageSource'>AbstractMessageSource</a></code></td>
+                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#equals(java.lang.Object)' title='equals'>equals</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getClass()' title='getClass'>getClass</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getMessage(java.lang.String, [Ljava.lang.Object;, java.lang.String, java.util.Locale)' title='getMessage'>getMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getMessage(java.lang.String, [Ljava.lang.Object;, java.util.Locale)' title='getMessage'>getMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getMessage(org.springframework.context.MessageSourceResolvable, java.util.Locale)' title='getMessage'>getMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#getParentMessageSource()' title='getParentMessageSource'>getParentMessageSource</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#hashCode()' title='hashCode'>hashCode</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#notify()' title='notify'>notify</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#notifyAll()' title='notifyAll'>notifyAll</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setAlwaysUseMessageFormat(boolean)' title='setAlwaysUseMessageFormat'>setAlwaysUseMessageFormat</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setCommonMessages(java.util.Properties)' title='setCommonMessages'>setCommonMessages</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setParentMessageSource(org.springframework.context.MessageSource)' title='setParentMessageSource'>setParentMessageSource</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#setUseCodeAsDefaultMessage(boolean)' title='setUseCodeAsDefaultMessage'>setUseCodeAsDefaultMessage</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#toString()' title='toString'>toString</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#wait()' title='wait'>wait</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#wait(long)' title='wait'>wait</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/AbstractMessageSource.html#wait(long, int)' title='wait'>wait</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -488,7 +488,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="calculateAllFilenames(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;Pair&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>&gt;&gt; <strong>calculateAllFilenames</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basename, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Locale.html' title='Locale'>Locale</a> locale)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;Pair&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>&gt;&gt; <strong>calculateAllFilenames</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basename, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Locale.html' title='Locale'>Locale</a> locale)</h4>
                                 <p> Calculate all filenames for the given bundle basename and Locale.
  Will calculate filenames for the given Locale, the system Locale
  (if applicable), and the default file.
@@ -540,7 +540,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="getMergedProperties(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../PropertiesHolder.html'>PropertiesHolder</a> <strong>getMergedProperties</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Locale.html' title='Locale'>Locale</a> locale)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../org/grails/spring/context/support/ReloadableResourceBundleMessageSource.PropertiesHolder.html'>ReloadableResourceBundleMessageSource.PropertiesHolder</a> <strong>getMergedProperties</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Locale.html' title='Locale'>Locale</a> locale)</h4>
                                 <p> Get a PropertiesHolder that contains the actually visible properties
  for a Locale, after merging all specified resource bundles.
  Either fetches the holder from the cache or freshly loads it.
@@ -554,7 +554,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="getProperties(java.lang.String, org.springframework.core.io.Resource)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../PropertiesHolder.html'>PropertiesHolder</a> <strong>getProperties</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename, <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../org/grails/spring/context/support/ReloadableResourceBundleMessageSource.PropertiesHolder.html'>ReloadableResourceBundleMessageSource.PropertiesHolder</a> <strong>getProperties</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource)</h4>
                                 <p> Get a PropertiesHolder for the given filename, either from the
  cache or freshly loaded.
       <DL><DT><B>Parameters:</B></DT><DD><code>filename</code> -  the bundle filename (basename + Locale)</DD></DL><DL><DT><B>Returns:</B></DT><DD>the current PropertiesHolder for the bundle</DD></DL></p>
@@ -572,7 +572,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="loadProperties(org.springframework.core.io.Resource, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Properties.html' title='Properties'>Properties</a> <strong>loadProperties</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Properties.html' title='Properties'>Properties</a> <strong>loadProperties</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> resource, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</h4>
                                 <p> Load the properties from the given resource.<DL><DT><B>throws:</B></DT><DD>IOException if properties loading failed</DD></DL>
       <DL><DT><B>Parameters:</B></DT><DD><code>resource</code> -  the resource to load from</DD><DD><code>filename</code> -  the original bundle filename (basename + Locale)</DD></DL><DL><DT><B>Returns:</B></DT><DD>the populated Properties instance</DD></DL></p>
                             </li>
@@ -581,7 +581,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="locateResource(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>locateResource</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>locateResource</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -589,7 +589,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="locateResourceWithoutCache(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>locateResourceWithoutCache</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</h4>
+                                <h4>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>locateResourceWithoutCache</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> filename)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -620,12 +620,12 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                                 <h4>public&nbsp;void <strong>setBasename</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basename)</h4>
                                 <p> Set a single basename, following the basic ResourceBundle convention of
  not specifying file extension or language codes, but in contrast to
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
  e.g. "WEB-INF/messages" for "WEB-INF/messages.properties",
  "WEB-INF/messages_en.properties", etc.
  <p>XML properties files are also supported: .g. "WEB-INF/messages" will find
  and load "WEB-INF/messages.xml", "WEB-INF/messages_en.xml", etc as well.
-      <DL><DT><B>Parameters:</B></DT><DD><code>basename</code> -  the single basename</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='#setBasenames'>setBasenames</a></DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/ResourceEditor.html' title='ResourceEditor'>ResourceEditor</a></DD><DD><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/ResourceBundle.html' title='ResourceBundle'>ResourceBundle</a></DD></DL></p>
+      <DL><DT><B>Parameters:</B></DT><DD><code>basename</code> -  the single basename</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='#setBasenames'>setBasenames</a></DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/ResourceEditor.html' title='ResourceEditor'>ResourceEditor</a></DD><DD><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/ResourceBundle.html' title='ResourceBundle'>ResourceBundle</a></DD></DL></p>
                             </li>
                         </ul>
                     
@@ -635,7 +635,7 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                                 <h4>public&nbsp;void <strong>setBasenames</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> basenames)</h4>
                                 <p> Set an array of basenames, each following the basic ResourceBundle convention
  of not specifying file extension or language codes, but in contrast to
- <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/support/ResourceBundleMessageSource.html' title='ResourceBundleMessageSource'>ResourceBundleMessageSource</a> referring to a Spring resource location:
  e.g. "WEB-INF/messages" for "WEB-INF/messages.properties",
  "WEB-INF/messages_en.properties", etc.
  <p>XML properties files are also supported: .g. "WEB-INF/messages" will find
@@ -738,13 +738,13 @@ implements <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-a
                         <a name="setResourceLoader(org.springframework.core.io.ResourceLoader)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>setResourceLoader</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/ResourceLoader.html' title='ResourceLoader'>ResourceLoader</a> resourceLoader)</h4>
+                                <h4>public&nbsp;void <strong>setResourceLoader</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/ResourceLoader.html' title='ResourceLoader'>ResourceLoader</a> resourceLoader)</h4>
                                 <p> Set the ResourceLoader to use for loading bundle properties files.
  <p>The default is a DefaultResourceLoader. Will get overridden by the
  ApplicationContext if running in a context, as it implements the
  ResourceLoaderAware interface. Can be manually overridden when
  running outside of an ApplicationContext.
-      <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/DefaultResourceLoader.html' title='DefaultResourceLoader'>DefaultResourceLoader</a></DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ResourceLoaderAware.html' title='ResourceLoaderAware'>ResourceLoaderAware</a></DD></DL></p>
+      <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/DefaultResourceLoader.html' title='DefaultResourceLoader'>DefaultResourceLoader</a></DD><DD><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ResourceLoaderAware.html' title='ResourceLoaderAware'>ResourceLoaderAware</a></DD></DL></p>
                             </li>
                         </ul>
                     

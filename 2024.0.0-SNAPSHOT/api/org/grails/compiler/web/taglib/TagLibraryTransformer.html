@@ -99,7 +99,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
             <dl>
                 <dt>All Implemented Interfaces and Traits:</dt>
-                <dd><a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.html'>AnnotatedClassInjector</a>, <a href='../../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a></dd>
+                <dd><a href='../../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a></dd>
             </dl>
     
 
@@ -109,10 +109,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 <pre>@<a href='../../../../../grails/compiler/ast/AstTransformer.html' title='AstTransformer'>AstTransformer</a>
 public class TagLibraryTransformer
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a>
-implements <a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.html'>AnnotatedClassInjector</a>, <a href='../../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a></pre>
+implements <a href='../../../../../grails/compiler/ast/GrailsArtefactClassInjector.html'>GrailsArtefactClassInjector</a></pre>
 
     <p> Enhances tag library classes with the appropriate API at compile time.
-  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>2.0</DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>2.0</DD></DL></p>
 
           </li>
     </ul>
@@ -143,12 +143,6 @@ implements <a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.ht
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#GET_TAG_LIB_NAMESPACE_METHOD_NAME">GET_TAG_LIB_NAMESPACE_METHOD_NAME</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/regex/Pattern.html' title='Pattern'>Pattern</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#TAGLIB_PATTERN">TAGLIB_PATTERN</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
@@ -197,31 +191,13 @@ implements <a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.ht
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">performInjectionOnAnnotatedClass</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjectionOnAnnotatedClass</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#shouldInject(java.net.URL)">shouldInject</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a> url)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)">performInjection</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                     </table>
@@ -273,14 +249,6 @@ implements <a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.ht
                             </li>
                         </ul>
                     
-                        <a name="TAGLIB_PATTERN"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/regex/Pattern.html' title='Pattern'>Pattern</a> <strong>TAGLIB_PATTERN</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                 </li>
             </ul>
             
@@ -319,7 +287,7 @@ implements <a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.ht
                         <a name="performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -327,31 +295,7 @@ implements <a href='../../../../../grails/compiler/ast/AnnotatedClassInjector.ht
                         <a name="performInjection(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjectionOnAnnotatedClass</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="performInjectionOnAnnotatedClass(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjectionOnAnnotatedClass</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="shouldInject(java.net.URL)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;boolean <strong>shouldInject</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/net/URL.html' title='URL'>URL</a> url)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>performInjection</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
                             </li>
                         </ul>

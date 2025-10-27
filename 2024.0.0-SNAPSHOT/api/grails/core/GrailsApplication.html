@@ -101,19 +101,19 @@ if (location.href.indexOf('is-external=true') == -1) {
             <hr>
 
 <pre>public interface GrailsApplication
-extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a></pre>
+extends <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a></pre>
 
     <p> <p>The main interface representing a running Grails application. This interface's
  main purpose is to provide a mechanism for analysing the conventions within a Grails
  application as well as providing metadata and information about the execution environment.
 
- <p>The GrailsApplication interface interfacts with <a href='../../grails/core/ArtefactHandler.html' title='ArtefactHandler'>ArtefactHandler</a> instances
+ <p>The GrailsApplication interface interacts with <a href='../../grails/core/ArtefactHandler.html' title='ArtefactHandler'>ArtefactHandler</a> instances
  which are capable of analysing different artefact types (controllers, domain classes etc.) and introspecting
  the artefact conventions
 
- <p>Implementors of this inteface should be aware that a GrailsApplication is only initialised when the initialise() method
+ <p>Implementors of this interface should be aware that a GrailsApplication is only initialised when the initialise() method
  is called. In other words GrailsApplication instances are lazily initialised by the Grails runtime.
-  <DL><DT><B>See Also:</B></DT><DD><a href='#initialise()'>initialise()</a></DD><DD><a href='../../grails/core/ArtefactHandler.html' title='ArtefactHandler'>ArtefactHandler</a></DD></DL><DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Steven Devijver</DD></DL><DL><DT><B>Since:</B></DT><DD>0.1</DD></DL></p>
+  <DL><DT><B>See Also:</B></DT><DD><a href='#initialise()'>initialise()</a></DD><DD><a href='../../grails/core/ArtefactHandler.html' title='ArtefactHandler'>ArtefactHandler</a></DD></DL><DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Steven Devijver</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>0.1</DD></DL></p>
 
           </li>
     </ul>
@@ -174,13 +174,13 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#addOverridableArtefact(Class)">addOverridableArtefact</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; artefact)</code><br>Adds an artefact that can be overriden by user defined classes</td>
+                            <td class="colLast"><code><strong><a href="#addOverridableArtefact(Class)">addOverridableArtefact</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; artefact)</code><br>Adds an artefact that can be overridden by user defined classes</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#configChanged()">configChanged</a></strong>()</code><br>Fired to inform the application when the Config.groovy file changes.</td>
+                            <td class="colLast"><code><strong><a href="#configChanged()">configChanged</a></strong>()</code><br>Fired to inform the application when the config files changed.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -246,7 +246,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#getClassForName(java.lang.String)">getClassForName</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</code><br>Retrieves a class for the given name within the GrailsApplication or returns null</td>
+                            <td class="colLast"><code><strong><a href="#getClassForName(java.lang.String)">getClassForName</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</code><br>Retrieves a class for the given name within the GrailsApplication or returns <CODE>null</CODE></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -263,7 +263,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a></code></td>
                             <td class="colLast"><code><strong><a href="#getMainContext()">getMainContext</a></strong>()</code><br>Returns the Spring context for this application. </td>
                         </tr>
                         
@@ -275,91 +275,85 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='../../grails/util/Metadata.html'>Metadata</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getMetadata()">getMetadata</a></strong>()</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a></code></td>
                             <td class="colLast"><code><strong><a href="#getParentContext()">getParentContext</a></strong>()</code><br>Returns the Spring application context that contains this
  application instance. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a></code></td>
                             <td class="colLast"><code><strong><a href="#getResourceForClass(Class)">getResourceForClass</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; theClazz)</code><br>Retrieves a Resource instance for the given Grails class or null it doesn't exist.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#hasArtefactHandler(java.lang.String)">hasArtefactHandler</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> type)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#initialise()">initialise</a></strong>()</code><br>Initialise this GrailsApplication.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isArtefact(Class)">isArtefact</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; theClazz)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isArtefactOfType(java.lang.String, Class)">isArtefactOfType</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; theClazz)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isArtefactOfType(java.lang.String, java.lang.String)">isArtefactOfType</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isInitialised()">isInitialised</a></strong>()</code><br>Returns whether this GrailsApplication has been initialised or not.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isWarDeployed()">isWarDeployed</a></strong>()</code><br>Returns true if this application has been deployed as a WAR file</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#rebuild()">rebuild</a></strong>()</code><br>Rebuilds this Application throwing away the class loader and re-constructing it from the loaded
  resources again. </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#refresh()">refresh</a></strong>()</code><br>This method will refresh the entire application</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#registerArtefactHandler(grails.core.ArtefactHandler)">registerArtefactHandler</a></strong>(<a href='../../grails/core/ArtefactHandler.html'>ArtefactHandler</a> handler)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#setMainContext(org.springframework.context.ApplicationContext)">setMainContext</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> context)</code><br>Sets the main Spring context for this application.</td>
+                            <td class="colLast"><code><strong><a href="#setMainContext(org.springframework.context.ApplicationContext)">setMainContext</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> context)</code><br>Sets the main Spring context for this application.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setMappingContext(org.grails.datastore.mapping.model.MappingContext)">setMappingContext</a></strong>(<a href='../../org.grails.datastore.mapping.model.MappingContext.html'>MappingContext</a> mappingContext)</code><br>Configures the MappingContext for this application</td>
@@ -380,8 +374,8 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a></code></td>
-                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContextAware.html#setApplicationContext(org.springframework.context.ApplicationContext)' title='setApplicationContext'>setApplicationContext</a></code></td>
+                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContextAware.html' title='ApplicationContextAware'>ApplicationContextAware</a></code></td>
+                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContextAware.html#setApplicationContext(org.springframework.context.ApplicationContext)' title='setApplicationContext'>setApplicationContext</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -447,7 +441,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;void <strong>addOverridableArtefact</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; artefact)</h4>
-                                <p> Adds an artefact that can be overriden by user defined classes
+                                <p> Adds an artefact that can be overridden by user defined classes
       <DL><DT><B>Parameters:</B></DT><DD><code>artefact</code> -  An overridable artefact</DD></DL></p>
                             </li>
                         </ul>
@@ -456,7 +450,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;void <strong>configChanged</strong>()</h4>
-                                <p> Fired to inform the application when the Config.groovy file changes.
+                                <p> Fired to inform the application when the config files changed.
      </p>
                             </li>
                         </ul>
@@ -484,7 +478,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                             <li class="blockList">
                                 <h4>public&nbsp;<a href='../../grails/core/GrailsClass.html'>GrailsClass</a> <strong>getArtefact</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name)</h4>
                                 <p> <p>Gets the GrailsClass associated with the named artefact class</p>
- <p>i.e. to get the GrailsClass for  controller called "BookController" you pass the name "BookController"</p>
+ <p>i.e. to get the GrailsClass for controller called "BookController" you pass the name "BookController"</p>
       <DL><DT><B>Parameters:</B></DT><DD><code>artefactType</code> -  The type of artefact to retrieve, i.e. "Controller"</DD><DD><code>name</code> -  The name of an artefact such as "BookController"</DD></DL><DL><DT><B>Returns:</B></DT><DD>The associated GrailsClass or null</DD></DL><DL><DT><B>Since:</B></DT><DD>0.5</DD></DL></p>
                             </li>
                         </ul>
@@ -494,7 +488,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                             <li class="blockList">
                                 <h4>public&nbsp;<a href='../../grails/core/GrailsClass.html'>GrailsClass</a> <strong>getArtefactByLogicalPropertyName</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> type, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> logicalName)</h4>
                                 <p> Retrieves an artefact by its logical property name. For example the logical property name of
- BookController would be book.
+ BookController would be 'book'.
       <DL><DT><B>Parameters:</B></DT><DD><code>type</code> -  The artefact type</DD><DD><code>logicalName</code> -  The logical name</DD></DL><DL><DT><B>Returns:</B></DT><DD>The GrailsClass or null if it doesn't exist</DD></DL></p>
                             </li>
                         </ul>
@@ -558,7 +552,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; <strong>getClassForName</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> className)</h4>
-                                <p> Retrieves a class for the given name within the GrailsApplication or returns null
+                                <p> Retrieves a class for the given name within the GrailsApplication or returns <CODE>null</CODE>
       <DL><DT><B>Parameters:</B></DT><DD><code>className</code> -  The name of the class</DD></DL><DL><DT><B>Returns:</B></DT><DD>The class or null</DD></DL></p>
                             </li>
                         </ul>
@@ -584,9 +578,9 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <a name="getMainContext()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> <strong>getMainContext</strong>()</h4>
+                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> <strong>getMainContext</strong>()</h4>
                                 <p> Returns the Spring context for this application. Note that this
- will return <code>null</code> until the application is fully
+ will return <CODE>null</CODE> until the application is fully
  initialised. This context contains all the application artifacts,
  plugin beans, the works.
      </p>
@@ -602,21 +596,10 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                             </li>
                         </ul>
                     
-                        <a name="getMetadata()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;<a href='../../grails/util/Metadata.html'>Metadata</a> <strong>getMetadata</strong>()</h4>
-                                <p> <p>Get access to the project's metadata, specified in application.yml and grails.build.info if it is present</p>
- <p>This provides access to information like required grails version, application name, version etc
- but <b>NOT</b> general application settings.</p>
-      <DL><DT><B>Returns:</B></DT><DD>A read-only Map of data about the application, not environment specific</DD></DL></p>
-                            </li>
-                        </ul>
-                    
                         <a name="getParentContext()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> <strong>getParentContext</strong>()</h4>
+                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> <strong>getParentContext</strong>()</h4>
                                 <p> Returns the Spring application context that contains this
  application instance. It is the parent of the context returned
  by <a href='#getMainContext()'>getMainContext()</a>.
@@ -627,7 +610,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <a name="getResourceForClass(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>getResourceForClass</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; theClazz)</h4>
+                                <h4>public&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a> <strong>getResourceForClass</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; theClazz)</h4>
                                 <p> Retrieves a Resource instance for the given Grails class or null it doesn't exist.
       <DL><DT><B>Parameters:</B></DT><DD><code>theClazz</code> -  The Grails class</DD></DL><DL><DT><B>Returns:</B></DT><DD>A Resource or null</DD></DL></p>
                             </li>
@@ -703,7 +686,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                                 <h4>public&nbsp;void <strong>rebuild</strong>()</h4>
                                 <p> Rebuilds this Application throwing away the class loader and re-constructing it from the loaded
  resources again. Can only be called in development mode and an error will be thrown if called
- in a different enivronment
+ in a different environment
      </p>
                             </li>
                         </ul>
@@ -729,7 +712,7 @@ extends <a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/
                         <a name="setMainContext(org.springframework.context.ApplicationContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>setMainContext</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.8/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> context)</h4>
+                                <h4>public&nbsp;void <strong>setMainContext</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/ApplicationContext.html' title='ApplicationContext'>ApplicationContext</a> context)</h4>
                                 <p> Sets the main Spring context for this application.
      </p>
                             </li>

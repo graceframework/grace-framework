@@ -100,11 +100,12 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>public interface TraitInjector</pre>
+<pre>public interface TraitInjector
+extends <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></pre>
 
-    <p>
-
-  <DL><DT><B>Authors:</B></DT><DD>Jeff Brown</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
+    <p> Functional interface to support injecting <a href='../../../grails/artefact/Artefact.html' title='Artefact'>Artefact</a>
+ with <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/Trait.html' title='Trait'>Trait</a>
+  <DL><DT><B>Authors:</B></DT><DD>Jeff Brown</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
 
           </li>
     </ul>
@@ -119,6 +120,26 @@ if (location.href.indexOf('is-external=true') == -1) {
         <!-- =========== ENUM CONSTANT SUMMARY =========== -->
         
         <!-- =========== FIELD SUMMARY =========== -->
+        
+            <ul class="blockList">
+                <li class="blockList"><a name="field_summary"><!--   --></a>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited fields summary table">
+                        <caption><span>Inherited fields</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Fields inherited from class</th>
+                            <th class="colLast" scope="col">Fields</th>
+                        </tr>
+                                                <tr class="altColor">
+                            <td class="colFirst"><strong><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></code></strong></td>
+                            <td class="colLast"><code>HIGHEST_PRECEDENCE, LOWEST_PRECEDENCE</code></td>
+                        </tr>
+
+                    </table>
+                    </ul>
+                </li>
+                
+            </ul>
         
 
         <!-- =========== PROPERTY SUMMARY =========== -->
@@ -147,19 +168,49 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[]</code></td>
-                            <td class="colLast"><code><strong><a href="#getArtefactTypes()">getArtefactTypes</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getArtefactTypes()">getArtefactTypes</a></strong>()</code><br>Which type of Artefacts to injector</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getTrait()">getTrait</a></strong>()</code><br></td>
+                            <td class="colLast"><code>public&nbsp;int</code></td>
+                            <td class="colLast"><code><strong><a href="#getOrder()">getOrder</a></strong>()</code><br>Get the order of this injector</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getTrait()">getTrait</a></strong>()</code><br>Get the Trait to inject</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#supports(org.codehaus.groovy.ast.ClassNode)">supports</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br>Check TraitInjector supports classNode to inject</td>
                         </tr>
                         
                     </table>
                    </ul>
               </li>
             
+            <li class="blockList"><a name="method_summary"><!--   --></a>
+                    <h3>Inherited Methods Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
+                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Methods inherited from class</th>
+                            <th class="colLast" scope="col">Name</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code>interface <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html' title='Ordered'>Ordered</a></code></td>
+                            <td class="colLast"><code><a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/core/Ordered.html#getOrder()' title='getOrder'>getOrder</a></code></td>
+                        </tr>
+                    </table>
+                   </ul>
+              </li>
+                
         </ul>
         
     </li>
@@ -192,15 +243,35 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[] <strong>getArtefactTypes</strong>()</h4>
-                                <p></p>
+                                <p> Which type of Artefacts to injector
+      <DL><DT><B>Returns:</B></DT><DD>the type of Artefacts</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getOrder()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;int <strong>getOrder</strong>()</h4>
+                                <p> Get the order of this injector
+      <DL><DT><B>Returns:</B></DT><DD>the order, default is 0</DD></DL><DL><DT><B>Since:</B></DT><DD>2024.0.0</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="getTrait()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> <strong>getTrait</strong>()</h4>
-                                <p></p>
+                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; <strong>getTrait</strong>()</h4>
+                                <p> Get the Trait to inject
+      <DL><DT><B>Returns:</B></DT><DD>the Trait</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="supports(org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;boolean <strong>supports</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <p> Check TraitInjector supports classNode to inject
+      <DL><DT><B>Parameters:</B></DT><DD><code>classNode</code> -  The classNode to check</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if classNode supports</DD></DL><DL><DT><B>Since:</B></DT><DD>2024.0.0</DD></DL></p>
                             </li>
                         </ul>
                     

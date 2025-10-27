@@ -101,8 +101,8 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/Trait.html' title='Trait'>Trait</a>
-@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/Trait.html' title='Trait'>Trait</a>
+@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
 trait DataTest
 extends <a href='../../../org/grails/testing/GrailsUnitTest.html'>GrailsUnitTest</a></pre>
 
@@ -205,7 +205,7 @@ extends <a href='../../../org/grails/testing/GrailsUnitTest.html'>GrailsUnitTest
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#mockDataService(Class)">mockDataService</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; serviceClass)</code><br>Called by the ServiceUnitTest class (via reflection) to create a data service</td>
+                            <td class="colLast"><code><strong><a href="#mockDataService(Class)">mockDataService</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;? extends Service&gt; serviceClass)</code><br>Called by the ServiceUnitTest class (via reflection) to create a data service</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -342,7 +342,7 @@ extends <a href='../../../org/grails/testing/GrailsUnitTest.html'>GrailsUnitTest
                         <a name="mockDataService(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>mockDataService</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; serviceClass)</h4>
+                                <h4>void <strong>mockDataService</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;? extends Service&gt; serviceClass)</h4>
                                 <p> Called by the ServiceUnitTest class (via reflection) to create a data service <DL><DT><B>Parameters:</B></DT><DD><code>serviceClass</code> -  The data service abstract class or interface</DD></DL></p>
                             </li>
                         </ul>

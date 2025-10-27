@@ -105,7 +105,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 extends <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHandlerAdapter</a></pre>
 
     <p> A handler for UrlMappings.
-  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>0.5</DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>0.5</DD></DL></p>
 
           </li>
     </ul>
@@ -135,6 +135,12 @@ extends <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHa
                         
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#PATH">PATH</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#TYPE">TYPE</a></code></td>
                             <td class="colLast"></td>
                         </tr>
@@ -153,7 +159,7 @@ extends <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHa
                         </tr>
                                                 <tr class="altColor">
                             <td class="colFirst"><strong><code>class <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHandlerAdapter</a></code></strong></td>
-                            <td class="colLast"><code><a href='../../../../grails/core/ArtefactHandlerAdapter.html#allowAbstract'>allowAbstract</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#artefactSuffix'>artefactSuffix</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#grailsClassImpl'>grailsClassImpl</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#grailsClassType'>grailsClassType</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#type'>type</a></code></td>
+                            <td class="colLast"><code><a href='../../../../grails/core/ArtefactHandlerAdapter.html#allowAbstract'>allowAbstract</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#artefactPath'>artefactPath</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#artefactSuffix'>artefactSuffix</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#grailsClassImpl'>grailsClassImpl</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#grailsClassType'>grailsClassType</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#type'>type</a></code></td>
                         </tr>
 
                     </table>
@@ -208,7 +214,7 @@ extends <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHa
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHandlerAdapter</a></code></td>
-                            <td class="colLast"><code><a href='../../../../grails/core/ArtefactHandlerAdapter.html#getArtefactForFeature(java.lang.Object)'>getArtefactForFeature</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#getPluginName()'>getPluginName</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#getType()'>getType</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#initialize(grails.core.ArtefactInfo)'>initialize</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefact(Class)'>isArtefact</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefact(org.codehaus.groovy.ast.ClassNode)'>isArtefact</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefactClass(Class)'>isArtefactClass</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefactGrailsClass(grails.core.GrailsClass)'>isArtefactGrailsClass</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefactResource(org.grails.io.support.Resource)'>isArtefactResource</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isValidArtefactClassNode(org.codehaus.groovy.ast.ClassNode, int)'>isValidArtefactClassNode</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#newArtefactClass(Class)'>newArtefactClass</a></code></td>
+                            <td class="colLast"><code><a href='../../../../grails/core/ArtefactHandlerAdapter.html#getArtefactForFeature(java.lang.Object)'>getArtefactForFeature</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#getPluginName()'>getPluginName</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#getType()'>getType</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#hasArtefactAnnotation(Class)'>hasArtefactAnnotation</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#hasArtefactAnnotation(Class, java.lang.String)'>hasArtefactAnnotation</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#hasArtefactAnnotation(org.codehaus.groovy.ast.ClassNode)'>hasArtefactAnnotation</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#hasArtefactAnnotation(org.codehaus.groovy.ast.ClassNode, java.lang.String)'>hasArtefactAnnotation</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#initialize(grails.core.ArtefactInfo)'>initialize</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefact(Class)'>isArtefact</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefact(org.codehaus.groovy.ast.ClassNode)'>isArtefact</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefactClass(Class)'>isArtefactClass</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefactClass(org.codehaus.groovy.ast.ClassNode)'>isArtefactClass</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isArtefactGrailsClass(grails.core.GrailsClass)'>isArtefactGrailsClass</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#isValidArtefactClassNode(org.codehaus.groovy.ast.ClassNode, int)'>isValidArtefactClassNode</a>, <a href='../../../../grails/core/ArtefactHandlerAdapter.html#newArtefactClass(Class)'>newArtefactClass</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -232,6 +238,14 @@ extends <a href='../../../../grails/core/ArtefactHandlerAdapter.html'>ArtefactHa
                     <!--   -->
                 </a>
                     <h3>Field Detail</h3>
+                    
+                        <a name="PATH"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>PATH</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
                     
                         <a name="TYPE"><!-- --></a>
                         <ul class="blockListLast">

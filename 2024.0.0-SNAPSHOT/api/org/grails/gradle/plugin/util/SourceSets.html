@@ -101,11 +101,11 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
 class SourceSets
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a></pre>
 
-    <p> <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
+    <p> <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
 
           </li>
     </ul>
@@ -186,8 +186,38 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getBaseDir(org.apache.tools.ant.Project)">getBaseDir</a></strong>(org.apache.tools.ant.Project project)</code><br>Gets the base directory for the project</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getBuildClassesDir(org.apache.tools.ant.Project)">getBuildClassesDir</a></strong>(org.apache.tools.ant.Project project)</code><br>Gets the build Groovy classes directory for the project</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getBuildResourcesDir(org.apache.tools.ant.Project)">getBuildResourcesDir</a></strong>(org.apache.tools.ant.Project project)</code><br>Gets the build resources directory for the project</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getBuildTargetDir(org.apache.tools.ant.Project)">getBuildTargetDir</a></strong>(org.apache.tools.ant.Project project)</code><br>Gets the build directory for the project</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
-                            <td class="colLast"><code><strong><a href="#resolveGrailsAppDir(org.apache.tools.ant.Project)">resolveGrailsAppDir</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#resolveGrailsAppDir(org.apache.tools.ant.Project)">resolveGrailsAppDir</a></strong>(org.apache.tools.ant.Project project)</code><br>Resolve the directory of Grails app, for examples, 'grails-app', 'app'.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
+                            <td class="colLast"><code><strong><a href="#resolveGrailsAppPath(org.apache.tools.ant.Project)">resolveGrailsAppPath</a></strong>(org.apache.tools.ant.Project project)</code><br>Resolve the directory of Grails app, for examples, 'grails-app', 'app', but you can always configure it.</td>
                         </tr>
                         
                     </table>
@@ -282,11 +312,51 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                             </li>
                         </ul>
                     
+                        <a name="getBaseDir(org.apache.tools.ant.Project)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>getBaseDir</strong>(org.apache.tools.ant.Project project)</h4>
+                                <p> Gets the base directory for the project <DL><DT><B>Parameters:</B></DT><DD><code>project</code> -  The project</DD></DL><DL><DT><B>Returns:</B></DT><DD>The base directory</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getBuildClassesDir(org.apache.tools.ant.Project)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>getBuildClassesDir</strong>(org.apache.tools.ant.Project project)</h4>
+                                <p> Gets the build Groovy classes directory for the project <DL><DT><B>Parameters:</B></DT><DD><code>project</code> -  The project</DD></DL><DL><DT><B>Returns:</B></DT><DD>The classes directory</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getBuildResourcesDir(org.apache.tools.ant.Project)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>getBuildResourcesDir</strong>(org.apache.tools.ant.Project project)</h4>
+                                <p> Gets the build resources directory for the project <DL><DT><B>Parameters:</B></DT><DD><code>project</code> -  The project</DD></DL><DL><DT><B>Returns:</B></DT><DD>The resources directory</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getBuildTargetDir(org.apache.tools.ant.Project)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>getBuildTargetDir</strong>(org.apache.tools.ant.Project project)</h4>
+                                <p> Gets the build directory for the project <DL><DT><B>Parameters:</B></DT><DD><code>project</code> -  The project</DD></DL><DL><DT><B>Returns:</B></DT><DD>The build directory</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="resolveGrailsAppDir(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>resolveGrailsAppDir</strong>(org.apache.tools.ant.Project project)</h4>
-                                <p></p>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Deprecated.html' title='Deprecated'>Deprecated</a>(since: 2024.0.0, forRemoval: true)<br>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>resolveGrailsAppDir</strong>(org.apache.tools.ant.Project project)</h4>
+                                <p> Resolve the directory of Grails app, for examples, 'grails-app', 'app'.<DL><DT><B>deprecated:</B></DT><DD>since 2024.0.0, in favor of <a href='#resolveGrailsAppPath(org.apache.tools.ant.Project)'>resolveGrailsAppPath(Project)</a></DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>project</code> -  the Gradle project</DD></DL><DL><DT><B>Returns:</B></DT><DD>the directory of Grails application</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="resolveGrailsAppPath(org.apache.tools.ant.Project)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>resolveGrailsAppPath</strong>(org.apache.tools.ant.Project project)</h4>
+                                <p> Resolve the directory of Grails app, for examples, 'grails-app', 'app', but you can always configure it. <DL><DT><B>Parameters:</B></DT><DD><code>project</code> -  the Gradle project</DD></DL><DL><DT><B>Returns:</B></DT><DD>the directory of Grails application</DD></DL><DL><DT><B>Since:</B></DT><DD>2024.0.0</DD></DL></p>
                             </li>
                         </ul>
                     

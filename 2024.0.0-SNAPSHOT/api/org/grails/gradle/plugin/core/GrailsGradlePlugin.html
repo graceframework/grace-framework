@@ -101,7 +101,7 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
 class GrailsGradlePlugin
 extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>GroovyPlugin</a></pre>
 
@@ -158,7 +158,31 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#PROFILE_CONFIGURATION">PROFILE_CONFIGURATION</a></code></td>
+                            <td class="colLast"><code><a href="#BUILD_PROPERTIES_TASK_NAME">BUILD_PROPERTIES_TASK_NAME</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#CONSOLE_CONFIGURATION_NAME">CONSOLE_CONFIGURATION_NAME</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#FIND_MAIN_CLASS_TASK_NAME">FIND_MAIN_CLASS_TASK_NAME</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#GRAILS_EXTENSION_NAME">GRAILS_EXTENSION_NAME</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#PROFILE_CONFIGURATION_NAME">PROFILE_CONFIGURATION_NAME</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
@@ -188,21 +212,6 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#excludedGrailsAppSourceDirs">excludedGrailsAppSourceDirs</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#grailsAppDir">grailsAppDir</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#grailsAppResourceDirs">grailsAppResourceDirs</a></code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
                             <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#grailsVersion">grailsVersion</a></code><br></td>
                         </tr>
@@ -258,193 +267,145 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#addDefaultProfile(org.apache.tools.ant.Project, org.gradle.api.artifacts.Configuration)">addDefaultProfile</a></strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a> profileConfig)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#apply(org.apache.tools.ant.Project)">apply</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#applyBasePlugins(org.apache.tools.ant.Project)">applyBasePlugins</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#applyDefaultPlugins(org.apache.tools.ant.Project)">applyDefaultPlugins</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#applySpringBootPlugin(org.apache.tools.ant.Project)">applySpringBootPlugin</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../org.gradle.api.file.FileCollection.html'>FileCollection</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildClasspath(org.apache.tools.ant.Project, org.gradle.api.artifacts.Configuration)">buildClasspath</a></strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a>[] configurations)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#buildClasspath(org.apache.tools.ant.Project, org.springframework.context.annotation.Configuration)">buildClasspath</a></strong>(org.apache.tools.ant.Project project, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/annotation/Configuration.html' title='Configuration'>Configuration</a>[] configurations)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureApplicationCommands(org.apache.tools.ant.Project)">configureApplicationCommands</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureConsoleTask(org.apache.tools.ant.Project)">configureConsoleTask</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureForkSettings(org.apache.tools.ant.Project, java.lang.String)">configureForkSettings</a></strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> grailsVersion)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureGrailsBuildSettings(org.apache.tools.ant.Project)">configureGrailsBuildSettings</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureGrailsSourceDirs(org.apache.tools.ant.Project)">configureGrailsSourceDirs</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#configureGroovyASTMetadata(org.apache.tools.ant.Project)">configureGroovyASTMetadata</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#configureGroovyCompiler(org.apache.tools.ant.Project)">configureGroovyCompiler</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configurePathingJar(org.apache.tools.ant.Project)">configurePathingJar</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureProfile(org.apache.tools.ant.Project)">configureProfile</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureRunCommand(org.apache.tools.ant.Project)">configureRunCommand</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureRunScript(org.apache.tools.ant.Project)">configureRunScript</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#configureSpringBootExtension(org.apache.tools.ant.Project)">configureSpringBootExtension</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;org.apache.tools.ant.Task</code></td>
-                            <td class="colLast"><code><strong><a href="#createBuildPropertiesTask(org.apache.tools.ant.Project)">createBuildPropertiesTask</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.JavaExec.html'>JavaExec</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createConsoleTask(org.apache.tools.ant.Project, org.gradle.api.tasks.TaskContainer, org.gradle.api.artifacts.Configuration)">createConsoleTask</a></strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.tasks.TaskContainer.html'>TaskContainer</a> tasks, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a> configuration)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;org.apache.tools.ant.Task</code></td>
-                            <td class="colLast"><code><strong><a href="#createNative2AsciiTask(org.gradle.api.tasks.TaskContainer, java.lang.Object, java.lang.Object)">createNative2AsciiTask</a></strong>(<a href='../../../../../org.gradle.api.tasks.TaskContainer.html'>TaskContainer</a> taskContainer, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> src, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> dest)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.bundling.Jar.html'>Jar</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createPathingJarTask(org.apache.tools.ant.Project, java.lang.String, org.gradle.api.artifacts.Configuration)">createPathingJarTask</a></strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a>[] configurations)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.JavaExec.html'>JavaExec</a></code></td>
-                            <td class="colLast"><code><strong><a href="#createShellTask(org.apache.tools.ant.Project, org.gradle.api.tasks.TaskContainer, org.gradle.api.artifacts.Configuration)">createShellTask</a></strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.tasks.TaskContainer.html'>TaskContainer</a> tasks, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a> configuration)</code><br></td>
-                        </tr>
-                        
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#enableNative2Ascii(org.apache.tools.ant.Project, java.lang.String)">enableNative2Ascii</a></strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> grailsVersion)</code><br>Enables native2ascii processing of resource bundles</td>
+                            <td class="colLast"><code><strong><a href="#createBuildPropertiesTask(org.apache.tools.ant.Project)">createBuildPropertiesTask</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.bundling.Jar.html'>Jar</a></code></td>
+                            <td class="colLast"><code><strong><a href="#createPathingJarTask(org.apache.tools.ant.Project, java.lang.String, org.springframework.context.annotation.Configuration)">createPathingJarTask</a></strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/annotation/Configuration.html' title='Configuration'>Configuration</a>[] configurations)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
                             <td class="colLast"><code><strong><a href="#getDefaultProfile()">getDefaultProfile</a></strong>()</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getGrailsProjectName(org.apache.tools.ant.Project)">getGrailsProjectName</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
+                        </tr>
+                        
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/grails/gradle/plugin/core/GrailsGradlePlugin.GrailsProjectType.html'>GrailsGradlePlugin.GrailsProjectType</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../GrailsProjectType.html'>GrailsProjectType</a></code></td>
                             <td class="colLast"><code><strong><a href="#getGrailsProjectType()">getGrailsProjectType</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isGrailsSourceDirectory(java.io.File)">isGrailsSourceDirectory</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> subdir)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#registerFindMainClassTask(org.apache.tools.ant.Project)">registerFindMainClassTask</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/grails/gradle/plugin/core/GrailsExtension.html'>GrailsExtension</a></code></td>
                             <td class="colLast"><code><strong><a href="#registerGrailsExtension(org.apache.tools.ant.Project)">registerGrailsExtension</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#registerToolingModelBuilder(org.apache.tools.ant.Project, org.gradle.tooling.provider.model.ToolingModelBuilderRegistry)">registerToolingModelBuilder</a></strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.tooling.provider.model.ToolingModelBuilderRegistry.html'>ToolingModelBuilderRegistry</a> registry)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org.gradle.api.file.FileCollection.html'>FileCollection</a></code></td>
-                            <td class="colLast"><code><strong><a href="#resolveClassesDirs(org.gradle.api.tasks.SourceSetOutput, org.apache.tools.ant.Project)">resolveClassesDirs</a></strong>(<a href='../../../../../org.gradle.api.tasks.SourceSetOutput.html'>SourceSetOutput</a> output, org.apache.tools.ant.Project project)</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a>&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#resolveGrailsResourceDirs(org.apache.tools.ant.Project)">resolveGrailsResourceDirs</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a>&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#resolveGrailsSourceDirs(org.apache.tools.ant.Project)">resolveGrailsSourceDirs</a></strong>(org.apache.tools.ant.Project project)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -476,10 +437,42 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                 </a>
                     <h3>Field Detail</h3>
                     
-                        <a name="PROFILE_CONFIGURATION"><!-- --></a>
+                        <a name="BUILD_PROPERTIES_TASK_NAME"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>PROFILE_CONFIGURATION</strong></h4>
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>BUILD_PROPERTIES_TASK_NAME</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="CONSOLE_CONFIGURATION_NAME"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>CONSOLE_CONFIGURATION_NAME</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="FIND_MAIN_CLASS_TASK_NAME"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>FIND_MAIN_CLASS_TASK_NAME</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="GRAILS_EXTENSION_NAME"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>GRAILS_EXTENSION_NAME</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="PROFILE_CONFIGURATION_NAME"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>PROFILE_CONFIGURATION_NAME</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -500,30 +493,6 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;Plugin&gt;&gt; <strong>basePluginClasses</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="excludedGrailsAppSourceDirs"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>&gt; <strong>excludedGrailsAppSourceDirs</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="grailsAppDir"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>grailsAppDir</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="grailsAppResourceDirs"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>&gt; <strong>grailsAppResourceDirs</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -571,14 +540,6 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="addDefaultProfile(org.apache.tools.ant.Project, org.gradle.api.artifacts.Configuration)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>void <strong>addDefaultProfile</strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a> profileConfig)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
                         <a name="apply(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -590,7 +551,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="applyBasePlugins(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>applyBasePlugins</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>applyBasePlugins</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -611,10 +572,10 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                             </li>
                         </ul>
                     
-                        <a name="buildClasspath(org.apache.tools.ant.Project, org.gradle.api.artifacts.Configuration)"><!-- --></a>
+                        <a name="buildClasspath(org.apache.tools.ant.Project, org.springframework.context.annotation.Configuration)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../org.gradle.api.file.FileCollection.html'>FileCollection</a> <strong>buildClasspath</strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a>[] configurations)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../org.gradle.api.file.FileCollection.html'>FileCollection</a> <strong>buildClasspath</strong>(org.apache.tools.ant.Project project, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/annotation/Configuration.html' title='Configuration'>Configuration</a>[] configurations)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -622,7 +583,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configureApplicationCommands(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>configureApplicationCommands</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configureApplicationCommands</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -646,7 +607,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configureGrailsBuildSettings(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>configureGrailsBuildSettings</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configureGrailsBuildSettings</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -654,15 +615,15 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configureGrailsSourceDirs(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>configureGrailsSourceDirs</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configureGrailsSourceDirs</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="configureGroovyASTMetadata(org.apache.tools.ant.Project)"><!-- --></a>
+                        <a name="configureGroovyCompiler(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>configureGroovyASTMetadata</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configureGroovyCompiler</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -670,7 +631,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configurePathingJar(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>configurePathingJar</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configurePathingJar</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -686,7 +647,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configureRunCommand(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>configureRunCommand</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configureRunCommand</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -694,7 +655,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configureRunScript(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>configureRunScript</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>configureRunScript</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -702,7 +663,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="configureSpringBootExtension(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>configureSpringBootExtension</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>configureSpringBootExtension</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -710,49 +671,16 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="createBuildPropertiesTask(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;org.apache.tools.ant.Task <strong>createBuildPropertiesTask</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>protected&nbsp;void <strong>createBuildPropertiesTask</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="createConsoleTask(org.apache.tools.ant.Project, org.gradle.api.tasks.TaskContainer, org.gradle.api.artifacts.Configuration)"><!-- --></a>
+                        <a name="createPathingJarTask(org.apache.tools.ant.Project, java.lang.String, org.springframework.context.annotation.Configuration)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.JavaExec.html'>JavaExec</a> <strong>createConsoleTask</strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.tasks.TaskContainer.html'>TaskContainer</a> tasks, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a> configuration)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.bundling.Jar.html'>Jar</a> <strong>createPathingJarTask</strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name, <a href='https://docs.spring.io/spring-framework/docs/6.2.11/javadoc-api/org/springframework/context/annotation/Configuration.html' title='Configuration'>Configuration</a>[] configurations)</h4>
                                 <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="createNative2AsciiTask(org.gradle.api.tasks.TaskContainer, java.lang.Object, java.lang.Object)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;org.apache.tools.ant.Task <strong>createNative2AsciiTask</strong>(<a href='../../../../../org.gradle.api.tasks.TaskContainer.html'>TaskContainer</a> taskContainer, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> src, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a> dest)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="createPathingJarTask(org.apache.tools.ant.Project, java.lang.String, org.gradle.api.artifacts.Configuration)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.bundling.Jar.html'>Jar</a> <strong>createPathingJarTask</strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a>[] configurations)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="createShellTask(org.apache.tools.ant.Project, org.gradle.api.tasks.TaskContainer, org.gradle.api.artifacts.Configuration)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;<a href='../../../../../org.gradle.api.tasks.JavaExec.html'>JavaExec</a> <strong>createShellTask</strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.api.tasks.TaskContainer.html'>TaskContainer</a> tasks, <a href='../../../../../org.gradle.api.artifacts.Configuration.html'>Configuration</a> configuration)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="enableNative2Ascii(org.apache.tools.ant.Project, java.lang.String)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileDynamic.html' title='CompileDynamic'>CompileDynamic</a><br>protected&nbsp;void <strong>enableNative2Ascii</strong>(org.apache.tools.ant.Project project, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> grailsVersion)</h4>
-                                <p> Enables native2ascii processing of resource bundles
-</p>
                             </li>
                         </ul>
                     
@@ -764,18 +692,18 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                             </li>
                         </ul>
                     
-                        <a name="getGrailsProjectType()"><!-- --></a>
+                        <a name="getGrailsProjectName(org.apache.tools.ant.Project)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../org/grails/gradle/plugin/core/GrailsGradlePlugin.GrailsProjectType.html'>GrailsGradlePlugin.GrailsProjectType</a> <strong>getGrailsProjectType</strong>()</h4>
+                                <h4>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>getGrailsProjectName</strong>(org.apache.tools.ant.Project project)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="isGrailsSourceDirectory(java.io.File)"><!-- --></a>
+                        <a name="getGrailsProjectType()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;boolean <strong>isGrailsSourceDirectory</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> subdir)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../GrailsProjectType.html'>GrailsProjectType</a> <strong>getGrailsProjectType</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -799,31 +727,7 @@ extends <a href='../../../../../org.gradle.api.plugins.GroovyPlugin.html'>Groovy
                         <a name="registerToolingModelBuilder(org.apache.tools.ant.Project, org.gradle.tooling.provider.model.ToolingModelBuilderRegistry)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>registerToolingModelBuilder</strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.tooling.provider.model.ToolingModelBuilderRegistry.html'>ToolingModelBuilderRegistry</a> registry)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="resolveClassesDirs(org.gradle.api.tasks.SourceSetOutput, org.apache.tools.ant.Project)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../org.gradle.api.file.FileCollection.html'>FileCollection</a> <strong>resolveClassesDirs</strong>(<a href='../../../../../org.gradle.api.tasks.SourceSetOutput.html'>SourceSetOutput</a> output, org.apache.tools.ant.Project project)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="resolveGrailsResourceDirs(org.apache.tools.ant.Project)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a>&gt; <strong>resolveGrailsResourceDirs</strong>(org.apache.tools.ant.Project project)</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="resolveGrailsSourceDirs(org.apache.tools.ant.Project)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a>&gt; <strong>resolveGrailsSourceDirs</strong>(org.apache.tools.ant.Project project)</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>registerToolingModelBuilder</strong>(org.apache.tools.ant.Project project, <a href='../../../../../org.gradle.tooling.provider.model.ToolingModelBuilderRegistry.html'>ToolingModelBuilderRegistry</a> registry)</h4>
                                 <p></p>
                             </li>
                         </ul>

@@ -101,13 +101,13 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
 class GroovyPageForkCompileTask
 extends <a href='../../../../../../org.gradle.api.tasks.compile.AbstractCompile.html'>AbstractCompile</a></pre>
 
     <p> Abstract Gradle task for compiling templates, using GroovyPageCompilerForkTask
  This Task is a Forked Java Task that is configurable with fork options provided
- by <a href='../../../../../../org/grails/gradle/plugin/web/gsp/GspCompileOptions.html' title='GspCompileOptions'>GspCompileOptions</a> <DL><DT><B>Authors:</B></DT><DD>David Estes</DD></DL><DL><DT><B>Since:</B></DT><DD>4.0</DD></DL></p>
+ by <a href='../../../../../../org/grails/gradle/plugin/web/gsp/GspCompileOptions.html' title='GspCompileOptions'>GspCompileOptions</a> <DL><DT><B>Authors:</B></DT><DD>David Estes</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>4.0</DD></DL></p>
 
           </li>
     </ul>
@@ -166,31 +166,36 @@ extends <a href='../../../../../../org.gradle.api.tasks.compile.AbstractCompile.
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#configDir">configDir</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#packageName">packageName</a></code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#serverpath">serverpath</a></code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong><a href='../../../../../../org.gradle.api.file.FileTree.html'>FileTree</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#source">source</a></code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#srcDir">srcDir</a></code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#tmpDir">tmpDir</a></code><br><DL><DT><B>deprecated:</B></DT><DD>Use <a href='#tmpDirPath'>tmpDirPath</a> instead.</DD></DL> </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#tmpDirPath">tmpDirPath</a></code><br></td>
                         </tr>
@@ -320,6 +325,14 @@ extends <a href='../../../../../../org.gradle.api.tasks.compile.AbstractCompile.
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@org.gradle.api.tasks.Nested<br><a href='../../../../../../org/grails/gradle/plugin/web/gsp/GspCompileOptions.html'>GspCompileOptions</a> <strong>compileOptions</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="configDir"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@org.gradle.api.tasks.Internal<br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/io/File.html' title='File'>File</a> <strong>configDir</strong></h4>
                                 <p></p>
                             </li>
                         </ul>

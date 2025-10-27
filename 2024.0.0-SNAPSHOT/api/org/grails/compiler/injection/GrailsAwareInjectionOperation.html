@@ -112,7 +112,7 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
 
     <p> A Groovy compiler injection operation that uses a specified array of
  ClassInjector instances to attempt AST injection.
-  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL><DL><DT><B>Since:</B></DT><DD>0.6</DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>0.6</DD></DL></p>
 
           </li>
     </ul>
@@ -154,7 +154,22 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
                         
                         <tr class="rowColor">
                             <td class="colFirst">
+                                <code><strong><a href="#GrailsAwareInjectionOperation(org.codehaus.groovy.control.CompilationUnit)">GrailsAwareInjectionOperation</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst">
                                 <code><strong><a href="#GrailsAwareInjectionOperation(grails.compiler.ast.ClassInjector)">GrailsAwareInjectionOperation</a></strong>(<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] classInjectors)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst">
+                                <code><strong><a href="#GrailsAwareInjectionOperation(org.codehaus.groovy.control.CompilationUnit, grails.compiler.ast.ClassInjector)">GrailsAwareInjectionOperation</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit, <a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] classInjectors)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst">
+                                <code><strong><a href="#GrailsAwareInjectionOperation(org.codehaus.groovy.control.CompilationUnit, grails.compiler.ast.ClassInjector, grails.core.ArtefactHandler)">GrailsAwareInjectionOperation</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit, <a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] classInjectors, <a href='../../../../grails/core/ArtefactHandler.html'>ArtefactHandler</a>[] artefactHandlers)</code><br></td>
                         </tr>
                         
                     </table>
@@ -181,31 +196,37 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#call(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">call</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#call(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)">call</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;static&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[]</code></td>
-                            <td class="colLast"><code><strong><a href="#getClassInjectors()">getClassInjectors</a></strong>()</code><br></td>
+                            <td class="colLast"><code>public&nbsp;static&nbsp;<a href='../../../../grails/core/ArtefactHandler.html'>ArtefactHandler</a>[]</code></td>
+                            <td class="colLast"><code><strong><a href="#getArtefactHandlers()">getArtefactHandlers</a></strong>()</code><br>Get the loaded ArtefactHandlers</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;static&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[]</code></td>
+                            <td class="colLast"><code><strong><a href="#getClassInjectors()">getClassInjectors</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;static&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[]</code></td>
                             <td class="colLast"><code><strong><a href="#getGlobalClassInjectors()">getGlobalClassInjectors</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='../../../../grails/core/ArtefactHandler.html'>ArtefactHandler</a>[]</code></td>
+                            <td class="colLast"><code><strong><a href="#getLocalArtefactHandlers()">getLocalArtefactHandlers</a></strong>()</code><br>Get the loaded local ArtefactHandlers</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[]</code></td>
                             <td class="colLast"><code><strong><a href="#getLocalClassInjectors()">getLocalClassInjectors</a></strong>()</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;org.springframework.asm.AnnotationVisitor</code></td>
-                            <td class="colLast"><code><strong><a href="#visitAnnotation(java.lang.String, boolean)">visitAnnotation</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> desc, boolean visible)</code><br></td>
                         </tr>
                         
                     </table>
@@ -263,10 +284,34 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
                             </li>
                         </ul>
                     
+                        <a name="GrailsAwareInjectionOperation(org.codehaus.groovy.control.CompilationUnit)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;<strong>GrailsAwareInjectionOperation</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="GrailsAwareInjectionOperation(grails.compiler.ast.ClassInjector)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;<strong>GrailsAwareInjectionOperation</strong>(<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] classInjectors)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="GrailsAwareInjectionOperation(org.codehaus.groovy.control.CompilationUnit, grails.compiler.ast.ClassInjector)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;<strong>GrailsAwareInjectionOperation</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit, <a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] classInjectors)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="GrailsAwareInjectionOperation(org.codehaus.groovy.control.CompilationUnit, grails.compiler.ast.ClassInjector, grails.core.ArtefactHandler)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;<strong>GrailsAwareInjectionOperation</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit, <a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] classInjectors, <a href='../../../../grails/core/ArtefactHandler.html'>ArtefactHandler</a>[] artefactHandlers)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -287,8 +332,17 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
                         <a name="call(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.classgen.GeneratorContext, org.codehaus.groovy.ast.ClassNode)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>call</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>call</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/classgen/GeneratorContext.html' title='GeneratorContext'>GeneratorContext</a> context, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode)</h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getArtefactHandlers()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;<a href='../../../../grails/core/ArtefactHandler.html'>ArtefactHandler</a>[] <strong>getArtefactHandlers</strong>()</h4>
+                                <p> Get the loaded ArtefactHandlers
+      <DL><DT><B>Returns:</B></DT><DD>the loaded ArtefactHandlers</DD></DL><DL><DT><B>Since:</B></DT><DD>2024.0.0</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -303,8 +357,17 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
                         <a name="getGlobalClassInjectors()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] <strong>getGlobalClassInjectors</strong>()</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Deprecated.html' title='Deprecated'>Deprecated</a>(forRemoval = true, since = "2024.0.0")<br>public&nbsp;static&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] <strong>getGlobalClassInjectors</strong>()</h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getLocalArtefactHandlers()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;<a href='../../../../grails/core/ArtefactHandler.html'>ArtefactHandler</a>[] <strong>getLocalArtefactHandlers</strong>()</h4>
+                                <p> Get the loaded local ArtefactHandlers
+      <DL><DT><B>Returns:</B></DT><DD>the loaded local ArtefactHandlers</DD></DL><DL><DT><B>Since:</B></DT><DD>2024.0.0</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -312,14 +375,6 @@ implements <a href='../../../../CompilationUnitIPrimaryClassNodeOperation.html'>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;<a href='../../../../grails/compiler/ast/ClassInjector.html'>ClassInjector</a>[] <strong>getLocalClassInjectors</strong>()</h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="visitAnnotation(java.lang.String, boolean)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;org.springframework.asm.AnnotationVisitor <strong>visitAnnotation</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> desc, boolean visible)</h4>
                                 <p></p>
                             </li>
                         </ul>

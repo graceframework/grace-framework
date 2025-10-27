@@ -104,9 +104,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <pre>public final class TraitInjectionUtils
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a></pre>
 
-    <p>
-
-  <DL><DT><B>Authors:</B></DT><DD>Jeff Brown</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
+    <p> Utilities for <a href='../../../../grails/compiler/traits/TraitInjector.html' title='TraitInjector'>TraitInjector</a>
+  <DL><DT><B>Authors:</B></DT><DD>Jeff Brown</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>3.0</DD></DL></p>
 
           </li>
     </ul>
@@ -149,13 +148,19 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#injectTrait(org.codehaus.groovy.control.CompilationUnit, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.Class)">injectTrait</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> unit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> trait)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#injectTrait(org.codehaus.groovy.control.CompilationUnit, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, Class)">injectTrait</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> unit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; trait)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#processTraitsForNode(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.String, org.codehaus.groovy.control.CompilationUnit)">processTraitsForNode</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> sourceUnit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> cNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#processTraitsForNode(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.String, org.codehaus.groovy.control.CompilationUnit)">processTraitsForNode</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> sourceUnit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> cNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;static&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#processTraitsForNode(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.String, List, org.codehaus.groovy.control.CompilationUnit)">processTraitsForNode</a></strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> sourceUnit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> cNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;TraitInjector&gt; traitInjectors, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</code><br></td>
                         </tr>
                         
                     </table>
@@ -208,10 +213,10 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="injectTrait(org.codehaus.groovy.control.CompilationUnit, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.Class)"><!-- --></a>
+                        <a name="injectTrait(org.codehaus.groovy.control.CompilationUnit, org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;void <strong>injectTrait</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> unit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a> trait)</h4>
+                                <h4>public&nbsp;static&nbsp;void <strong>injectTrait</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> unit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> source, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> classNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt; trait)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -219,7 +224,15 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="processTraitsForNode(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.String, org.codehaus.groovy.control.CompilationUnit)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;void <strong>processTraitsForNode</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> sourceUnit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> cNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.27/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</h4>
+                                <h4>public&nbsp;static&nbsp;void <strong>processTraitsForNode</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> sourceUnit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> cNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="processTraitsForNode(org.codehaus.groovy.control.SourceUnit, org.codehaus.groovy.ast.ClassNode, java.lang.String, List, org.codehaus.groovy.control.CompilationUnit)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;void <strong>processTraitsForNode</strong>(<a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/SourceUnit.html' title='SourceUnit'>SourceUnit</a> sourceUnit, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/ast/ClassNode.html' title='ClassNode'>ClassNode</a> cNode, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> artefactType, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;TraitInjector&gt; traitInjectors, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/org/codehaus/groovy/control/CompilationUnit.html' title='CompilationUnit'>CompilationUnit</a> compilationUnit)</h4>
                                 <p></p>
                             </li>
                         </ul>
