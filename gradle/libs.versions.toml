@@ -43,6 +43,7 @@ jakarta-xml-bind = "4.0.2"
 javaparser = "3.26.4"
 javassist = "3.30.2-GA"
 jline = "2.14.6"
+jodd = "3.3.8"
 json-unit = "2.40.1"
 jsoup = "1.18.3"
 jsr305 = "3.0.2"
@@ -156,6 +157,7 @@ jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
 jline = { module = "jline:jline", version.ref = "jline" }
+jodd-wot = { module = "org.jodd:jodd-wot", version.ref = "jodd" }
 json-unit = { module = "net.javacrumbs.json-unit:json-unit", version.ref = "json-unit" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }

@@ -1,0 +1,8 @@
+dependencies {
+    api project(":grace-core")
+    api project(":grace-web-url-mappings")
+    implementation libs.grace.datastore.core
+    implementation libs.grace.datastore.gorm.validation
+    compileOnly libs.jakarta.annotation.api
+    testImplementation project(":grace-plugin-domain-class")
+}

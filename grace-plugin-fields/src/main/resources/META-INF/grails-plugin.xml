@@ -1,0 +1,3 @@
+<plugin name='fields'>
+  <type>grails.plugin.formfields.FieldsGrailsPlugin</type>
+</plugin>

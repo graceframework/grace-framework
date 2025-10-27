@@ -1,0 +1,22 @@
+dependencies {
+    api project(":grace-scaffolding-core")
+    api project(":grace-web-databinding")
+    api project(":grace-web-gsp")
+    api project(":grace-plugin-validation")
+    implementation libs.grace.datastore.core
+    implementation libs.grace.datastore.gorm
+    implementation libs.grace.datastore.gorm.support
+    api libs.commons.lang3
+    compileOnly libs.jakarta.servlet
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation project(":grace-test")
+    testImplementation project(":grace-test-support")
+    testImplementation libs.bytebuddy
+    testImplementation libs.objenesis
+    testImplementation libs.groovy.dateutil
+    testImplementation libs.jodd.wot
+}
