@@ -1,5 +1,7 @@
 package org.grails.scaffolding.markup
 
+import spock.lang.Shared
+
 import grails.persistence.Entity
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
 import org.grails.datastore.mapping.model.MappingContext

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2024 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,19 @@
 package grails.plugin.formfields
 
 import grails.plugins.Plugin
+import grails.util.GrailsUtil
 
 class FieldsGrailsPlugin extends Plugin {
 
     static final String CONSTRAINTS_EVALULATOR_BEAN_NAME = 'validateableConstraintsEvaluator'
 
+    def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = '2023.0.0 > *'
 
     def loadAfter = ['domainClass']
     def title = 'Grace Fields Plugin'
     def description = 'Provides customizable form-field rendering based on overrideable GSP template'
-    def documentation = 'https://github.com/graceframework/grace-fields'
 
-    def license = 'APACHE'
-    def issueManagement = [system: 'Github', url: 'https://github.com/graceframework/grace-fields/issues']
-    def scm = [url: 'https://github.com/graceframework/grace-fields']
+    def providedArtefacts = [FormFieldsTagLib]
 
 }

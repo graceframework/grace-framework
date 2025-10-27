@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.formfields
 
 import grails.gorm.validation.DefaultConstrainedProperty
@@ -16,8 +31,11 @@ import org.springframework.validation.FieldError
 import static grails.plugin.formfields.BeanPropertyAccessorFactory.stripIndex
 import static java.util.Collections.EMPTY_LIST
 import static org.apache.commons.lang3.StringUtils.substringAfterLast
-import grails.core.*
 
+/**
+ * @author Rob Fletcher
+ * @since 2024.0.0
+ */
 @CompileStatic
 @Canonical(includes = ['beanType', 'propertyName', 'propertyType'])
 class PropertyPathAccessor implements BeanPropertyAccessor {
@@ -37,7 +55,6 @@ class PropertyPathAccessor implements BeanPropertyAccessor {
 
 	Object getRootBean() { null }
 	Class getRootBeanType() { null }
-	GrailsDomainClass getBeanClass() { null }
 	PersistentEntity getEntity() { null }
 	List<Class> getBeanSuperclasses() { EMPTY_LIST }
 	List<Class> getPropertyTypeSuperclasses() { EMPTY_LIST }

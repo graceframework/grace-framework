@@ -1,5 +1,7 @@
 package org.grails.scaffolding.markup
 
+import groovy.xml.MarkupBuilder
+
 import org.grails.scaffolding.model.property.DomainProperty
 import grails.util.GrailsNameUtils
 import groovy.transform.CompileStatic
@@ -53,7 +55,7 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
     }
 
     @Override
-    Closure listOutputContext(PersistentEntity domainClass, List<DomainProperty> properties, Closure content) {
+    Closure<MarkupBuilder> listOutputContext(PersistentEntity domainClass, List<DomainProperty> properties, Closure content) {
         { ->
             table {
                 thead {
@@ -75,19 +77,19 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
     }
 
     @Override
-    Closure inputContext(PersistentEntity domainClass, Closure content) {
-        { ->
+    Closure<MarkupBuilder> inputContext(PersistentEntity domainClass, Closure content) {
+        return { ->
             fieldset([class: "form"], content)
         }
     }
 
     @Override
-    Closure inputContext(DomainProperty property, Closure content) {
+    Closure<MarkupBuilder> inputContext(DomainProperty property, Closure content) {
         List classes = ['fieldcontain']
         if (property.required) {
             classes << 'required'
         }
-        { ->
+        return { ->
             content.delegate = delegate
             div(class: classes.join(' ')) {
                 label([for: property.pathFromRoot], getLabelText(property)) {
@@ -101,15 +103,15 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
     }
 
     @Override
-    Closure outputContext(PersistentEntity domainClass, Closure content) {
-        { ->
+    Closure<MarkupBuilder> outputContext(PersistentEntity domainClass, Closure content) {
+        return { ->
             ol([class: "property-list ${domainClass.decapitalizedName}"], content)
         }
     }
 
     @Override
-    Closure outputContext(DomainProperty property, Closure content) {
-        { ->
+    Closure<MarkupBuilder> outputContext(DomainProperty property, Closure content) {
+        return { ->
             li(class: 'fieldcontain') {
                 span([id: "${property.pathFromRoot}-label", class: "property-label"], getLabelText(property))
                 div([class: "property-value", "aria-labelledby": "${property.pathFromRoot}-label"], content)
@@ -118,12 +120,12 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
     }
 
     @Override
-    Closure embeddedOutputContext(DomainProperty property, Closure content) {
+    Closure<MarkupBuilder> embeddedOutputContext(DomainProperty property, Closure content) {
         embeddedInputContext(property, content)
     }
 
     @Override
-    Closure embeddedInputContext(DomainProperty property, Closure content) {
+    Closure<MarkupBuilder> embeddedInputContext(DomainProperty property, Closure content) {
         return { ->
             content.delegate = delegate
             fieldset(class: "embedded ${toPropertyNameFormat(property.type)}") {

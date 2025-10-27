@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 Rob Fletcher
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.plugin.formfields
 
-import grails.core.GrailsDomainClass
 import org.grails.scaffolding.model.property.Constrained
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.springframework.validation.FieldError
 
+/**
+ * @author Rob Fletcher
+ * @since 2024.0.0
+ */
 interface BeanPropertyAccessor {
 
 	/**
@@ -48,13 +50,6 @@ interface BeanPropertyAccessor {
 	 * @return the type of the object that owns the property at the end of the path, e.g. for a `address.home.street` then the type of `home` is returned.
 	 */
 	Class getBeanType()
-
-	/**
-	 * @return the GORM domain type of `beanType`. This will be null if `beanType` is not a domain class.
-	 * @deprecated use {@link #getEntity}
-	 */
-	@Deprecated
-	GrailsDomainClass getBeanClass()
 
 	/**
 	 * @return the GORM domain type of `beanType`. This will be null if `beanType` is not a domain class.

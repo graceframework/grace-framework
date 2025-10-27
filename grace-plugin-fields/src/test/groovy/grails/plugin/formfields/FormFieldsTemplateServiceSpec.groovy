@@ -1,11 +1,11 @@
 package grails.plugin.formfields
 
 import grails.plugin.formfields.mock.*
-import grails.testing.services.ServiceUnitTest
+import org.grails.testing.GrailsUnitTest
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import spock.lang.*
 
-class FormFieldsTemplateServiceSpec extends BuildsAccessorFactory implements ServiceUnitTest<FormFieldsTemplateService> {
+class FormFieldsTemplateServiceSpec extends BuildsAccessorFactory implements GrailsUnitTest {
 
 	Person personInstance
 	Employee employeeInstance
@@ -19,6 +19,23 @@ class FormFieldsTemplateServiceSpec extends BuildsAccessorFactory implements Ser
 
 		employeeInstance = new Employee(salutation: Salutation.MR, name: "Waylon Smithers", salary: 10)
 	}
+
+    void setupSpec() {
+        defineBeans { ->
+            formFieldsTemplateService(FormFieldsTemplateService)
+        }
+    }
+
+    FormFieldsTemplateService getService() {
+        applicationContext.getBean(FormFieldsTemplateService)
+    }
+
+    @Override
+    Closure doWithConfig() {
+        return { config ->
+            config.grails.plugin.fields.disableLookupCache = true
+        }
+    }
 
 	void cleanup() {
 		views.clear()

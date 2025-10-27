@@ -1,35 +1,22 @@
 dependencies {
-    api "org.graceframework:grace-web-databinding"
-    api "org.graceframework:grace-web-gsp"
-    api "org.graceframework:grace-plugin-validation"
-    api "org.graceframework:grace-datastore-core:$gormVersion"
-    api "org.graceframework:grace-datastore-gorm:$gormVersion"
-    api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
-    api "org.apache.commons:commons-lang3"
-    compileOnly "org.graceframework:grace-boot"
-    compileOnly "jakarta.servlet:jakarta.servlet-api"
+    api project(":grace-scaffolding-core")
+    api project(":grace-web-databinding")
+    api project(":grace-web-gsp")
+    api project(":grace-plugin-validation")
+    implementation libs.grace.datastore.core
+    implementation libs.grace.datastore.gorm
+    implementation libs.grace.datastore.gorm.support
+    api libs.commons.lang3
+    compileOnly libs.jakarta.servlet
 
-    api "org.springframework.boot:spring-boot-autoconfigure"
-    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
-    testImplementation "org.apache.groovy:groovy-dateutil"
-    testImplementation "org.graceframework:grace-test-support"
-    testImplementation "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
-    testImplementation "org.spockframework:spock-core", {
-        exclude group: "org.junit.platform", module: "junit-platform-engine"
-    }
-    testImplementation "net.bytebuddy:byte-buddy"
-    testImplementation "org.objenesis:objenesis:$objenesisVersion"
-    testImplementation "org.apache.groovy:groovy-test-junit5:${groovyVersion}", {
-        exclude group: "org.junit.platform", module: "junit-platform-launcher"
-        exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
-    }
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.junit.platform:junit-platform-runner"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-    testImplementation("org.jodd:jodd-wot:$joddWotVersion") {
-        exclude module: 'slf4j-api'
-        exclude module: 'asm'
-    }
+    testImplementation project(":grace-test")
+    testImplementation project(":grace-test-support")
+    testImplementation libs.bytebuddy
+    testImplementation libs.objenesis
+    testImplementation libs.groovy.dateutil
+    testImplementation libs.jodd.wot
 }

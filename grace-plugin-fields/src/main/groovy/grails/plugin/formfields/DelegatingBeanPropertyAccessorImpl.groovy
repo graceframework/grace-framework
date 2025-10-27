@@ -3,7 +3,6 @@ package grails.plugin.formfields
 import java.lang.constant.Constable
 import java.lang.constant.ConstantDesc
 
-import grails.core.GrailsDomainClass
 import grails.gorm.Entity
 import grails.util.GrailsNameUtils
 import grails.validation.Validateable
@@ -56,12 +55,6 @@ class DelegatingBeanPropertyAccessorImpl implements BeanPropertyAccessor {
 	@Override
 	String getPathFromRoot() {
 		pathFromRoot
-	}
-
-	@Override
-	@Deprecated
-	GrailsDomainClass getBeanClass() {
-		throw new UnsupportedOperationException()
 	}
 
 	@Override

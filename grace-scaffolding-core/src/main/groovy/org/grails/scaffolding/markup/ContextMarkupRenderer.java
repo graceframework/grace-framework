@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.scaffolding.markup;
 
 import java.util.List;
@@ -25,6 +40,7 @@ import org.grails.scaffolding.model.property.DomainProperty;
  * }</pre>
  *
  * @author James Kleeh
+ * @since 2024.0.0
  */
 public interface ContextMarkupRenderer {
 
@@ -36,7 +52,7 @@ public interface ContextMarkupRenderer {
      * @param content     The content to be rendered for each property
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure listOutputContext(PersistentEntity domainClass, List<DomainProperty> properties, Closure content);
+    Closure<MarkupBuilder> listOutputContext(PersistentEntity domainClass, List<DomainProperty> properties, Closure content);
 
     /**
      * Defines the context for rendering a list of domain class properties inputs (form)
@@ -45,7 +61,7 @@ public interface ContextMarkupRenderer {
      * @param content     The content to be rendered
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure inputContext(PersistentEntity domainClass, Closure content);
+    Closure<MarkupBuilder> inputContext(PersistentEntity domainClass, Closure content);
 
     /**
      * Defines the context for rendering a single domain class property input (select, textarea, etc)
@@ -54,7 +70,7 @@ public interface ContextMarkupRenderer {
      * @param content  The content to be rendered
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure inputContext(DomainProperty property, Closure content);
+    Closure<MarkupBuilder> inputContext(DomainProperty property, Closure content);
 
     /**
      * Defines the context for rendering a list domain class properties (show page)
@@ -63,7 +79,7 @@ public interface ContextMarkupRenderer {
      * @param content     The content to be rendered
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure outputContext(PersistentEntity domainClass, Closure content);
+    Closure<MarkupBuilder> outputContext(PersistentEntity domainClass, Closure content);
 
     /**
      * Defines the context for rendering a single domain class property output
@@ -72,7 +88,7 @@ public interface ContextMarkupRenderer {
      * @param content  The content to be rendered
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure outputContext(DomainProperty property, Closure content);
+    Closure<MarkupBuilder> outputContext(DomainProperty property, Closure content);
 
     /**
      * Defines the context for rendering a the output of an embedded domain class property
@@ -81,7 +97,7 @@ public interface ContextMarkupRenderer {
      * @param content  The content to be rendered
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure embeddedOutputContext(DomainProperty property, Closure content);
+    Closure<MarkupBuilder> embeddedOutputContext(DomainProperty property, Closure content);
 
     /**
      * Defines the context for rendering a the input of an embedded domain class property
@@ -90,6 +106,6 @@ public interface ContextMarkupRenderer {
      * @param content  The content to be rendered
      * @return The closure to be passed to an instance of {@link MarkupBuilder}
      */
-    Closure embeddedInputContext(DomainProperty property, Closure content);
+    Closure<MarkupBuilder> embeddedInputContext(DomainProperty property, Closure content);
 
 }

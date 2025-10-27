@@ -1,19 +1,33 @@
 package grails.plugin.formfields
 
 import grails.plugin.formfields.mock.*
-import grails.testing.services.ServiceUnitTest
-import spock.lang.*
+import org.grails.testing.GrailsUnitTest
 
-@Issue('https://github.com/grails-fields-plugin/grails-fields/issues/39')
-class AssociationTypeTemplatesSpec extends BuildsAccessorFactory implements ServiceUnitTest<FormFieldsTemplateService> {
+class AssociationTypeTemplatesSpec extends BuildsAccessorFactory implements GrailsUnitTest {
 
 	Author authorInstance
 
 	void setupSpec() {
 		mockDomains(Book, Author)
+
+        defineBeans { ->
+            formFieldsTemplateService(FormFieldsTemplateService, grailsApplication,
+                    applicationContext.pluginManager, applicationContext.groovyPageLocator)
+        }
 	}
 
-	void setup() {
+    FormFieldsTemplateService getService() {
+        applicationContext.getBean(FormFieldsTemplateService)
+    }
+
+    @Override
+    Closure doWithConfig() {
+        return { config ->
+            config.grails.plugin.fields.disableLookupCache = true
+        }
+    }
+
+    void setup() {
 		authorInstance = new Author(name: 'William Gibson')
 		authorInstance.addToBooks new Book(title: 'Pattern Recognition')
 		authorInstance.addToBooks new Book(title: 'Spook Country')

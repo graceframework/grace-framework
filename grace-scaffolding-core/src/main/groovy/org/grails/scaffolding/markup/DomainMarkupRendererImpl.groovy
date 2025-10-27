@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.scaffolding.markup
 
 import groovy.transform.CompileStatic
@@ -12,6 +27,7 @@ import org.grails.scaffolding.model.property.DomainProperty
 /**
  * @see {@link DomainMarkupRenderer}
  * @author James Kleeh
+ * @since 2024.0.0
  */
 @CompileStatic
 class DomainMarkupRendererImpl implements DomainMarkupRenderer {
@@ -29,17 +45,18 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
         this.contextMarkupRenderer = contextMarkupRenderer
     }
 
-    static void callWithDelegate(delegate, Closure closure) {
+    static void callWithDelegate(Object delegate, Closure<?> closure) {
         closure.delegate = delegate
         closure.call()
     }
 
-    static String outputMarkupContent(Closure closure) {
+    static String outputMarkupContent(Closure<MarkupBuilder> closure) {
         FastStringWriter writer = new FastStringWriter()
         MarkupBuilder markupBuilder = new MarkupBuilder(writer)
         markupBuilder.doubleQuotes = true
         markupBuilder.escapeAttributes = false
         closure.delegate = markupBuilder
+        closure.setResolveStrategy(Closure.DELEGATE_FIRST)
         if (closure.maximumNumberOfParameters == 1) {
             closure.call(markupBuilder)
         }
@@ -49,11 +66,11 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
         writer.toString()
     }
 
-    protected Closure renderInput(DomainProperty property) {
+    protected Closure<MarkupBuilder> renderInput(DomainProperty property) {
         this.contextMarkupRenderer.inputContext(property, this.propertyMarkupRenderer.renderInput(property))
     }
 
-    protected Closure renderOutput(DomainProperty property) {
+    protected Closure<MarkupBuilder> renderOutput(DomainProperty property) {
         this.contextMarkupRenderer.outputContext(property, this.propertyMarkupRenderer.renderOutput(property))
     }
 
@@ -91,44 +108,41 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
 
     @Override
     String renderInput(PersistentEntity domainClass) {
-        outputMarkupContent(this.contextMarkupRenderer.inputContext(domainClass) { ->
-            def contextDelegate = delegate
+        outputMarkupContent(this.contextMarkupRenderer.inputContext(domainClass) { Closure c ->
+            // def contextDelegate = delegate
             this.domainModelService.getInputProperties(domainClass).each { DomainProperty property ->
                 if (property.persistentProperty instanceof Embedded) {
-                    callWithDelegate(contextDelegate, this.contextMarkupRenderer.embeddedInputContext(property) {
+                    callWithDelegate(delegate, this.contextMarkupRenderer.embeddedInputContext(property) {
                         this.domainModelService.getInputProperties(((Embedded) property.persistentProperty).associatedEntity).each { DomainProperty embedded ->
                             embedded.rootProperty = property
-                            callWithDelegate(contextDelegate, renderInput(embedded))
+                            callWithDelegate(delegate, renderInput(embedded))
                         }
                     })
                 }
                 else {
-                    callWithDelegate(contextDelegate, renderInput(property))
+                    callWithDelegate(delegate, renderInput(property))
                 }
             }
-        }
-        )
+        })
     }
 
     @Override
     String renderOutput(PersistentEntity domainClass) {
-        outputMarkupContent(
-                contextMarkupRenderer.outputContext(domainClass) { ->
-                    def contextDelegate = delegate
-                    domainModelService.getOutputProperties(domainClass).each { DomainProperty property ->
-                        if (property.persistentProperty instanceof Embedded) {
-                            callWithDelegate(contextDelegate, contextMarkupRenderer.embeddedOutputContext(property) { ->
-                                domainModelService.getOutputProperties(((Embedded) property.persistentProperty).associatedEntity).each { DomainProperty embedded ->
-                                    embedded.rootProperty = property
-                                    callWithDelegate(contextDelegate, renderOutput(embedded))
-                                }
-                            })
+        outputMarkupContent(this.contextMarkupRenderer.outputContext(domainClass) { Closure c ->
+            // def contextDelegate = delegate
+            this.domainModelService.getOutputProperties(domainClass).each { DomainProperty property ->
+                if (property.persistentProperty instanceof Embedded) {
+                    callWithDelegate(delegate, this.contextMarkupRenderer.embeddedOutputContext(property) { ->
+                        this.domainModelService.getOutputProperties(((Embedded) property.persistentProperty).associatedEntity).each { DomainProperty embedded ->
+                            embedded.rootProperty = property
+                            callWithDelegate(delegate, renderOutput(embedded))
                         }
-                        else {
-                            callWithDelegate(contextDelegate, renderOutput(property))
-                        }
-                    }
+                    })
                 }
-        )
+                else {
+                    callWithDelegate(delegate, renderOutput(property))
+                }
+            }
+        })
     }
 }

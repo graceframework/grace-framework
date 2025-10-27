@@ -1,13 +1,8 @@
-group = "org.graceframework"
-
 dependencies {
-    implementation "org.graceframework:grace-core"
-    implementation "org.graceframework:grace-datastore-core:$gormVersion"
-    implementation "org.graceframework:grace-datastore-gorm-validation:$gormVersion"
-    implementation "org.graceframework:grace-web-url-mappings"
-    compileOnly "jakarta.annotation:jakarta.annotation-api"
-
-    testImplementation "org.spockframework:spock-core"
-    testImplementation "net.bytebuddy:byte-buddy"
-    testImplementation "org.objenesis:objenesis:$objenesisVersion"
+    api project(":grace-core")
+    api project(":grace-web-url-mappings")
+    implementation libs.grace.datastore.core
+    implementation libs.grace.datastore.gorm.validation
+    compileOnly libs.jakarta.annotation.api
+    testImplementation project(":grace-plugin-domain-class")
 }

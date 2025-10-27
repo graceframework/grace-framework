@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import org.codehaus.groovy.control.SourceUnit
 import grails.compiler.ast.AstTransformer
 import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.rest.RestfulController
+
 import org.grails.compiler.injection.GrailsASTUtils
-import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.plugins.web.rest.transform.ResourceTransform
 
@@ -37,7 +37,7 @@ import org.grails.plugins.web.rest.transform.ResourceTransform
  *
  * @author Graeme Rocher
  * @author Michael Yan
- * @since 3.1
+ * @since 2024.0.0
  */
 @AstTransformer
 @CompileStatic
@@ -49,16 +49,11 @@ class ScaffoldingControllerInjector implements GrailsArtefactClassInjector {
 
     @Override
     void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode)
+        performInjection(source, classNode)
     }
 
     @Override
     void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode)
-    }
-
-    @Override
-    void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         def propertyNode = classNode.getProperty(PROPERTY_SCAFFOLD)
 
         def expression = propertyNode?.getInitialExpression()
@@ -73,8 +68,8 @@ class ScaffoldingControllerInjector implements GrailsArtefactClassInjector {
                 new ResourceTransform().addConstructor(classNode, domainClass, false)
             }
             else if(!currentSuperClass.isDerivedFrom(superClassNode)) {
-               GrailsASTUtils.error(source, classNode, "Scaffolded controllers (${classNode.name})" +
-                       " cannot extend other classes: ${currentSuperClass.getName()}", true)
+                GrailsASTUtils.error(source, classNode, "Scaffolded controllers (${classNode.name})" +
+                        " cannot extend other classes: ${currentSuperClass.getName()}", true)
             }
         }
         else if (propertyNode != null) {
@@ -83,8 +78,8 @@ class ScaffoldingControllerInjector implements GrailsArtefactClassInjector {
     }
 
     @Override
-    boolean shouldInject(URL url) {
-        return url != null && ControllerActionTransformer.CONTROLLER_PATTERN.matcher(url.getFile()).find()
+    boolean shouldInject(ClassNode classNode) {
+        return classNode.name.endsWith(ControllerArtefactHandler.TYPE)
     }
 
 }
