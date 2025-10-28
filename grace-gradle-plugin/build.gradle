@@ -93,6 +93,20 @@ gradlePlugin {
             tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
         }
+        graceViewsJson {
+            displayName = "Grace Json Views Gradle Plugin"
+            description = 'The Gradle plugin for Json Views'
+            id = 'org.graceframework.grace-json'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.web.views.json.GrailsJsonViewsPlugin'
+        }
+        graceViewsMarkup {
+            displayName = "Grace Markup Views Gradle Plugin"
+            description = 'The Gradle plugin for Markup Views'
+            id = 'org.graceframework.grace-markup'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.web.views.markup.GrailsMarkupViewsPlugin'
+        }
     }
 }
 

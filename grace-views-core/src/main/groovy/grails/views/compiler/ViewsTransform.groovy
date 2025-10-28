@@ -40,7 +40,7 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.grails.compiler.injection.GrailsASTUtils
-import org.grails.core.io.support.GrailsFactoriesLoader
+import org.grails.io.support.GrailsFactoriesLoader
 
 import java.lang.reflect.Modifier
 

@@ -6,7 +6,7 @@ import grails.views.compiler.ViewsTransform
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.transform.GroovyASTTransformation
-import org.grails.core.io.support.GrailsFactoriesLoader
+import org.grails.io.support.GrailsFactoriesLoader
 
 /**
  * @author Graeme ROcher

@@ -1,3 +1,4 @@
 org.grails.testing.spock.TestingSupportExtension
 org.grails.testing.spock.WebTestingSupportExtension
 org.grails.testing.gorm.spock.GormTestingSupportExtension
+org.grails.testing.spock.JsonViewSpockExtension

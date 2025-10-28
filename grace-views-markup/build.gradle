@@ -1,14 +1,12 @@
-group = "org.graceframework.plugins"
-
 dependencies {
-    api project(":views-core")
-    api "jakarta.annotation:jakarta.annotation-api"
-    api "org.graceframework:grace-core"
-    compileOnly "jakarta.servlet:jakarta.servlet-api"
+    api project(":grace-core")
+    api project(":grace-views-core")
+    api libs.jakarta.annotation.api
+    compileOnly libs.jakarta.servlet
 
-    api "org.springframework.boot:spring-boot-autoconfigure"
-    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
-    testImplementation "org.graceframework:grace-test-support"
+    testImplementation project(":grace-test-support")
 }

@@ -1,7 +1,7 @@
 package grails.plugin.json.view
 
 import grails.views.ViewException
-import grails.views.json.test.JsonViewUnitTest
+import grails.testing.views.json.JsonViewUnitTest
 import spock.lang.Specification
 
 class IterableRenderSpec extends Specification implements JsonViewUnitTest {
