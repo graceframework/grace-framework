@@ -1,9 +1,0 @@
-package author
-
-import functional.tests.plugin.Author
-
-model {
-    Iterable<Author> authorList
-}
-
-json tmpl.author(authorList ?: [])
