@@ -1,0 +1,56 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
+}
+
+group = "org.graceframework.plugins"
+
+dependencies {
+    compileOnly gradleApi()
+    api "org.graceframework:grace-gradle-plugin", {
+        exclude group: 'org.graceframework', module: 'grace-shell'
+        exclude group: 'org.apache.groovy', module: 'groovy-xml'
+    }
+    api "org.apache.groovy:groovy:$groovyVersion"
+}
+
+gradlePlugin {
+    plugins {
+        viewsJson {
+            id = 'org.graceframework.plugins.views-json'
+            implementationClass = 'grails.views.gradle.json.GrailsJsonViewsPlugin'
+            displayName = "Grace Json Views Gradle Plugin"
+            description = 'The Gradle plugin for Json Views'
+        }
+        viewsMarkup {
+            id = 'org.graceframework.plugins.views-markup'
+            implementationClass = 'grails.views.gradle.markup.GrailsMarkupViewsPlugin'
+            displayName = "Grace Markup Views Gradle Plugin"
+            description = 'The Gradle plugin for Markup Views'
+        }
+        viewsComponent {
+            id = 'org.graceframework.plugins.views-component'
+            implementationClass = 'grails.views.gradle.component.GrailsComponentViewsPlugin'
+            displayName = "Grace Component Views Gradle Plugin"
+            description = 'The Gradle plugin for Component Views'
+        }
+    }
+}
+
+afterEvaluate {
+    signing {
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
+        Publication[] publications = new Publication[publishing.publications.size() - 1]
+        project.publishing.publications.findAll { it.name != 'pluginMaven' }.toArray(publications)
+        sign(publications)
+    }
+
+    publishing.publications.each { MavenPublication publication ->
+        if (publication.name != "pluginMaven") {
+            publication.pom.withXml {
+                def xml = asNode()
+                xml.children().last() + pomInfo
+            }
+        }
+    }
+}
