@@ -111,7 +111,7 @@ class DomainModelServiceImpl
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Object.html' title='Object'>Object</a>
 implements <a href='../../../../org/grails/scaffolding/model/DomainModelService.html'>DomainModelService</a></pre>
 
-    <p> <DL><DT><B>See Also:</B></DT><DD><a href='../../../../org/grails/scaffolding/model/DomainModelService.html' title='DomainModelService'>DomainModelService</a></DD></DL><DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL></p>
+    <p> <DL><DT><B>See Also:</B></DT><DD><a href='../../../../org/grails/scaffolding/model/DomainModelService.html' title='DomainModelService'>DomainModelService</a></DD></DL><DL><DT><B>Authors:</B></DT><DD>James Kleeh</DD></DL><DL><DT><B>Since:</B></DT><DD>2024.0.0</DD></DL></p>
 
           </li>
     </ul>
@@ -334,7 +334,7 @@ implements <a href='../../../../org/grails/scaffolding/model/DomainModelService.
                         <a name="findInputProperties(org.grails.datastore.mapping.model.PersistentEntity, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>findInputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> closure)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>findInputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> closure)</h4>
                                 <p> Will return all properties in a domain class that the provided closure returns
  true for. Searches embedded properties <DL><DT><B>See Also:</B></DT><DD><a href='../../../../org/grails/scaffolding/model/DomainModelService.html#findInputProperties' title='DomainModelService.findInputProperties'>DomainModelService.findInputProperties</a></DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The persistent entity</DD><DD><code>closure</code> -  The closure that will be executed for each editable property</DD></DL></p>
                             </li>
@@ -343,7 +343,7 @@ implements <a href='../../../../org/grails/scaffolding/model/DomainModelService.
                         <a name="getInputProperties(org.grails.datastore.mapping.model.PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>getInputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>getInputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass)</h4>
                                 <p> <p>Blacklist:<ul>
  <li>version
  <li>dateCreated
@@ -355,7 +355,7 @@ implements <a href='../../../../org/grails/scaffolding/model/DomainModelService.
                         <a name="getListOutputProperties(org.grails.datastore.mapping.model.PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>getListOutputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>getListOutputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass)</h4>
                                 <p> <p>The same as <a href='#getOutputProperties(org.grails.datastore.mapping.model.PersistentEntity)'>getOutputProperties(org.grails.datastore.mapping.model.PersistentEntity)</a> except the identifier is prepended<p> <DL><DT><B>See Also:</B></DT><DD><a href='../../../../org/grails/scaffolding/model/DomainModelServiceImpl.html#getOutputProperties' title='DomainModelServiceImpl.getOutputProperties'>DomainModelServiceImpl.getOutputProperties</a></DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The persistent entity</DD></DL></p>
                             </li>
                         </ul>
@@ -363,7 +363,7 @@ implements <a href='../../../../org/grails/scaffolding/model/DomainModelService.
                         <a name="getOutputProperties(org.grails.datastore.mapping.model.PersistentEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>getOutputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/util/List.html' title='List'>List</a>&lt;<a href='../../../../org/grails/scaffolding/model/property/DomainProperty.html' title='DomainProperty'>DomainProperty</a>&gt; <strong>getOutputProperties</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass)</h4>
                                 <p> <p>Blacklist:<ul>
  <li>version
  </ul><p> <DL><DT><B>See Also:</B></DT><DD><a href='../../../../org/grails/scaffolding/model/DomainModelServiceImpl.html#getProperties' title='DomainModelServiceImpl.getProperties'>DomainModelServiceImpl.getProperties</a></DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The persistent entity</DD></DL></p>
@@ -385,7 +385,7 @@ implements <a href='../../../../org/grails/scaffolding/model/DomainModelService.
                         <a name="hasInputProperty(org.grails.datastore.mapping.model.PersistentEntity, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Boolean.html' title='Boolean'>Boolean</a> <strong>hasInputProperty</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> closure)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Boolean.html' title='Boolean'>Boolean</a> <strong>hasInputProperty</strong>(<a href='../../../../org.grails.datastore.mapping.model.PersistentEntity.html'>PersistentEntity</a> domainClass, <a href='https://docs.groovy-lang.org/docs/groovy-4.0.28/html/gapi/groovy/lang/Closure.html' title='Closure'>Closure</a> closure)</h4>
                                 <p> Returns true if the provided closure returns true for any domain class
  property. Searches embedded properties <DL><DT><B>See Also:</B></DT><DD><a href='../../../../org/grails/scaffolding/model/DomainModelService.html#hasInputProperty' title='DomainModelService.hasInputProperty'>DomainModelService.hasInputProperty</a></DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The persistent entity</DD><DD><code>closure</code> -  The closure that will be executed for each editable property</DD></DL></p>
                             </li>
