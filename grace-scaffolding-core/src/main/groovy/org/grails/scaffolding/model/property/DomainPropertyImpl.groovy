@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.scaffolding.model.property
 
 import groovy.transform.CompileStatic
@@ -5,7 +20,6 @@ import org.springframework.validation.Validator
 
 import grails.gorm.validation.PersistentEntityValidator
 import grails.util.GrailsNameUtils
-
 import org.grails.datastore.mapping.config.Property
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
@@ -18,6 +32,7 @@ import static grails.gorm.validation.ConstrainedProperty.BLANK_CONSTRAINT
 /**
  * @see {@link DomainProperty}
  * @author James Kleeh
+ * @since 2024.0.0
  */
 @CompileStatic
 class DomainPropertyImpl implements DomainProperty {
@@ -72,12 +87,10 @@ class DomainPropertyImpl implements DomainProperty {
         if (persistentProperty instanceof Association) {
             if (persistentProperty instanceof Basic) {
                 ((Basic) persistentProperty).componentType
-            }
-            else {
+            } else {
                 associatedEntity.javaClass
             }
-        }
-        else {
+        } else {
             null
         }
     }
@@ -91,15 +104,13 @@ class DomainPropertyImpl implements DomainProperty {
     boolean isRequired() {
         if (type in [Boolean, boolean]) {
             false
-        }
-        else if (type == String) {
+        } else if (type == String) {
             // if the property prohibits nulls and blanks are converted to nulls, then blanks will be prohibited even if a blank
             // constraint does not exist
             boolean hasBlankConstraint = constrained?.hasAppliedConstraint(BLANK_CONSTRAINT)
             boolean blanksImplicityProhibited = !hasBlankConstraint && !constrained?.nullable && convertEmptyStringsToNull && trimStrings
             !constrained?.nullable && (!constrained?.blank || blanksImplicityProhibited)
-        }
-        else {
+        } else {
             !constrained?.nullable
         }
     }
@@ -121,7 +132,6 @@ class DomainPropertyImpl implements DomainProperty {
 
     @Override
     int compareTo(DomainProperty o2) {
-
         if (domainClass.mapping.identifier?.identifierName?.contains(name)) {
             return -1
         }
@@ -153,4 +163,5 @@ class DomainPropertyImpl implements DomainProperty {
 
         return 0
     }
+
 }

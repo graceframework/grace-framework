@@ -70,4 +70,5 @@ trait PropertyMarkupRenderer {
      * @return The closure to be passed to an instance of {@link groovy.xml.MarkupBuilder}
      */
     abstract Closure<MarkupBuilder> renderInput(DomainProperty property)
+
 }

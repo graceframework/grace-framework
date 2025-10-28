@@ -1,10 +1,10 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.ClosureCaptureSpecification
-import org.grails.scaffolding.model.property.DomainProperty
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
+
+import org.grails.scaffolding.model.property.DomainProperty
 
 @Subject(CurrencyInputRenderer)
 class CurrencyInputRendererSpec extends Specification {
@@ -16,7 +16,7 @@ class CurrencyInputRendererSpec extends Specification {
         renderer = new CurrencyInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -29,12 +29,13 @@ class CurrencyInputRendererSpec extends Specification {
         renderer.supports(property)
     }
 
-    void "test option key and value"() {
+    void 'test option key and value'() {
         given:
-        Currency currency = Currency.getInstance("USD")
+        Currency currency = Currency.getInstance('USD')
 
         expect:
-        renderer.getOptionKey(currency) == "USD"
-        renderer.getOptionValue(currency) == "USD"
+        renderer.getOptionKey(currency) == 'USD'
+        renderer.getOptionValue(currency) == 'USD'
     }
+
 }

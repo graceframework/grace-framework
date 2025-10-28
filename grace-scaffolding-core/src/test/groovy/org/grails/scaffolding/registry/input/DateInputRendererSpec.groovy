@@ -1,10 +1,11 @@
 package org.grails.scaffolding.registry.input
 
+import spock.lang.Shared
+import spock.lang.Subject
+
 import org.grails.scaffolding.ClosureCapture
 import org.grails.scaffolding.ClosureCaptureSpecification
 import org.grails.scaffolding.model.property.DomainProperty
-import spock.lang.Shared
-import spock.lang.Subject
 
 @Subject(DateInputRenderer)
 class DateInputRendererSpec extends ClosureCaptureSpecification {
@@ -16,7 +17,7 @@ class DateInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new DateInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -29,18 +30,19 @@ class DateInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(property)
 
         where:
-        type | _
-        Date | _
-        Calendar | _
+        type          | _
+        Date          | _
+        Calendar      | _
         java.sql.Date | _
     }
 
-    void "test render"() {
+    void 'test render'() {
         when:
         ClosureCapture closureCapture = getClosureCapture(renderer.renderInput([:], Mock(DomainProperty)))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "date", "placeholder": "YYYY-MM-DD"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'date', 'placeholder': 'YYYY-MM-DD']
     }
+
 }

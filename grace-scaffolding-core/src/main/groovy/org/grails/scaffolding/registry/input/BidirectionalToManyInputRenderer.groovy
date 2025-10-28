@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.scaffolding.registry.input
 
 import org.grails.scaffolding.model.property.DomainProperty
@@ -11,6 +26,7 @@ import org.grails.datastore.mapping.model.types.ToMany
  * The default renderer for rendering bidirectional to many associations
  *
  * @author James Kleeh
+ * @since 2024.0.0
  */
 class BidirectionalToManyInputRenderer implements DomainInputRenderer {
 
@@ -39,9 +55,10 @@ class BidirectionalToManyInputRenderer implements DomainInputRenderer {
         final String objectName = "${getPropertyName(property)}.id"
         defaultAttributes.remove('required')
         defaultAttributes.remove('readonly')
-        defaultAttributes.href = linkGenerator.link(resource: property.associatedType, action: "create", params: [(objectName): ""])
+        defaultAttributes.href = linkGenerator.link(resource: property.associatedType, action: 'create', params: [(objectName): ''])
         return { ->
             a("Add ${getAssociatedClassName(property)}", defaultAttributes)
         }
     }
+
 }

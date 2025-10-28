@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import grails.config.Config;
 import grails.config.Settings;
 import grails.core.GrailsApplication;
 import grails.util.Environment;
+
 import org.grails.gsp.GroovyPagesTemplateEngine;
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator;
 import org.grails.web.servlet.view.GroovyPageViewResolver;
@@ -36,7 +37,7 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * {@link EnableAutoConfiguration Auto-Configure} for Scaffolding
  *
  * @author Michael Yan
- * @since 6.1
+ * @since 2024.0.0
  */
 @AutoConfiguration
 @AutoConfigureOrder(-10)

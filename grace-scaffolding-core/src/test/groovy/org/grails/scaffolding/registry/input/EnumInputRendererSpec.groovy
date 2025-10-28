@@ -1,10 +1,11 @@
 package org.grails.scaffolding.registry.input
 
+import spock.lang.Shared
+import spock.lang.Subject
+
 import org.grails.scaffolding.ClosureCapture
 import org.grails.scaffolding.ClosureCaptureSpecification
 import org.grails.scaffolding.model.property.DomainProperty
-import spock.lang.Shared
-import spock.lang.Subject
 
 @Subject(EnumInputRenderer)
 class EnumInputRendererSpec extends ClosureCaptureSpecification {
@@ -16,7 +17,7 @@ class EnumInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new EnumInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -29,7 +30,7 @@ class EnumInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(property)
     }
 
-    void "test render"() {
+    void 'test render'() {
         given:
         DomainProperty property
         ClosureCapture closureCapture
@@ -41,14 +42,14 @@ class EnumInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "select"
+        closureCapture.calls[0].name == 'select'
         closureCapture.calls[0].args[0] == [:]
-        closureCapture.calls[0][0].name == "option"
-        closureCapture.calls[0][0].args[0] == "APPLE"
-        closureCapture.calls[0][0].args[1] == [value: "APPLE"]
-        closureCapture.calls[0][1].name == "option"
-        closureCapture.calls[0][1].args[0] == "ORANGE"
-        closureCapture.calls[0][1].args[1] == [value: "ORANGE"]
+        closureCapture.calls[0][0].name == 'option'
+        closureCapture.calls[0][0].args[0] == 'APPLE'
+        closureCapture.calls[0][0].args[1] == [value: 'APPLE']
+        closureCapture.calls[0][1].name == 'option'
+        closureCapture.calls[0][1].args[0] == 'ORANGE'
+        closureCapture.calls[0][1].args[1] == [value: 'ORANGE']
 
         when:
         property = Mock(DomainProperty) {
@@ -57,27 +58,37 @@ class EnumInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "select"
+        closureCapture.calls[0].name == 'select'
         closureCapture.calls[0].args[0] == [:]
-        closureCapture.calls[0][0].name == "option"
-        closureCapture.calls[0][0].args[0] == "Alfa Romeo"
-        closureCapture.calls[0][0].args[1] == [value: "ALFA_ROMEO"]
-        closureCapture.calls[0][1].name == "option"
-        closureCapture.calls[0][1].args[0] == "Subaru"
-        closureCapture.calls[0][1].args[1] == [value: "SUBARU"]
+        closureCapture.calls[0][0].name == 'option'
+        closureCapture.calls[0][0].args[0] == 'Alfa Romeo'
+        closureCapture.calls[0][0].args[1] == [value: 'ALFA_ROMEO']
+        closureCapture.calls[0][1].name == 'option'
+        closureCapture.calls[0][1].args[0] == 'Subaru'
+        closureCapture.calls[0][1].args[1] == [value: 'SUBARU']
     }
 
-    enum Fruit { APPLE, ORANGE }
+    enum Fruit {
+
+        APPLE, ORANGE
+
+    }
+
     enum Car {
-        ALFA_ROMEO("Alfa Romeo"),
-        SUBARU("Subaru")
+
+        ALFA_ROMEO('Alfa Romeo'),
+        SUBARU('Subaru')
 
         private String val
+
         Car(String val) {
             this.val = val
         }
+
         String toString() {
             val
         }
+
     }
+
 }

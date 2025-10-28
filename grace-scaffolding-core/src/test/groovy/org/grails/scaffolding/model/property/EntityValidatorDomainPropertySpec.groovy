@@ -1,14 +1,15 @@
 package org.grails.scaffolding.model.property
 
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.lang.Unroll
+
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Embedded
 import org.grails.scaffolding.model.MocksDomain
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.lang.Unroll
 
 /**
  * Created by jameskleeh on 5/25/17.
@@ -34,16 +35,16 @@ class EntityValidatorDomainPropertySpec extends Specification implements MocksDo
     Embedded props
 
     void setup() {
-        mappingContext = new KeyValueMappingContext("test")
+        mappingContext = new KeyValueMappingContext('test')
         domainClass = mockDomainClassEntityValidator(mappingContext, ScaffoldedDomain)
-        address = domainClass.getPropertyByName("address")
-        props = (Embedded)domainClass.getPropertyByName("props")
-        name = props.associatedEntity.getPropertyByName("name")
-        foos = domainClass.getPropertyByName("foos")
+        address = domainClass.getPropertyByName('address')
+        props = (Embedded) domainClass.getPropertyByName('props')
+        name = props.associatedEntity.getPropertyByName('name')
+        foos = domainClass.getPropertyByName('foos')
     }
 
     @Unroll
-    void "test isRequired #propertyName is required: #expected"() {
+    void 'test isRequired #propertyName is required: #expected'() {
         given:
         DomainProperty property
 
@@ -57,21 +58,22 @@ class EntityValidatorDomainPropertySpec extends Specification implements MocksDo
 
         where:
         propertyName    | convertEmpty | trimStrings | expected
-        "testRequired1" | true         | true        | true
-        "testRequired1" | false        | true        | true
-        "testRequired1" | true         | false       | true
-        "testRequired2" | true         | true        | false
-        "testRequired2" | false        | true        | false
-        "testRequired2" | true         | false       | false
-        "testRequired3" | true         | true        | false
-        "testRequired3" | false        | true        | false
-        "testRequired3" | true         | false       | false
-        "testRequired4" | true         | true        | true
-        "testRequired4" | false        | true        | false
-        "testRequired4" | true         | false       | false
+        'testRequired1' | true         | true        | true
+        'testRequired1' | false        | true        | true
+        'testRequired1' | true         | false       | true
+        'testRequired2' | true         | true        | false
+        'testRequired2' | false        | true        | false
+        'testRequired2' | true         | false       | false
+        'testRequired3' | true         | true        | false
+        'testRequired3' | false        | true        | false
+        'testRequired3' | true         | false       | false
+        'testRequired4' | true         | true        | true
+        'testRequired4' | false        | true        | false
+        'testRequired4' | true         | false       | false
     }
 
     class ScaffoldedDomain {
+
         Long id
         Long version
         String address
@@ -92,12 +94,13 @@ class EntityValidatorDomainPropertySpec extends Specification implements MocksDo
             testRequired2(nullable: false, blank: true)
             testRequired3(nullable: true, blank: false)
         }
-    }
 
+    }
 
     class EmbeddedClass {
-        String name
-    }
 
+        String name
+
+    }
 
 }

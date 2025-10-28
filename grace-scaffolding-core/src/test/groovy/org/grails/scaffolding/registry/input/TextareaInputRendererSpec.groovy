@@ -1,15 +1,15 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.ClosureCapture
-import org.grails.scaffolding.ClosureCaptureSpecification
-import org.grails.scaffolding.model.property.DomainProperty
-import org.grails.scaffolding.model.property.Constrained
 import spock.lang.Shared
 import spock.lang.Subject
 
+import org.grails.scaffolding.ClosureCapture
+import org.grails.scaffolding.ClosureCaptureSpecification
+import org.grails.scaffolding.model.property.Constrained
+import org.grails.scaffolding.model.property.DomainProperty
+
 @Subject(TextareaInputRenderer)
 class TextareaInputRendererSpec extends ClosureCaptureSpecification {
-
 
     @Shared
     TextareaInputRenderer renderer
@@ -18,11 +18,11 @@ class TextareaInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new TextareaInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty prop = Mock(DomainProperty) {
             1 * getConstrained() >> Mock(Constrained) {
-                1 * getWidget() >> "textarea"
+                1 * getWidget() >> 'textarea'
             }
         }
 
@@ -30,7 +30,7 @@ class TextareaInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(prop)
     }
 
-    void "test render"() {
+    void 'test render'() {
         given:
         DomainProperty property = Mock(DomainProperty) {
             1 * getConstrained() >> Mock(Constrained) {
@@ -42,7 +42,8 @@ class TextareaInputRendererSpec extends ClosureCaptureSpecification {
         ClosureCapture closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "textarea"
-        closureCapture.calls[0].args[0] == ["maxlength": 20]
+        closureCapture.calls[0].name == 'textarea'
+        closureCapture.calls[0].args[0] == ['maxlength': 20]
     }
+
 }

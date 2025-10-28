@@ -1,11 +1,12 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.ClosureCapture
-import org.grails.scaffolding.ClosureCaptureSpecification
-import org.grails.scaffolding.model.property.DomainProperty
-import org.grails.scaffolding.model.property.Constrained
 import spock.lang.Shared
 import spock.lang.Subject
+
+import org.grails.scaffolding.ClosureCapture
+import org.grails.scaffolding.ClosureCaptureSpecification
+import org.grails.scaffolding.model.property.Constrained
+import org.grails.scaffolding.model.property.DomainProperty
 
 @Subject(StringInputRenderer)
 class StringInputRendererSpec extends ClosureCaptureSpecification {
@@ -17,7 +18,7 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new StringInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty prop
 
@@ -38,7 +39,7 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(prop)
     }
 
-    void "test render"() {
+    void 'test render'() {
         given:
         DomainProperty property
         ClosureCapture closureCapture
@@ -54,8 +55,8 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "password"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'password']
 
         when:
         property = Mock(DomainProperty) {
@@ -69,8 +70,8 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "email"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'email']
 
         when:
         property = Mock(DomainProperty) {
@@ -85,8 +86,8 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "url"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'url']
 
         when:
         property = Mock(DomainProperty) {
@@ -101,8 +102,8 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "text"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'text']
 
         when:
         property = Mock(DomainProperty) {
@@ -110,14 +111,15 @@ class StringInputRendererSpec extends ClosureCaptureSpecification {
                 1 * isPassword() >> false
                 1 * isEmail() >> false
                 1 * isUrl() >> false
-                2 * getMatches() >> "abc"
+                2 * getMatches() >> 'abc'
                 2 * getMaxSize() >> 20
             }
         }
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "text", "pattern": "abc", "maxlength": 20]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'text', 'pattern': 'abc', 'maxlength': 20]
     }
+
 }

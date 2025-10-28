@@ -1,11 +1,11 @@
 package org.grails.scaffolding.registry.input
 
+import spock.lang.Shared
+import spock.lang.Subject
+
 import org.grails.scaffolding.ClosureCapture
 import org.grails.scaffolding.ClosureCaptureSpecification
 import org.grails.scaffolding.model.property.DomainProperty
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.lang.Subject
 
 @Subject(UrlInputRenderer)
 class UrlInputRendererSpec extends ClosureCaptureSpecification {
@@ -17,7 +17,7 @@ class UrlInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new UrlInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty prop = Mock(DomainProperty) {
             1 * getType() >> URL
@@ -27,12 +27,13 @@ class UrlInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(prop)
     }
 
-    void "test render"() {
+    void 'test render'() {
         when:
         ClosureCapture closureCapture = getClosureCapture(renderer.renderInput([:], Mock(DomainProperty)))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "url"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'url']
     }
+
 }

@@ -1,9 +1,10 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.model.property.DomainProperty
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
+
+import org.grails.scaffolding.model.property.DomainProperty
 
 @Subject(TimeZoneInputRenderer)
 class TimeZoneInputRendererSpec extends Specification {
@@ -15,7 +16,7 @@ class TimeZoneInputRendererSpec extends Specification {
         renderer = new TimeZoneInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -28,12 +29,13 @@ class TimeZoneInputRendererSpec extends Specification {
         renderer.supports(property)
     }
 
-    void "test option key and value"() {
+    void 'test option key and value'() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone("America/New_York")
+        TimeZone timeZone = TimeZone.getTimeZone('America/New_York')
 
         expect:
-        renderer.getOptionKey(timeZone) == "America/New_York"
+        renderer.getOptionKey(timeZone) == 'America/New_York'
 //        renderer.getOptionValue(timeZone) == "EDT, Eastern Daylight Time -5:0.0 [America/New_York]"
     }
+
 }

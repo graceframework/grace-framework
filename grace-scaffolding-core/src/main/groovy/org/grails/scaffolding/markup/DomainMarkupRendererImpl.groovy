@@ -59,8 +59,7 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
         closure.setResolveStrategy(Closure.DELEGATE_FIRST)
         if (closure.maximumNumberOfParameters == 1) {
             closure.call(markupBuilder)
-        }
-        else {
+        } else {
             closure.call()
         }
         writer.toString()
@@ -87,12 +86,12 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
         List<DomainProperty> domainProperties = this.domainModelService.getListOutputProperties(domainClass)
         domainProperties.each { DomainProperty property ->
             if (property.persistentProperty instanceof Embedded) {
-                this.domainModelService.getOutputProperties(((Embedded) property.persistentProperty).associatedEntity).each { DomainProperty embedded ->
+                PersistentEntity associatedEntity = ((Embedded) property.persistentProperty).associatedEntity
+                this.domainModelService.getOutputProperties(associatedEntity).each { DomainProperty embedded ->
                     embedded.rootProperty = property
                     tableProperties.add(embedded)
                 }
-            }
-            else {
+            } else {
                 tableProperties.add(property)
             }
         }
@@ -113,13 +112,13 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
             this.domainModelService.getInputProperties(domainClass).each { DomainProperty property ->
                 if (property.persistentProperty instanceof Embedded) {
                     callWithDelegate(delegate, this.contextMarkupRenderer.embeddedInputContext(property) {
-                        this.domainModelService.getInputProperties(((Embedded) property.persistentProperty).associatedEntity).each { DomainProperty embedded ->
+                        PersistentEntity associatedEntity = ((Embedded) property.persistentProperty).associatedEntity
+                        this.domainModelService.getInputProperties(associatedEntity).each { DomainProperty embedded ->
                             embedded.rootProperty = property
                             callWithDelegate(delegate, renderInput(embedded))
                         }
                     })
-                }
-                else {
+                } else {
                     callWithDelegate(delegate, renderInput(property))
                 }
             }
@@ -133,16 +132,17 @@ class DomainMarkupRendererImpl implements DomainMarkupRenderer {
             this.domainModelService.getOutputProperties(domainClass).each { DomainProperty property ->
                 if (property.persistentProperty instanceof Embedded) {
                     callWithDelegate(delegate, this.contextMarkupRenderer.embeddedOutputContext(property) { ->
-                        this.domainModelService.getOutputProperties(((Embedded) property.persistentProperty).associatedEntity).each { DomainProperty embedded ->
+                        PersistentEntity associatedEntity = ((Embedded) property.persistentProperty).associatedEntity
+                        this.domainModelService.getOutputProperties(associatedEntity).each { DomainProperty embedded ->
                             embedded.rootProperty = property
                             callWithDelegate(delegate, renderOutput(embedded))
                         }
                     })
-                }
-                else {
+                } else {
                     callWithDelegate(delegate, renderOutput(property))
                 }
             }
         })
     }
+
 }

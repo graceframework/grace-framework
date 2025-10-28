@@ -91,7 +91,7 @@ public interface ContextMarkupRenderer {
     Closure<MarkupBuilder> outputContext(DomainProperty property, Closure content);
 
     /**
-     * Defines the context for rendering a the output of an embedded domain class property
+     * Defines the context for rendering the output of an embedded domain class property
      *
      * @param property The domain property to be rendered
      * @param content  The content to be rendered
@@ -100,7 +100,7 @@ public interface ContextMarkupRenderer {
     Closure<MarkupBuilder> embeddedOutputContext(DomainProperty property, Closure content);
 
     /**
-     * Defines the context for rendering a the input of an embedded domain class property
+     * Defines the context for rendering the input of an embedded domain class property
      *
      * @param property The domain property to be rendered
      * @param content  The content to be rendered

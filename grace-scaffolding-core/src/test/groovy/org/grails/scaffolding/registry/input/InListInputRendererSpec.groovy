@@ -1,11 +1,12 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.ClosureCapture
-import org.grails.scaffolding.ClosureCaptureSpecification
-import org.grails.scaffolding.model.property.DomainProperty
-import org.grails.scaffolding.model.property.Constrained
 import spock.lang.Shared
 import spock.lang.Subject
+
+import org.grails.scaffolding.ClosureCapture
+import org.grails.scaffolding.ClosureCaptureSpecification
+import org.grails.scaffolding.model.property.Constrained
+import org.grails.scaffolding.model.property.DomainProperty
 
 /**
  * Created by Jim on 6/6/2016.
@@ -20,7 +21,7 @@ class InListInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new InListInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -35,7 +36,7 @@ class InListInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(property)
     }
 
-    void "test render"() {
+    void 'test render'() {
         given:
         DomainProperty property
         ClosureCapture closureCapture
@@ -49,13 +50,14 @@ class InListInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "select"
+        closureCapture.calls[0].name == 'select'
         closureCapture.calls[0].args[0] == [:]
-        closureCapture.calls[0][0].name == "option"
+        closureCapture.calls[0][0].name == 'option'
         closureCapture.calls[0][0].args[0] == 1
-        closureCapture.calls[0][0].args[1] == ["value": 1]
-        closureCapture.calls[0][1].name == "option"
+        closureCapture.calls[0][0].args[1] == ['value': 1]
+        closureCapture.calls[0][1].name == 'option'
         closureCapture.calls[0][1].args[0] == 2
-        closureCapture.calls[0][1].args[1] == ["value": 2]
+        closureCapture.calls[0][1].args[1] == ['value': 2]
     }
+
 }

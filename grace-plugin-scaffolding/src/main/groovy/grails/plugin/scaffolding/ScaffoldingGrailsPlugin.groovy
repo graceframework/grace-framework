@@ -17,7 +17,7 @@ package grails.plugin.scaffolding
 
 import groovy.transform.CompileStatic
 
-import grails.plugins.*
+import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 /**
@@ -28,10 +28,8 @@ import grails.util.GrailsUtil
 class ScaffoldingGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def grailsVersion = "2023.0.0 > *"
-    def title = "Scaffolding Plugin"
-    def author = "Michael Yan"
-    def authorEmail = "rain@rainboyan.com"
+    def grailsVersion = '2023.0.0 > *'
+    def title = 'Scaffolding Plugin'
     def description = 'Plugin that generates scaffolded controllers and views for a Grace application.'
 
 }

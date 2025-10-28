@@ -18,7 +18,9 @@ package org.grails.compiler.scaffolding
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.GenericsType
+import org.codehaus.groovy.ast.PropertyNode
 import org.codehaus.groovy.ast.expr.ClassExpression
+import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.tools.GenericsUtils
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.SourceUnit
@@ -43,7 +45,7 @@ import org.grails.plugins.web.rest.transform.ResourceTransform
 @CompileStatic
 class ScaffoldingControllerInjector implements GrailsArtefactClassInjector {
 
-    public static final String PROPERTY_SCAFFOLD = "scaffold"
+    public static final String PROPERTY_SCAFFOLD = 'scaffold'
 
     final String[] artefactTypes = [ControllerArtefactHandler.TYPE] as String[]
 
@@ -54,20 +56,20 @@ class ScaffoldingControllerInjector implements GrailsArtefactClassInjector {
 
     @Override
     void performInjection(SourceUnit source, ClassNode classNode) {
-        def propertyNode = classNode.getProperty(PROPERTY_SCAFFOLD)
+        PropertyNode propertyNode = classNode.getProperty(PROPERTY_SCAFFOLD)
 
-        def expression = propertyNode?.getInitialExpression()
+        Expression expression = propertyNode?.getInitialExpression()
         if (expression instanceof ClassExpression) {
             ClassNode superClassNode = GenericsUtils.makeClassSafe(RestfulController)
-            def currentSuperClass = classNode.getSuperClass()
+            ClassNode currentSuperClass = classNode.getSuperClass()
             if (currentSuperClass.equals(GrailsASTUtils.OBJECT_CLASS_NODE)) {
-                def domainClass = ((ClassExpression) expression).getType()
+                ClassNode domainClass = ((ClassExpression) expression).getType()
                 superClassNode.setGenericsTypes(new GenericsType(domainClass))
                 classNode.setUsingGenerics(true)
                 classNode.setSuperClass(superClassNode)
                 new ResourceTransform().addConstructor(classNode, domainClass, false)
             }
-            else if(!currentSuperClass.isDerivedFrom(superClassNode)) {
+            else if (!currentSuperClass.isDerivedFrom(superClassNode)) {
                 GrailsASTUtils.error(source, classNode, "Scaffolded controllers (${classNode.name})" +
                         " cannot extend other classes: ${currentSuperClass.getName()}", true)
             }

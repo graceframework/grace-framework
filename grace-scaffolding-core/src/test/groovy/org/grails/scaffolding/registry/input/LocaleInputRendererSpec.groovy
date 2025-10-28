@@ -1,9 +1,10 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.model.property.DomainProperty
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
+
+import org.grails.scaffolding.model.property.DomainProperty
 
 @Subject(LocaleInputRenderer)
 class LocaleInputRendererSpec extends Specification {
@@ -15,7 +16,7 @@ class LocaleInputRendererSpec extends Specification {
         renderer = new LocaleInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -28,7 +29,7 @@ class LocaleInputRendererSpec extends Specification {
         renderer.supports(property)
     }
 
-    void "test option key and value"() {
+    void 'test option key and value'() {
         given:
         Locale locale
 
@@ -36,14 +37,15 @@ class LocaleInputRendererSpec extends Specification {
         locale = Locale.US
 
         then:
-        renderer.getOptionKey(locale) == "en_US"
-        renderer.getOptionValue(locale) == "en, US,  English (United States)"
+        renderer.getOptionKey(locale) == 'en_US'
+        renderer.getOptionValue(locale) == 'en, US,  English (United States)'
 
         when:
         locale = Locale.ENGLISH
 
         then:
-        renderer.getOptionKey(locale) == "en"
-        renderer.getOptionValue(locale) == "en, English"
+        renderer.getOptionKey(locale) == 'en'
+        renderer.getOptionValue(locale) == 'en, English'
     }
+
 }

@@ -1,10 +1,11 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.ClosureCaptureSpecification
-import org.grails.scaffolding.model.property.DomainProperty
-import org.grails.datastore.mapping.model.types.ToOne
 import spock.lang.Shared
 import spock.lang.Subject
+
+import org.grails.datastore.mapping.model.types.ToOne
+import org.grails.scaffolding.ClosureCaptureSpecification
+import org.grails.scaffolding.model.property.DomainProperty
 
 /**
  * Created by Jim on 6/7/2016.
@@ -19,7 +20,7 @@ class AssociationInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new AssociationInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         when:
         DomainProperty property = Mock(DomainProperty) {
             1 * getPersistentProperty() >> Mock(ToOne)
@@ -28,4 +29,5 @@ class AssociationInputRendererSpec extends ClosureCaptureSpecification {
         then:
         renderer.supports(property)
     }
+
 }

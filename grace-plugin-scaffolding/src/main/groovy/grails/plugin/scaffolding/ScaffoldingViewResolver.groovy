@@ -15,17 +15,11 @@
  */
 package grails.plugin.scaffolding
 
-import grails.codegen.model.ModelBuilder
-import grails.io.IOUtils
-import grails.util.BuildSettings
-import grails.util.Environment
+import java.util.concurrent.ConcurrentHashMap
+
 import groovy.text.GStringTemplateEngine
 import groovy.text.Template
 import groovy.transform.CompileStatic
-import org.grails.buffer.*
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.web.servlet.view.GroovyPageView
-import org.grails.web.servlet.view.GroovyPageViewResolver
 import org.springframework.context.ResourceLoaderAware
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.FileSystemResource
@@ -34,7 +28,17 @@ import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.UrlResource
 import org.springframework.web.servlet.View
 
-import java.util.concurrent.ConcurrentHashMap
+import grails.codegen.model.Model
+import grails.codegen.model.ModelBuilder
+import grails.core.GrailsControllerClass
+import grails.io.IOUtils
+import grails.util.BuildSettings
+import grails.util.Environment
+
+import org.grails.buffer.FastStringWriter
+import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.servlet.view.GroovyPageView
+import org.grails.web.servlet.view.GroovyPageViewResolver
 
 /**
  * @author Graeme Rocher
@@ -49,7 +53,7 @@ class ScaffoldingViewResolver extends GroovyPageViewResolver implements Resource
 
     protected String buildCacheKey(String viewName) {
         String viewCacheKey = groovyPageLocator.resolveViewFormat(viewName)
-        String currentControllerKeyPrefix = resolveCurrentControllerKeyPrefixes(viewName.startsWith("/"))
+        String currentControllerKeyPrefix = resolveCurrentControllerKeyPrefixes(viewName.startsWith('/'))
         if (currentControllerKeyPrefix != null) {
             viewCacheKey = currentControllerKeyPrefix + ':' + viewCacheKey
         }
@@ -58,61 +62,60 @@ class ScaffoldingViewResolver extends GroovyPageViewResolver implements Resource
 
     @Override
     protected View loadView(String viewName, Locale locale) throws Exception {
-        def view = super.loadView(viewName, locale)
-        if(view == null) {
+        View view = super.loadView(viewName, locale)
+
+        if (view == null) {
             String cacheKey = buildCacheKey(viewName)
             view = generatedViewCache.get(cacheKey)
-            if(view != null) {
+            if (view != null) {
                 return view
             }
-            else {
-                def webR = GrailsWebRequest.lookup()
-                def controllerClass = webR.controllerClass
 
-                def scaffoldValue = controllerClass?.getPropertyValue("scaffold")
-                if(scaffoldValue instanceof Class) {
-                    def shortViewName = viewName.substring(viewName.lastIndexOf('/') + 1)
-                    Resource res = null
+            GrailsWebRequest webR = GrailsWebRequest.lookup()
+            GrailsControllerClass controllerClass = webR.controllerClass
 
-                    if(Environment.isDevelopmentMode()) {
-                        res = new FileSystemResource(new File(BuildSettings.BASE_DIR, "src/main/templates/scaffolding/${shortViewName}.gsp"))
-                    }
+            def scaffoldValue = controllerClass?.getPropertyValue('scaffold')
+            if (scaffoldValue instanceof Class) {
+                String shortViewName = viewName.substring(viewName.lastIndexOf('/') + 1)
+                Resource res = null
 
-                    if(!res?.exists()) {
-                        def url = IOUtils.findResourceRelativeToClass(controllerClass.clazz, "/templates/scaffolding/${shortViewName}.gsp")
-                        res = url ? new UrlResource(url) : null
-                    }
-
-                    if(!res.exists()) {
-                        res = resourceLoader.getResource("classpath:META-INF/templates/scaffolding/${shortViewName}.gsp")
-                    }
-
-                    if(res.exists()) {
-                        def model = model((Class)scaffoldValue)
-                        def viewGenerator = new GStringTemplateEngine()
-                        Template t = viewGenerator.createTemplate(res.URL)
-
-                        def contents = new FastStringWriter()
-                        t.make(model.asMap()).writeTo(contents)
-                        
-                        def template = templateEngine.createTemplate(new ByteArrayResource(contents.toString().getBytes(templateEngine.gspEncoding), "view:$cacheKey"))
-                        view = new GroovyPageView()
-                        view.setServletContext(getServletContext())
-                        view.setTemplate(template)
-                        view.setApplicationContext(getApplicationContext())
-                        view.setTemplateEngine(templateEngine)
-                        view.afterPropertiesSet()
-                        generatedViewCache.put(cacheKey, view)
-                        return view
-                    }
-                    else {
-                        return view
-                    }
-
+                if (Environment.isDevelopmentMode()) {
+                    res = new FileSystemResource(new File(BuildSettings.BASE_DIR, "src/main/templates/scaffolding/${shortViewName}.gsp"))
                 }
 
+                if (!res?.exists()) {
+                    URL url = IOUtils.findResourceRelativeToClass(controllerClass.clazz, "/templates/scaffolding/${shortViewName}.gsp")
+                    res = url ? new UrlResource(url) : null
+                }
+
+                if (!res.exists()) {
+                    res = resourceLoader.getResource("classpath:META-INF/templates/scaffolding/${shortViewName}.gsp")
+                }
+
+                if (res.exists()) {
+                    Model model = model((Class) scaffoldValue)
+                    def viewGenerator = new GStringTemplateEngine()
+                    Template t = viewGenerator.createTemplate(res.URL)
+
+                    FastStringWriter contents = new FastStringWriter()
+                    t.make(model.asMap()).writeTo(contents)
+
+                    Resource resource = new ByteArrayResource(contents.toString().getBytes(templateEngine.gspEncoding), "view:$cacheKey")
+                    Template template = templateEngine.createTemplate(resource)
+                    view = new GroovyPageView()
+                    view.setServletContext(getServletContext())
+                    view.setTemplate(template)
+                    view.setApplicationContext(getApplicationContext())
+                    view.setTemplateEngine(templateEngine)
+                    view.afterPropertiesSet()
+                    generatedViewCache.put(cacheKey, view)
+                    return view
+                }
+
+                return view
             }
         }
         return view
     }
+
 }

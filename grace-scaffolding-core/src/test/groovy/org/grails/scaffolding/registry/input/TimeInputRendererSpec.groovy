@@ -1,10 +1,11 @@
 package org.grails.scaffolding.registry.input
 
+import spock.lang.Shared
+import spock.lang.Subject
+
 import org.grails.scaffolding.ClosureCapture
 import org.grails.scaffolding.ClosureCaptureSpecification
 import org.grails.scaffolding.model.property.DomainProperty
-import spock.lang.Shared
-import spock.lang.Subject
 
 /**
  * Created by Jim on 6/6/2016.
@@ -19,7 +20,7 @@ class TimeInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new TimeInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty prop = Mock(DomainProperty) {
             1 * getType() >> java.sql.Time
@@ -29,12 +30,13 @@ class TimeInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(prop)
     }
 
-    void "test render"() {
+    void 'test render'() {
         when:
         ClosureCapture closureCapture = getClosureCapture(renderer.renderInput([:], Mock(DomainProperty)))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "datetime-local"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'datetime-local']
     }
+
 }

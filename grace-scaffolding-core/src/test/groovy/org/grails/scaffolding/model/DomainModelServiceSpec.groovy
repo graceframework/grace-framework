@@ -1,17 +1,18 @@
 package org.grails.scaffolding.model
 
+import spock.lang.Shared
+import spock.lang.Specification
+
 import org.grails.datastore.mapping.config.Property
+import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
+import org.grails.datastore.mapping.model.MappingContext
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.PropertyMapping
 import org.grails.scaffolding.model.property.Constrained
 import org.grails.scaffolding.model.property.DomainProperty
 import org.grails.scaffolding.model.property.DomainPropertyFactory
 import org.grails.scaffolding.model.property.DomainPropertyFactoryImpl
-import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
-import org.grails.datastore.mapping.model.MappingContext
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.model.PersistentProperty
-import spock.lang.Shared
-import spock.lang.Specification
 
 class DomainModelServiceSpec extends Specification implements MocksDomain {
 
@@ -28,12 +29,12 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         }
     }
 
-    void "test getInputProperties valid property"() {
+    void 'test getInputProperties valid property'() {
         given:
         PersistentProperty bar = Mock()
         DomainProperty domainProperty = Mock(DomainProperty) {
             1 * getConstrained() >> Mock(Constrained) { 1 * isDisplay() >> true }
-            1 * getName() >> "bar"
+            1 * getName() >> 'bar'
             1 * getMapping() >> Mock(PropertyMapping) {
                 1 * getMappedForm() >> Mock(Property) {
                     1 * isDerived() >> false
@@ -53,12 +54,12 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         properties[0] == domainProperty
     }
 
-    void "test getInputProperties derived"() {
+    void 'test getInputProperties derived'() {
         given:
         PersistentProperty bar = Mock()
         DomainProperty domainProperty = Mock(DomainProperty) {
             1 * getConstrained() >> Mock(Constrained) { 1 * isDisplay() >> true }
-            1 * getName() >> "bar"
+            1 * getName() >> 'bar'
             1 * getMapping() >> Mock(PropertyMapping) {
                 1 * getMappedForm() >> Mock(Property) {
                     1 * isDerived() >> true
@@ -77,20 +78,19 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         properties.size() == 0
     }
 
-
-    void "test getEditableProperties excluded by default"() {
+    void 'test getEditableProperties excluded by default'() {
         given:
         PersistentProperty persistentProperty1 = Mock(PersistentProperty)
         PersistentProperty persistentProperty2 = Mock(PersistentProperty)
         PersistentProperty persistentProperty3 = Mock(PersistentProperty)
         DomainProperty dateCreated = Mock(DomainProperty) {
-            1 * getName() >> "dateCreated"
+            1 * getName() >> 'dateCreated'
         }
         DomainProperty lastUpdated = Mock(DomainProperty) {
-            1 * getName() >> "lastUpdated"
+            1 * getName() >> 'lastUpdated'
         }
         DomainProperty version = Mock(DomainProperty) {
-            1 * getName() >> "lastUpdated"
+            1 * getName() >> 'lastUpdated'
         }
         domainModelService.domainPropertyFactory = Mock(DomainPropertyFactoryImpl) {
             1 * build(persistentProperty1) >> dateCreated
@@ -102,15 +102,15 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         when:
         List<DomainProperty> properties = domainModelService.getInputProperties(domainClass).toList()
 
-        then: "properties that are excluded by default are excluded"
+        then: 'properties that are excluded by default are excluded'
         properties.empty
     }
 
-    void "test getEditableProperties constraints display false"() {
+    void 'test getEditableProperties constraints display false'() {
         given:
         PersistentProperty bar = Mock()
         DomainProperty domainProperty = Mock(DomainProperty) {
-            1 * getName() >> "bar"
+            1 * getName() >> 'bar'
             1 * getConstrained() >> Mock(Constrained) { 1 * isDisplay() >> false }
         }
         domainModelService.domainPropertyFactory = Mock(DomainPropertyFactoryImpl) {
@@ -125,11 +125,11 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         properties.empty
     }
 
-    void "test getEditableProperties scaffold exclude"() {
+    void 'test getEditableProperties scaffold exclude'() {
         given:
         PersistentProperty foo = Mock()
         DomainProperty domainProperty = Mock(DomainProperty) {
-            1 * getName() >> "foo"
+            1 * getName() >> 'foo'
         }
         domainModelService.domainPropertyFactory = Mock(DomainPropertyFactoryImpl) {
             1 * build(foo) >> domainProperty
@@ -143,9 +143,9 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         properties.empty
     }
 
-    void "test hasProperty"() {
+    void 'test hasProperty'() {
         given:
-        MappingContext mappingContext = new KeyValueMappingContext("test")
+        MappingContext mappingContext = new KeyValueMappingContext('test')
         PersistentEntity persistentEntity = mockDomainClass(mappingContext, ScaffoldedDomain)
         mockDomainClass(mappingContext, EmbeddedAssociate)
         DomainPropertyFactory domainPropertyFactory = mockDomainPropertyFactory(mappingContext)
@@ -153,26 +153,26 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
 
         expect:
         domainModelService.hasInputProperty(persistentEntity) { DomainProperty p ->
-            p.name == "timeZone"
+            p.name == 'timeZone'
         }
         domainModelService.hasInputProperty(persistentEntity) { DomainProperty p ->
-            p.name == "locale"
+            p.name == 'locale'
         }
         !domainModelService.hasInputProperty(persistentEntity) { DomainProperty p ->
-            p.name == "not here"
+            p.name == 'not here'
         }
     }
 
-    void "test getVisibleProperties"() {
+    void 'test getVisibleProperties'() {
         given:
         PersistentProperty persistentProperty1 = Mock(PersistentProperty)
         PersistentProperty persistentProperty2 = Mock(PersistentProperty)
         DomainProperty bar = Stub(DomainProperty) {
-            getName() >> "bar"
+            getName() >> 'bar'
             getConstrained() >> Mock(Constrained) { 1 * isDisplay() >> true }
         }
         DomainProperty version = Stub(DomainProperty) {
-            getName() >> "version"
+            getName() >> 'version'
         }
         domainModelService.domainPropertyFactory = Mock(DomainPropertyFactoryImpl) {
             1 * build(persistentProperty1) >> bar
@@ -183,12 +183,12 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         when:
         List<DomainProperty> properties = domainModelService.getOutputProperties(domainClass).toList()
 
-        then: "version is excluded"
+        then: 'version is excluded'
         properties.size() == 1
-        properties[0].name == "bar"
+        properties[0].name == 'bar'
     }
 
-    void "test getListOutputProperties"() {
+    void 'test getListOutputProperties'() {
         given:
         List persistentProperties = (1..10).collect {
             Mock(PersistentProperty)
@@ -200,13 +200,13 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
             }
         }
         domainProperties.add(Stub(DomainProperty) {
-            getName() >> "version"
+            getName() >> 'version'
         })
         PersistentProperty identity = Stub(PersistentProperty)
         domainModelService.domainPropertyFactory = Mock(DomainPropertyFactoryImpl) {
             10 * build(_ as PersistentProperty) >>> domainProperties
             1 * build(identity) >> Stub(DomainProperty) {
-                getName() >> "id"
+                getName() >> 'id'
             }
         }
         1 * domainClass.getPersistentProperties() >> persistentProperties
@@ -215,13 +215,14 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         when:
         List<DomainProperty> properties = domainModelService.getListOutputProperties(domainClass).toList()
 
-        then: "Identity is added to the beginning of the list"
+        then: 'Identity is added to the beginning of the list'
         properties.size() == 11
-        properties[0].name == "id"
-        properties[10].name == "10"
+        properties[0].name == 'id'
+        properties[10].name == '10'
     }
 
     class ScaffoldedDomain {
+
         Long id
         Long version
         static scaffold = [exclude: 'foo']
@@ -231,12 +232,16 @@ class DomainModelServiceSpec extends Specification implements MocksDomain {
         byte[] data
 
         static embedded = ['embeddedAssociate']
+
     }
 
     class EmbeddedAssociate {
+
         Long id
         Long version
         TimeZone timeZone
         Calendar cal
+
     }
+
 }

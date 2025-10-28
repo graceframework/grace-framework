@@ -1,11 +1,12 @@
 package org.grails.scaffolding.registry.input
 
-import org.grails.scaffolding.ClosureCapture
-import org.grails.scaffolding.ClosureCaptureSpecification
-import org.grails.scaffolding.model.property.DomainProperty
-import org.grails.scaffolding.model.property.Constrained
 import spock.lang.Shared
 import spock.lang.Subject
+
+import org.grails.scaffolding.ClosureCapture
+import org.grails.scaffolding.ClosureCaptureSpecification
+import org.grails.scaffolding.model.property.Constrained
+import org.grails.scaffolding.model.property.DomainProperty
 
 /**
  * Created by Jim on 6/6/2016.
@@ -20,7 +21,7 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         renderer = new NumberInputRenderer()
     }
 
-    void "test supports"() {
+    void 'test supports'() {
         given:
         DomainProperty property
 
@@ -33,16 +34,16 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         renderer.supports(property)
 
         where:
-        type | _
-        int  | _
-        long  | _
+        type    | _
+        int     | _
+        long    | _
         double  | _
-        Integer  | _
-        Long  | _
+        Integer | _
+        Long    | _
         Double  | _
     }
 
-    void "test render"() {
+    void 'test render'() {
         given:
         DomainProperty property
         ClosureCapture closureCapture
@@ -56,8 +57,8 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "range", "min": 1, "max": 5]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'range', 'min': 1, 'max': 5]
 
         when:
         property = Mock(DomainProperty) {
@@ -72,8 +73,8 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "number"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'number']
 
         when:
         property = Mock(DomainProperty) {
@@ -88,8 +89,8 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "number", "step": "any"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'number', 'step': 'any']
 
         when:
         property = Mock(DomainProperty) {
@@ -104,8 +105,8 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "number", "step": "0.001"]
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'number', 'step': '0.001']
 
         when:
         property = Mock(DomainProperty) {
@@ -120,8 +121,8 @@ class NumberInputRendererSpec extends ClosureCaptureSpecification {
         closureCapture = getClosureCapture(renderer.renderInput([:], property))
 
         then:
-        closureCapture.calls[0].name == "input"
-        closureCapture.calls[0].args[0] == ["type": "number", "min": 5, "max": 6]
-
+        closureCapture.calls[0].name == 'input'
+        closureCapture.calls[0].args[0] == ['type': 'number', 'min': 5, 'max': 6]
     }
+
 }

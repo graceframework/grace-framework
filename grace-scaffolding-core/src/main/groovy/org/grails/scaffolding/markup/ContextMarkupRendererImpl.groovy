@@ -1,16 +1,32 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.scaffolding.markup
 
-import groovy.xml.MarkupBuilder
-
-import org.grails.scaffolding.model.property.DomainProperty
-import grails.util.GrailsNameUtils
 import groovy.transform.CompileStatic
-import org.grails.datastore.mapping.model.PersistentEntity
+import groovy.xml.MarkupBuilder
 import org.springframework.context.MessageSource
+
+import grails.util.GrailsNameUtils
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.scaffolding.model.property.DomainProperty
 
 /**
  * @see {@link ContextMarkupRenderer}
  * @author James Kleeh
+ * @since 2024.0.0
  */
 class ContextMarkupRendererImpl implements ContextMarkupRenderer {
 
@@ -31,15 +47,12 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
         if (property.labelKeys) {
             labelText = resolveMessage(property.labelKeys, property.defaultLabel)
         }
-        if (!labelText) {
-            labelText = property.defaultLabel
-        }
-        labelText
+        labelText ?: property.defaultLabel
     }
 
     @CompileStatic
     protected String resolveMessage(List<String> keysInPreferenceOrder, String defaultMessage) {
-        def message = keysInPreferenceOrder.findResult { key ->
+        String message = keysInPreferenceOrder.findResult { key ->
             this.messageSource.getMessage(key, [].toArray(), defaultMessage, Locale.default) ?: null
         }
         message ?: defaultMessage
@@ -79,7 +92,7 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
     @Override
     Closure<MarkupBuilder> inputContext(PersistentEntity domainClass, Closure content) {
         return { ->
-            fieldset([class: "form"], content)
+            fieldset([class: 'form'], content)
         }
     }
 
@@ -113,8 +126,8 @@ class ContextMarkupRendererImpl implements ContextMarkupRenderer {
     Closure<MarkupBuilder> outputContext(DomainProperty property, Closure content) {
         return { ->
             li(class: 'fieldcontain') {
-                span([id: "${property.pathFromRoot}-label", class: "property-label"], getLabelText(property))
-                div([class: "property-value", "aria-labelledby": "${property.pathFromRoot}-label"], content)
+                span([id: "${property.pathFromRoot}-label", class: 'property-label'], getLabelText(property))
+                div([class: 'property-value', 'aria-labelledby': "${property.pathFromRoot}-label"], content)
             }
         }
     }

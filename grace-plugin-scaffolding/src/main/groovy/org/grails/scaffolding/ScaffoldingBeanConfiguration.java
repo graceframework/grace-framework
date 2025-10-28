@@ -45,7 +45,7 @@ import org.grails.scaffolding.registry.DomainRendererRegisterer;
  * {@link EnableAutoConfiguration Auto-Configure} for Scaffolding
  *
  * @author Michael Yan
- * @since 6.0
+ * @since 2024.0.0
  */
 @AutoConfiguration
 @AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
@@ -97,7 +97,8 @@ public class ScaffoldingBeanConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public DomainRendererRegisterer domainRendererRegisterer(DomainInputRendererRegistry domainInputRendererRegistry, DomainOutputRendererRegistry domainOutputRendererRegistry,
+    public DomainRendererRegisterer domainRendererRegisterer(DomainInputRendererRegistry domainInputRendererRegistry,
+            DomainOutputRendererRegistry domainOutputRendererRegistry,
             ObjectProvider<LinkGenerator> grailsLinkGenerator) {
         return new DomainRendererRegisterer(domainInputRendererRegistry, domainOutputRendererRegistry, grailsLinkGenerator.getIfAvailable());
     }

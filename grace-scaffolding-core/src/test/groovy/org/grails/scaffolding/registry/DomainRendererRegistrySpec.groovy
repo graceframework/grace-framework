@@ -1,8 +1,9 @@
 package org.grails.scaffolding.registry
 
-import org.grails.scaffolding.model.property.DomainProperty
 import spock.lang.Shared
 import spock.lang.Specification
+
+import org.grails.scaffolding.model.property.DomainProperty
 
 /**
  * Created by Jim on 5/26/2016.
@@ -16,7 +17,7 @@ class DomainRendererRegistrySpec extends Specification {
         registry = new DomainOutputRendererRegistry()
     }
 
-    void "test renderers are returned in order"() {
+    void 'test renderers are returned in order'() {
         given:
         DomainOutputRenderer levelOne = Stub(DomainOutputRenderer) {
             supports(_ as DomainProperty) >> true
@@ -34,7 +35,7 @@ class DomainRendererRegistrySpec extends Specification {
         resolved == levelTwo
     }
 
-    void "test the last renderer added will have priority over others with the same priority"() {
+    void 'test the last renderer added will have priority over others with the same priority'() {
         given:
         DomainOutputRenderer levelOne = Stub(DomainOutputRenderer) {
             supports(_ as DomainProperty) >> true
@@ -52,7 +53,7 @@ class DomainRendererRegistrySpec extends Specification {
         resolved == levelTwo
     }
 
-    void "test only supported renderers are resolved"() {
+    void 'test only supported renderers are resolved'() {
         given:
         DomainOutputRenderer levelOne = Stub(DomainOutputRenderer) {
             supports(_ as DomainProperty) >> true
@@ -69,4 +70,5 @@ class DomainRendererRegistrySpec extends Specification {
         then:
         resolved == levelOne
     }
+
 }

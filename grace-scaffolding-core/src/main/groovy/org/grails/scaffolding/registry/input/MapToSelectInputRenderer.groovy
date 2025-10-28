@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.scaffolding.registry.input
 
 import org.grails.scaffolding.model.property.DomainProperty
@@ -9,6 +24,7 @@ import org.grails.scaffolding.registry.DomainInputRenderer
  *
  * @author James Kleeh
  * @param <T> Any type
+ * @since 2024.0.0
  */
 trait MapToSelectInputRenderer<T> implements DomainInputRenderer {
 
@@ -40,7 +56,10 @@ trait MapToSelectInputRenderer<T> implements DomainInputRenderer {
      */
     abstract Map<String, String> getOptions()
 
-    /** @see DomainInputRenderer#renderInput() **/
+    /**
+     * @see DomainInputRenderer#renderInput(Map, DomainProperty)
+     */
+    @Override
     Closure renderInput(Map defaultAttributes, DomainProperty property) {
         String selected = getOptionKey(defaultOption)
 
@@ -49,7 +68,7 @@ trait MapToSelectInputRenderer<T> implements DomainInputRenderer {
                 options.each { String key, String value ->
                     Map attrs = [value: key]
                     if (selected == key) {
-                        attrs.selected = ""
+                        attrs.selected = ''
                     }
                     option(value, attrs)
                 }
