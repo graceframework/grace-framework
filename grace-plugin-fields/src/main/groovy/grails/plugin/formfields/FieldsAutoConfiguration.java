@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import grails.core.GrailsApplication;
 import grails.core.support.proxy.ProxyHandler;
 import grails.plugins.GrailsPluginManager;
+
 import org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.scaffolding.model.property.DomainPropertyFactory;
@@ -34,7 +35,7 @@ import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator;
  * {@link EnableAutoConfiguration Auto-Configure} for Fields
  *
  * @author Michael Yan
- * @since 6.1
+ * @since 2024.0.0
  */
 @AutoConfiguration
 @AutoConfigureOrder(100)

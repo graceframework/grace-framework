@@ -1,9 +1,10 @@
 package grails.plugin.formfields
 
+import spock.lang.Issue
+
+import grails.plugin.formfields.mock.User
 import grails.plugin.formfields.taglib.AbstractFormFieldsTagLibSpec
 import grails.testing.web.taglib.TagLibUnitTest
-import spock.lang.Issue
-import grails.plugin.formfields.mock.User
 
 @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/87')
 class TransientPropertySpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitTest<FormFieldsTagLib> {
@@ -17,7 +18,7 @@ class TransientPropertySpec extends AbstractFormFieldsTagLibSpec implements TagL
 
     def setup() {
         mockFormFieldsTemplateService.findTemplate(_, 'wrapper', null, null) >> [path: '/_fields/default/wrapper']
-        mockFormFieldsTemplateService.getTemplateFor('wrapper') >> "wrapper"
+        mockFormFieldsTemplateService.getTemplateFor('wrapper') >> 'wrapper'
         tagLib.formFieldsTemplateService = mockFormFieldsTemplateService
 
         userInstance = new User(email: 'rob@freeside.co', password: 'yuonocanhaz', confirmPassword: 'yuonocanhaz').save(failOnError: true)
@@ -25,7 +26,7 @@ class TransientPropertySpec extends AbstractFormFieldsTagLibSpec implements TagL
 
     void 'transient properties can be rendered by f:field'() {
         given:
-        views["/_fields/default/_wrapper.gsp"] = '${value}'
+        views['/_fields/default/_wrapper.gsp'] = '${value}'
 
         when:
         def output = applyTemplate('<f:field bean="userInstance" property="confirmPassword"/>', [userInstance: userInstance])
@@ -33,4 +34,5 @@ class TransientPropertySpec extends AbstractFormFieldsTagLibSpec implements TagL
         then:
         output == userInstance.confirmPassword
     }
+
 }

@@ -1,13 +1,14 @@
 package grails.plugin.formfields
 
-import grails.testing.web.taglib.TagLibUnitTest
-import jodd.lagarto.dom.jerry.Jerry
 import spock.lang.Specification
+
+import grails.testing.web.taglib.TagLibUnitTest
+
 import static jodd.lagarto.dom.jerry.Jerry.jerry
 
 class DefaultFieldTemplateSpec extends Specification implements TagLibUnitTest<FormFieldsTagLib> {
-	
-	Map model = [:]
+
+    Map model = [:]
 
     void setup() {
         model.invalid = false
@@ -15,7 +16,7 @@ class DefaultFieldTemplateSpec extends Specification implements TagLibUnitTest<F
         model.property = 'property'
         model.required = false
         model.widget = '<input name="property">'
-        views["/default/_wrapper.gsp"] = '''\
+        views['/default/_wrapper.gsp'] = '''\
 <g:set var="classes" value="fieldcontain "/>
 <g:if test="${required}">
     <g:set var="classes" value="${classes + 'required'}"/>
@@ -28,54 +29,50 @@ class DefaultFieldTemplateSpec extends Specification implements TagLibUnitTest<F
     <%= widget %>
 </div>'''
     }
-	
-	static Jerry $(String html) {
-		jerry(html).children()
-	}
-	
-	void "default rendering"() {
-		when:
-		def output = tagLib.renderDefaultField(model)
 
-		then:
-		def root = $(output.toString())
-		root.is('div.fieldcontain')
+    void 'default rendering'() {
+        when:
+        def output = tagLib.renderDefaultField(model)
 
-		and:
-		def label = root.find('label')
-		label.text() == 'label'
-		label.attr('for') == 'property'
-		
-		and:
-		label.next().is('input[name=property]')
-	}
+        then:
+        def root = jerry(output.toString()).children()
+        root.is('div.fieldcontain')
 
-	void "container marked as invalid"() {
-		given:
-		model.invalid = true
+        and:
+        def label = root.find('label')
+        label.text() == 'label'
+        label.attr('for') == 'property'
 
-		when:
-		def output = tagLib.renderDefaultField(model)
-		
-		then:
-		$(output.toString()).hasClass('error')
-	}
+        and:
+        label.next().is('input[name=property]')
+    }
 
-	void "container marked as required"() {
-		given:
-		model.required = true
+    void 'container marked as invalid'() {
+        given:
+        model.invalid = true
 
-		when:
-		def output = tagLib.renderDefaultField(model)
+        when:
+        def output = tagLib.renderDefaultField(model)
 
-		then:
-		def root = $(output.toString())
-		root.hasClass('required')
-		
-		and:
-		def indicator = root.find('label .required-indicator')
-		indicator.size()
-		indicator.text() == '*'
-	}
+        then:
+        jerry(output.toString()).children().hasClass('error')
+    }
+
+    void 'container marked as required'() {
+        given:
+        model.required = true
+
+        when:
+        def output = tagLib.renderDefaultField(model)
+
+        then:
+        def root = jerry(output.toString()).children()
+        root.hasClass('required')
+
+        and:
+        def indicator = root.find('label .required-indicator')
+        indicator.size()
+        indicator.text() == '*'
+    }
 
 }

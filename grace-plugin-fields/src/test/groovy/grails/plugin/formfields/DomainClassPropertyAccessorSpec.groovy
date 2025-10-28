@@ -1,372 +1,387 @@
 package grails.plugin.formfields
 
 import org.springframework.beans.NotReadablePropertyException
-import grails.plugin.formfields.mock.*
-import spock.lang.*
+import spock.lang.Issue
+import spock.lang.Shared
+import spock.lang.Unroll
+
+import grails.plugin.formfields.mock.Address
+import grails.plugin.formfields.mock.Author
+import grails.plugin.formfields.mock.Book
+import grails.plugin.formfields.mock.Employee
+import grails.plugin.formfields.mock.Gender
+import grails.plugin.formfields.mock.Person
 
 @Unroll
 class DomainClassPropertyAccessorSpec extends BuildsAccessorFactory {
 
-	@Shared Address address
-	@Shared Person person
-	@Shared Employee employee
-	@Shared Author author
+    @Shared
+    Address address
 
-	void setupSpec() {
-		mockDomains(Person, Author, Book, Employee)
-	}
+    @Shared
+    Person person
 
-	void setup() {
-		address = new Address(street: "94 Evergreen Terrace", city: "Springfield", country: "USA")
-		person = new Person(name: "Bart Simpson", password: "bartman", gender: Gender.Male, dateOfBirth: new Date(87, 3, 19), address: address)
-		person.emails = [home: "bart@thesimpsons.net", school: "bart.simpson@springfieldelementary.edu"]
-		person.save(failOnError: true)
+    @Shared
+    Employee employee
 
-		employee = new Employee(name: 'Homer J Simpson', password: 'mmmdonuts', gender: Gender.Male, address: address)
-		employee.save(failOnError: true)
+    @Shared
+    Author author
 
-		author = new Author(name: "William Gibson")
-		author.addToBooks new Book(title: "Pattern Recognition")
-		author.addToBooks new Book(title: "Spook Country")
-		author.addToBooks new Book(title: "Zero History")
-		author.save(failOnError: true)
-	}
+    void setupSpec() {
+        mockDomains(Person, Author, Book, Employee)
+    }
 
-	void "fails sensibly when given an invalid property path"() {
-		when:
-		factory.accessorFor(person, "invalid")
+    void setup() {
+        address = new Address(street: '94 Evergreen Terrace', city: 'Springfield', country: 'USA')
+        person = new Person(name: 'Bart Simpson', password: 'bartman', gender: Gender.Male, dateOfBirth: new Date(87, 3, 19), address: address)
+        person.emails = [home: 'bart@thesimpsons.net', school: 'bart.simpson@springfieldelementary.edu']
+        person.save(failOnError: true)
 
-		then:
-		thrown NotReadablePropertyException
-	}
+        employee = new Employee(name: 'Homer J Simpson', password: 'mmmdonuts', gender: Gender.Male, address: address)
+        employee.save(failOnError: true)
 
-	void "resolves basic property"() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, "name")
+        author = new Author(name: 'William Gibson')
+        author.addToBooks new Book(title: 'Pattern Recognition')
+        author.addToBooks new Book(title: 'Spook Country')
+        author.addToBooks new Book(title: 'Zero History')
+        author.save(failOnError: true)
+    }
 
-		expect:
-		propertyAccessor.value == person.name
-		propertyAccessor.rootBeanType == Person
-		propertyAccessor.beanType == Person
-		propertyAccessor.entity.javaClass == Person
-		propertyAccessor.pathFromRoot == "name"
-		propertyAccessor.propertyName == "name"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty.name == "name"
-	}
+    void 'fails sensibly when given an invalid property path'() {
+        when:
+        factory.accessorFor(person, 'invalid')
 
-	void "resolves embedded property"() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, "address.city")
+        then:
+        thrown NotReadablePropertyException
+    }
 
-		expect:
-		propertyAccessor.value == address.city
-		propertyAccessor.rootBeanType == Person
-		propertyAccessor.beanType == Address
-		propertyAccessor.entity == null // TODO: check if this is really the case when not mocked
-		propertyAccessor.pathFromRoot == "address.city"
-		propertyAccessor.propertyName == "city"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty == null
-	}
+    void 'resolves basic property'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, 'name')
 
-	void "resolves property of indexed association"() {
-		given:
-		def propertyAccessor = factory.accessorFor(author, "books[0].title")
+        expect:
+        propertyAccessor.value == person.name
+        propertyAccessor.rootBeanType == Person
+        propertyAccessor.beanType == Person
+        propertyAccessor.entity.javaClass == Person
+        propertyAccessor.pathFromRoot == 'name'
+        propertyAccessor.propertyName == 'name'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty.name == 'name'
+    }
 
-		expect:
-		propertyAccessor.value == "Pattern Recognition"
-		propertyAccessor.rootBeanType == Author
-		propertyAccessor.beanType == Book
-		propertyAccessor.entity.javaClass == Book
-		propertyAccessor.pathFromRoot == "books[0].title"
-		propertyAccessor.propertyName == "title"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty.name == "title"
-	}
+    void 'resolves embedded property'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, 'address.city')
 
-	void "resolves other side of many-to-one association"() {
-		given:
-		def propertyAccessor = factory.accessorFor(author.books[0], "author.name")
+        expect:
+        propertyAccessor.value == address.city
+        propertyAccessor.rootBeanType == Person
+        propertyAccessor.beanType == Address
+        propertyAccessor.entity == null // TODO: check if this is really the case when not mocked
+        propertyAccessor.pathFromRoot == 'address.city'
+        propertyAccessor.propertyName == 'city'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty == null
+    }
 
-		expect:
-		propertyAccessor.value == author.name
-		propertyAccessor.rootBeanType == Book
-		propertyAccessor.beanType == Author
-		propertyAccessor.entity.javaClass == Author
-		propertyAccessor.pathFromRoot == "author.name"
-		propertyAccessor.propertyName == "name"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty.name == "name"
-	}
+    void 'resolves property of indexed association'() {
+        given:
+        def propertyAccessor = factory.accessorFor(author, 'books[0].title')
 
-	void "resolves property of simple mapped association"() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, "emails[home]")
+        expect:
+        propertyAccessor.value == 'Pattern Recognition'
+        propertyAccessor.rootBeanType == Author
+        propertyAccessor.beanType == Book
+        propertyAccessor.entity.javaClass == Book
+        propertyAccessor.pathFromRoot == 'books[0].title'
+        propertyAccessor.propertyName == 'title'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty.name == 'title'
+    }
 
-		expect:
-		propertyAccessor.value == "bart@thesimpsons.net"
-		propertyAccessor.rootBeanType == Person
-		propertyAccessor.beanType == Person
-		propertyAccessor.pathFromRoot == "emails[home]"
-		propertyAccessor.propertyName == "emails"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty.name == "emails"
-	}
+    void 'resolves other side of many-to-one association'() {
+        given:
+        def propertyAccessor = factory.accessorFor(author.books[0], 'author.name')
 
-	void "resolves basic property when value is null"() {
-		given:
-		person.name = null
+        expect:
+        propertyAccessor.value == author.name
+        propertyAccessor.rootBeanType == Book
+        propertyAccessor.beanType == Author
+        propertyAccessor.entity.javaClass == Author
+        propertyAccessor.pathFromRoot == 'author.name'
+        propertyAccessor.propertyName == 'name'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty.name == 'name'
+    }
 
-		and:
-		def propertyAccessor = factory.accessorFor(person, "name")
+    void 'resolves property of simple mapped association'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, 'emails[home]')
 
-		expect:
-		propertyAccessor.value == null
-		propertyAccessor.pathFromRoot == "name"
-		propertyAccessor.propertyName == "name"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty.name == "name"
-	}
+        expect:
+        propertyAccessor.value == 'bart@thesimpsons.net'
+        propertyAccessor.rootBeanType == Person
+        propertyAccessor.beanType == Person
+        propertyAccessor.pathFromRoot == 'emails[home]'
+        propertyAccessor.propertyName == 'emails'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty.name == 'emails'
+    }
 
-	void "resolves embedded property when intervening path is null"() {
-		given:
-		person.address = null
+    void 'resolves basic property when value is null'() {
+        given:
+        person.name = null
 
-		and:
-		def propertyAccessor = factory.accessorFor(person, "address.city")
+        and:
+        def propertyAccessor = factory.accessorFor(person, 'name')
 
-		expect:
-		propertyAccessor.value == null
-		propertyAccessor.pathFromRoot == "address.city"
-		propertyAccessor.propertyName == "city"
-		propertyAccessor.propertyType == String
-		propertyAccessor.domainProperty == null
-	}
+        expect:
+        propertyAccessor.value == null
+        propertyAccessor.pathFromRoot == 'name'
+        propertyAccessor.propertyName == 'name'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty.name == 'name'
+    }
 
-	@Issue('https://github.com/grails-fields-plugin/grails-fields/issues/37')
-	void "resolves constraints of the '#property' property when the intervening path is null"() {
-		given:
-		def book = new Book()
+    void 'resolves embedded property when intervening path is null'() {
+        given:
+        person.address = null
 
-		and:
-		def propertyAccessor = factory.accessorFor(book, property)
+        and:
+        def propertyAccessor = factory.accessorFor(person, 'address.city')
 
-		expect:
-		propertyAccessor.isRequired()          || !isRequired
-		propertyAccessor.constraints?.nullable || isRequired
-		propertyAccessor.constraints?.blank    || isRequired
+        expect:
+        propertyAccessor.value == null
+        propertyAccessor.pathFromRoot == 'address.city'
+        propertyAccessor.propertyName == 'city'
+        propertyAccessor.propertyType == String
+        propertyAccessor.domainProperty == null
+    }
 
-		where:
-		property              | isRequired
-		'author.name'         | true
-		'author.id'           | true
-		'author.placeOfBirth' | false
-	}
+    @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/37')
+    void "resolves constraints of the '#property' property when the intervening path is null"() {
+        given:
+        def book = new Book()
 
-	void "resolves constraints of basic domain class property"() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, "name")
+        and:
+        def propertyAccessor = factory.accessorFor(book, property)
 
-		expect:
-		!propertyAccessor.constraints.nullable
-		!propertyAccessor.constraints.blank
-	}
+        expect:
+        propertyAccessor.isRequired() || !isRequired
+        propertyAccessor.constraints?.nullable || isRequired
+        propertyAccessor.constraints?.blank || isRequired
 
-	void "type of '#property' is #type.name"() {
-		given:
-		def bean = beanType.list().first()
-		def propertyAccessor = factory.accessorFor(bean, property)
+        where:
+        property              | isRequired
+        'author.name'         | true
+        'author.id'           | true
+        'author.placeOfBirth' | false
+    }
 
-		expect:
-		propertyAccessor.propertyType == type
+    void 'resolves constraints of basic domain class property'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, 'name')
 
-		where:
-		beanType | property         | type
-		Person   | "dateOfBirth"    | Date
-		Person   | "address"        | Address
-		Person   | "address.city"   | String
-		Author   | "books"          | List
-		Author   | "books[0]"       | Book
-		Author   | "books[0].title" | String
-	}
+        expect:
+        !propertyAccessor.constraints.nullable
+        !propertyAccessor.constraints.blank
+    }
 
-	void "resolves constraints of embedded property"() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, "address.country")
+    void "type of '#property' is #type.name"() {
+        given:
+        def bean = beanType.list().first()
+        def propertyAccessor = factory.accessorFor(bean, property)
 
-		expect:
-		!propertyAccessor.constraints.nullable
-		propertyAccessor.constraints.inList == ["USA", "UK", "Canada"]
-	}
+        expect:
+        propertyAccessor.propertyType == type
 
-	@Issue('https://github.com/grails-fields-plugin/grails-fields/issues/38')
-	void "label keys for '#property' are '#labels'"() {
-		given:
-		def bean = beanType.list().find { it.class == beanType}
-		def propertyAccessor = factory.accessorFor(bean, property)
+        where:
+        beanType | property         | type
+        Person   | 'dateOfBirth'    | Date
+        Person   | 'address'        | Address
+        Person   | 'address.city'   | String
+        Author   | 'books'          | List
+        Author   | 'books[0]'       | Book
+        Author   | 'books[0].title' | String
+    }
 
-		expect:
-		propertyAccessor.labelKeys == labels
+    void 'resolves constraints of embedded property'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, 'address.country')
 
-		where:
-		beanType | property         | labels
-		Person   | 'name'           | ['person.name.label']
-		Person   | 'dateOfBirth'    | ['person.dateOfBirth.label']
-		Person   | 'address'        | ['person.address.label']
-		Person   | 'address.city'   | ['person.address.city.label', 'address.city.label']
-		Author   | 'books[0].title' | ['author.books.title.label', 'book.title.label']
-	}
+        expect:
+        !propertyAccessor.constraints.nullable
+        propertyAccessor.constraints.inList == ['USA', 'UK', 'Canada']
+    }
 
-	void "default label for '#property' is '#label'"() {
-		given:
-		def bean = beanType.list().first()
-		def propertyAccessor = factory.accessorFor(bean, property)
+    @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/38')
+    void "label keys for '#property' are '#labels'"() {
+        given:
+        def bean = beanType.list().find { it.class == beanType }
+        def propertyAccessor = factory.accessorFor(bean, property)
 
-		expect:
-		propertyAccessor.defaultLabel == label
+        expect:
+        propertyAccessor.labelKeys == labels
 
-		where:
-		beanType | property         | label
-		Person   | "name"           | "Name"
-		Person   | "dateOfBirth"    | "Date Of Birth"
-		Person   | "address"        | "Address"
-		Person   | "address.city"   | "City"
-		Author   | "books[0].title" | "Title"
-	}
+        where:
+        beanType | property         | labels
+        Person   | 'name'           | ['person.name.label']
+        Person   | 'dateOfBirth'    | ['person.dateOfBirth.label']
+        Person   | 'address'        | ['person.address.label']
+        Person   | 'address.city'   | ['person.address.city.label', 'address.city.label']
+        Author   | 'books[0].title' | ['author.books.title.label', 'book.title.label']
+    }
 
-	void "resolves errors for a basic property"() {
-		given:
-		person.name = ""
+    void "default label for '#property' is '#label'"() {
+        given:
+        def bean = beanType.list().first()
+        def propertyAccessor = factory.accessorFor(bean, property)
 
-		and:
-		def propertyAccessor = factory.accessorFor(person, "name")
+        expect:
+        propertyAccessor.defaultLabel == label
 
-		expect:
-		!person.validate()
+        where:
+        beanType | property         | label
+        Person   | 'name'           | 'Name'
+        Person   | 'dateOfBirth'    | 'Date Of Birth'
+        Person   | 'address'        | 'Address'
+        Person   | 'address.city'   | 'City'
+        Author   | 'books[0].title' | 'Title'
+    }
 
-		and:
-		propertyAccessor.errors.first().code == "blank"
-		propertyAccessor.invalid
-	}
+    void 'resolves errors for a basic property'() {
+        given:
+        person.name = ''
 
-	@Issue("http://jira.grails.org/browse/GRAILS-7713")
-	void "resolves errors for an embedded property"() {
-		given:
-		person.address.country = "Australia"
-		person.errors.rejectValue('address.country', 'not.inList') // http://jira.grails.org/browse/GRAILS-8480
+        and:
+        def propertyAccessor = factory.accessorFor(person, 'name')
 
-		and:
-		def propertyAccessor = factory.accessorFor(person, "address.country")
+        expect:
+        !person.validate()
 
-		expect:
-		propertyAccessor.errors.first().code == "not.inList"
-		propertyAccessor.invalid
-	}
+        and:
+        propertyAccessor.errors.first().code == 'blank'
+        propertyAccessor.invalid
+    }
 
-	@Issue("http://jira.grails.org/browse/GRAILS-7713")
-	void "resolves errors for an indexed property"() {
-		given:
-		author.books[0].title = ""
-		author.errors.rejectValue('books[0].title', 'blank') // http://jira.grails.org/browse/GRAILS-7713
+    @Issue('http://jira.grails.org/browse/GRAILS-7713')
+    void 'resolves errors for an embedded property'() {
+        given:
+        person.address.country = 'Australia'
+        person.errors.rejectValue('address.country', 'not.inList') // http://jira.grails.org/browse/GRAILS-8480
 
-		and:
-		def propertyAccessor = factory.accessorFor(author, "books[0].title")
+        and:
+        def propertyAccessor = factory.accessorFor(person, 'address.country')
 
-		expect:
-		propertyAccessor.errors.first().code == "blank"
-		propertyAccessor.invalid
-	}
+        expect:
+        propertyAccessor.errors.first().code == 'not.inList'
+        propertyAccessor.invalid
+    }
+
+    @Issue('http://jira.grails.org/browse/GRAILS-7713')
+    void 'resolves errors for an indexed property'() {
+        given:
+        author.books[0].title = ''
+        author.errors.rejectValue('books[0].title', 'blank') // http://jira.grails.org/browse/GRAILS-7713
+
+        and:
+        def propertyAccessor = factory.accessorFor(author, 'books[0].title')
+
+        expect:
+        propertyAccessor.errors.first().code == 'blank'
+        propertyAccessor.invalid
+    }
 
     @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/160')
-    void "resolves transient property"() {
+    void 'resolves transient property'() {
         given:
-        def propertyAccessor = factory.accessorFor(person, "transientText")
+        def propertyAccessor = factory.accessorFor(person, 'transientText')
 
         expect:
         propertyAccessor.value == person.transientText
         propertyAccessor.rootBeanType == Person
         propertyAccessor.beanType == Person
         propertyAccessor.entity.javaClass == Person
-        propertyAccessor.pathFromRoot == "transientText"
-        propertyAccessor.propertyName == "transientText"
+        propertyAccessor.pathFromRoot == 'transientText'
+        propertyAccessor.propertyName == 'transientText'
         propertyAccessor.propertyType == String
         propertyAccessor.domainProperty == null
         propertyAccessor.constraints.nullable
     }
 
     @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/160')
-    void "resolves id property that has no constraints"() {
+    void 'resolves id property that has no constraints'() {
         given:
-        def propertyAccessor = factory.accessorFor(person, "id")
+        def propertyAccessor = factory.accessorFor(person, 'id')
 
         expect:
         propertyAccessor.value == person.id
         propertyAccessor.rootBeanType == Person
         propertyAccessor.beanType == Person
         propertyAccessor.entity.javaClass == Person
-        propertyAccessor.pathFromRoot == "id"
-        propertyAccessor.propertyName == "id"
+        propertyAccessor.pathFromRoot == 'id'
+        propertyAccessor.propertyName == 'id'
         propertyAccessor.propertyType == Long
-        propertyAccessor.domainProperty.name == "id"
+        propertyAccessor.domainProperty.name == 'id'
         //propertyAccessor.constraints == null
     }
 
+    void 'the #path property is required:#expected'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, path)
 
-    void "the #path property is required:#expected"() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, path)
+        expect:
+        propertyAccessor.required == expected
 
-		expect:
-		propertyAccessor.required == expected
+        where:
+        path          | expected
+        'name'        | true // non-blank string
+        'dateOfBirth' | false // nullable object
+        // Fails in Grails 2.4.3:
+        // "password"    | false // blank string
+        'gender'      | true // non-nullable string
+        'minor'       | false // boolean properties are never considered required
+    }
 
-		where:
-		path          | expected
-		"name"        | true // non-blank string
-		"dateOfBirth" | false // nullable object
-		// Fails in Grails 2.4.3:
-		// "password"    | false // blank string
-		"gender"      | true // non-nullable string
-		"minor"       | false // boolean properties are never considered required
-	}
+    def 'the superclasses of #type.simpleName are #expected'() {
+        given:
+        def propertyAccessor = factory.accessorFor(type.newInstance(), path)
+        def beanSuperClasses = propertyAccessor.beanSuperclasses
+                .findAll {
+                    it.simpleName != 'DirtyCheckable' &&
+                            it.simpleName != 'DomainClass' &&
+                            it.simpleName != 'WebDataBinding' &&
+                            it.simpleName != 'GormEntity' &&
+                            it.simpleName != 'GormValidateable' &&
+                            it.simpleName != 'GormEntityApi' &&
+                            it.simpleName != 'Entity' &&
+                            !it.simpleName.contains('$') &&
+                            it.simpleName != 'StaticQueryMethods'
+                }
 
-	def 'the superclasses of #type.simpleName are #expected'() {
-		given:
-		def propertyAccessor = factory.accessorFor(type.newInstance(), path)
-		def beanSuperClasses = propertyAccessor.beanSuperclasses
-								.findAll { it.simpleName != 'DirtyCheckable' &&
-										   it.simpleName != 'DomainClass' &&
-										   it.simpleName != 'WebDataBinding' &&
-										   it.simpleName != 'GormEntity' &&
-										   it.simpleName != 'GormValidateable' &&
-											it.simpleName != 'GormEntityApi' &&
-				 						   it.simpleName != 'Entity' &&
-										   !it.simpleName.contains('$') &&									   										   
-										   it.simpleName != 'StaticQueryMethods'}
+        expect:
+        beanSuperClasses == expected
 
+        where:
+        type     | path   | expected
+        Person   | 'name' | []
+        Employee | 'name' | [Person]
+    }
 
-		expect:
-		beanSuperClasses == expected
+    void 'the superclasses of Person.#path are #expected'() {
+        given:
+        def propertyAccessor = factory.accessorFor(person, path)
 
-		where:
-		type     | path   | expected
-		Person   | 'name' | []
-		Employee | 'name' | [Person]
-	}
+        expect:
+        propertyAccessor.propertyTypeSuperclasses == expected
 
-	void 'the superclasses of Person.#path are #expected'() {
-		given:
-		def propertyAccessor = factory.accessorFor(person, path)
-
-		expect:
-		propertyAccessor.propertyTypeSuperclasses == expected
-
-		where:
-		path          | expected
-		'name'        | [CharSequence]
-		'gender'      | [Enum]
-		'dateOfBirth' | []
-	}
+        where:
+        path          | expected
+        'name'        | [CharSequence]
+        'gender'      | [Enum]
+        'dateOfBirth' | []
+    }
 
     void 'the superclasses of a primitive include the superclasses of the wrapper'() {
         given:

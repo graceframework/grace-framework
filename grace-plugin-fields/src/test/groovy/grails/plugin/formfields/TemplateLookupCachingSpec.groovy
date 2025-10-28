@@ -1,96 +1,105 @@
 package grails.plugin.formfields
 
-import grails.plugin.formfields.mock.Person
-import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
-import org.grails.gsp.io.GroovyPageResourceScriptSource
 import org.springframework.core.io.ByteArrayResource
-import spock.lang.*
+import spock.lang.Ignore
+import spock.lang.Issue
+import spock.lang.Shared
+import spock.lang.Stepwise
+
+import grails.plugin.formfields.mock.Person
+
+import org.grails.gsp.io.GroovyPageResourceScriptSource
+import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 
 @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/5')
 @Stepwise
 class TemplateLookupCachingSpec extends BuildsAccessorFactory {
 
-	def person = new Person(name: 'Bart Simpson', password: 'eatmyshorts')
-	def mockGroovyPageLocator = Mock(GrailsConventionGroovyPageLocator)
+    def person = new Person(name: 'Bart Simpson', password: 'eatmyshorts')
+    def mockGroovyPageLocator = Mock(GrailsConventionGroovyPageLocator)
 
-	@Shared
-	FormFieldsTemplateService service
-	@Shared
-	BeanPropertyAccessorFactory beanPropertyAccessorFactory
+    @Shared
+    FormFieldsTemplateService service
 
-	void setupSpec() {
-//		service = new FormFieldsTemplateService(grailsApplication, applicationContext.pluginManager, mockGroovyPageLocator)
-		beanPropertyAccessorFactory = getFactory()
-	}
+    @Shared
+    BeanPropertyAccessorFactory beanPropertyAccessorFactory
 
-	def setup() {
-		service = new FormFieldsTemplateService(grailsApplication, applicationContext.pluginManager, mockGroovyPageLocator)
-	}
+    void setupSpec() {
+        // service = new FormFieldsTemplateService(grailsApplication, applicationContext.pluginManager, mockGroovyPageLocator)
+        beanPropertyAccessorFactory = getFactory()
+    }
 
-	void 'a template is looked up the first time it is required'() {
-		given:
-		def templateResource = new GroovyPageResourceScriptSource('/_fields/person/name/_widget.gsp', new ByteArrayResource('PERSON NAME TEMPLATE'.getBytes('UTF-8')))
+    def setup() {
+        service = new FormFieldsTemplateService(grailsApplication, applicationContext.pluginManager, mockGroovyPageLocator)
+    }
 
-		and:
-		def property = beanPropertyAccessorFactory.accessorFor(person, 'name')
+    void 'a template is looked up the first time it is required'() {
+        given:
+        def templateResource = new GroovyPageResourceScriptSource('/_fields/person/name/_widget.gsp',
+                new ByteArrayResource('PERSON NAME TEMPLATE'.getBytes('UTF-8')))
 
-		when:
-		def template = service.findTemplate(property, 'input', null, null)
+        and:
+        def property = beanPropertyAccessorFactory.accessorFor(person, 'name')
 
-		then:
-		template.path == '/_fields/person/name/input'
+        when:
+        def template = service.findTemplate(property, 'input', null, null)
 
-		and:
-		1 * mockGroovyPageLocator.findTemplateByPath(_) >> templateResource
-	}
+        then:
+        template.path == '/_fields/person/name/input'
 
-	@Ignore
-	void 'the next time the template is cached'() {
-		given:
-		def property = beanPropertyAccessorFactory.accessorFor(person, 'name')
+        and:
+        1 * mockGroovyPageLocator.findTemplateByPath(_) >> templateResource
+    }
 
-		when:
-		def template = service.findTemplate(property, 'input', null, null)
+    @Ignore
+    void 'the next time the template is cached'() {
+        given:
+        def property = beanPropertyAccessorFactory.accessorFor(person, 'name')
 
-		then:
-		template.path == '/_fields/person/name/input'
+        when:
+        def template = service.findTemplate(property, 'input', null, null)
 
-		and:
-		0 * mockGroovyPageLocator.findTemplateByPath(_)
-	}
+        then:
+        template.path == '/_fields/person/name/input'
 
-	void 'a template for a different property is cached separately'() {
-		given:
-		def templateResource = new GroovyPageResourceScriptSource('/_fields/person/password/_widget.gsp', new ByteArrayResource('PERSON PASSWORD TEMPLATE'.getBytes('UTF-8')))
+        and:
+        0 * mockGroovyPageLocator.findTemplateByPath(_)
+    }
 
-		and:
-		def property = beanPropertyAccessorFactory.accessorFor(person, 'password')
+    void 'a template for a different property is cached separately'() {
+        given:
+        def templateResource = new GroovyPageResourceScriptSource('/_fields/person/password/_widget.gsp',
+                new ByteArrayResource('PERSON PASSWORD TEMPLATE'.getBytes('UTF-8')))
 
-		when:
-		def template = service.findTemplate(property, 'input', null, null)
+        and:
+        def property = beanPropertyAccessorFactory.accessorFor(person, 'password')
 
-		then:
-		template.path == '/_fields/person/password/input'
+        when:
+        def template = service.findTemplate(property, 'input', null, null)
 
-		and:
-		1 * mockGroovyPageLocator.findTemplateByPath(_) >> templateResource
-	}
+        then:
+        template.path == '/_fields/person/password/input'
 
-	void 'a different template for the same property is cached separately'() {
-		given:
-		def templateResource = new GroovyPageResourceScriptSource('/_fields/person/name/_widget.gsp', new ByteArrayResource('PERSON NAME TEMPLATE 2'.getBytes('UTF-8')))
+        and:
+        1 * mockGroovyPageLocator.findTemplateByPath(_) >> templateResource
+    }
 
-		and:
-		def property = beanPropertyAccessorFactory.accessorFor(person, 'name')
-		
-		when:
-		def template = service.findTemplate(property, 'field', null, null)
-		
-		then:
-		template.path == '/_fields/person/name/field'
+    void 'a different template for the same property is cached separately'() {
+        given:
+        def templateResource = new GroovyPageResourceScriptSource('/_fields/person/name/_widget.gsp',
+                new ByteArrayResource('PERSON NAME TEMPLATE 2'.getBytes('UTF-8')))
 
-		and:
-		1 * mockGroovyPageLocator.findTemplateByPath(_) >> templateResource
-	}
+        and:
+        def property = beanPropertyAccessorFactory.accessorFor(person, 'name')
+
+        when:
+        def template = service.findTemplate(property, 'field', null, null)
+
+        then:
+        template.path == '/_fields/person/name/field'
+
+        and:
+        1 * mockGroovyPageLocator.findTemplateByPath(_) >> templateResource
+    }
 
 }

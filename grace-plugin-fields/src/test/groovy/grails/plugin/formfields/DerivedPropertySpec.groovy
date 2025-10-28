@@ -1,13 +1,15 @@
 package grails.plugin.formfields
 
+import spock.lang.Issue
+
 import grails.plugin.formfields.mock.Product
 import grails.plugin.formfields.taglib.AbstractFormFieldsTagLibSpec
 import grails.testing.web.taglib.TagLibUnitTest
+
 import org.grails.datastore.mapping.model.MappingContext
-import spock.lang.*
 
 @Issue('https://github.com/grails-fields-plugin/grails-fields/issues/85')
-class DerivedPropertySpec extends AbstractFormFieldsTagLibSpec  implements TagLibUnitTest<FormFieldsTagLib> {
+class DerivedPropertySpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitTest<FormFieldsTagLib> {
 
     FormFieldsTemplateService mockFormFieldsTemplateService = Mock(FormFieldsTemplateService)
     Product productInstance
@@ -17,7 +19,6 @@ class DerivedPropertySpec extends AbstractFormFieldsTagLibSpec  implements TagLi
     }
 
     def setup() {
-
         mockFormFieldsTemplateService.findTemplate(_, 'field') >> [path: '/_fields/default/field']
         tagLib.formFieldsTemplateService = mockFormFieldsTemplateService
 
@@ -30,7 +31,7 @@ class DerivedPropertySpec extends AbstractFormFieldsTagLibSpec  implements TagLi
 
     void 'derived properties are ignored by f:all'() {
         given:
-        views["/_fields/default/_wrapper.gsp"] = '${property} '
+        views['/_fields/default/_wrapper.gsp'] = '${property} '
 
         when:
         def output = applyTemplate('<f:all bean="productInstance"/>', [productInstance: productInstance])

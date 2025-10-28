@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2024 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,14 @@
  */
 package grails.plugin.formfields
 
+import groovy.util.logging.Slf4j
+import org.springframework.web.context.request.RequestAttributes
+import org.springframework.web.context.request.RequestContextHolder
+
 import grails.core.GrailsApplication
 import grails.plugins.GrailsPluginManager
 import grails.util.GrailsNameUtils
-import groovy.util.logging.Slf4j
+
 import org.grails.datastore.mapping.model.types.ManyToMany
 import org.grails.datastore.mapping.model.types.ManyToOne
 import org.grails.datastore.mapping.model.types.OneToMany
@@ -27,15 +31,18 @@ import org.grails.scaffolding.model.property.Constrained
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
-import org.springframework.web.context.request.RequestAttributes
-import org.springframework.web.context.request.RequestContextHolder
 
 import static org.grails.io.support.GrailsResourceUtils.appendPiecesForUri
 
+/**
+ * @author James Kleeh
+ * @since 2024.0.0
+ */
 @Slf4j
 class FormFieldsTemplateService {
+
     public static final String SETTING_WIDGET_PREFIX = 'grails.plugin.fields.widgetPrefix'
-    private static final String THEMES_FOLDER = "_themes"
+    private static final String THEMES_FOLDER = '_themes'
 
     private final GrailsApplication grailsApplication
     private final GrailsConventionGroovyPageLocator groovyPageLocator
@@ -49,7 +56,7 @@ class FormFieldsTemplateService {
         this.pluginManager = pluginManager
     }
 
-    String getWidgetPrefix(){
+    String getWidgetPrefix() {
         Closure widgetPrefixNameResolver = getWidgetPrefixName
         return widgetPrefixNameResolver()
     }
@@ -67,7 +74,7 @@ class FormFieldsTemplateService {
         templateFinder(propertyAccessor, controllerNamespace, controllerName, actionName, templateName, templatesFolder, theme)
     }
 
-    String getTemplateFor(String property){
+    String getTemplateFor(String property) {
         Closure nameFinder = getTemplateName
         nameFinder(property)
     }
@@ -82,18 +89,22 @@ class FormFieldsTemplateService {
     @Lazy
     private Closure findTemplateCached = shouldCache() ? findTemplateCacheable.memoize() : findTemplateCacheable
 
-    private findTemplateCacheable = {BeanPropertyAccessor propertyAccessor, String controllerNamespace, String controllerName, String actionName, String templateName, String templatesFolder, String themeName->
+    private findTemplateCacheable = { BeanPropertyAccessor propertyAccessor, String controllerNamespace, String controllerName,
+                                      String actionName, String templateName, String templatesFolder, String themeName ->
         List<String> candidatePaths
         if (themeName) {
             //if theme is specified, first resolve all theme paths and then all the default paths
-            String themeFolder = THEMES_FOLDER + "/" + themeName
-            candidatePaths = candidateTemplatePaths(propertyAccessor, controllerNamespace, controllerName, actionName, templateName, templatesFolder, themeFolder)
-            candidatePaths = candidatePaths + candidateTemplatePaths(propertyAccessor, controllerNamespace, controllerName, actionName, templateName, templatesFolder, null)
+            String themeFolder = THEMES_FOLDER + '/' + themeName
+            candidatePaths = candidateTemplatePaths(propertyAccessor, controllerNamespace, controllerName, actionName,
+                    templateName, templatesFolder, themeFolder)
+            candidatePaths = candidatePaths + candidateTemplatePaths(propertyAccessor, controllerNamespace, controllerName,
+                    actionName, templateName, templatesFolder, null)
         } else {
-            candidatePaths = candidateTemplatePaths(propertyAccessor, controllerNamespace, controllerName, actionName, templateName, templatesFolder, null)
+            candidatePaths = candidateTemplatePaths(propertyAccessor, controllerNamespace, controllerName, actionName,
+                    templateName, templatesFolder, null)
         }
 
-        candidatePaths.findResult {String path ->
+        candidatePaths.findResult { String path ->
             log.debug "looking for template with path $path"
             def source = groovyPageLocator.findTemplateByPath(path)
             if (source) {
@@ -104,9 +115,8 @@ class FormFieldsTemplateService {
                 template.plugin = plugin?.name
                 log.debug "found template $template.path ${plugin ? "in $template.plugin plugin" : ''}"
                 return template
-            } else {
-                null
             }
+            return null
         }
     }
 
@@ -118,45 +128,63 @@ class FormFieldsTemplateService {
         return propertyNameFormat
     }
 
-    private List<String> candidateTemplatePaths(BeanPropertyAccessor propertyAccessor, String controllerNamespace, String controllerName, String actionName, String templateName, String templatesFolder, String themeFolder) {
+    private List<String> candidateTemplatePaths(BeanPropertyAccessor propertyAccessor, String controllerNamespace,
+                                                String controllerName, String actionName, String templateName,
+                                                String templatesFolder, String themeFolder) {
         List<String> templateResolveOrder = []
 
         // if we have a widget look in `grails-app/views/_fields/<templateFolder>/_field.gsp`
         if (templatesFolder) {
-            templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, templatesFolder, templateName)
+            templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, templatesFolder, templateName)
         }
 
         // if there is a controller namespace for the current request any template in its views directory takes priority
         if (controllerNamespace) {
             // first try action-specific templates
-            templateResolveOrder << appendPiecesForUri("/", controllerNamespace, controllerName, actionName, propertyAccessor.propertyName, themeFolder, templateName)
-            if (propertyAccessor.propertyType) templateResolveOrder << appendPiecesForUri("/", controllerNamespace, controllerName, actionName, themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
-            templateResolveOrder << appendPiecesForUri("/", controllerNamespace, controllerName, actionName, themeFolder, templateName)
+            templateResolveOrder << appendPiecesForUri('/', controllerNamespace, controllerName, actionName,
+                    propertyAccessor.propertyName, themeFolder, templateName)
+            if (propertyAccessor.propertyType) {
+                templateResolveOrder << appendPiecesForUri('/', controllerNamespace,
+                        controllerName, actionName, themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
+            }
+            templateResolveOrder << appendPiecesForUri('/', controllerNamespace, controllerName, actionName, themeFolder, templateName)
 
             // then general templates for the controller
-            templateResolveOrder << appendPiecesForUri("/", controllerNamespace, controllerName, propertyAccessor.propertyName, themeFolder, templateName)
-            if (propertyAccessor.propertyType) templateResolveOrder << appendPiecesForUri("/", controllerNamespace, controllerName, themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
-            templateResolveOrder << appendPiecesForUri("/", controllerNamespace, controllerName, themeFolder, templateName)
+            templateResolveOrder << appendPiecesForUri('/', controllerNamespace, controllerName,
+                    propertyAccessor.propertyName, themeFolder, templateName)
+            if (propertyAccessor.propertyType) {
+                templateResolveOrder << appendPiecesForUri('/', controllerNamespace, controllerName, themeFolder,
+                        toPropertyNameFormat(propertyAccessor.propertyType), templateName)
+            }
+            templateResolveOrder << appendPiecesForUri('/', controllerNamespace, controllerName, themeFolder, templateName)
         }
 
         // if there is a controller for the current request any template in its views directory takes priority
         if (controllerName) {
             // first try action-specific templates
-            templateResolveOrder << appendPiecesForUri("/", controllerName, actionName, propertyAccessor.propertyName, themeFolder, templateName)
-            if (propertyAccessor.propertyType) templateResolveOrder << appendPiecesForUri("/", controllerName, actionName, themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
-            templateResolveOrder << appendPiecesForUri("/", controllerName, actionName, themeFolder, templateName)
+            templateResolveOrder << appendPiecesForUri('/', controllerName, actionName, propertyAccessor.propertyName, themeFolder, templateName)
+            if (propertyAccessor.propertyType) {
+                templateResolveOrder << appendPiecesForUri('/', controllerName, actionName, themeFolder,
+                        toPropertyNameFormat(propertyAccessor.propertyType), templateName)
+            }
+            templateResolveOrder << appendPiecesForUri('/', controllerName, actionName, themeFolder, templateName)
 
             // then general templates for the controller
-            templateResolveOrder << appendPiecesForUri("/", controllerName, propertyAccessor.propertyName, themeFolder, templateName)
-            if (propertyAccessor.propertyType) templateResolveOrder << appendPiecesForUri("/", controllerName, themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
-            templateResolveOrder << appendPiecesForUri("/", controllerName, themeFolder, templateName)
+            templateResolveOrder << appendPiecesForUri('/', controllerName, propertyAccessor.propertyName, themeFolder, templateName)
+            if (propertyAccessor.propertyType) {
+                templateResolveOrder << appendPiecesForUri('/', controllerName, themeFolder,
+                        toPropertyNameFormat(propertyAccessor.propertyType), templateName)
+            }
+            templateResolveOrder << appendPiecesForUri('/', controllerName, themeFolder, templateName)
         }
 
         // if we have a bean type look in `grails-app/views/_fields/<beanType>/<propertyName>/_field.gsp` and equivalent for superclasses
         if (propertyAccessor.beanType) {
-            templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, toPropertyNameFormat(propertyAccessor.beanType), propertyAccessor.propertyName, templateName)
+            templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, toPropertyNameFormat(propertyAccessor.beanType),
+                    propertyAccessor.propertyName, templateName)
             for (superclass in propertyAccessor.beanSuperclasses) {
-                templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, toPropertyNameFormat(superclass), propertyAccessor.propertyName, templateName)
+                templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, toPropertyNameFormat(superclass),
+                        propertyAccessor.propertyName, templateName)
             }
         }
 
@@ -169,34 +197,42 @@ class FormFieldsTemplateService {
         // if we have a domain constraint widget look in `grails-app/views/_fields/<widget>/_field.gsp`
         String widget = getWidget(propertyAccessor.constraints, propertyAccessor.propertyType)
         if (widget) {
-            templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, widget, templateName)
+            templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, widget, templateName)
         }
 
         // if we have a property type look in `grails-app/views/_fields/<propertyType>/_field.gsp` and equivalent for superclasses
         if (propertyAccessor.propertyType) {
-            templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
+            templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, toPropertyNameFormat(propertyAccessor.propertyType), templateName)
             for (propertySuperClass in propertyAccessor.propertyTypeSuperclasses) {
-                templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, toPropertyNameFormat(propertySuperClass), templateName)
+                templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, toPropertyNameFormat(propertySuperClass), templateName)
             }
         }
 
         // if nothing else is found fall back to a default (even this may not exist for f:input)
-        templateResolveOrder << appendPiecesForUri("/_fields", themeFolder, "default", templateName)
+        templateResolveOrder << appendPiecesForUri('/_fields', themeFolder, 'default', templateName)
 
         templateResolveOrder
     }
 
     private String getAssociationPath(BeanPropertyAccessor propertyAccessor) {
         String associationPath = null
-        if (propertyAccessor.domainProperty instanceof OneToOne) associationPath = 'oneToOne'
-        if (propertyAccessor.domainProperty instanceof OneToMany) associationPath = 'oneToMany'
-        if (propertyAccessor.domainProperty instanceof ManyToMany) associationPath = 'manyToMany'
-        if (propertyAccessor.domainProperty instanceof ManyToOne) associationPath = 'manyToOne'
+        if (propertyAccessor.domainProperty instanceof OneToOne) {
+            associationPath = 'oneToOne'
+        }
+        if (propertyAccessor.domainProperty instanceof OneToMany) {
+            associationPath = 'oneToMany'
+        }
+        if (propertyAccessor.domainProperty instanceof ManyToMany) {
+            associationPath = 'manyToMany'
+        }
+        if (propertyAccessor.domainProperty instanceof ManyToOne) {
+            associationPath = 'manyToOne'
+        }
         associationPath
     }
 
     protected String getWidget(Constrained cp, Class propertyType) {
-        if (null == cp) {
+        if (cp == null) {
             return null
         }
         String widget = null
@@ -217,8 +253,9 @@ class FormFieldsTemplateService {
     }
 
     private String getControllerNamespace() {
-        if (GrailsWebRequest.metaClass.respondsTo(GrailsWebRequest, "getControllerNamespace").size() > 0) {
-            return RequestContextHolder.requestAttributes?.getAttribute(GrailsApplicationAttributes.CONTROLLER_NAMESPACE_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST)
+        if (GrailsWebRequest.metaClass.respondsTo(GrailsWebRequest, 'getControllerNamespace').size() > 0) {
+            return RequestContextHolder.requestAttributes?.getAttribute(GrailsApplicationAttributes.CONTROLLER_NAMESPACE_ATTRIBUTE,
+                    RequestAttributes.SCOPE_REQUEST)
         }
     }
 
@@ -232,7 +269,7 @@ class FormFieldsTemplateService {
 
     private boolean shouldCache() {
         // If not explicitly specified, there is no template caching
-        Boolean cacheDisabled = grailsApplication?.config?.getProperty("grails.plugin.fields.disableLookupCache", Boolean)
+        Boolean cacheDisabled = grailsApplication?.config?.getProperty('grails.plugin.fields.disableLookupCache', Boolean)
         return !cacheDisabled
     }
 

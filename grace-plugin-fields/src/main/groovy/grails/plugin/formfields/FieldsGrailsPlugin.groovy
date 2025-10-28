@@ -15,12 +15,17 @@
  */
 package grails.plugin.formfields
 
+import groovy.transform.CompileStatic
+
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
+/**
+ * @author James Kleeh
+ * @since 2024.0.0
+ */
+@CompileStatic
 class FieldsGrailsPlugin extends Plugin {
-
-    static final String CONSTRAINTS_EVALULATOR_BEAN_NAME = 'validateableConstraintsEvaluator'
 
     def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = '2023.0.0 > *'
