@@ -1,4 +1,21 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.json.view
+
+import groovy.transform.CompileStatic
 
 import grails.plugin.json.builder.JsonOutput
 import grails.plugin.json.builder.StreamingJsonBuilder
@@ -8,27 +25,28 @@ import grails.plugin.json.view.api.internal.DefaultGrailsJsonViewHelper
 import grails.util.GrailsNameUtils
 import grails.views.AbstractWritableScript
 import grails.views.api.GrailsView
-import groovy.transform.CompileStatic
+
 import org.grails.buffer.FastStringWriter
 
+/**
+ * @since 2024.0.0
+ */
 @CompileStatic
 abstract class JsonViewWritableScript extends AbstractWritableScript implements JsonView {
 
-    public static final String EXTENSION = "gson"
-    public static final String TYPE = "view.gson"
+    public static final String EXTENSION = 'gson'
+    public static final String TYPE = 'view.gson'
 
     Object root
     boolean inline = false
 
     @Override
     Writer doWrite(Writer out) throws IOException {
-
-        if(!prettyPrint) {
+        if (!prettyPrint) {
             this.json = new StreamingJsonBuilder(out, this.generator)
             run()
             return out
-        }
-        else {
+        } else {
             def writer = new FastStringWriter()
             setOut(writer)
             this.json = new StreamingJsonBuilder(writer, this.generator)
@@ -39,7 +57,6 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
         }
     }
 
-
     /**
      * TODO: When Groovy 2.4.5 go back to JsonBuilder from groovy-json
      *
@@ -47,7 +64,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
      * @return
      */
     StreamingJsonBuilder json(@DelegatesTo(value = StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
-        if(parentTemplate != null) {
+        if (parentTemplate != null) {
             if (!inline) {
                 out.write(JsonOutput.OPEN_BRACE)
             }
@@ -60,16 +77,13 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
             if (!inline) {
                 out.write(JsonOutput.CLOSE_BRACE)
             }
-        }
-        else {
-
+        } else {
             this.root = callable
-            if(inline) {
+            if (inline) {
                 def jsonDelegate = new StreamingJsonDelegate(out, true, generator)
                 callable.setDelegate(jsonDelegate)
                 callable.call()
-            }
-            else {
+            } else {
                 json.call callable
             }
         }
@@ -82,6 +96,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
         return json
     }
 
+    @Override
     StreamingJsonBuilder json(Map map) {
         this.root = map
         json.call map
@@ -108,7 +123,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
      * @return The json builder
      */
     StreamingJsonBuilder json(JsonOutput.JsonWritable writable) {
-        if(parentTemplate != null) {
+        if (parentTemplate != null) {
             if (!inline) {
                 out.write(JsonOutput.OPEN_BRACE)
             }
@@ -121,8 +136,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
             if (!inline) {
                 out.write(JsonOutput.CLOSE_BRACE)
             }
-        }
-        else {
+        } else {
             writable.setInline(inline)
             writable.writeTo(out)
         }
@@ -140,20 +154,18 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
         return json
     }
 
-    StreamingJsonBuilder json(Object...args) {
-        if(args.length == 1) {
+    @Override
+    StreamingJsonBuilder json(Object... args) {
+        if (args.length == 1) {
             def val = args[0]
-            if(val instanceof JsonOutput.JsonUnescaped) {
-                this.json((JsonOutput.JsonUnescaped)val)
-            }
-            else if(val instanceof JsonOutput.JsonWritable) {
-                this.json((JsonOutput.JsonWritable)val)
-            }
-            else {
+            if (val instanceof JsonOutput.JsonUnescaped) {
+                this.json((JsonOutput.JsonUnescaped) val)
+            } else if (val instanceof JsonOutput.JsonWritable) {
+                this.json((JsonOutput.JsonWritable) val)
+            } else {
                 json.call val
             }
-        }
-        else {
+        } else {
             json.call args
         }
         return json
@@ -161,7 +173,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
 
     private GrailsView prepareParentWritable() {
         parentModel.putAll(binding.variables)
-        for(o in binding.variables.values()) {
+        for (o in binding.variables.values()) {
             if (o != null) {
                 parentModel.put(GrailsNameUtils.getPropertyName(o.getClass().getSuperclass().getName()), o)
             }
@@ -179,11 +191,11 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
         return writable
     }
 
-
     private void resetProcessedObjects() {
         if (binding.hasVariable(DefaultGrailsJsonViewHelper.PROCESSED_OBJECT_VARIABLE)) {
             Map processed = (Map) binding.getVariable(DefaultGrailsJsonViewHelper.PROCESSED_OBJECT_VARIABLE)
             processed.clear()
         }
     }
+
 }

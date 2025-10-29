@@ -1,23 +1,35 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.views
+
+import java.lang.reflect.Field
+import java.lang.reflect.Method
+
+import groovy.text.Template
+import groovy.transform.CompileStatic
+import org.springframework.util.ReflectionUtils
 
 import grails.util.GrailsNameUtils
 import grails.views.api.GrailsView
-import groovy.text.Template
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import org.springframework.cglib.reflect.FastMethod
-import org.springframework.util.ReflectionUtils
-
-import java.beans.Introspector
-import java.beans.PropertyDescriptor
-import java.lang.reflect.Field
-import java.lang.reflect.Method
 
 /**
  * A base template class that all Grails view templates should extend from
  *
  * @author Graeme Rocher
- * @since 1.0
+ * @since 2024.0.0
  */
 @CompileStatic
 class WritableScriptTemplate implements Template {
@@ -26,24 +38,26 @@ class WritableScriptTemplate implements Template {
      * The class of the template
      */
     final Class<? extends GrailsView> templateClass
+
     /**
      * The resolved template path
      */
     String templatePath
+
     /**
      * The source file of the template. Will be null in pre-compiled mode.
      */
     File sourceFile
+
     /**
      * Whether to pretty print the template
      */
     boolean prettyPrint = false
+
     /**
      * The last modified stamp of the source file. -1 if no source file.
      */
     long lastModified = -1
-
-
 
     protected final Map<String, VariableSetter> modelSetters = [:]
 
@@ -54,7 +68,7 @@ class WritableScriptTemplate implements Template {
     WritableScriptTemplate(Class<? extends GrailsView> templateClass, File sourceFile) {
         this.templateClass = templateClass
         this.sourceFile = sourceFile
-        if(sourceFile != null) {
+        if (sourceFile != null) {
             lastModified = sourceFile.lastModified()
         }
         initModelTypes(templateClass)
@@ -64,49 +78,45 @@ class WritableScriptTemplate implements Template {
      * The path to the parent directory that containers the template
      */
     String getParentPath() {
-        if(templatePath != null) {
+        if (templatePath != null) {
             return templatePath.substring(0, templatePath.lastIndexOf('/'))
-        }
-        else {
-            return "/"
+        } else {
+            return '/'
         }
     }
+
     /**
      * @return Whether the template has been modified
      */
     boolean wasModified() {
-        if(sourceFile != null && lastModified != -1) {
+        if (sourceFile != null && lastModified != -1) {
             return sourceFile.lastModified() > lastModified
         }
         return false
     }
 
     protected void initModelTypes(Class<? extends WritableScript> templateClass) {
-        def field = ReflectionUtils.findField(templateClass, Views.MODEL_TYPES_FIELD)
+        Field field = ReflectionUtils.findField(templateClass, Views.MODEL_TYPES_FIELD)
 
-        if(field != null) {
-
+        if (field != null) {
             field.setAccessible(true)
 
             def modelTypes = (Map<String, Class>) field.get(templateClass)
-            if(modelTypes != null) {
-                for(mt in modelTypes) {
+            if (modelTypes != null) {
+                for (mt in modelTypes) {
                     def propertyName = mt.key
                     def propertyField = ReflectionUtils.findField(templateClass, propertyName)
-                    if(propertyField != null) {
+                    if (propertyField != null) {
                         propertyField.setAccessible(true)
-                        modelSetters.put(propertyName, new FieldSetter(propertyField) )
-                    }
-                    else {
-
+                        modelSetters.put(propertyName, new FieldSetter(propertyField))
+                    } else {
                         def setterName = GrailsNameUtils.getSetterName(propertyName)
                         def method = ReflectionUtils.findMethod(templateClass, setterName, mt.value)
-                        if(method != null) {
+                        if (method != null) {
                             method.setAccessible(true)
                             modelSetters.put(propertyName, new MethodSetter(mt.value, method))
                         }
                     }
-
                 }
             }
         }
@@ -119,23 +129,22 @@ class WritableScriptTemplate implements Template {
 
     @Override
     Writable make(Map binding) {
-
-        WritableScript writableTemplate = templateClass
-                                    .newInstance()
-        writableTemplate.viewTemplate = (GrailsViewTemplate)this
+        WritableScript writableTemplate = templateClass.newInstance()
+        writableTemplate.viewTemplate = (GrailsViewTemplate) this
         writableTemplate.prettyPrint = prettyPrint
-        if(!binding.isEmpty()) {
+        if (!binding.isEmpty()) {
             writableTemplate.binding = new Binding(binding)
-            for(modelSetter in modelSetters.entrySet()) {
+            for (modelSetter in modelSetters.entrySet()) {
                 def value = binding.get(modelSetter.key)
-                if(value != null) {
+                if (value != null) {
                     VariableSetter setMethod = modelSetter.value
                     def expectedType = setMethod.type
-                    if( expectedType.isInstance(value) || value == null ) {
+                    if (expectedType.isInstance(value) || value == null) {
                         setMethod.invoke(writableTemplate, value)
-                    }
-                    else {
-                        throw new IllegalArgumentException("Model variable [$modelSetter.key] with value [$value] of type [${value?.getClass()?.name}] is not of the correct type [$expectedType.name]")
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Model variable [$modelSetter.key] with value [$value] of type [${value?.getClass()?.name}] " +
+                                        "is not of the correct type [$expectedType.name]")
                     }
                 }
             }
@@ -145,8 +154,11 @@ class WritableScriptTemplate implements Template {
     }
 
     private static interface VariableSetter {
+
         Class getType()
+
         void invoke(WritableScript template, value)
+
     }
 
     @CompileStatic
@@ -164,6 +176,7 @@ class WritableScriptTemplate implements Template {
         void invoke(WritableScript template, Object value) {
             field.set(template, value)
         }
+
     }
 
     @CompileStatic
@@ -181,5 +194,7 @@ class WritableScriptTemplate implements Template {
         void invoke(WritableScript template, Object value) {
             method.invoke(template, value)
         }
+
     }
+
 }

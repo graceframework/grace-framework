@@ -1,27 +1,41 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.markup.view.mvc
+
+import groovy.transform.CompileStatic
+import jakarta.annotation.PostConstruct
+import org.springframework.beans.factory.annotation.Autowired
 
 import grails.core.support.proxy.ProxyHandler
 import grails.plugin.markup.view.MarkupViewConfiguration
 import grails.plugin.markup.view.MarkupViewTemplate
 import grails.plugin.markup.view.MarkupViewTemplateEngine
-import grails.plugin.markup.view.MarkupViewWritableScriptTemplate
 import grails.plugin.markup.view.renderer.MarkupViewXmlRenderer
 import grails.rest.render.RendererRegistry
 import grails.views.mvc.SmartViewResolver
 import grails.web.mime.MimeType
-import groovy.transform.CompileStatic
-import org.springframework.beans.factory.annotation.Autowired
-import jakarta.annotation.PostConstruct
 
 /**
  * @author Graeme Rocher
- * @since 1.0
+ * @since 2024.0.0
  */
 @CompileStatic
 class MarkupViewResolver extends SmartViewResolver {
 
     public static final String MARKUP_VIEW_SUFFIX = ".${MarkupViewTemplate.EXTENSION}"
-
 
     @Autowired(required = false)
     ProxyHandler proxyHandler
@@ -41,19 +55,20 @@ class MarkupViewResolver extends SmartViewResolver {
 
     MarkupViewResolver(MarkupViewTemplateEngine templateEngine, String suffix, String contentType) {
         super(templateEngine, suffix, contentType)
-        viewConfiguration = (MarkupViewConfiguration)templateEngine.viewConfiguration
+        viewConfiguration = (MarkupViewConfiguration) templateEngine.viewConfiguration
     }
 
     @PostConstruct
     void initialize() {
-        if(rendererRegistry != null) {
-            def defaultXmlRenderer = rendererRegistry.findRenderer(MimeType.XML, Object.class)
+        if (rendererRegistry != null) {
+            def defaultXmlRenderer = rendererRegistry.findRenderer(MimeType.XML, Object)
             viewConfiguration.mimeTypes.each { String mimeTypeString ->
-                MimeType mimeType = new MimeType(mimeTypeString, "xml")
+                MimeType mimeType = new MimeType(mimeTypeString, 'xml')
                 rendererRegistry.addDefaultRenderer(
-                    new MarkupViewXmlRenderer<Object>(Object.class, mimeType, this , proxyHandler, rendererRegistry, defaultXmlRenderer)
+                        new MarkupViewXmlRenderer<Object>(Object, mimeType, this, proxyHandler, rendererRegistry, defaultXmlRenderer)
                 )
             }
         }
     }
+
 }

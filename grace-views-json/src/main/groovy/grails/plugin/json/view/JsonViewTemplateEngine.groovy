@@ -1,7 +1,36 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.json.view
 
+import groovy.text.Template
+import groovy.transform.CompileStatic
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.OrderComparator
+
 import grails.plugin.json.builder.JsonGenerator
-import grails.plugin.json.converters.*
+import grails.plugin.json.converters.InstantJsonConverter
+import grails.plugin.json.converters.LocalDateJsonConverter
+import grails.plugin.json.converters.LocalDateTimeJsonConverter
+import grails.plugin.json.converters.LocalTimeJsonConverter
+import grails.plugin.json.converters.OffsetDateTimeJsonConverter
+import grails.plugin.json.converters.OffsetTimeJsonConverter
+import grails.plugin.json.converters.PeriodJsonConverter
+import grails.plugin.json.converters.ZonedDateTimeJsonConverter
 import grails.plugin.json.view.api.jsonapi.JsonApiIdRenderStrategy
 import grails.plugin.json.view.internal.JsonTemplateTypeCheckingExtension
 import grails.plugin.json.view.internal.JsonViewsTransform
@@ -11,22 +40,15 @@ import grails.views.ViewConfiguration
 import grails.views.WritableScriptTemplate
 import grails.views.api.GrailsView
 import grails.views.compiler.ViewsTransform
-import groovy.text.Template
-import groovy.transform.CompileStatic
-import org.codehaus.groovy.control.CompilerConfiguration
-import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.OrderComparator
 
 /**
  * A template engine for parsing JSON views
  *
  * @author Graeme Rocher
- * @since 1.0
+ * @since 2024.0.0
  */
 @CompileStatic
 class JsonViewTemplateEngine extends ResolvableGroovyTemplateEngine {
-
 
     private final boolean compileStatic
 
@@ -59,7 +81,7 @@ class JsonViewTemplateEngine extends ResolvableGroovyTemplateEngine {
         this.compileStatic = configuration.compileStatic
 
         JsonGenerator.Options options = new JsonGenerator.Options()
-        JsonViewGeneratorConfiguration config = ((JsonViewConfiguration)configuration).generator
+        JsonViewGeneratorConfiguration config = ((JsonViewConfiguration) configuration).generator
 
         if (!config.escapeUnicode) {
             options.disableUnicodeEscaping()
@@ -75,7 +97,7 @@ class JsonViewTemplateEngine extends ResolvableGroovyTemplateEngine {
         options.dateFormat(config.dateFormat, locale)
         options.timezone(config.timeZone)
 
-        ServiceLoader<JsonGenerator.Converter> loader = ServiceLoader.load(JsonGenerator.Converter.class);
+        ServiceLoader<JsonGenerator.Converter> loader = ServiceLoader.load(JsonGenerator.Converter)
         List<JsonGenerator.Converter> converters = []
         for (JsonGenerator.Converter converter : loader) {
             converters.add(converter)
@@ -99,11 +121,13 @@ class JsonViewTemplateEngine extends ResolvableGroovyTemplateEngine {
     @Override
     protected void prepareCustomizers(CompilerConfiguration compilerConfiguration) {
         super.prepareCustomizers(compilerConfiguration)
-        if(compileStatic) {
+        if (compileStatic) {
             compilerConfiguration.addCompilationCustomizers(
-                    new ASTTransformationCustomizer(Collections.singletonMap("extensions", JsonTemplateTypeCheckingExtension.name), CompileStatic.class));
+                    new ASTTransformationCustomizer(
+                            Collections.singletonMap('extensions', JsonTemplateTypeCheckingExtension.name),
+                            CompileStatic)
+            )
         }
-
     }
 
     @Override
@@ -113,9 +137,10 @@ class JsonViewTemplateEngine extends ResolvableGroovyTemplateEngine {
 
     @Override
     String getDynamicTemplatePrefix() {
-        "JsonView".intern()
+        'JsonView'.intern()
     }
 
+    @Override
     protected WritableScriptTemplate createTemplate(Class<? extends Template> cls, File sourceFile) {
         def template = new JsonViewTemplate((Class<? extends GrailsView>) cls, sourceFile)
         template.generator = this.generator

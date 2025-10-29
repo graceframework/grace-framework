@@ -1,4 +1,26 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.json.view.api.internal
+
+import groovy.transform.CompileStatic
+import org.codehaus.groovy.runtime.StackTraceUtils
+import org.springframework.http.HttpMethod
+import org.springframework.validation.Errors
+import org.springframework.validation.FieldError
+import org.springframework.validation.ObjectError
 
 import grails.plugin.json.builder.JsonGenerator
 import grails.plugin.json.builder.JsonOutput
@@ -8,8 +30,6 @@ import grails.plugin.json.view.api.JsonView
 import grails.plugin.json.view.api.jsonapi.JsonApiIdRenderStrategy
 import grails.rest.Link
 import grails.views.api.http.Parameters
-import groovy.transform.CompileStatic
-import org.codehaus.groovy.runtime.StackTraceUtils
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 import org.grails.datastore.mapping.model.types.Association
@@ -18,13 +38,10 @@ import org.grails.datastore.mapping.model.types.Embedded
 import org.grails.datastore.mapping.model.types.EmbeddedCollection
 import org.grails.datastore.mapping.model.types.ToMany
 import org.grails.datastore.mapping.model.types.ToOne
-import org.springframework.validation.Errors
-import org.springframework.validation.FieldError
-import org.springframework.validation.ObjectError
-import org.springframework.http.HttpMethod
 
 /**
  * @Author Colin Harrington
+ * @since 2024.0.0
  */
 @CompileStatic
 class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiViewHelper {
@@ -34,23 +51,25 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
     /**
      * The jsonapiobject parameter
      */
-    String JSON_API_OBJECT = "jsonApiObject"
+    String JSON_API_OBJECT = 'jsonApiObject'
 
     /**
      * The meta parameter
      */
-    String META = "meta"
+    String META = 'meta'
 
     /**
      * The pagination parameter
      */
-    String PAGINATION = "pagination"
+    String PAGINATION = 'pagination'
 
     public static final JsonOutput.JsonWritable NOOP_OUTPUT = new JsonOutput.JsonWritable() {
+
         @Override
         Writer writeTo(Writer out) throws IOException {
             return out
         }
+
     }
 
     DefaultJsonApiViewHelper(JsonView view, GrailsJsonViewHelper viewHelper) {
@@ -69,6 +88,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
             return NULL_OUTPUT
         }
         JsonOutput.JsonWritable jsonWritable = new JsonOutput.JsonWritable() {
+
             @Override
             @CompileStatic
             Writer writeTo(Writer out) throws IOException {
@@ -90,7 +110,6 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                     out.write(JsonOutput.COMMA)
                     renderLinks(object, arguments).writeTo(out)
                     renderIncluded(object, arguments).writeTo(out)
-
                 }
                 out.write(JsonOutput.CLOSE_BRACE)
                 return out
@@ -144,14 +163,14 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
     }
 
     private void renderResource(Object object, Writer out) {
-        renderResource(object, out, [:], "")
+        renderResource(object, out, [:], '')
     }
 
     private void renderResource(Object object, Writer out, Map arguments, String basePath) {
         PersistentEntity entity = findEntity(object)
 
         if (entity == null) {
-            throw new IllegalArgumentException("Rendering non persistent entities is not supported")
+            throw new IllegalArgumentException('Rendering non persistent entities is not supported')
         }
 
         List<String> includes = getIncludes(arguments)
@@ -165,7 +184,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         PersistentProperty identity = entity.identity
         String idName = identity?.name
 
-        if(idName != null) {
+        if (idName != null) {
             out.write(JsonOutput.COMMA)
             writeKeyValue(out, 'id', idGenerator.render(object, identity))
         }
@@ -176,13 +195,15 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
             if (attributes) {
                 out.write(JsonOutput.COMMA)
-                out.write(generator.toJson("attributes"))
+                out.write(generator.toJson('attributes'))
                 out.write(JsonOutput.COLON)
                 out.write(JsonOutput.OPEN_BRACE)
 
                 boolean firstAttribute = true
                 for (persistentProperty in attributes) {
-                    if (!includeExcludeSupport.shouldInclude(includes, excludes, "${basePath}${persistentProperty.name}".toString())) continue
+                    if (!includeExcludeSupport.shouldInclude(includes, excludes, "${basePath}${persistentProperty.name}".toString())) {
+                        continue
+                    }
 
                     if (!firstAttribute) {
                         out.write(JsonOutput.COMMA)
@@ -193,13 +214,13 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
                     Object prop = ((GroovyObject) object).getProperty(persistentProperty.name)
                     if (persistentProperty instanceof Embedded) {
-                        renderEmbeddedEntity(prop, (Association)persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
+                        renderEmbeddedEntity(prop, (Association) persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
                     } else if (persistentProperty instanceof EmbeddedCollection && prop instanceof Iterable) {
                         out.write(JsonOutput.OPEN_BRACKET)
                         Iterator iterator = ((Iterable) prop).iterator()
                         while (iterator.hasNext()) {
                             def o = iterator.next()
-                            renderEmbeddedEntity(o, (Association)persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
+                            renderEmbeddedEntity(o, (Association) persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
                             if (iterator.hasNext()) {
                                 out.write(JsonOutput.COMMA)
                             }
@@ -213,16 +234,18 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                 }
                 out.write(JsonOutput.CLOSE_BRACE)
             }
-            if (relationships && includeAssociations) {
 
+            if (relationships && includeAssociations) {
                 out.write(JsonOutput.COMMA)
-                out.write(generator.toJson("relationships"))
+                out.write(generator.toJson('relationships'))
                 out.write(JsonOutput.COLON)
                 out.write(JsonOutput.OPEN_BRACE)
                 boolean firstRelationship = true
 
                 for (association in relationships) {
-                    if (!includeExcludeSupport.shouldInclude(includes, excludes, "${basePath}${association.name}".toString())) continue
+                    if (!includeExcludeSupport.shouldInclude(includes, excludes, "${basePath}${association.name}".toString())) {
+                        continue
+                    }
 
                     def value = ((GroovyObject) object).getProperty(association.name)
                     if (!firstRelationship) {
@@ -238,7 +261,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                         out.write(JsonOutput.COMMA)
                     }
 
-                    out.write(generator.toJson("data"))
+                    out.write(generator.toJson('data'))
                     out.write(JsonOutput.COLON)
                     PersistentEntity associatedEntity = association.associatedEntity
                     if (association instanceof ToMany && Iterable.isAssignableFrom(association.type)) {
@@ -261,17 +284,16 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                         }
 
                         out.write(JsonOutput.CLOSE_BRACKET)
-
                     } else {
                         if (value != null) {
                             out.write(JsonOutput.OPEN_BRACE)
 
-                            out.write(generator.toJson("type"))
+                            out.write(generator.toJson('type'))
                             out.write(JsonOutput.COLON)
                             out.write(generator.toJson(associatedEntity.decapitalizedName))
                             out.write(JsonOutput.COMMA)
 
-                            out.write(generator.toJson("id"))
+                            out.write(generator.toJson('id'))
                             out.write(JsonOutput.COLON)
                             out.write(generator.toJson(idGenerator.render(value, associatedEntity.identity)))
 
@@ -286,7 +308,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
             }
         }
 
-        if (basePath != "") {
+        if (basePath != '') {
             out.write(JsonOutput.COMMA)
             renderRelationshipLinks(object).writeTo(out)
         }
@@ -297,8 +319,8 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         PersistentEntity persistentEntity = property.getAssociatedEntity()
         out.write(JsonOutput.OPEN_BRACE)
         boolean firstAttribute = true
-        for (PersistentProperty prop: persistentEntity.getPersistentProperties()) {
-            String qualified = "${basePath}${prop.name}".toString()
+        for (PersistentProperty prop : persistentEntity.getPersistentProperties()) {
+            String qualified = "${basePath}${prop.name}"
 
             if (!includeExcludeSupport.shouldInclude(includes, excludes, qualified)) {
                 continue
@@ -312,7 +334,6 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
             out.write(JsonOutput.COLON)
             out.write(generator.toJson(((GroovyObject) object).getProperty(prop.name)))
 
-
             firstAttribute = false
         }
         out.write(JsonOutput.CLOSE_BRACE)
@@ -321,9 +342,10 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
     private JsonOutput.JsonWritable renderData(Object object, Map arguments) {
         JsonGenerator generator = getGenerator()
         new JsonOutput.JsonWritable() {
+
             @Override
             Writer writeTo(Writer out) throws IOException {
-                out.write(generator.toJson("data"))
+                out.write(generator.toJson('data'))
                 out.write(JsonOutput.COLON)
 
                 if (object instanceof Collection) {
@@ -334,14 +356,15 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                             out.write(JsonOutput.COMMA)
                         }
                         first = false
-                        renderResource(o, out, arguments, "")
+                        renderResource(o, out, arguments, '')
                     }
                     out.write(JsonOutput.CLOSE_BRACKET)
                 } else {
-                    renderResource(object, out, arguments, "")
+                    renderResource(object, out, arguments, '')
                 }
                 out
             }
+
         }
     }
 
@@ -351,7 +374,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
             @Override
             Writer writeTo(Writer out) throws IOException {
-                out.write(generator.toJson("errors"))
+                out.write(generator.toJson('errors'))
                 out.write(JsonOutput.COLON)
 
                 Errors errors = (Errors) object.getAt('errors')
@@ -373,21 +396,21 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
             protected writeError(Writer out, ObjectError error) {
                 out.write(JsonOutput.OPEN_BRACE)
-                out.write(generator.toJson("code"))
+                out.write(generator.toJson('code'))
                 out.write(JsonOutput.COLON)
                 out.write(generator.toJson(error.code))
                 out.write(JsonOutput.COMMA)
 
-                out.write(generator.toJson("detail"))
+                out.write(generator.toJson('detail'))
                 out.write(JsonOutput.COLON)
                 out.write(generator.toJson(message([error: error])))
                 out.write(JsonOutput.COMMA)
 
-                out.write(generator.toJson("source"))
+                out.write(generator.toJson('source'))
                 out.write(JsonOutput.COLON)
                 out.write(JsonOutput.OPEN_BRACE)
 
-                out.write(generator.toJson("object"))
+                out.write(generator.toJson('object'))
                 out.write(JsonOutput.COLON)
                 out.write(generator.toJson(error.getObjectName()))
                 out.write(JsonOutput.COMMA)
@@ -395,17 +418,17 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                 if (error instanceof FieldError) {
                     FieldError fieldError = (FieldError) error
 
-                    out.write(generator.toJson("field"))
+                    out.write(generator.toJson('field'))
                     out.write(JsonOutput.COLON)
                     out.write(generator.toJson(fieldError.getField()))
                     out.write(JsonOutput.COMMA)
 
-                    out.write(generator.toJson("rejectedValue"))
+                    out.write(generator.toJson('rejectedValue'))
                     out.write(JsonOutput.COLON)
                     out.write(generator.toJson(fieldError.getRejectedValue()))
                     out.write(JsonOutput.COMMA)
 
-                    out.write(generator.toJson("bindingError"))
+                    out.write(generator.toJson('bindingError'))
                     out.write(JsonOutput.COLON)
                     out.write(generator.toJson(fieldError.isBindingFailure()))
                 }
@@ -413,6 +436,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                 out.write(JsonOutput.CLOSE_BRACE)//source
                 out.write(JsonOutput.CLOSE_BRACE)//error
             }
+
         }
         return writable
     }
@@ -420,17 +444,19 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
     JsonOutput.JsonWritable renderRelationshipLinks(Object object) {
         JsonGenerator generator = getGenerator()
         new JsonOutput.JsonWritable() {
+
             @Override
             Writer writeTo(Writer out) throws IOException {
-                out.write(generator.toJson("links"))
+                out.write(generator.toJson('links'))
                 out.write(JsonOutput.COLON)
                 out.write(JsonOutput.OPEN_BRACE)
-                out.write(generator.toJson("self"))
+                out.write(generator.toJson('self'))
                 out.write(JsonOutput.COLON)
                 out.write(generator.toJson(view.linkGenerator.link(resource: object, method: HttpMethod.GET)))
                 out.write(JsonOutput.CLOSE_BRACE)
                 out
             }
+
         }
     }
 
@@ -440,27 +466,26 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
             @Override
             Writer writeTo(Writer out) throws IOException {
-
-                out.write(generator.toJson("links"))
+                out.write(generator.toJson('links'))
                 out.write(JsonOutput.COLON)
 
                 out.write(JsonOutput.OPEN_BRACE)
-                out.write(generator.toJson("self"))
+                out.write(generator.toJson('self'))
                 out.write(JsonOutput.COLON)
 
                 if (object instanceof Collection) {
                     out.write(generator.toJson(view.request.uri))
 
                     if (arguments.get(PAGINATION) instanceof Map) {
-                        Map paginationArgs = (Map)arguments.get(PAGINATION)
+                        Map paginationArgs = (Map) arguments.get(PAGINATION)
                         if (!paginationArgs.containsKey(PAGINATION_TOTAL) || !paginationArgs.containsKey(PAGINATION_RESROUCE)) {
-                            throw new IllegalArgumentException("JSON API pagination arguments must contain resource and total")
+                            throw new IllegalArgumentException('JSON API pagination arguments must contain resource and total')
                         }
-                        Integer total = (Integer)paginationArgs.get(PAGINATION_TOTAL)
+                        Integer total = (Integer) paginationArgs.get(PAGINATION_TOTAL)
                         Object resource = paginationArgs.get(PAGINATION_RESROUCE)
                         Parameters params = defaultPaginateParams(paginationArgs)
                         List<Link> links = getPaginationLinks(resource, total, params)
-                        for(link in links) {
+                        for (link in links) {
                             out.write(JsonOutput.COMMA)
                             writeKeyValue(out, link.rel, link.href)
                         }
@@ -472,21 +497,20 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                 out.write(JsonOutput.CLOSE_BRACE)
                 return out
             }
+
         }
         return writable
     }
 
     JsonOutput.JsonWritable renderIncluded(Object object, Map arguments) {
-
-        List<String> expandProperties = getExpandProperties((JsonView)view, arguments)
+        List<String> expandProperties = getExpandProperties((JsonView) view, arguments)
         if (!expandProperties.empty && includeAssociations(arguments)) {
-
             new JsonOutput.JsonWritable() {
 
                 @Override
                 Writer writeTo(Writer out) throws IOException {
                     out.write(JsonOutput.COMMA)
-                    writeKey(out, "included")
+                    writeKey(out, 'included')
                     out.write(JsonOutput.OPEN_BRACKET)
                     boolean first = true
 
@@ -512,22 +536,20 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                     out.write(JsonOutput.CLOSE_BRACKET)
                     out
                 }
-            }
 
+            }
         } else {
             return NOOP_OUTPUT
         }
-
-
     }
 
     void renderMetaObject(Writer out, Object meta) {
-        writeKey(out, "meta")
+        writeKey(out, 'meta')
         viewHelper.render(meta, [:]).writeTo(out)
     }
 
     void renderJsonApiMember(Writer out, Object meta) {
-        writeKey(out, "jsonapi")
+        writeKey(out, 'jsonapi')
         out.write(JsonOutput.OPEN_BRACE)
         writeKeyValue(out, 'version', '1.0')
         if (meta != null) {
@@ -541,7 +563,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         JsonGenerator generator = getGenerator()
 
         StackTraceUtils.sanitize(object)
-        out.write(generator.toJson("errors"))
+        out.write(generator.toJson('errors'))
         out.write(JsonOutput.COLON)
         out.write(JsonOutput.OPEN_BRACKET)
         out.write(JsonOutput.OPEN_BRACE)
@@ -551,7 +573,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         out.write(JsonOutput.COMMA)
         writeKeyValue(out, 'detail', object.localizedMessage)
         out.write(JsonOutput.COMMA)
-        out.write(generator.toJson("source"))
+        out.write(generator.toJson('source'))
         out.write(JsonOutput.COLON)
         out.write(JsonOutput.OPEN_BRACE)
         writeKeyValue(out, 'stacktrace', getJsonStackTrace(object))
@@ -561,6 +583,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
     }
 
     JsonApiIdRenderStrategy getIdGenerator() {
-        ((JsonView)view).jsonApiIdRenderStrategy
+        ((JsonView) view).jsonApiIdRenderStrategy
     }
+
 }

@@ -1,21 +1,39 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.views.resolve
 
-import grails.views.ViewUriResolver
 import groovy.transform.CompileStatic
+
+import grails.views.ViewUriResolver
 import org.grails.buffer.FastStringWriter
 
 /**
  * Generic implementation for resolving views
  *
  * @author Graeme Rocher
+ * @since 2024.0.0
  */
 @CompileStatic
 class GenericViewUriResolver implements ViewUriResolver {
-    private static final String SLASH_STR = "/"
+
+    private static final String SLASH_STR = '/'
     private static final char SLASH = '/'
     private static final char UNDERSCORE = '_'
-    private static final String BLANK = ""
-    private static final String SLASH_UNDR = "/_";
+    private static final String BLANK = ''
+    private static final String SLASH_UNDR = '/_'
 
     final String extension
 
@@ -40,26 +58,23 @@ class GenericViewUriResolver implements ViewUriResolver {
             pathToTemplate = templateName.substring(0, lastSlash + 1)
             templateName = templateName.substring(lastSlash + 1)
         }
-        if(controllerNamespace != null) {
+        if (controllerNamespace != null) {
             buf << SLASH << controllerNamespace
         }
-        if(controllerName != null) {
-            if(controllerName.startsWith(SLASH_STR)) {
+        if (controllerName != null) {
+            if (controllerName.startsWith(SLASH_STR)) {
                 buf << controllerName
-            }
-            else {
+            } else {
                 buf << SLASH << controllerName
             }
         }
         buf << SLASH << pathToTemplate << UNDERSCORE << templateName
-        if(includeExtension) {
+        if (includeExtension) {
             return buf.append(extension).toString()
-        }
-        else {
+        } else {
             return buf.toString()
         }
     }
-
 
     /**
      * Used to resolve template names that are not relative to a controller.
@@ -69,23 +84,22 @@ class GenericViewUriResolver implements ViewUriResolver {
      */
     protected String getAbsoluteTemplateURI(String templateName, boolean includeExtension = true) {
         def buf = new FastStringWriter()
-        String tmp = templateName.substring(1,templateName.length())
+        String tmp = templateName.substring(1, templateName.length())
         if (tmp.indexOf(SLASH_STR) > -1) {
             buf << SLASH
             int i = tmp.lastIndexOf(SLASH_STR)
             buf << tmp.substring(0, i) << SLASH_UNDR
-            buf << tmp.substring(i + 1,tmp.length())
+            buf << tmp.substring(i + 1, tmp.length())
+        } else {
+            buf << SLASH_UNDR << templateName.substring(1, templateName.length())
         }
-        else {
-            buf << SLASH_UNDR << templateName.substring(1,templateName.length())
-        }
-        if(includeExtension) {
+        if (includeExtension) {
             String uri = buf.append(extension).toString()
             buf.close()
             return uri
         } else {
             return buf.toString()
         }
-
     }
+
 }

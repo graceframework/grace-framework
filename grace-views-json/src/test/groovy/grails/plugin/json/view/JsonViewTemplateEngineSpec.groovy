@@ -1,18 +1,20 @@
 package grails.plugin.json.view
 
+import groovy.json.JsonSlurper
+import spock.lang.Specification
+
 import grails.rest.Linkable
 import grails.views.ViewCompilationException
 import grails.views.api.GrailsView
 import grails.web.mapping.LinkGenerator
-import groovy.json.JsonSlurper
-import spock.lang.Specification
 
 /**
  * Created by graemerocher on 21/08/15.
  */
 class JsonViewTemplateEngineSpec extends Specification {
-    void "Test model with default value"() {
-        when: "An engine is created and a template parsed"
+
+    void 'Test model with default value'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine()
         def template = templateEngine.createTemplate('''
 model {
@@ -25,12 +27,13 @@ json {
 ''')
         def writer = new StringWriter()
         template.make().writeTo(writer)
-        then:"The output is correct"
+
+        then: 'The output is correct'
         writer.toString() == '{"name":"bar"}'
     }
 
-    void "Test static compilation with collections"() {
-        when: "An engine is created and a template parsed"
+    void 'Test static compilation with collections'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine()
         def template = templateEngine.createTemplate('''
 model {
@@ -42,13 +45,14 @@ json urls, { URL url ->
 }
 ''')
         def writer = new StringWriter()
-        template.make(urls: [new URL("http://foo.com")]).writeTo(writer)
-        then:"The output is correct"
+        template.make(urls: [new URL('http://foo.com')]).writeTo(writer)
+
+        then: 'The output is correct'
         writer.toString() == '[{"protocol":"http"}]'
     }
 
-    void "Test render with includes"() {
-        when: "An engine is created and a template parsed"
+    void 'Test render with includes'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine()
         def template = templateEngine.createTemplate('''
 import grails.plugin.json.view.*
@@ -59,17 +63,17 @@ model {
 json g.render(book, [includes:['title']])
 ''')
         def writer = new StringWriter()
-        template.make(book: new Book(title:"The Stand")).writeTo(writer)
-        then:"The output is correct"
+        template.make(book: new Book(title: 'The Stand')).writeTo(writer)
+
+        then: 'The output is correct'
         writer.toString() == '{"title":"The Stand"}'
     }
 
-    void "Test HAL JSON view template"() {
-        when:"An engine is created and a template parsed"
-
+    void 'Test HAL JSON view template'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine(new JsonViewConfiguration(prettyPrint: true), Thread.currentThread().contextClassLoader)
         def linkGenerator = Mock(LinkGenerator)
-        linkGenerator.link(_) >> "http://localhost:8080/book/show/1"
+        linkGenerator.link(_) >> 'http://localhost:8080/book/show/1'
         templateEngine.setLinkGenerator(linkGenerator)
         def template = templateEngine.createTemplate('''
 import grails.plugin.json.view.*
@@ -91,16 +95,15 @@ json {
 }
 ''')
 
-
         def writer = new StringWriter()
 
-
-        GrailsView view = (GrailsView)template.make(book: new Book(title:"The Stand", authors: [new Author(name:"Stephen King")] as Set))
+        GrailsView view = (GrailsView) template.make(book: new Book(title: 'The Stand', authors: [new Author(name: 'Stephen King')] as Set))
         view.writeTo(writer)
 
         def output = writer.toString()
-        then:"The output is correct"
-        new JsonSlurper().parse(output.getBytes("UTF-8"))
+
+        then: 'The output is correct'
+        new JsonSlurper().parse(output.getBytes('UTF-8'))
         output == '''{
     "_links": {
         "self": {
@@ -125,8 +128,8 @@ json {
 }'''
     }
 
-    void "Test static compilation"() {
-        when:"An engine is created and a template parsed"
+    void 'Test static compilation'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine()
         def template = templateEngine.createTemplate('''
 model {
@@ -138,12 +141,12 @@ json.site {
 ''')
 
         def writer = new StringWriter()
-        template.make(url: new URL("http://foo.com")).writeTo(writer)
+        template.make(url: new URL('http://foo.com')).writeTo(writer)
 
-        then:"The output is correct"
+        then: 'The output is correct'
         writer.toString() == '{"site":{"protocol":"http"}}'
 
-        when:"A template is compiled with a compilation error"
+        when: 'A template is compiled with a compilation error'
         template = templateEngine.createTemplate('''
 model {
     URL url
@@ -153,14 +156,14 @@ json.site {
 }
 ''')
         writer = new StringWriter()
-        template.make(url: new URL("http://foo.com")).writeTo(writer)
+        template.make(url: new URL('http://foo.com')).writeTo(writer)
 
-        then:"A compilation error is thrown"
+        then: 'A compilation error is thrown'
         thrown ViewCompilationException
     }
 
-    void "Test parsing a JSON view template"() {
-        when:"An engine is created and a template parsed"
+    void 'Test parsing a JSON view template'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine()
         def template = templateEngine.createTemplate('''
 json.person {
@@ -171,12 +174,12 @@ json.person {
         def writer = new StringWriter()
         template.make().writeTo(writer)
 
-        then:"The output is correct"
+        then: 'The output is correct'
         writer.toString() == '{"person":{"name":"bob"}}'
     }
 
-    void "Test pretty print a JSON view template"() {
-        when:"An engine is created and a template parsed"
+    void 'Test pretty print a JSON view template'() {
+        when: 'An engine is created and a template parsed'
         def templateEngine = new JsonViewTemplateEngine()
         def template = templateEngine.createTemplate('''
 json.person {
@@ -190,7 +193,7 @@ json.person {
         writable.setPrettyPrint(true)
         writable.writeTo(writer)
 
-        then:"The output is correct"
+        then: 'The output is correct'
         writer.toString() == '''{
     "person": {
         "name": "bob"
@@ -198,31 +201,34 @@ json.person {
 }'''
     }
 
-
-    void "Test resolveTemplate method"() {
-        when:"A templateEngine is created"
+    void 'Test resolveTemplate method'() {
+        when: 'A templateEngine is created'
         def templateEngine = new JsonViewTemplateEngine()
-        def template = templateEngine.resolveTemplate("/foo.gson")
+        def template = templateEngine.resolveTemplate('/foo.gson')
 
-        then:"The template exists"
+        then: 'The template exists'
         template != null
 
-        when:"The template is written"
+        when: 'The template is written'
         def writer = new StringWriter()
         template.make().writeTo(writer)
 
-        then:"The output is correct"
+        then: 'The output is correct'
         writer.toString() == '{"person":{"name":"bob"}}'
-
-
     }
+
 }
 
 @Linkable
-class Book  {
+class Book {
+
     String title
     Set<Author> authors
+
 }
+
 class Author {
+
     String name
+
 }

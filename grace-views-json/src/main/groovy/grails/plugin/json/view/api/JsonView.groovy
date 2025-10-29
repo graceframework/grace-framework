@@ -1,4 +1,21 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.json.view.api
+
+import groovy.transform.CompileStatic
 
 import grails.plugin.json.builder.JsonGenerator
 import grails.plugin.json.builder.StreamingJsonBuilder
@@ -11,13 +28,12 @@ import grails.views.GrailsViewTemplate
 import grails.views.ResolvableGroovyTemplateEngine
 import grails.views.ViewException
 import grails.views.api.GrailsView
-import groovy.transform.CompileStatic
 
 /**
  * Extends default view API with additional methods
  *
  * @author Graeme Rocher
- * @since 1.0
+ * @since 2024.0.0
  */
 @CompileStatic
 trait JsonView extends GrailsView {
@@ -46,6 +62,7 @@ trait JsonView extends GrailsView {
      * The parent model, if any
      */
     Map parentModel
+
     /**
      * Overrides the default helper with new methods specific to JSON building
      */
@@ -79,21 +96,20 @@ trait JsonView extends GrailsView {
      * @param arguments The arguments
      */
     void inherits(Map arguments) {
-        ResolvableGroovyTemplateEngine templateEngine = (ResolvableGroovyTemplateEngine)viewTemplate.templateEngine
+        ResolvableGroovyTemplateEngine templateEngine = (ResolvableGroovyTemplateEngine) viewTemplate.templateEngine
 
         def template = arguments.template
 
-        if(template) {
-            Map model = (Map)arguments.model ?: [:]
+        if (template) {
+            Map model = (Map) arguments.model ?: [:]
             def templateUri = templateEngine
                     .viewUriResolver
                     .resolveTemplateUri(getControllerNamespace(), getControllerName(), template.toString())
-            GrailsViewTemplate parentTemplate = (GrailsViewTemplate)templateEngine.resolveTemplate(templateUri, locale)
-            if(parentTemplate != null) {
+            GrailsViewTemplate parentTemplate = (GrailsViewTemplate) templateEngine.resolveTemplate(templateUri, locale)
+            if (parentTemplate != null) {
                 this.parentTemplate = parentTemplate
                 this.parentModel = model
-            }
-            else {
+            } else {
                 throw new ViewException("Template not found for name $template")
             }
         }
@@ -106,7 +122,7 @@ trait JsonView extends GrailsView {
      * @return
      * @throws IOException
      */
-    public Object json(Map m) throws IOException {
+    Object json(Map m) throws IOException {
         json.call m
     }
 
@@ -294,4 +310,5 @@ trait JsonView extends GrailsView {
     void json(String name, Map map, @DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate.class, strategy = Closure.DELEGATE_FIRST) Closure callable) throws IOException {
         json.call name, map, callable
     }
+
 }

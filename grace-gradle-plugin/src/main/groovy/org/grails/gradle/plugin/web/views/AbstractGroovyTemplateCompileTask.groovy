@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.gradle.plugin.web.views
 
 import javax.inject.Inject
@@ -12,8 +27,8 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
-import org.gradle.process.ExecResult
 import org.gradle.process.ExecOperations
+import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.gradle.work.InputChanges
 
@@ -51,7 +66,7 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
 
     @Inject
     protected ObjectFactory getObjectFactory() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException()
     }
 
     @Override
@@ -59,11 +74,11 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
         try {
             appDir = SourceSets.resolveGrailsAppDir(project)
             srcDir = project.file(source)
-            if(srcDir.exists() && !srcDir.isDirectory()) {
+            if (srcDir.exists() && !srcDir.isDirectory()) {
                 throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
             }
             super.setSource(source)
-        } catch (e) {
+        } catch (ignore) {
             throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
         }
     }
@@ -76,15 +91,16 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
     protected void compile() {
         def projectPackageNames = getProjectPackageNames(project.projectDir)
 
-        if(packageName == null) {
+        if (packageName == null) {
             packageName = project.name
-            if(!packageName) {
+            if (!packageName) {
                 packageName = project.projectDir.canonicalFile.name
             }
         }
 
         ExecResult result = this.execOperations.javaexec(
                 new Action<JavaExecSpec>() {
+
                     @Override
                     @CompileDynamic
                     void execute(JavaExecSpec javaExecSpec) {
@@ -92,12 +108,11 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
                         javaExecSpec.setClasspath(getClasspath())
 
                         def jvmArgs = compileOptions.forkOptions.jvmArgs
-                        if(jvmArgs) {
+                        if (jvmArgs) {
                             javaExecSpec.jvmArgs(jvmArgs)
                         }
-                        javaExecSpec.setMaxHeapSize( compileOptions.forkOptions.memoryMaximumSize )
-                        javaExecSpec.setMinHeapSize( compileOptions.forkOptions.memoryInitialSize )
-
+                        javaExecSpec.setMaxHeapSize(compileOptions.forkOptions.memoryMaximumSize)
+                        javaExecSpec.setMinHeapSize(compileOptions.forkOptions.memoryInitialSize)
 
                         String packageImports = projectPackageNames.join(',') ?: packageName
                         def arguments = [
@@ -108,7 +123,7 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
                                 packageName,
                                 project.file("$appDir/conf/application.yml").canonicalPath,
                                 compileOptions.encoding
-                                ]
+                        ]
 
                         prepareArguments(arguments)
                         javaExecSpec.args(arguments)
@@ -117,7 +132,6 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
                 }
         )
         result.assertNormalExitValue()
-
     }
 
     void prepareArguments(List<String> arguments) {
@@ -126,7 +140,7 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
 
     @Input
     protected String getCompilerName() {
-        "grails.views.GenericGroovyTemplateCompiler"
+        'grails.views.GenericGroovyTemplateCompiler'
     }
 
     @Input
@@ -139,7 +153,7 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
         File rootDir = baseDir ? new File(baseDir, "${appDir}${File.separator}domain") : null
         Set<String> packageNames = []
         if (rootDir?.exists()) {
-            populatePackages(rootDir, packageNames, "")
+            populatePackages(rootDir, packageNames, '')
         }
         return packageNames
     }
@@ -154,4 +168,5 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
             }
         }
     }
+
 }

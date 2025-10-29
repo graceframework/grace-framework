@@ -1,4 +1,22 @@
+/*
+ * Copyright 2018-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.json.view.test
+
+import groovy.transform.CompileStatic
+import org.springframework.http.HttpMethod
 
 import grails.config.Config
 import grails.plugin.json.view.api.JsonView
@@ -6,14 +24,12 @@ import grails.util.TypeConvertingMap
 import grails.views.api.HttpView
 import grails.views.api.http.Request
 import grails.views.mvc.http.DelegatingParameters
-import groovy.transform.CompileStatic
-import org.springframework.http.HttpMethod
 
 /**
  * Allows configuring the JSON view rendering for request state
  *
  * @author Graeme Rocher
- * @since 1.1
+ * @since 2024.0.0
  */
 @CompileStatic
 class TestRequestConfigurer implements Request {
@@ -21,19 +37,21 @@ class TestRequestConfigurer implements Request {
     final JsonView jsonView
 
     String contextPath
-    String method = "GET"
+    String method = 'GET'
     String uri
     String contentType = 'application/json'
     String characterEncoding = 'UTF-8'
+
     Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>().withDefault { String name ->
         return [] as List<String>
     }
+
     Map<String, Object> attributes = new LinkedHashMap<String, Object>()
 
     TestRequestConfigurer(JsonView jsonView) {
         this.jsonView = jsonView
-        if(jsonView instanceof HttpView) {
-            ((HttpView)jsonView).setRequest(this)
+        if (jsonView instanceof HttpView) {
+            ((HttpView) jsonView).setRequest(this)
         }
     }
 
@@ -52,7 +70,6 @@ class TestRequestConfigurer implements Request {
     void setConfig(Config config) {
         jsonView.setConfig(config)
     }
-
 
     TestRequestConfigurer actionName(String actionName) {
         this.actionName = actionName
@@ -90,7 +107,7 @@ class TestRequestConfigurer implements Request {
     }
 
     TestRequestConfigurer params(Map parameters) {
-        this.jsonView.setParams( new DelegatingParameters(new TypeConvertingMap(parameters)))
+        this.jsonView.setParams(new DelegatingParameters(new TypeConvertingMap(parameters)))
         return this
     }
 
@@ -107,7 +124,7 @@ class TestRequestConfigurer implements Request {
     @Override
     String getHeader(String name) {
         def headerValues = headers.get(name)
-        if(headerValues) {
+        if (headerValues) {
             return headerValues.get(0)
         }
         return null
@@ -127,4 +144,5 @@ class TestRequestConfigurer implements Request {
     Collection<String> getAttributeNames() {
         attributes.keySet()
     }
+
 }

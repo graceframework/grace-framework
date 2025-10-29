@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import grails.views.resolve.PluginAwareTemplateResolver;
  * {@link EnableAutoConfiguration Auto-Configure} for Markup View
  *
  * @author Michael Yan
- * @since 6.1
+ * @since 2024.0.0
  */
 @AutoConfiguration
 @EnableConfigurationProperties(MarkupViewConfiguration.class)

@@ -1,19 +1,20 @@
 package grails.plugin.json.view
 
+import spock.lang.Specification
+
 import grails.plugin.json.view.test.JsonViewTest
 import org.grails.testing.GrailsUnitTest
-import spock.lang.Specification
 
 class IncludeAssociationsSpec extends Specification implements JsonViewTest, GrailsUnitTest {
 
-    void "test includeAssociations with json api"() {
-        given: "A collection"
+    void 'test includeAssociations with json api'() {
+        given: 'A collection'
         mappingContext.addPersistentEntities(Player, Team)
-        Player player = new Player(name: "Cantona")
+        Player player = new Player(name: 'Cantona')
         player.id = 1
         def players = [player]
 
-        when: "A collection type is rendered"
+        when: 'A collection type is rendered'
         def renderResult = render('''
 import groovy.transform.*
 import grails.plugin.json.view.*
@@ -22,11 +23,11 @@ import grails.plugin.json.view.*
 
 json jsonapi.render(players, [associations: false])
 ''', [players: players]) {
-            uri = "/foo"
+            uri = '/foo'
         }
 
-        then: "The result is an array"
+        then: 'The result is an array'
         renderResult.jsonText == '{"data":[{"type":"player","id":"1","attributes":{"name":"Cantona"}}],"links":{"self":"/foo"}}'
-
     }
+
 }

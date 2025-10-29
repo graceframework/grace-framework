@@ -1,6 +1,20 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.gradle.plugin.web.views
 
-import grails.util.GrailsNameUtils
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -15,9 +29,10 @@ import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.bundling.War
 
-import org.grails.gradle.plugin.web.views.util.SourceSets
+import grails.util.GrailsNameUtils
 
 import org.grails.gradle.plugin.core.GrailsExtension
+import org.grails.gradle.plugin.web.views.util.SourceSets
 
 /**
  * Abstract implementation of a plugin that compiles views
@@ -48,7 +63,8 @@ class AbstractGroovyTemplatePlugin implements Plugin<Project> {
         def allTasks = project.tasks
         def upperCaseName = GrailsNameUtils.getClassName(fileExtension)
 
-        AbstractGroovyTemplateCompileTask templateCompileTask = (AbstractGroovyTemplateCompileTask)allTasks.create("compile${upperCaseName}Views".toString(), (Class<? extends Task>)taskClass)
+        AbstractGroovyTemplateCompileTask templateCompileTask =
+                (AbstractGroovyTemplateCompileTask) allTasks.create("compile${upperCaseName}Views".toString(), (Class<? extends Task>) taskClass)
 
         this.pathToSource = SourceSets.resolveGrailsAppDir(project)
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
@@ -58,26 +74,27 @@ class AbstractGroovyTemplatePlugin implements Plugin<Project> {
 
         Configuration providedConfig = project.configurations.findByName('provided')
 
-
         FileCollection allClasspath
 
         project.afterEvaluate {
             GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
             if (grailsExt.pathingJar && Os.isFamily(Os.FAMILY_WINDOWS)) {
                 Jar pathingJar = (Jar) allTasks.findByName('pathingJar')
-                allClasspath = project.files("${project.buildDir}/classes/groovy/main", "${project.buildDir}/resources/main", "${project.projectDir}/gsp-classes", pathingJar.archivePath)
+                allClasspath = project.files(
+                        "${project.buildDir}/classes/groovy/main",
+                        "${project.buildDir}/resources/main", "${project.projectDir}/gsp-classes", pathingJar.archivePath)
                 templateCompileTask.dependsOn(pathingJar)
                 templateCompileTask.setClasspath(allClasspath)
             }
         }
 
         allClasspath = classesDir + project.configurations.getByName('compileClasspath')
-        if(providedConfig) {
+        if (providedConfig) {
             allClasspath += providedConfig
         }
 
-        templateCompileTask.getDestinationDirectory().set( destDir )
-        templateCompileTask.setClasspath( allClasspath )
+        templateCompileTask.getDestinationDirectory().set(destDir)
+        templateCompileTask.setClasspath(allClasspath)
         templateCompileTask.setPackageName(
                 project.name
         )
@@ -85,25 +102,24 @@ class AbstractGroovyTemplatePlugin implements Plugin<Project> {
                 project.file("${project.projectDir}/$pathToSource/views")
         )
 
-        templateCompileTask.dependsOn( allTasks.findByName('classes') )
+        templateCompileTask.dependsOn(allTasks.findByName('classes'))
 
         allTasks.withType(War) { War war ->
             war.dependsOn templateCompileTask
             if (war.classpath) {
                 war.classpath = war.classpath + project.files(destDir)
-            }
-            else {
+            } else {
                 war.classpath = project.files(destDir)
             }
         }
         allTasks.withType(Jar) { Jar jar ->
-            if(!(jar instanceof War)) {
+            if (!(jar instanceof War)) {
                 if (jar.name == 'bootJar') {
                     jar.dependsOn templateCompileTask
                     jar.from(destDir) { CopySpec spec ->
-                        spec.into("BOOT-INF/classes")
+                        spec.into('BOOT-INF/classes')
                     }
-                } else if(jar.name == 'jar') {
+                } else if (jar.name == 'jar') {
                     jar.dependsOn templateCompileTask
                     jar.from destDir
                 }
@@ -113,7 +129,7 @@ class AbstractGroovyTemplatePlugin implements Plugin<Project> {
 
     @CompileDynamic
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        return output.classesDirs ?: project.files(new File(project.buildDir, "classes/groovy/main"))
+        return output.classesDirs ?: project.files(new File(project.buildDir, 'classes/groovy/main'))
     }
 
 }

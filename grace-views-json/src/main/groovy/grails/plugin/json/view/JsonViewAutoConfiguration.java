@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import grails.views.resolve.PluginAwareTemplateResolver;
  * {@link EnableAutoConfiguration Auto-Configure} for Json View
  *
  * @author Michael Yan
- * @since 6.1
+ * @since 2024.0.0
  */
 @AutoConfiguration
 @EnableConfigurationProperties(JsonViewConfiguration.class)
@@ -55,7 +55,8 @@ public class JsonViewAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public JsonViewTemplateEngine jsonTemplateEngine(JsonApiIdRenderStrategy jsonApiIdRenderStrategy) {
-        JsonViewTemplateEngine jsonViewTemplateEngine = new JsonViewTemplateEngine(this.jsonViewConfiguration, this.applicationContext.getClassLoader());
+        JsonViewTemplateEngine jsonViewTemplateEngine = new JsonViewTemplateEngine(this.jsonViewConfiguration,
+                this.applicationContext.getClassLoader());
         jsonViewTemplateEngine.setJsonApiIdRenderStrategy(jsonApiIdRenderStrategy);
         return jsonViewTemplateEngine;
     }

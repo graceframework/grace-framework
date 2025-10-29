@@ -1,7 +1,28 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.views
 
-import grails.views.compiler.ViewsTransform
-import grails.views.resolve.GenericGroovyTemplateResolver
+import java.util.concurrent.Callable
+import java.util.concurrent.CompletionService
+import java.util.concurrent.ExecutorCompletionService
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.TimeUnit
+
 import groovy.io.FileType
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilerConfiguration
@@ -9,24 +30,22 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.codehaus.groovy.control.io.FileReaderSource
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.ExecutorCompletionService
-import java.util.concurrent.CompletionService
-import java.util.concurrent.Future
+
+import grails.views.compiler.ViewsTransform
+import grails.views.resolve.GenericGroovyTemplateResolver
+
 /**
  * A generic compiler for Groovy templates that are compiled into classes in production
  *
  * @author Graeme Rocher
- * @since 1.0
+ * @since 2024.0.0
  */
 abstract class AbstractGroovyTemplateCompiler {
 
-    @Delegate CompilerConfiguration configuration = new CompilerConfiguration()
+    @Delegate
+    CompilerConfiguration configuration = new CompilerConfiguration()
 
-    String packageName = ""
+    String packageName = ''
     File sourceDir
     ViewConfiguration viewConfiguration
 
@@ -44,8 +63,8 @@ abstract class AbstractGroovyTemplateCompiler {
         configuration.compilationCustomizers.clear()
 
         ImportCustomizer importCustomizer = new ImportCustomizer()
-        importCustomizer.addStarImports( viewConfiguration.packageImports )
-        importCustomizer.addStaticStars( viewConfiguration.staticImports )
+        importCustomizer.addStarImports(viewConfiguration.packageImports)
+        importCustomizer.addStaticStars(viewConfiguration.staticImports)
 
         configuration.addCompilationCustomizers(importCustomizer)
         configuration.addCompilationCustomizers(new ASTTransformationCustomizer(newViewsTransform()))
@@ -57,24 +76,23 @@ abstract class AbstractGroovyTemplateCompiler {
     }
 
     void compile(List<File> sources) {
-        
-        ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2)
-        CompletionService completionService = new ExecutorCompletionService(threadPool);
-        
+        ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2)
+        CompletionService completionService = new ExecutorCompletionService(threadPool)
+
         try {
-            Integer collationLevel = Runtime.getRuntime().availableProcessors()*2
-            if(sources.size() < collationLevel) {
+            Integer collationLevel = Runtime.getRuntime().availableProcessors() * 2
+            if (sources.size() < collationLevel) {
                 collationLevel = 1
             }
             configuration.setClasspathList(classpath)
             String pathToSourceDir = sourceDir.canonicalPath
             def collatedSources = sources.collate(collationLevel)
             List<Future<Boolean>> futures = []
-            for(int index=0;index < collatedSources.size();index++) {
+            for (int index = 0; index < collatedSources.size(); index++) {
                 def sourceFiles = collatedSources[index]
                 futures << completionService.submit({ ->
                     CompilerConfiguration configuration = new CompilerConfiguration(this.configuration)
-                    for(int viewIndex=0;viewIndex < sourceFiles.size();viewIndex++) {
+                    for (int viewIndex = 0; viewIndex < sourceFiles.size(); viewIndex++) {
                         File source = sourceFiles[viewIndex]
                         configureCompiler(configuration)
                         CompilationUnit unit = new CompilationUnit(configuration)
@@ -97,32 +115,30 @@ abstract class AbstractGroovyTemplateCompiler {
             }
 
             int pending = futures.size()
-                
+
             while (pending > 0) {
                 // Wait for up to 100ms to see if anything has completed.
                 // The completed future is returned if one is found; otherwise null.
                 // (Tune 100ms as desired)
-                def completed = completionService.poll(100, TimeUnit.MILLISECONDS);
+                def completed = completionService.poll(100, TimeUnit.MILLISECONDS)
                 if (completed != null) {
                     Boolean response = completed.get() as Boolean//need this to throw exceptions on main thread it seems
-                    --pending;
+                    --pending
                 }
-            } 
-        }     
-        finally {
-                threadPool.shutdown()
+            }
         }
-                
-        
-
+        finally {
+            threadPool.shutdown()
+        }
     }
 
-    void compile(File...sources) {
+    void compile(File... sources) {
         compile Arrays.asList(sources)
     }
 
-    static void run(String[] args, Class<? extends GenericViewConfiguration> configurationClass, Class<? extends AbstractGroovyTemplateCompiler> compilerClass) {
-        if(args.length != 7) {
+    static void run(String[] args, Class<? extends GenericViewConfiguration> configurationClass,
+                    Class<? extends AbstractGroovyTemplateCompiler> compilerClass) {
+        if (args.length != 7) {
             System.err.println("Invalid arguments: [${args.join(',')}]")
             System.err.println("""
 Usage: java -cp CLASSPATH ${compilerClass.name} [srcDir] [destDir] [targetCompatibility] [packageImports] [packageName] [configFile] [encoding]
@@ -145,10 +161,10 @@ Usage: java -cp CLASSPATH ${compilerClass.name} [srcDir] [destDir] [targetCompat
         configuration.readConfiguration(configFile)
 
         AbstractGroovyTemplateCompiler compiler = compilerClass.newInstance(configuration, srcDir)
-        compiler.setTargetDirectory( destinationDir )
-        compiler.setSourceEncoding( configuration.encoding )
-        if(targetCompatibility != null) {
-            compiler.setTargetBytecode( targetCompatibility )
+        compiler.setTargetDirectory(destinationDir)
+        compiler.setSourceEncoding(configuration.encoding)
+        if (targetCompatibility != null) {
+            compiler.setTargetBytecode(targetCompatibility)
         }
 
         String fileExtension = configuration.extension
@@ -156,10 +172,11 @@ Usage: java -cp CLASSPATH ${compilerClass.name} [srcDir] [destDir] [targetCompat
 
         List<File> allFiles = []
         srcDir.eachFileRecurse(FileType.FILES) { File f ->
-            if(f.name.endsWith(fileExtension)) {
+            if (f.name.endsWith(fileExtension)) {
                 allFiles.add(f)
             }
         }
         compiler.compile(allFiles)
     }
+
 }

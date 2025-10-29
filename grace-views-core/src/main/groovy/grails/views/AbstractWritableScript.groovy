@@ -1,14 +1,31 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.views
 
-import grails.views.api.GrailsView
 import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import grails.views.api.GrailsView
 
 /**
  * A script that is writable
  *
  * @author Graeme Rocher
+ * @since 2024.0.0
  */
 @CompileStatic
 abstract class AbstractWritableScript extends Script implements WritableScript, GrailsView {
@@ -19,6 +36,7 @@ abstract class AbstractWritableScript extends Script implements WritableScript, 
     protected static final Logger log = LoggerFactory.getLogger(AbstractWritableScript)
 
     Writer out
+
     /**
      * The source file
      */
@@ -39,10 +57,9 @@ abstract class AbstractWritableScript extends Script implements WritableScript, 
         try {
             return doWrite(out)
         } catch (Throwable e) {
-            if(ViewsEnvironment.isDevelopmentMode() && sourceFile != null) {
+            if (ViewsEnvironment.isDevelopmentMode() && sourceFile != null) {
                 throw new ViewRenderException("Error rendering view: ${e.message}", e, this)
-            }
-            else {
+            } else {
                 throw new ViewException("Error rendering view: ${e.message}", e)
             }
         }
@@ -55,7 +72,6 @@ abstract class AbstractWritableScript extends Script implements WritableScript, 
      */
     abstract Writer doWrite(Writer writer) throws IOException
 
-
     void setModelTypes(Map<String, Class> modelTypes) {
         this.modelTypes = modelTypes
     }
@@ -63,4 +79,5 @@ abstract class AbstractWritableScript extends Script implements WritableScript, 
     Map<String, Class> getModelTypes() {
         return modelTypes
     }
+
 }

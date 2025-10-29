@@ -1,7 +1,29 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.views.mvc
 
+import groovy.text.Template
+import groovy.transform.CompileStatic
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpStatus
+import org.springframework.web.servlet.LocaleResolver
+import org.springframework.web.servlet.view.AbstractUrlBasedView
+
 import grails.config.Config
-import grails.core.support.GrailsConfigurationAware
 import grails.views.ResolvableGroovyTemplateEngine
 import grails.views.api.GrailsView
 import grails.views.api.HttpView
@@ -10,21 +32,15 @@ import grails.views.api.http.Response
 import grails.views.mvc.http.DelegatingParameters
 import grails.web.http.HttpHeaders
 import grails.web.mime.MimeType
-import groovy.text.Template
-import groovy.transform.CompileStatic
+
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
-import org.springframework.http.HttpStatus
-import org.springframework.web.servlet.LocaleResolver
-import org.springframework.web.servlet.view.AbstractUrlBasedView
-
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 
 /**
  * An implementation of the Spring AbstractUrlBaseView class for ResolvableGroovyTemplateEngine
  *
  * @author Graeme Rocher
+ * @since 2024.0.0
  */
 @CompileStatic
 class GenericGroovyTemplateView extends AbstractUrlBasedView {
@@ -33,7 +49,7 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
     LocaleResolver localeResolver
     Config configuration
 
-    private String defaultEncoding = "UTF-8"
+    private String defaultEncoding = 'UTF-8'
 
     void setTemplateEngine(ResolvableGroovyTemplateEngine templateEngine) {
         this.templateEngine = templateEngine
@@ -45,24 +61,25 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
     }
 
     @Override
-    protected void renderMergedOutputModel(Map<String, Object> map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+    protected void renderMergedOutputModel(Map<String, Object> map, HttpServletRequest httpServletRequest,
+                                           HttpServletResponse httpServletResponse) throws Exception {
         def locale = localeResolver?.resolveLocale(httpServletRequest) ?: Locale.ENGLISH
         def qualifiers = []
         def v = httpServletRequest.getHeader(HttpHeaders.ACCEPT_VERSION)
         MimeType mimeType = GrailsWebRequest.lookup(httpServletRequest) != null ? httpServletResponse.mimeType : null
-        if(mimeType != null && mimeType != MimeType.ALL) {
+        if (mimeType != null && mimeType != MimeType.ALL) {
             qualifiers.add(mimeType.extension)
         }
-        if(v != null) {
+        if (v != null) {
             qualifiers.add(v)
         }
-        Template template = templateEngine.resolveTemplate(url, locale, qualifiers as String[])
-        if(template != null) {
 
+        Template template = templateEngine.resolveTemplate(url, locale, qualifiers as String[])
+        if (template != null) {
             if (!httpServletResponse.contentType) {
-                httpServletResponse.setContentType( getContentType() )
+                httpServletResponse.setContentType(getContentType())
             }
-            httpServletResponse.setCharacterEncoding( defaultEncoding )
+            httpServletResponse.setCharacterEncoding(defaultEncoding)
 
             def writable = template.make(map)
             prepareWritable(writable, httpServletRequest, httpServletResponse, locale)
@@ -72,7 +89,7 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
                 // now write the writable
                 writable.writeTo(writer)
             } catch (RuntimeException e) {
-                if(!httpServletResponse.isCommitted()) {
+                if (!httpServletResponse.isCommitted()) {
                     // set back to HTML to errors are rendered correctly
                     httpServletResponse.setContentType(MimeType.HTML.name)
                 }
@@ -84,15 +101,16 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
         }
     }
 
-    protected void prepareWritable(Writable writable, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Locale locale) {
+    protected void prepareWritable(Writable writable, HttpServletRequest httpServletRequest,
+                                   HttpServletResponse httpServletResponse, Locale locale) {
         final webRequest = GrailsWebRequest.lookup(httpServletRequest)
         if (writable instanceof GrailsView) {
             def grailsView = (GrailsView) writable
             grailsView.setLocale(
-                locale
+                    locale
             )
             grailsView.setConfig(
-                configuration
+                    configuration
             )
             if (webRequest != null) {
                 grailsView.setActionName(
@@ -110,7 +128,7 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
             def httpView = (HttpView) writable
             httpView.setResponse(new HttpViewResponse(httpServletResponse))
             httpView.setRequest(new HttpViewRequest(httpServletRequest))
-            if(webRequest != null) {
+            if (webRequest != null) {
                 httpView.setParams(new DelegatingParameters(webRequest.getParams()))
             }
         }
@@ -118,7 +136,8 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
 
     @CompileStatic
     private static class HttpViewRequest implements Request {
-        final HttpServletRequest request;
+
+        final HttpServletRequest request
 
         HttpViewRequest(HttpServletRequest request) {
             this.request = request
@@ -158,10 +177,12 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
         Collection<String> getHeaders(String name) {
             request.getHeaders(name).toList()
         }
+
         /**
          * @return The header for the request
          */
-        @Lazy Collection<String> headerNames =  {
+        @Lazy
+        Collection<String> headerNames = {
             request.getHeaderNames().toList()
         }()
 
@@ -170,13 +191,16 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
             request.getAttribute(name)
         }
 
-        @Lazy Collection<String> attributeNames = {
+        @Lazy
+        Collection<String> attributeNames = {
             request.getAttributeNames().toList()
         }()
+
     }
 
     @CompileStatic
     private static class HttpViewResponse implements Response {
+
         final HttpServletResponse httpServletResponse
 
         HttpViewResponse(HttpServletResponse httpServletResponse) {
@@ -229,6 +253,7 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
         void status(HttpStatus s, String message) {
             status(s.value(), message)
         }
+
     }
 
 }

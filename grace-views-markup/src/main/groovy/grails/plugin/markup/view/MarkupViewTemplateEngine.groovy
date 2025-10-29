@@ -1,14 +1,20 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.markup.view
 
-import grails.compiler.traits.TraitInjector
-import grails.plugin.markup.view.internal.MarkupViewsTransform
-import grails.views.GrailsViewTemplate
-import grails.views.ResolvableGroovyTemplateEngine
-import grails.views.ViewCompilationException
-import grails.views.WritableScript
-import grails.views.WritableScriptTemplate
-import grails.views.api.GrailsView
-import grails.views.compiler.ViewsTransform
 import groovy.text.Template
 import groovy.text.markup.MarkupTemplateEngine
 import groovy.text.markup.TemplateConfiguration
@@ -20,11 +26,18 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.CompilationCustomizer
 
+import grails.plugin.markup.view.internal.MarkupViewsTransform
+import grails.views.ResolvableGroovyTemplateEngine
+import grails.views.ViewCompilationException
+import grails.views.WritableScriptTemplate
+import grails.views.api.GrailsView
+import grails.views.compiler.ViewsTransform
+
 /**
  * A {@link ResolvableGroovyTemplateEngine} that uses Groovy's {@link MarkupTemplateEngine} internally
  *
  * @author Graeme Rocher
- * @since 1.0
+ * @since 2024.0.0
  */
 @CompileStatic
 class MarkupViewTemplateEngine extends ResolvableGroovyTemplateEngine {
@@ -32,15 +45,16 @@ class MarkupViewTemplateEngine extends ResolvableGroovyTemplateEngine {
     public static final String VIEW_BASE_CLASS = 'grails.views.markup.baseClass'
     public static final String COMPILE_STATIC = 'grails.views.markup.compileStatic'
 
-
     MarkupTemplateEngine innerEngine
 
     private final boolean compileStatic
 
-    MarkupViewTemplateEngine(MarkupViewConfiguration config = new MarkupViewConfiguration(), ClassLoader classLoader = Thread.currentThread().contextClassLoader) {
+    MarkupViewTemplateEngine(MarkupViewConfiguration config = new MarkupViewConfiguration(),
+                             ClassLoader classLoader = Thread.currentThread().contextClassLoader) {
         super(config, classLoader)
         this.compileStatic = config.compileStatic
         innerEngine = new MarkupTemplateEngine(classLoader, config, new TemplateResolver() {
+
             @Override
             void configure(ClassLoader templateClassLoader, TemplateConfiguration configuration) {
             }
@@ -49,13 +63,10 @@ class MarkupViewTemplateEngine extends ResolvableGroovyTemplateEngine {
             URL resolveTemplate(String templatePath) throws IOException {
                 return templateResolver.resolveTemplate(templatePath)
             }
+
         })
         prepareCustomizers(this.compilerConfiguration)
     }
-
-
-
-
 
     @Override
     WritableScriptTemplate createTemplate(String path, URL url) throws CompilationFailedException, ClassNotFoundException, IOException {
@@ -68,7 +79,6 @@ class MarkupViewTemplateEngine extends ResolvableGroovyTemplateEngine {
         } catch (CompilationFailedException e) {
             throw new ViewCompilationException(e, file.canonicalPath)
         }
-
     }
 
     @Override
@@ -80,21 +90,17 @@ class MarkupViewTemplateEngine extends ResolvableGroovyTemplateEngine {
         } catch (CompilationFailedException e) {
             throw new ViewCompilationException(e, file.canonicalPath)
         }
-
     }
 
     @Override
     WritableScriptTemplate createTemplate(Reader reader) throws CompilationFailedException, ClassNotFoundException, IOException {
         prepareCustomizers(innerEngine.compilerConfiguration)
         try {
-
             def template = innerEngine.createTemplate(reader)
             return createMarkupViewTemplate(template)
-
         } catch (CompilationFailedException e) {
-            throw new ViewCompilationException(e, "Generated")
+            throw new ViewCompilationException(e, 'Generated')
         }
-
     }
 
     @CompileDynamic
@@ -108,35 +114,37 @@ class MarkupViewTemplateEngine extends ResolvableGroovyTemplateEngine {
 
     @Override
     String getDynamicTemplatePrefix() {
-        "GeneratedMarkupTemplate".intern()
+        'GeneratedMarkupTemplate'.intern()
     }
 
     @Override
     protected WritableScriptTemplate createTemplate(Class<? extends Template> cls, File sourceFile) {
-        def template = new MarkupViewWritableScriptTemplate((Class<? extends GrailsView>) cls, sourceFile, innerEngine, (MarkupViewConfiguration) viewConfiguration)
+        def template = new MarkupViewWritableScriptTemplate((Class<? extends GrailsView>) cls, sourceFile,
+                innerEngine, (MarkupViewConfiguration) viewConfiguration)
         super.initializeTemplate(template, sourceFile)
     }
 
     @Override
     protected void prepareCustomizers(CompilerConfiguration cc) {
-        if(innerEngine != null) {
-
-            innerEngine.compilerConfiguration.compilationCustomizers.removeAll( this.compilerConfiguration.compilationCustomizers )
+        if (innerEngine != null) {
+            innerEngine.compilerConfiguration.compilationCustomizers.removeAll(this.compilerConfiguration.compilationCustomizers)
             CompilerConfiguration newConfig = new CompilerConfiguration(this.compilerConfiguration)
             super.prepareCustomizers(newConfig)
 
-            if(compileStatic) {
+            if (compileStatic) {
                 newConfig.addCompilationCustomizers(
-                        new ASTTransformationCustomizer(Collections.singletonMap("extensions", "groovy.text.markup.MarkupTemplateTypeCheckingExtension"), CompileStatic.class));
+                        new ASTTransformationCustomizer(
+                                Collections.singletonMap('extensions', 'groovy.text.markup.MarkupTemplateTypeCheckingExtension'),
+                                CompileStatic))
             }
 
-            innerEngine.compilerConfiguration.addCompilationCustomizers( newConfig.compilationCustomizers as CompilationCustomizer[])
+            innerEngine.compilerConfiguration.addCompilationCustomizers(newConfig.compilationCustomizers as CompilationCustomizer[])
         }
-
     }
 
     @Override
     protected ViewsTransform newViewsTransform() {
         return new MarkupViewsTransform(viewConfiguration.extension)
     }
+
 }

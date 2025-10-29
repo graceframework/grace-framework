@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugin.json.view.api
 
 import grails.plugin.json.builder.JsonOutput
@@ -5,7 +20,7 @@ import grails.plugin.json.builder.StreamingJsonBuilder.StreamingJsonDelegate
 
 /**
  * @author Graeme Rocher
- * @since 1.1.0
+ * @since 2024.0.0
  */
 interface HalViewHelper {
 
@@ -18,10 +33,11 @@ interface HalViewHelper {
      * Same as {@link GrailsJsonViewHelper#render(java.lang.Object, java.util.Map)} but renders HAL links too
      */
     JsonOutput.JsonWritable render(Object object, Map arguments)
+
     /**
      * Same as {@link GrailsJsonViewHelper#render(java.lang.Object, java.util.Map, groovy.lang.Closure)} but renders HAL links too
      */
-    JsonOutput.JsonWritable render(Object object, @DelegatesTo(StreamingJsonDelegate) Closure customizer )
+    JsonOutput.JsonWritable render(Object object, @DelegatesTo(StreamingJsonDelegate) Closure customizer)
 
     /**
      * Same as {@link GrailsJsonViewHelper#render(java.lang.Object)} but renders HAL links too
@@ -37,19 +53,22 @@ interface HalViewHelper {
      * Same as {@link GrailsJsonViewHelper#inline(java.lang.Object, java.util.Map)} but renders HAL links too
      */
     void inline(Object object, Map arguments)
+
     /**
      * Same as {@link GrailsJsonViewHelper#inline(java.lang.Object, java.util.Map, groovy.lang.Closure)} but renders HAL links too
      */
-    void inline(Object object, @DelegatesTo(StreamingJsonDelegate) Closure customizer )
+    void inline(Object object, @DelegatesTo(StreamingJsonDelegate) Closure customizer)
 
     /**
      * Same as {@link GrailsJsonViewHelper#inline(java.lang.Object)} but renders HAL links too
      */
     void inline(Object object)
+
     /**
      * @param name Sets the HAL response type
      */
     void type(String name)
+
     /**
      * Define the hal links
      *
@@ -70,7 +89,6 @@ interface HalViewHelper {
      * @param object The object to create links for
      */
     void links(Object object)
-
 
     /**
      * Creates HAL links for the given model
@@ -122,7 +140,7 @@ interface HalViewHelper {
      * @param max The maximum number of objects to be shown (defaults to 10)
      * @param sort The field to sort on (defaults to null)
      */
-    void paginate(Object object, Integer total, Integer offset, Integer max,  String sort)
+    void paginate(Object object, Integer total, Integer offset, Integer max, String sort)
 
     /**
      * Pagination support which outputs hal links to the resulting pages
@@ -134,8 +152,7 @@ interface HalViewHelper {
      * @param sort The field to sort on (defaults to null)
      * @param order The order in which the results are to be sorted eg: DESC or ASC
      */
-    void paginate(Object object, Integer total, Integer offset, Integer max,  String sort, String order)
-
+    void paginate(Object object, Integer total, Integer offset, Integer max, String sort, String order)
 
     /**
      * Render embedded links for the associations of the given object (if any)
@@ -150,6 +167,7 @@ interface HalViewHelper {
      * @param model The embedded model
      */
     void embedded(Map model)
+
     /**
      * Render embedded links for the associations of the given object (if any)
      *
@@ -165,7 +183,6 @@ interface HalViewHelper {
      */
     void embedded(@DelegatesTo(StreamingJsonDelegate) Closure callable)
 
-
     /**
      * Outputs a HAL embedded entry for the content type and closure
      *
@@ -175,4 +192,5 @@ interface HalViewHelper {
     void embedded(String contentType, @DelegatesTo(StreamingJsonDelegate) Closure callable)
 
     void setDelegate(StreamingJsonDelegate jsonDelegate)
+
 }
