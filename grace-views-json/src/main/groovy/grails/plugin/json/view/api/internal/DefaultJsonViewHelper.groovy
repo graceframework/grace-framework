@@ -18,13 +18,12 @@ package grails.plugin.json.view.api.internal
 import java.beans.PropertyDescriptor
 import java.lang.reflect.ParameterizedType
 
+import groovy.json.JsonGenerator
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.StackTraceUtils
 import org.springframework.http.HttpMethod
 import org.springframework.util.ReflectionUtils
 
-import grails.plugin.json.builder.JsonGenerator
-import grails.plugin.json.builder.JsonOutput
 import grails.plugin.json.view.api.JsonView
 import grails.rest.Link
 import grails.util.TypeConvertingMap
@@ -64,16 +63,6 @@ class DefaultJsonViewHelper extends DefaultGrailsViewHelper {
     protected final Set<String> TO_STRING_TYPES = [
             'org.bson.types.ObjectId'
     ] as Set
-
-    protected final JsonOutput.JsonWritable NULL_OUTPUT = new JsonOutput.JsonWritable() {
-
-        @Override
-        Writer writeTo(Writer out) throws IOException {
-            out.write(JsonOutput.NULL_VALUE)
-            return out
-        }
-
-    }
 
     IncludeExcludeSupport<String> simpleIncludeExcludeSupport = new DefaultJsonViewIncludeExcludeSupport(null, DEFAULT_EXCLUDES)
     IncludeExcludeSupport<String> validateableIncludeExcludeSupport = new DefaultJsonViewIncludeExcludeSupport(null, DEFAULT_VALIDATEABLE_EXCLUDES)

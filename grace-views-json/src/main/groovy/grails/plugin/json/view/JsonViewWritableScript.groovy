@@ -15,11 +15,12 @@
  */
 package grails.plugin.json.view
 
+import groovy.json.JsonOutput
+import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileStatic
 
-import grails.plugin.json.builder.JsonOutput
-import grails.plugin.json.builder.StreamingJsonBuilder
-import grails.plugin.json.builder.StreamingJsonBuilder.StreamingJsonDelegate
+import grails.plugin.json.util.JsonToken
+import grails.plugin.json.view.api.JsonWritable
 import grails.plugin.json.view.api.JsonView
 import grails.plugin.json.view.api.internal.DefaultGrailsJsonViewHelper
 import grails.util.GrailsNameUtils
@@ -63,24 +64,24 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
      * @param callable
      * @return
      */
-    StreamingJsonBuilder json(@DelegatesTo(value = StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
+    StreamingJsonBuilder json(@DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
         if (parentTemplate != null) {
             if (!inline) {
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.OPEN_BRACE)
             }
             def parentWritable = prepareParentWritable()
             parentWritable.writeTo(out)
             resetProcessedObjects()
-            def jsonDelegate = new StreamingJsonDelegate(out, false, generator)
+            def jsonDelegate = new StreamingJsonBuilder.StreamingJsonDelegate(out, false, generator)
             callable.setDelegate(jsonDelegate)
             callable.call()
             if (!inline) {
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
             }
         } else {
             this.root = callable
             if (inline) {
-                def jsonDelegate = new StreamingJsonDelegate(out, true, generator)
+                def jsonDelegate = new StreamingJsonBuilder.StreamingJsonDelegate(out, true, generator)
                 callable.setDelegate(jsonDelegate)
                 callable.call()
             } else {
@@ -122,10 +123,10 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
      *
      * @return The json builder
      */
-    StreamingJsonBuilder json(JsonOutput.JsonWritable writable) {
+    StreamingJsonBuilder json(JsonWritable writable) {
         if (parentTemplate != null) {
             if (!inline) {
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.OPEN_BRACE)
             }
             def parentWritable = prepareParentWritable()
             parentWritable.writeTo(out)
@@ -134,7 +135,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
             writable.setFirst(false)
             writable.writeTo(out)
             if (!inline) {
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
             }
         } else {
             writable.setInline(inline)
@@ -149,7 +150,7 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
      * @param callable
      * @return
      */
-    StreamingJsonBuilder json(Iterable iterable, @DelegatesTo(value = StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
+    StreamingJsonBuilder json(Iterable iterable, @DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
         json.call(iterable.asList(), callable)
         return json
     }
@@ -160,8 +161,8 @@ abstract class JsonViewWritableScript extends AbstractWritableScript implements 
             def val = args[0]
             if (val instanceof JsonOutput.JsonUnescaped) {
                 this.json((JsonOutput.JsonUnescaped) val)
-            } else if (val instanceof JsonOutput.JsonWritable) {
-                this.json((JsonOutput.JsonWritable) val)
+            } else if (val instanceof JsonWritable) {
+                this.json((JsonWritable) val)
             } else {
                 json.call val
             }

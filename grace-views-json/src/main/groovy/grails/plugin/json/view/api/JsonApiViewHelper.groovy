@@ -17,8 +17,6 @@ package grails.plugin.json.view.api
 
 import groovy.transform.CompileStatic
 
-import grails.plugin.json.builder.JsonOutput
-
 /**
  * @author Colin Harrington
  * @since 2024.0.0
@@ -26,8 +24,8 @@ import grails.plugin.json.builder.JsonOutput
 @CompileStatic
 interface JsonApiViewHelper {
 
-    JsonOutput.JsonWritable render(Object object)
+    JsonWritable render(Object object)
 
-    JsonOutput.JsonWritable render(Object object, Map arguments)
+    JsonWritable render(Object object, Map arguments)
 
 }

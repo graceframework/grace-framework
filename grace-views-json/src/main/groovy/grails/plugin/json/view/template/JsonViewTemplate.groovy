@@ -15,9 +15,9 @@
  */
 package grails.plugin.json.view.template
 
+import groovy.json.JsonGenerator
 import groovy.transform.CompileStatic
 
-import grails.plugin.json.builder.JsonGenerator
 import grails.plugin.json.view.JsonViewWritableScript
 import grails.plugin.json.view.api.jsonapi.JsonApiIdRenderStrategy
 import grails.views.GrailsViewTemplate

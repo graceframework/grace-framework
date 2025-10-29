@@ -164,9 +164,7 @@ trait JsonViewTest {
     JsonRenderResult render(Map arguments, @DelegatesTo(TestRequestConfigurer) Closure configurer) {
         String viewUri
         if (arguments.template) {
-            viewUri = templateEngine
-                    .viewUriResolver
-                    .resolveTemplateUri(null, arguments.template.toString())
+            viewUri = templateEngine.viewUriResolver.resolveTemplateUri(null, arguments.template.toString())
         } else if (arguments.view) {
             viewUri = arguments.view.toString()
         } else {

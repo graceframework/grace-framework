@@ -15,6 +15,7 @@
  */
 package grails.plugin.json.view.api.internal
 
+import groovy.json.JsonGenerator
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.StackTraceUtils
 import org.springframework.http.HttpMethod
@@ -22,8 +23,8 @@ import org.springframework.validation.Errors
 import org.springframework.validation.FieldError
 import org.springframework.validation.ObjectError
 
-import grails.plugin.json.builder.JsonGenerator
-import grails.plugin.json.builder.JsonOutput
+import grails.plugin.json.util.JsonToken
+import grails.plugin.json.view.api.JsonWritable
 import grails.plugin.json.view.api.GrailsJsonViewHelper
 import grails.plugin.json.view.api.JsonApiViewHelper
 import grails.plugin.json.view.api.JsonView
@@ -63,43 +64,34 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
      */
     String PAGINATION = 'pagination'
 
-    public static final JsonOutput.JsonWritable NOOP_OUTPUT = new JsonOutput.JsonWritable() {
-
-        @Override
-        Writer writeTo(Writer out) throws IOException {
-            return out
-        }
-
-    }
-
     DefaultJsonApiViewHelper(JsonView view, GrailsJsonViewHelper viewHelper) {
         super(view)
         this.viewHelper = viewHelper
     }
 
     @Override
-    JsonOutput.JsonWritable render(Object object) {
+    JsonWritable render(Object object) {
         return render(object, [:])
     }
 
     @Override
-    JsonOutput.JsonWritable render(Object object, Map arguments) {
+    JsonWritable render(Object object, Map arguments) {
         if (object == null) {
-            return NULL_OUTPUT
+            return JsonWritable.NULL_OUTPUT
         }
-        JsonOutput.JsonWritable jsonWritable = new JsonOutput.JsonWritable() {
+        JsonWritable jsonWritable = new JsonWritable() {
 
             @Override
             @CompileStatic
             Writer writeTo(Writer out) throws IOException {
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.OPEN_BRACE)
                 def meta = arguments.get(META)
                 if (arguments.get(JSON_API_OBJECT)) {
                     renderJsonApiMember(out, meta)
-                    out.write(JsonOutput.COMMA)
+                    out.write(JsonToken.COMMA)
                 } else if (meta != null) {
                     renderMetaObject(out, meta)
-                    out.write(JsonOutput.COMMA)
+                    out.write(JsonToken.COMMA)
                 }
                 if (object instanceof Throwable) {
                     renderException(out, object)
@@ -107,11 +99,11 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                     renderErrors(object).writeTo(out)
                 } else {
                     renderData(object, arguments).writeTo(out)
-                    out.write(JsonOutput.COMMA)
+                    out.write(JsonToken.COMMA)
                     renderLinks(object, arguments).writeTo(out)
                     renderIncluded(object, arguments).writeTo(out)
                 }
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
                 return out
             }
 
@@ -153,12 +145,12 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
     private void writeKey(Writer out, Object key) {
         out.write(generator.toJson(key))
-        out.write(JsonOutput.COLON)
+        out.write(JsonToken.COLON)
     }
 
     private void writeKeyValue(Writer out, Object key, Object value) {
         out.write(generator.toJson(key))
-        out.write(JsonOutput.COLON)
+        out.write(JsonToken.COLON)
         out.write(generator.toJson(value))
     }
 
@@ -177,7 +169,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         List<String> excludes = getExcludes(arguments)
         boolean includeAssociations = includeAssociations(arguments)
 
-        out.write(JsonOutput.OPEN_BRACE)
+        out.write(JsonToken.OPEN_BRACE)
 
         writeKeyValue(out, 'type', entity.decapitalizedName)
 
@@ -185,7 +177,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         String idName = identity?.name
 
         if (idName != null) {
-            out.write(JsonOutput.COMMA)
+            out.write(JsonToken.COMMA)
             writeKeyValue(out, 'id', idGenerator.render(object, identity))
         }
 
@@ -194,10 +186,10 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
             List<Association> relationships = getRelationships(entity)
 
             if (attributes) {
-                out.write(JsonOutput.COMMA)
+                out.write(JsonToken.COMMA)
                 out.write(generator.toJson('attributes'))
-                out.write(JsonOutput.COLON)
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.COLON)
+                out.write(JsonToken.OPEN_BRACE)
 
                 boolean firstAttribute = true
                 for (persistentProperty in attributes) {
@@ -206,40 +198,40 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                     }
 
                     if (!firstAttribute) {
-                        out.write(JsonOutput.COMMA)
+                        out.write(JsonToken.COMMA)
                     }
 
                     out.write(generator.toJson(persistentProperty.name))
-                    out.write(JsonOutput.COLON)
+                    out.write(JsonToken.COLON)
 
                     Object prop = ((GroovyObject) object).getProperty(persistentProperty.name)
                     if (persistentProperty instanceof Embedded) {
                         renderEmbeddedEntity(prop, (Association) persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
                     } else if (persistentProperty instanceof EmbeddedCollection && prop instanceof Iterable) {
-                        out.write(JsonOutput.OPEN_BRACKET)
+                        out.write(JsonToken.OPEN_BRACKET)
                         Iterator iterator = ((Iterable) prop).iterator()
                         while (iterator.hasNext()) {
                             def o = iterator.next()
                             renderEmbeddedEntity(o, (Association) persistentProperty, out, "${basePath}${persistentProperty.name}.".toString(), includes, excludes)
                             if (iterator.hasNext()) {
-                                out.write(JsonOutput.COMMA)
+                                out.write(JsonToken.COMMA)
                             }
                         }
-                        out.write(JsonOutput.CLOSE_BRACKET)
+                        out.write(JsonToken.CLOSE_BRACKET)
                     } else {
                         out.write(generator.toJson(((GroovyObject) object).getProperty(persistentProperty.name)))
                     }
 
                     firstAttribute = false
                 }
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
             }
 
             if (relationships && includeAssociations) {
-                out.write(JsonOutput.COMMA)
+                out.write(JsonToken.COMMA)
                 out.write(generator.toJson('relationships'))
-                out.write(JsonOutput.COLON)
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.COLON)
+                out.write(JsonToken.OPEN_BRACE)
                 boolean firstRelationship = true
 
                 for (association in relationships) {
@@ -249,75 +241,75 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
                     def value = ((GroovyObject) object).getProperty(association.name)
                     if (!firstRelationship) {
-                        out.write(JsonOutput.COMMA)
+                        out.write(JsonToken.COMMA)
                     }
                     firstRelationship = false
                     out.write(generator.toJson(association.name))
-                    out.write(JsonOutput.COLON)
-                    out.write(JsonOutput.OPEN_BRACE)
+                    out.write(JsonToken.COLON)
+                    out.write(JsonToken.OPEN_BRACE)
 
                     if (association instanceof ToOne && value != null) {
                         renderRelationshipLinks(value).writeTo(out)
-                        out.write(JsonOutput.COMMA)
+                        out.write(JsonToken.COMMA)
                     }
 
                     out.write(generator.toJson('data'))
-                    out.write(JsonOutput.COLON)
+                    out.write(JsonToken.COLON)
                     PersistentEntity associatedEntity = association.associatedEntity
                     if (association instanceof ToMany && Iterable.isAssignableFrom(association.type)) {
-                        out.write(JsonOutput.OPEN_BRACKET)
+                        out.write(JsonToken.OPEN_BRACKET)
                         if (value != null) {
                             Iterator iterator = ((Iterable) value).iterator()
                             String type = associatedEntity.decapitalizedName
 
                             while (iterator.hasNext()) {
                                 def o = iterator.next()
-                                out.write(JsonOutput.OPEN_BRACE)
+                                out.write(JsonToken.OPEN_BRACE)
                                 writeKeyValue(out, 'type', type)
-                                out.write(JsonOutput.COMMA)
+                                out.write(JsonToken.COMMA)
                                 writeKeyValue(out, 'id', idGenerator.render(o, associatedEntity.identity))
-                                out.write(JsonOutput.CLOSE_BRACE)
+                                out.write(JsonToken.CLOSE_BRACE)
                                 if (iterator.hasNext()) {
-                                    out.write(JsonOutput.COMMA)
+                                    out.write(JsonToken.COMMA)
                                 }
                             }
                         }
 
-                        out.write(JsonOutput.CLOSE_BRACKET)
+                        out.write(JsonToken.CLOSE_BRACKET)
                     } else {
                         if (value != null) {
-                            out.write(JsonOutput.OPEN_BRACE)
+                            out.write(JsonToken.OPEN_BRACE)
 
                             out.write(generator.toJson('type'))
-                            out.write(JsonOutput.COLON)
+                            out.write(JsonToken.COLON)
                             out.write(generator.toJson(associatedEntity.decapitalizedName))
-                            out.write(JsonOutput.COMMA)
+                            out.write(JsonToken.COMMA)
 
                             out.write(generator.toJson('id'))
-                            out.write(JsonOutput.COLON)
+                            out.write(JsonToken.COLON)
                             out.write(generator.toJson(idGenerator.render(value, associatedEntity.identity)))
 
-                            out.write(JsonOutput.CLOSE_BRACE)
+                            out.write(JsonToken.CLOSE_BRACE)
                         } else {
-                            NULL_OUTPUT.writeTo(out)
+                            JsonWritable.NULL_OUTPUT.writeTo(out)
                         }
                     }
-                    out.write(JsonOutput.CLOSE_BRACE)
+                    out.write(JsonToken.CLOSE_BRACE)
                 }
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
             }
         }
 
         if (basePath != '') {
-            out.write(JsonOutput.COMMA)
+            out.write(JsonToken.COMMA)
             renderRelationshipLinks(object).writeTo(out)
         }
-        out.write(JsonOutput.CLOSE_BRACE)
+        out.write(JsonToken.CLOSE_BRACE)
     }
 
     private void renderEmbeddedEntity(Object object, Association property, Writer out, String basePath, List<String> includes, List<String> excludes) {
         PersistentEntity persistentEntity = property.getAssociatedEntity()
-        out.write(JsonOutput.OPEN_BRACE)
+        out.write(JsonToken.OPEN_BRACE)
         boolean firstAttribute = true
         for (PersistentProperty prop : persistentEntity.getPersistentProperties()) {
             String qualified = "${basePath}${prop.name}"
@@ -327,38 +319,38 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
             }
 
             if (!firstAttribute) {
-                out.write(JsonOutput.COMMA)
+                out.write(JsonToken.COMMA)
             }
 
             out.write(generator.toJson(prop.name))
-            out.write(JsonOutput.COLON)
+            out.write(JsonToken.COLON)
             out.write(generator.toJson(((GroovyObject) object).getProperty(prop.name)))
 
             firstAttribute = false
         }
-        out.write(JsonOutput.CLOSE_BRACE)
+        out.write(JsonToken.CLOSE_BRACE)
     }
 
-    private JsonOutput.JsonWritable renderData(Object object, Map arguments) {
+    private JsonWritable renderData(Object object, Map arguments) {
         JsonGenerator generator = getGenerator()
-        new JsonOutput.JsonWritable() {
+        new JsonWritable() {
 
             @Override
             Writer writeTo(Writer out) throws IOException {
                 out.write(generator.toJson('data'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
 
                 if (object instanceof Collection) {
-                    out.write(JsonOutput.OPEN_BRACKET)
+                    out.write(JsonToken.OPEN_BRACKET)
                     boolean first = true
                     for (o in object) {
                         if (!first) {
-                            out.write(JsonOutput.COMMA)
+                            out.write(JsonToken.COMMA)
                         }
                         first = false
                         renderResource(o, out, arguments, '')
                     }
-                    out.write(JsonOutput.CLOSE_BRACKET)
+                    out.write(JsonToken.CLOSE_BRACKET)
                 } else {
                     renderResource(object, out, arguments, '')
                 }
@@ -368,110 +360,110 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         }
     }
 
-    JsonOutput.JsonWritable renderErrors(Object object) {
+    JsonWritable renderErrors(Object object) {
         JsonGenerator generator = getGenerator()
-        JsonOutput.JsonWritable writable = new JsonOutput.JsonWritable() {
+        JsonWritable writable = new JsonWritable() {
 
             @Override
             Writer writeTo(Writer out) throws IOException {
                 out.write(generator.toJson('errors'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
 
                 Errors errors = (Errors) object.getAt('errors')
 
-                out.write(JsonOutput.OPEN_BRACKET)
+                out.write(JsonToken.OPEN_BRACKET)
 
                 List<ObjectError> allErrors = errors.allErrors
                 allErrors.eachWithIndex { ObjectError error, int idx ->
                     this.writeError(out, error)
                     if (idx < allErrors.size() - 1) {
-                        out.write(JsonOutput.COMMA)
+                        out.write(JsonToken.COMMA)
                     }
                 }
 
-                out.write(JsonOutput.CLOSE_BRACKET)
+                out.write(JsonToken.CLOSE_BRACKET)
 
                 return out
             }
 
             protected writeError(Writer out, ObjectError error) {
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.OPEN_BRACE)
                 out.write(generator.toJson('code'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
                 out.write(generator.toJson(error.code))
-                out.write(JsonOutput.COMMA)
+                out.write(JsonToken.COMMA)
 
                 out.write(generator.toJson('detail'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
                 out.write(generator.toJson(message([error: error])))
-                out.write(JsonOutput.COMMA)
+                out.write(JsonToken.COMMA)
 
                 out.write(generator.toJson('source'))
-                out.write(JsonOutput.COLON)
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.COLON)
+                out.write(JsonToken.OPEN_BRACE)
 
                 out.write(generator.toJson('object'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
                 out.write(generator.toJson(error.getObjectName()))
-                out.write(JsonOutput.COMMA)
+                out.write(JsonToken.COMMA)
 
                 if (error instanceof FieldError) {
                     FieldError fieldError = (FieldError) error
 
                     out.write(generator.toJson('field'))
-                    out.write(JsonOutput.COLON)
+                    out.write(JsonToken.COLON)
                     out.write(generator.toJson(fieldError.getField()))
-                    out.write(JsonOutput.COMMA)
+                    out.write(JsonToken.COMMA)
 
                     out.write(generator.toJson('rejectedValue'))
-                    out.write(JsonOutput.COLON)
+                    out.write(JsonToken.COLON)
                     out.write(generator.toJson(fieldError.getRejectedValue()))
-                    out.write(JsonOutput.COMMA)
+                    out.write(JsonToken.COMMA)
 
                     out.write(generator.toJson('bindingError'))
-                    out.write(JsonOutput.COLON)
+                    out.write(JsonToken.COLON)
                     out.write(generator.toJson(fieldError.isBindingFailure()))
                 }
 
-                out.write(JsonOutput.CLOSE_BRACE)//source
-                out.write(JsonOutput.CLOSE_BRACE)//error
+                out.write(JsonToken.CLOSE_BRACE)//source
+                out.write(JsonToken.CLOSE_BRACE)//error
             }
 
         }
         return writable
     }
 
-    JsonOutput.JsonWritable renderRelationshipLinks(Object object) {
+    JsonWritable renderRelationshipLinks(Object object) {
         JsonGenerator generator = getGenerator()
-        new JsonOutput.JsonWritable() {
+        new JsonWritable() {
 
             @Override
             Writer writeTo(Writer out) throws IOException {
                 out.write(generator.toJson('links'))
-                out.write(JsonOutput.COLON)
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.COLON)
+                out.write(JsonToken.OPEN_BRACE)
                 out.write(generator.toJson('self'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
                 out.write(generator.toJson(view.linkGenerator.link(resource: object, method: HttpMethod.GET)))
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
                 out
             }
 
         }
     }
 
-    JsonOutput.JsonWritable renderLinks(Object object, Map arguments) {
+    JsonWritable renderLinks(Object object, Map arguments) {
         JsonGenerator generator = getGenerator()
-        JsonOutput.JsonWritable writable = new JsonOutput.JsonWritable() {
+        JsonWritable writable = new JsonWritable() {
 
             @Override
             Writer writeTo(Writer out) throws IOException {
                 out.write(generator.toJson('links'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
 
-                out.write(JsonOutput.OPEN_BRACE)
+                out.write(JsonToken.OPEN_BRACE)
                 out.write(generator.toJson('self'))
-                out.write(JsonOutput.COLON)
+                out.write(JsonToken.COLON)
 
                 if (object instanceof Collection) {
                     out.write(generator.toJson(view.request.uri))
@@ -486,7 +478,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                         Parameters params = defaultPaginateParams(paginationArgs)
                         List<Link> links = getPaginationLinks(resource, total, params)
                         for (link in links) {
-                            out.write(JsonOutput.COMMA)
+                            out.write(JsonToken.COMMA)
                             writeKeyValue(out, link.rel, link.href)
                         }
                     }
@@ -494,7 +486,7 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                     out.write(generator.toJson(view.linkGenerator.link(resource: object, method: HttpMethod.GET)))
                 }
 
-                out.write(JsonOutput.CLOSE_BRACE)
+                out.write(JsonToken.CLOSE_BRACE)
                 return out
             }
 
@@ -502,28 +494,28 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
         return writable
     }
 
-    JsonOutput.JsonWritable renderIncluded(Object object, Map arguments) {
+    JsonWritable renderIncluded(Object object, Map arguments) {
         List<String> expandProperties = getExpandProperties((JsonView) view, arguments)
         if (!expandProperties.empty && includeAssociations(arguments)) {
-            new JsonOutput.JsonWritable() {
+            new JsonWritable() {
 
                 @Override
                 Writer writeTo(Writer out) throws IOException {
-                    out.write(JsonOutput.COMMA)
+                    out.write(JsonToken.COMMA)
                     writeKey(out, 'included')
-                    out.write(JsonOutput.OPEN_BRACKET)
+                    out.write(JsonToken.OPEN_BRACKET)
                     boolean first = true
 
                     for (String prop in expandProperties) {
                         if (!first) {
-                            out.write(JsonOutput.COMMA)
+                            out.write(JsonToken.COMMA)
                         }
                         Object itemToInclude = object.getAt(prop)
 
                         if (itemToInclude instanceof Collection) {
                             for (o in itemToInclude) {
                                 if (!first) {
-                                    out.write(JsonOutput.COMMA)
+                                    out.write(JsonToken.COMMA)
                                 }
                                 first = false
                                 renderResource(o, out, arguments, "${prop}.")
@@ -533,13 +525,13 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
                         }
                         first = false
                     }
-                    out.write(JsonOutput.CLOSE_BRACKET)
+                    out.write(JsonToken.CLOSE_BRACKET)
                     out
                 }
 
             }
         } else {
-            return NOOP_OUTPUT
+            return JsonWritable.NOOP_OUTPUT
         }
     }
 
@@ -550,13 +542,13 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
     void renderJsonApiMember(Writer out, Object meta) {
         writeKey(out, 'jsonapi')
-        out.write(JsonOutput.OPEN_BRACE)
+        out.write(JsonToken.OPEN_BRACE)
         writeKeyValue(out, 'version', '1.0')
         if (meta != null) {
-            out.write(JsonOutput.COMMA)
+            out.write(JsonToken.COMMA)
             renderMetaObject(out, meta)
         }
-        out.write(JsonOutput.CLOSE_BRACE)
+        out.write(JsonToken.CLOSE_BRACE)
     }
 
     void renderException(Writer out, Throwable object) {
@@ -564,22 +556,22 @@ class DefaultJsonApiViewHelper extends DefaultJsonViewHelper implements JsonApiV
 
         StackTraceUtils.sanitize(object)
         out.write(generator.toJson('errors'))
-        out.write(JsonOutput.COLON)
-        out.write(JsonOutput.OPEN_BRACKET)
-        out.write(JsonOutput.OPEN_BRACE)
+        out.write(JsonToken.COLON)
+        out.write(JsonToken.OPEN_BRACKET)
+        out.write(JsonToken.OPEN_BRACE)
         writeKeyValue(out, 'status', 500)
-        out.write(JsonOutput.COMMA)
+        out.write(JsonToken.COMMA)
         writeKeyValue(out, 'title', object.class.name)
-        out.write(JsonOutput.COMMA)
+        out.write(JsonToken.COMMA)
         writeKeyValue(out, 'detail', object.localizedMessage)
-        out.write(JsonOutput.COMMA)
+        out.write(JsonToken.COMMA)
         out.write(generator.toJson('source'))
-        out.write(JsonOutput.COLON)
-        out.write(JsonOutput.OPEN_BRACE)
+        out.write(JsonToken.COLON)
+        out.write(JsonToken.OPEN_BRACE)
         writeKeyValue(out, 'stacktrace', getJsonStackTrace(object))
-        out.write(JsonOutput.CLOSE_BRACE)//source
-        out.write(JsonOutput.CLOSE_BRACE)//error
-        out.write(JsonOutput.CLOSE_BRACKET)
+        out.write(JsonToken.CLOSE_BRACE)//source
+        out.write(JsonToken.CLOSE_BRACE)//error
+        out.write(JsonToken.CLOSE_BRACKET)
     }
 
     JsonApiIdRenderStrategy getIdGenerator() {

@@ -15,6 +15,7 @@
  */
 package grails.plugin.json.view.internal
 
+import groovy.json.StreamingJsonBuilder
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.MethodNode
@@ -23,7 +24,6 @@ import org.codehaus.groovy.ast.expr.PropertyExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.control.SourceUnit
 
-import grails.plugin.json.builder.StreamingJsonBuilder
 import grails.plugin.json.view.api.internal.TemplateRenderer
 import grails.views.api.http.Parameters
 import grails.views.compiler.BuilderTypeCheckingExtension

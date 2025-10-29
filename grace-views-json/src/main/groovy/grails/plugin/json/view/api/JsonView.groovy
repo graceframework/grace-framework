@@ -15,10 +15,10 @@
  */
 package grails.plugin.json.view.api
 
+import groovy.json.JsonGenerator
+import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileStatic
 
-import grails.plugin.json.builder.JsonGenerator
-import grails.plugin.json.builder.StreamingJsonBuilder
 import grails.plugin.json.view.api.internal.DefaultGrailsJsonViewHelper
 import grails.plugin.json.view.api.internal.DefaultHalViewHelper
 import grails.plugin.json.view.api.internal.DefaultJsonApiViewHelper

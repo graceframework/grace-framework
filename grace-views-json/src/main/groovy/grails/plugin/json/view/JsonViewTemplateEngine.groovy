@@ -15,6 +15,7 @@
  */
 package grails.plugin.json.view
 
+import groovy.json.JsonGenerator
 import groovy.text.Template
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
@@ -22,7 +23,6 @@ import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.OrderComparator
 
-import grails.plugin.json.builder.JsonGenerator
 import grails.plugin.json.converters.InstantJsonConverter
 import grails.plugin.json.converters.LocalDateJsonConverter
 import grails.plugin.json.converters.LocalDateTimeJsonConverter
