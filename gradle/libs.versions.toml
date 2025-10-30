@@ -21,8 +21,6 @@ grace-data = "2024.0.0-SNAPSHOT"
 grace-data-hibernate = "2024.0.0-SNAPSHOT"
 grace-data-mongodb = "2024.0.0-SNAPSHOT"
 grace-doc-engine = "2.0.0-M1"
-grace-scaffolding = "7.0.0-SNAPSHOT"
-grace-views = "6.3.0"
 groovy = "4.0.28"
 gson = "2.11.0"
 h2 = "2.3.232"
@@ -98,7 +96,6 @@ grace-events-rxjava3 = { module = "org.graceframework.events:grace-events-rxjava
 grace-events-spring = { module = "org.graceframework.events:grace-events-spring", version.ref = "grace-events" }
 grace-events-transform = { module = "org.graceframework.events:grace-events-transform", version.ref = "grace-events" }
 grace-datastore-core = { module = "org.graceframework:grace-datastore-core", version.ref = "grace-data" }
-grace-datastore-async = { module = "org.graceframework:grace-datastore-async", version.ref = "grace-data" }
 grace-datastore-gorm = { module = "org.graceframework:grace-datastore-gorm", version.ref = "grace-data" }
 grace-datastore-gorm-async = { module = "org.graceframework:grace-datastore-gorm-async", version.ref = "grace-data" }
 grace-datastore-gorm-bson = { module = "org.graceframework:grace-datastore-gorm-bson", version.ref = "grace-data-mongodb" }
@@ -111,14 +108,6 @@ grace-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-
 grace-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-data" }
 grace-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-data" }
 grace-doc-engine = { module = "org.graceframework:grace-doc-engine", version.ref = "grace-doc-engine" }
-grace-scaffolding-core = { module = "org.graceframework:grace-scaffolding-core", version.ref = "grace-scaffolding" }
-grace-views-core = { module = "org.graceframework:views-core", version.ref = "grace-views" }
-grace-views-component = { module = "org.graceframework.plugins:views-component", version.ref = "grace-views" }
-grace-views-gradle = { module = "org.graceframework.plugins:views-gradle", version.ref = "grace-views" }
-grace-views-json = { module = "org.graceframework.plugins:views-json", version.ref = "grace-views" }
-grace-views-json-templates = { module = "org.graceframework.plugins:views-json-templates", version.ref = "grace-views" }
-grace-views-json-testing-support = { module = "org.graceframework:views-json-testing-support", version.ref = "grace-views" }
-grace-views-markup = { module = "org.graceframework.plugins:views-markup", version.ref = "grace-views" }
 groovy-ant = { module = "org.apache.groovy:groovy-ant", version.ref = "groovy" }
 groovy-bom = { module = "org.apache.groovy:groovy-bom", version.ref = "groovy" }
 groovy-console = { module = "org.apache.groovy:groovy-console", version.ref = "groovy" }
@@ -230,9 +219,7 @@ boms = ["groovy-bom", "spring-framework-bom", "spring-boot-dependencies"]
 grace-async-bundle = ["grace-async-core", "grace-async-gpars", "grace-async-rxjava", "grace-async-rxjava2", "grace-async-rxjava3"]
 grace-dependencies-bundle = ["commons-text", "commons-validator", "gpars", "rxjava", "rxjava2", "rxjava3"]
 grace-events-bundle = ["grace-events-core", "grace-events-gpars", "grace-events-rxjava", "grace-events-rxjava2", "grace-events-rxjava3", "grace-events-spring", "grace-events-transform"]
-grace-data-bundle = ["grace-datastore-core", "grace-datastore-async", "grace-datastore-gorm", "grace-datastore-gorm-async", "grace-datastore-gorm-bson", "grace-datastore-gorm-hibernate", "grace-datastore-gorm-mongodb", "grace-datastore-gorm-mongodb-ext", "grace-datastore-gorm-support", "grace-datastore-gorm-tck", "grace-datastore-gorm-test", "grace-datastore-gorm-validation", "grace-datastore-web"]
-grace-scaffolding-bundle = ["grace-scaffolding-core"]
-grace-views-bundle = ["grace-views-component", "grace-views-core", "grace-views-gradle", "grace-views-json", "grace-views-json-templates", "grace-views-json-testing-support", "grace-views-markup"]
+grace-data-bundle = ["grace-datastore-core", "grace-datastore-gorm", "grace-datastore-gorm-async", "grace-datastore-gorm-bson", "grace-datastore-gorm-hibernate", "grace-datastore-gorm-mongodb", "grace-datastore-gorm-mongodb-ext", "grace-datastore-gorm-support", "grace-datastore-gorm-tck", "grace-datastore-gorm-test", "grace-datastore-gorm-validation", "grace-datastore-web"]
 groovy-bundle = ["groovy-bom"]
 h2-bundle = ["h2"]
 jakarta-bundle = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]

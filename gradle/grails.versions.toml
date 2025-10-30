@@ -1,12 +1,9 @@
 [plugins]
 asset-pipeline = "7.0.0-M1"
-cache = "7.0.0-SNAPSHOT"
 database-migration = "7.0.0-SNAPSHOT"
-fields = "7.0.0-SNAPSHOT"
 geb = "7.0.0-SNAPSHOT"
 hibernate = "2024.0.0-SNAPSHOT"
 mongodb = "2024.0.0-SNAPSHOT"
-scaffolding = "7.0.0-SNAPSHOT"
 
 [profiles]
 base = "2024.0.0-SNAPSHOT"
