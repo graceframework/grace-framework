@@ -10,6 +10,6 @@ contributor([gdslScriptContext]) {
     property name: "controllerNamespace", type: "java.lang.String"
     property name: "controllerName", type: "java.lang.String"
     property name: "actionName", type: "java.lang.String"
-    property name: "templateEngine", type: "grails.plugin.markup.view.MarkupViewTemplateEngine"
+    property name: "templateEngine", type: "org.grails.views.markup.MarkupViewTemplateEngine"
     property name: "mimeUtility", type: "grails.web.mime.MimeUtility"
 }

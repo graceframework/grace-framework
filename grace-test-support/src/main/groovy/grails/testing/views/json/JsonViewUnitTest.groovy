@@ -1,16 +1,17 @@
 package grails.testing.views.json
 
-import grails.plugin.json.view.JsonViewTemplateEngine
-import grails.plugin.json.view.api.JsonView
-import grails.plugin.json.view.test.JsonRenderResult
-import grails.plugin.json.view.test.TestRequestConfigurer
 import grails.views.api.HttpView
 import grails.views.api.http.Response
 import groovy.json.JsonSlurper
 import groovy.text.Template
+import org.springframework.http.HttpStatus
+
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.testing.GrailsUnitTest
-import org.springframework.http.HttpStatus
+import org.grails.views.json.JsonViewTemplateEngine
+import org.grails.views.json.api.JsonView
+import org.grails.views.json.test.JsonRenderResult
+import org.grails.views.json.test.TestRequestConfigurer
 
 trait JsonViewUnitTest extends GrailsUnitTest {
 

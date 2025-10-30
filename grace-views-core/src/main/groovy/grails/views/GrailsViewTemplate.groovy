@@ -20,16 +20,15 @@ import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.springframework.context.MessageSource
 
-import grails.core.support.proxy.DefaultProxyHandler
 import grails.core.support.proxy.ProxyHandler
 import grails.web.mapping.LinkGenerator
 import grails.web.mime.MimeUtility
 
-import org.grails.datastore.gorm.proxy.ProxyHandlerAdapter
 import org.grails.datastore.mapping.model.MappingContext
 
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @InheritConstructors
@@ -44,19 +43,7 @@ class GrailsViewTemplate extends WritableScriptTemplate {
     /**
      * Handlers for proxies
      */
-    @Lazy
-    ProxyHandler proxyHandler = {
-        if (mappingContext != null) {
-            def proxyHandler = mappingContext.getProxyHandler()
-            if (proxyHandler != null) {
-                return (ProxyHandler) new ProxyHandlerAdapter(proxyHandler)
-            } else {
-                return (ProxyHandler) new DefaultProxyHandler()
-            }
-        } else {
-            return (ProxyHandler) new DefaultProxyHandler()
-        }
-    }()
+    ProxyHandler proxyHandler
 
     /**
      * The link generator

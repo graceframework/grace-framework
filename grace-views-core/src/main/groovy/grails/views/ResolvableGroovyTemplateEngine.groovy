@@ -42,6 +42,7 @@ import grails.views.resolve.TemplateResolverUtils
 import grails.web.mapping.LinkGenerator
 import grails.web.mime.MimeUtility
 
+import org.grails.datastore.gorm.proxy.ProxyHandlerAdapter
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.web.mime.DefaultMimeUtility
 
@@ -49,6 +50,7 @@ import org.grails.web.mime.DefaultMimeUtility
  * A TemplateEngine that can resolve templates using the configured TemplateResolver
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -269,6 +271,11 @@ abstract class ResolvableGroovyTemplateEngine extends TemplateEngine {
         template.setMimeUtility(mimeUtility)
         template.setLinkGenerator(linkGenerator)
         template.setMappingContext(mappingContext)
+        if (mappingContext?.proxyHandler) {
+            template.setProxyHandler((ProxyHandler) new ProxyHandlerAdapter(mappingContext.proxyHandler))
+        } else {
+            template.setProxyHandler(proxyHandler ?: new DefaultProxyHandler())
+        }
         template.setTemplateEngine(this)
         template.setUseAbsoluteLinks(viewConfiguration.useAbsoluteLinks)
         return template

@@ -1,4 +1,4 @@
-import grails.plugin.json.view.Player
+import org.grails.views.json.Player
 import groovy.transform.Field
 
 inherits(template: 'parent2')

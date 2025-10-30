@@ -27,6 +27,7 @@ import org.grails.gradle.plugin.web.views.AbstractGroovyTemplateCompileTask
  * Concrete implementation that compiles JSON templates
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -46,13 +47,13 @@ class JsonViewCompilerTask extends AbstractGroovyTemplateCompileTask {
     @Input
     @Override
     String getScriptBaseName() {
-        'grails.plugin.json.view.JsonViewTemplate'
+        'org.grails.views.json.JsonViewTemplate'
     }
 
     @Input
     @Override
     protected String getCompilerName() {
-        'grails.plugin.json.view.JsonViewCompiler'
+        'org.grails.views.json.JsonViewCompiler'
     }
 
 }

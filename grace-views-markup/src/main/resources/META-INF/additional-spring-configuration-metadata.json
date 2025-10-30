@@ -4,59 +4,59 @@
     {
       "name": "grails.views.markup.allow-resource-expansion",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether resource expansion is allowed.",
       "defaultValue": true
     },
     {
       "name": "grails.views.markup.base-template-class",
       "type": "java.lang.Class<? extends groovy.text.markup.BaseTemplate>",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The template base class."
     },
     {
       "name": "grails.views.markup.cache",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether the cache templates.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.compile-static",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether to compile templates statically.",
       "defaultValue": true
     },
     {
       "name": "grails.views.markup.enable-reloading",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether to enable reloading.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.encoding",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The encoding to use.",
       "defaultValue": "UTF-8"
     },
     {
       "name": "grails.views.markup.extension",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The file extension of the templates."
     },
     {
       "name": "grails.views.markup.mime-types",
       "type": "java.util.List<java.lang.String>",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration"
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration"
     },
     {
       "name": "grails.views.markup.package-imports",
       "type": "java.lang.String[]",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The default package imports.",
       "defaultValue": [
         "groovy.transform"
@@ -65,20 +65,20 @@
     {
       "name": "grails.views.markup.package-name",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The package name to use."
     },
     {
       "name": "grails.views.markup.pretty-print",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether to pretty print.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.static-imports",
       "type": "java.lang.String[]",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The default static imports.",
       "defaultValue": [
         "org.springframework.http.HttpStatus",
@@ -89,80 +89,80 @@
     {
       "name": "grails.views.markup.template-path",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The path to the templates."
     },
     {
       "name": "grails.views.markup.use-absolute-links",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether to use absolute links.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.declaration-encoding",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The encoding used in the declaration header."
     },
     {
       "name": "grails.views.markup.expand-empty-elements",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether elements without body should be written in the short form or in an expanded form.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.use-double-quotes",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether attributes use double quotes instead of single quotes.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.new-line-string",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The new line string."
     },
     {
       "name": "grails.views.markup.auto-escape",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether variables in the model which are assignable to should be automatically escaped.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.auto-indent",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether the template engine to render indents automatically.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.auto-indent-string",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "The indents are inserted after each call to newLine string."
     },
     {
       "name": "grails.views.markup.auto-new-line",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether the template engine to render new line automatically.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.cache-templates",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration",
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration",
       "description": "Whether to enable caching compiled templates, recommended to keep this flag to true in production.",
       "defaultValue": false
     },
     {
       "name": "grails.views.markup.locale",
       "type": "java.util.Locale",
-      "sourceType": "grails.plugin.markup.view.MarkupViewConfiguration"
+      "sourceType": "org.grails.views.markup.MarkupViewConfiguration"
     }
   ],
   "hints": []

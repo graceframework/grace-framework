@@ -1,0 +1,47 @@
+package org.grails.views.json
+
+import spock.lang.Specification
+
+import org.grails.views.json.test.JsonViewTest
+
+/**
+ * Created by graemerocher on 24/05/16.
+ */
+class TemplateInheritanceSpec extends Specification implements JsonViewTest {
+
+    void 'test extending another template'() {
+        when:
+        def result = render(template: 'child2', model: [player: new Player(name: 'Cantona')])
+
+        then:
+        result.jsonText == '{"_links":{"self":{"href":"http://localhost:8080/player","hreflang":"en","type":"application/hal+json"}},"foo":"bar","name":"Cantona"}'
+    }
+
+    void 'test extending another template that uses g.render(..)'() {
+        when:
+        def player = new Player(name: 'Cantona')
+        player.id = 1L
+        def result = render(template: 'child3', model: [player: player])
+
+        then:
+        result.jsonText == '{"id":1,"name":"Cantona"}'
+    }
+
+    void 'test extending another template and rendering a JSON block'() {
+        when:
+        def result = render(template: 'child4', model: [player: new Player(name: 'Cantona')])
+
+        then:
+        result.jsonText == '{"_links":{"self":{"href":"http://localhost:8080/player","hreflang":"en","type":"application/hal+json"}},"foo":"bar","name":"Cantona"}'
+    }
+
+    void 'test circular rendering is handled'() {
+        when:
+        def result = render(template: 'circular/circular', model: [circular: new Circular(name: 'Cantona')])
+
+        then:
+        notThrown(StackOverflowError)
+        result.jsonText == '{"name":"Cantona"}'
+    }
+
+}

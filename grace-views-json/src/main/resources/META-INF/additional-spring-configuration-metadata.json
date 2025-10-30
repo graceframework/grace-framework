@@ -4,59 +4,59 @@
     {
       "name": "grails.views.json.allow-resource-expansion",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "Whether resource expansion is allowed.",
       "defaultValue": true
     },
     {
       "name": "grails.views.json.base-template-class",
       "type": "java.lang.Class<? extends groovy.text.markup.BaseTemplate>",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The template base class."
     },
     {
       "name": "grails.views.json.cache",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "Whether the cache templates.",
       "defaultValue": false
     },
     {
       "name": "grails.views.json.compile-static",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "Whether to compile templates statically.",
       "defaultValue": true
     },
     {
       "name": "grails.views.json.enable-reloading",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "Whether to enable reloading.",
       "defaultValue": false
     },
     {
       "name": "grails.views.json.encoding",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The encoding to use.",
       "defaultValue": "UTF-8"
     },
     {
       "name": "grails.views.json.extension",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The file extension of the templates."
     },
     {
       "name": "grails.views.json.mime-types",
       "type": "java.util.List<java.lang.String>",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration"
+      "sourceType": "org.grails.views.json.JsonViewConfiguration"
     },
     {
       "name": "grails.views.json.package-imports",
       "type": "java.lang.String[]",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The default package imports.",
       "defaultValue": [
         "groovy.transform"
@@ -65,20 +65,20 @@
     {
       "name": "grails.views.json.package-name",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The package name to use."
     },
     {
       "name": "grails.views.json.pretty-print",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "Whether to pretty print.",
       "defaultValue": false
     },
     {
       "name": "grails.views.json.static-imports",
       "type": "java.lang.String[]",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The default static imports.",
       "defaultValue": [
         "org.springframework.http.HttpStatus",
@@ -89,13 +89,13 @@
     {
       "name": "grails.views.json.template-path",
       "type": "java.lang.String",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "The path to the templates."
     },
     {
       "name": "grails.views.json.use-absolute-links",
       "type": "java.lang.Boolean",
-      "sourceType": "grails.plugin.json.view.JsonViewConfiguration",
+      "sourceType": "org.grails.views.json.JsonViewConfiguration",
       "description": "Whether to use absolute links.",
       "defaultValue": false
     }

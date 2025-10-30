@@ -2,7 +2,7 @@ def gdslScriptContext = context(scope: scriptScope(), filetypes: ["gson"])
 
 contributor([gdslScriptContext]) {
     // the delegate type
-    delegatesTo(findClass("grails.plugin.json.view.api.JsonView"))
+    delegatesTo(findClass("org.grails.views.json.api.JsonView"))
 
     // constants
     property name:"GET", type:"org.springframework.http.HttpMethod.GET"
@@ -13,5 +13,4 @@ contributor([gdslScriptContext]) {
     property name:"DELETE", type:"org.springframework.http.HttpMethod.DELETE"
     property name:"HEAD", type:"org.springframework.http.HttpMethod.HEAD"
     property name:"TRACE", type:"org.springframework.http.HttpMethod.TRACE"
-
 }

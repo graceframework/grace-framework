@@ -1,4 +1,4 @@
-import grails.plugin.json.view.Circular
+import org.grails.views.json.Circular
 import groovy.transform.Field
 
 @Field Circular circular

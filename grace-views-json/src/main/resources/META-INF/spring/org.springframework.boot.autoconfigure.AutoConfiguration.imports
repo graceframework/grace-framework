@@ -1,1 +1,1 @@
-grails.plugin.json.view.JsonViewAutoConfiguration
+org.grails.views.json.JsonViewAutoConfiguration

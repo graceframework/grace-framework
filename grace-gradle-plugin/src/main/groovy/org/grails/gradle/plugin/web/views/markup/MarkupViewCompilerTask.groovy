@@ -27,6 +27,7 @@ import org.grails.gradle.plugin.web.views.AbstractGroovyTemplateCompileTask
  * MarkupView compiler task for Gradle
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -46,13 +47,13 @@ class MarkupViewCompilerTask extends AbstractGroovyTemplateCompileTask {
     @Input
     @Override
     String getScriptBaseName() {
-        'grails.plugin.markup.view.MarkupViewTemplate'
+        'org.grails.views.markup.MarkupViewTemplate'
     }
 
     @Input
     @Override
     protected String getCompilerName() {
-        'grails.plugin.markup.view.MarkupViewCompiler'
+        'org.grails.views.markup.MarkupViewCompiler'
     }
 
 }

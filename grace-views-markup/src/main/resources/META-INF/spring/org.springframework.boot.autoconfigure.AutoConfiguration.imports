@@ -1,1 +1,1 @@
-grails.plugin.markup.view.MarkupViewAutoConfiguration
+org.grails.views.markup.MarkupViewAutoConfiguration

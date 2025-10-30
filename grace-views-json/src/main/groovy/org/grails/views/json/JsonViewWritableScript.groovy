@@ -1,0 +1,202 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.grails.views.json
+
+import groovy.json.JsonOutput
+import groovy.json.StreamingJsonBuilder
+import groovy.transform.CompileStatic
+
+import grails.util.GrailsNameUtils
+import grails.views.AbstractWritableScript
+import grails.views.api.GrailsView
+
+import org.grails.buffer.FastStringWriter
+import org.grails.views.json.util.JsonToken
+import org.grails.views.json.api.JsonWritable
+import org.grails.views.json.api.JsonView
+import org.grails.views.json.api.internal.DefaultGrailsJsonViewHelper
+
+/**
+ * @since 2024.0.0
+ */
+@CompileStatic
+abstract class JsonViewWritableScript extends AbstractWritableScript implements JsonView {
+
+    public static final String EXTENSION = 'gson'
+    public static final String TYPE = 'view.gson'
+
+    Object root
+    boolean inline = false
+
+    @Override
+    Writer doWrite(Writer out) throws IOException {
+        if (prettyPrint) {
+            FastStringWriter writer = new FastStringWriter()
+            setOut(writer)
+            this.json = new StreamingJsonBuilder(writer, this.generator)
+            run()
+            String prettyOutput = JsonOutput.prettyPrint(writer.toString())
+            out.write(prettyOutput)
+            return out
+        } else {
+            this.json = new StreamingJsonBuilder(out, this.generator)
+            run()
+            return out
+        }
+    }
+
+    /**
+     * Use StreamingJsonBuilder from groovy-json
+     *
+     * @param callable the closure
+     * @return The json builder
+     */
+    StreamingJsonBuilder json(@DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
+        if (parentTemplate != null) {
+            if (!inline) {
+                out.write(JsonToken.OPEN_BRACE)
+            }
+            GrailsView parentWritable = prepareParentWritable()
+            parentWritable.writeTo(out)
+            resetProcessedObjects()
+            def jsonDelegate = new StreamingJsonBuilder.StreamingJsonDelegate(out, false, generator)
+            callable.setDelegate(jsonDelegate)
+            callable.call()
+            if (!inline) {
+                out.write(JsonToken.CLOSE_BRACE)
+            }
+        } else {
+            this.root = callable
+            if (inline) {
+                def jsonDelegate = new StreamingJsonBuilder.StreamingJsonDelegate(out, true, generator)
+                callable.setDelegate(jsonDelegate)
+                callable.call()
+            } else {
+                json.call callable
+            }
+        }
+        return json
+    }
+
+    StreamingJsonBuilder json(Iterable iterable) {
+        this.root = iterable
+        json.call iterable.asList()
+        return json
+    }
+
+    @Override
+    StreamingJsonBuilder json(Map map) {
+        this.root = map
+        json.call map
+        return json
+    }
+
+    /**
+     * Print unescaped json directly
+     *
+     * @param unescaped The unescaped JSON produced from templates
+     *
+     * @return The json builder
+     */
+    StreamingJsonBuilder json(JsonOutput.JsonUnescaped unescaped) {
+        print(unescaped.text)
+        return json
+    }
+
+    /**
+     * Print unescaped json directly
+     *
+     * @param writable The unescaped JSON produced from templates
+     *
+     * @return The json builder
+     */
+    StreamingJsonBuilder json(JsonWritable writable) {
+        if (parentTemplate != null) {
+            if (!inline) {
+                out.write(JsonToken.OPEN_BRACE)
+            }
+            GrailsView parentWritable = prepareParentWritable()
+            parentWritable.writeTo(out)
+            resetProcessedObjects()
+            writable.setInline(true)
+            writable.setFirst(false)
+            writable.writeTo(out)
+            if (!inline) {
+                out.write(JsonToken.CLOSE_BRACE)
+            }
+        } else {
+            writable.setInline(inline)
+            writable.writeTo(out)
+        }
+        return json
+    }
+
+    /**
+     * Use StreamingJsonBuilder from groovy-json
+     *
+     * @param callable
+     * @return The json builder
+     */
+    StreamingJsonBuilder json(Iterable iterable, @DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate, strategy = Closure.DELEGATE_FIRST) Closure callable) {
+        json.call(iterable.asList(), callable)
+        return json
+    }
+
+    @Override
+    StreamingJsonBuilder json(Object... args) {
+        if (args.length == 1) {
+            def val = args[0]
+            if (val instanceof JsonOutput.JsonUnescaped) {
+                this.json((JsonOutput.JsonUnescaped) val)
+            } else if (val instanceof JsonWritable) {
+                this.json((JsonWritable) val)
+            } else {
+                json.call val
+            }
+        } else {
+            json.call args
+        }
+        return json
+    }
+
+    private GrailsView prepareParentWritable() {
+        parentModel.putAll(binding.variables)
+        for (o in binding.variables.values()) {
+            if (o != null) {
+                parentModel.put(GrailsNameUtils.getPropertyName(o.getClass().getSuperclass().getName()), o)
+            }
+        }
+        JsonViewWritableScript writable = (JsonViewWritableScript) parentTemplate.make((Map) parentModel)
+        writable.inline = true
+        writable.locale = locale
+        writable.response = response
+        writable.request = request
+        writable.controllerNamespace = controllerNamespace
+        writable.controllerName = controllerName
+        writable.actionName = actionName
+        writable.config = config
+        writable.generator = generator
+        return writable
+    }
+
+    private void resetProcessedObjects() {
+        if (binding.hasVariable(DefaultGrailsJsonViewHelper.PROCESSED_OBJECT_VARIABLE)) {
+            Map processed = (Map) binding.getVariable(DefaultGrailsJsonViewHelper.PROCESSED_OBJECT_VARIABLE)
+            processed.clear()
+        }
+    }
+
+}
