@@ -1,5 +1,23 @@
-
 apply plugin: 'maven-publish'
+
+def PLUGINS = [
+    'async',
+    'cache',
+    'codecs',
+    'converters',
+    'core',
+    'databinding',
+    'domain-class',
+    'events',
+    'gsp',
+    'i18n',
+    'interceptors',
+    'mimetypes',
+    'rest',
+    'services',
+    'url-mappings',
+    'validation'
+]
 
 publishing {
     publications {
@@ -12,28 +30,40 @@ publishing {
                         delegate.dependency {
                             delegate.groupId "org.graceframework"
                             delegate.artifactId "grace-bootstrap"
-                            delegate.version( project.version )
+                            delegate.version(project.version)
                             delegate.scope "compile"
                         }
-                        for(sub in ['converters', 'rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
+                        delegate.dependency {
+                            delegate.groupId "org.graceframework"
+                            delegate.artifactId "grace-boot"
+                            delegate.version(project.version)
+                            delegate.scope "provided"
+                        }
+                        delegate.dependency {
+                            delegate.groupId "org.graceframework"
+                            delegate.artifactId "grace-core"
+                            delegate.version(project.version)
+                            delegate.scope "compile"
+                        }
+                        for(plug in PLUGINS) {
                             delegate.dependency {
                                 delegate.groupId "org.graceframework"
-                                delegate.artifactId "grace-plugin-${sub}"
-                                delegate.version( project.version )
+                                delegate.artifactId "grace-plugin-${plug}"
+                                delegate.version(project.version)
                                 delegate.scope "compile"
                             }
                         }
                         delegate.dependency {
-                            delegate.groupId "org.graceframework.plugins"
-                            delegate.artifactId "async"
-                            delegate.version libs.versions.grace.async.get()
-                            delegate.scope "compile"
+                            delegate.groupId "org.graceframework"
+                            delegate.artifactId "grace-test"
+                            delegate.version(project.version)
+                            delegate.scope "test"
                         }
                         delegate.dependency {
-                            delegate.groupId "org.graceframework.plugins"
-                            delegate.artifactId "events"
-                            delegate.version libs.versions.grace.async.get()
-                            delegate.scope "compile"
+                            delegate.groupId "org.graceframework"
+                            delegate.artifactId "grace-test-support"
+                            delegate.version(project.version)
+                            delegate.scope "test"
                         }
                         delegate.dependency {
                             delegate.groupId "com.h2database"
