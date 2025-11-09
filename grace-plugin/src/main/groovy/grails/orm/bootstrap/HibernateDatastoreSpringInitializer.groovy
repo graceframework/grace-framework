@@ -1,10 +1,11 @@
-/* Copyright (C) 2014 SpringSource
+/*
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -84,10 +85,8 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
         configureDataSources(this.configuration)
     }
 
-
     @CompileStatic
     void configureDataSources(PropertyResolver config) {
-
         Set<String> dataSourceNames = new HashSet<String>()
 
         if (config == null) {
@@ -136,7 +135,7 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
         return applicationContext
     }
 
-    public Closure getBeanDefinitions(BeanDefinitionRegistry beanDefinitionRegistry) {
+    Closure getBeanDefinitions(BeanDefinitionRegistry beanDefinitionRegistry) {
         ApplicationEventPublisher eventPublisher = findEventPublisher(beanDefinitionRegistry)
         Closure beanDefinitions = {
             def common = getCommonConfiguration(beanDefinitionRegistry, "hibernate")
@@ -180,16 +179,17 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
             if (isGrailsPresent) {
                 if (ClassUtils.isPresent("org.grails.plugin.hibernate.support.AggregatePersistenceContextInterceptor")) {
                     ClassLoader cl = ClassUtils.getClassLoader()
-                    persistenceInterceptor(cl.loadClass("org.grails.plugin.hibernate.support.AggregatePersistenceContextInterceptor"), ref("hibernateDatastore"))
+                    persistenceInterceptor(cl.loadClass("org.grails.plugin.hibernate.support.AggregatePersistenceContextInterceptor"), ref
+                            ("hibernateDatastore"))
                     proxyHandler(cl.loadClass("org.grails.datastore.gorm.proxy.ProxyHandlerAdapter"), ref('hibernateProxyHandler'))
                 }
-
 
                 boolean osivEnabled = config.getProperty("hibernate.osiv.enabled", Boolean, true)
                 boolean isWebApplication = beanDefinitionRegistry?.containsBeanDefinition("dispatcherServlet") ||
                         beanDefinitionRegistry?.containsBeanDefinition("grailsControllerHelper")
 
-                if (isWebApplication && osivEnabled && ClassUtils.isPresent("org.grails.plugin.hibernate.support.GrailsOpenSessionInViewInterceptor")) {
+                if (isWebApplication && osivEnabled && ClassUtils.isPresent("org.grails.plugin.hibernate.support." +
+                        "GrailsOpenSessionInViewInterceptor")) {
                     ClassLoader cl = ClassUtils.getClassLoader()
                     openSessionInViewInterceptor(cl.loadClass("org.grails.plugin.hibernate.support.GrailsOpenSessionInViewInterceptor")) {
                         hibernateDatastore = ref("hibernateDatastore")
@@ -199,7 +199,6 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
         }
         return beanDefinitions
     }
-
 
     protected GenericApplicationContext createApplicationContext() {
         GenericApplicationContext applicationContext = new GenericApplicationContext()

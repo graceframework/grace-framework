@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,12 +44,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import grails.artefact.ArtefactTypes;
 import grails.boot.config.GrailsComponentScanner;
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.core.support.proxy.ProxyHandler;
-import org.grails.core.artefact.DomainClassArtefactHandler;
+
 import org.grails.datastore.gorm.events.ConfigurableApplicationContextEventPublisher;
 import org.grails.datastore.gorm.proxy.ProxyHandlerAdapter;
 import org.grails.datastore.mapping.config.Settings;
@@ -72,7 +73,7 @@ import org.grails.transaction.ChainedTransactionManagerPostProcessor;
  */
 @AutoConfigureOrder(200)
 @AutoConfiguration(after = DataSourceAutoConfiguration.class,
-        before = { HibernateJpaAutoConfiguration.class, TransactionAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
+        before = { HibernateJpaAutoConfiguration.class, TransactionAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class })
 @ConditionalOnClass(HibernateDatastore.class)
 public class HibernateGormAutoConfiguration {
 
@@ -92,7 +93,7 @@ public class HibernateGormAutoConfiguration {
     @Primary
     @ConditionalOnMissingBean
     public HibernateDatastore hibernateDatastore(ObjectProvider<DataSource> dataSource) {
-        GrailsClass[] grailsClasses = this.grailsApplication.getObject().getArtefacts(DomainClassArtefactHandler.TYPE);
+        GrailsClass[] grailsClasses = this.grailsApplication.getObject().getArtefacts(ArtefactTypes.DOMAIN_CLASS);
         Set<Class<?>> domainClasses = new HashSet<>();
         for (GrailsClass grailsClass : grailsClasses) {
             if (grailsClass.getClazz() != null) {
@@ -208,7 +209,8 @@ public class HibernateGormAutoConfiguration {
 
     @Bean
     @Conditional(GrailsDataSourceCondition.class)
-    public static HibernateDatastoreConnectionSourcesRegistrar hibernateDatastoreConnectionSourcesRegistrar(ObjectProvider<GrailsApplication> grailsApplication) {
+    public static HibernateDatastoreConnectionSourcesRegistrar hibernateDatastoreConnectionSourcesRegistrar(
+            ObjectProvider<GrailsApplication> grailsApplication) {
         Iterable<String> dataSourceNames = getConfigureDataSources(grailsApplication.getObject().getConfig());
         return new HibernateDatastoreConnectionSourcesRegistrar(dataSourceNames);
     }

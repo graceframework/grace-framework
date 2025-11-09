@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.test.hibernate
 
 import groovy.transform.CompileStatic
@@ -36,27 +51,28 @@ abstract class HibernateSpec extends Specification {
     @Shared
     @AutoCleanup
     HibernateDatastore hibernateDatastore
+
     @Shared
     PlatformTransactionManager transactionManager
 
     void setupSpec() {
-
-        List<PropertySourceLoader> propertySourceLoaders = SpringFactoriesLoader.loadFactories(PropertySourceLoader.class, getClass().getClassLoader())
+        List<PropertySourceLoader> propertySourceLoaders = SpringFactoriesLoader.loadFactories(PropertySourceLoader.class, getClass().
+                getClassLoader())
         ResourceLoader resourceLoader = new DefaultResourceLoader()
         MutablePropertySources propertySources = new MutablePropertySources()
-        PropertySourceLoader ymlLoader = propertySourceLoaders.find { it.getFileExtensions().toList().contains("yml") }
+        PropertySourceLoader ymlLoader = propertySourceLoaders.find { it.getFileExtensions().toList().contains('yml') }
         if (ymlLoader) {
-            load(resourceLoader, ymlLoader, "application.yml").each {
+            load(resourceLoader, ymlLoader, 'application.yml').each {
                 propertySources.addLast(it)
             }
         }
-        PropertySourceLoader groovyLoader = propertySourceLoaders.find { it.getFileExtensions().toList().contains("groovy") }
+        PropertySourceLoader groovyLoader = propertySourceLoaders.find { it.getFileExtensions().toList().contains('groovy') }
         if (groovyLoader) {
-            load(resourceLoader, groovyLoader, "application.groovy").each {
+            load(resourceLoader, groovyLoader, 'application.groovy').each {
                 propertySources.addLast(it)
             }
         }
-        propertySources.addFirst(new MapPropertySource("defaults", getConfiguration()))
+        propertySources.addFirst(new MapPropertySource('defaults', getConfiguration()))
         Config config = new PropertySourcesConfig(propertySources)
         List<Class> domainClasses = getDomainClasses()
         String packageName = getPackageToScan(config)
@@ -93,7 +109,7 @@ abstract class HibernateSpec extends Specification {
      * @return The configuration
      */
     Map getConfiguration() {
-        Map.of('dataSource.dbCreate', "create-drop", 'dataSource.url', 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000')
+        Map.of('dataSource.dbCreate', 'create-drop', 'dataSource.url', 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000')
     }
 
     /**
@@ -148,4 +164,5 @@ abstract class HibernateSpec extends Specification {
                 .map { String extension -> extension.toLowerCase() }
                 .anyMatch { String extension -> name.toLowerCase().endsWith(extension) }
     }
+
 }
