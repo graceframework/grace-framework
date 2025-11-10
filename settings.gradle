@@ -4,6 +4,7 @@ include (
         'docs',
         'grace-api',
         'grace-boot',
+        'grace-boot-hibernate',
         'grace-boot-web',
         'grace-bootstrap',
         'grace-cache-core',
