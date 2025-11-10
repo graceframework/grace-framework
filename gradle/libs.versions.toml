@@ -11,6 +11,7 @@ commons-lang = "2.6"
 commons-lang3 = "3.17.0"
 commons-text = "1.13.1"
 commons-validator = "1.9.0"
+glassfish-expressly = "5.0.0"
 glassfish-web-jsp-jstl = "3.0.1"
 gpars = "1.2.1"
 gradle = "8.14.3"
@@ -25,6 +26,7 @@ groovy = "4.0.29"
 gson = "2.11.0"
 h2 = "2.3.232"
 hsqldb = "2.7.3"
+hibernate = "5.6.15.Final"
 itext = "2.0.8"
 jackson-databind = "2.18.4"
 jansi = "1.18"
@@ -80,6 +82,7 @@ commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-la
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
 commons-validator = { module = "commons-validator:commons-validator", version.ref = "commons-validator" }
+glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
 glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
 gpars = { module = "org.codehaus.gpars:gpars", version.ref = "gpars" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
@@ -129,6 +132,7 @@ groovy-toml = { module = "org.apache.groovy:groovy-toml", version.ref = "groovy"
 groovy-xml = { module = "org.apache.groovy:groovy-xml", version.ref = "groovy" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
+hibernate-core = { module = "org.hibernate:hibernate-core-jakarta", version.ref = "hibernate" }
 hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }
 itext = { module = "com.lowagie:itext", version.ref = "itext" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
@@ -200,6 +204,7 @@ spring-core = { module = "org.springframework:spring-core", version.ref = "sprin
 spring-dependency-management-plugin = { module = "io.spring.gradle:dependency-management-plugin", version.ref = "spring-dependency-management" }
 spring-framework-bom = { module = "org.springframework:spring-framework-bom", version.ref = "spring-framework" }
 spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-framework" }
+spring-orm = { module = "org.springframework:spring-orm", version.ref = "spring-framework" }
 spring-test = { module = "org.springframework:spring-test", version.ref = "spring-framework" }
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-framework" }
 spring-web = { module = "org.springframework:spring-web", version.ref = "spring-framework" }
