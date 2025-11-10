@@ -23,6 +23,7 @@ import org.springframework.core.convert.support.ConfigurableConversionService
 import grails.config.Config
 import grails.core.GrailsApplication
 import grails.plugins.Plugin
+import grails.util.GrailsUtil
 
 import org.grails.config.PropertySourcesConfig
 
@@ -36,22 +37,16 @@ import org.grails.config.PropertySourcesConfig
 @CompileStatic
 class HibernateGrailsPlugin extends Plugin {
 
+    def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = '2023.0.0 > *'
 
-    def author = 'Grace Framework'
     def title = 'Grace Data Hibernate'
     def description = 'Provides integration between Grace and Hibernate through GORM'
-    def documentation = 'https://github.com/graceframework/grace-data-hibernate'
 
     def observe = ['domainClass']
     def loadAfter = ['controllers', 'domainClass']
     def watchedResources = ['file:./grails-app/conf/hibernate/**.xml', 'file:./app/conf/hibernate/**.xml']
     def pluginExcludes = ['src/templates/**']
-
-    def license = 'APACHE'
-    def organization = [name: 'Grace Framework', url: 'https://graceframework.org']
-    def issueManagement = [system: 'Github', url: 'https://github.com/graceframework/grace-data-hibernate/issues']
-    def scm = [url: 'https://github.com/graceframework/grace-data-hibernate']
 
     Closure doWithSpring() {
         { ->

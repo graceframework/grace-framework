@@ -66,7 +66,7 @@ class HibernateSpecSpec extends HibernateSpec {
 
 }
 
-//@Entity
+@Entity
 class Person {
 
     String name

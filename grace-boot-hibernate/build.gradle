@@ -1,0 +1,23 @@
+dependencies {
+    api project(":grace-boot")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api libs.jakarta.persistence.api
+    api libs.spring.orm
+    api libs.hibernate.core
+    api libs.grace.datastore.core
+    api libs.grace.datastore.gorm
+    api libs.grace.datastore.gorm.hibernate
+    api libs.grace.datastore.gorm.support
+    api libs.grace.datastore.web
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation project(":grace-test-support")
+    testRuntimeOnly libs.glassfish.expressly
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.snakeyaml
+    testRuntimeOnly libs.tomcat.jdbc
+}

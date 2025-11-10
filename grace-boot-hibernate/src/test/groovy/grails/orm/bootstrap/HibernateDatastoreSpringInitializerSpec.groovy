@@ -31,6 +31,7 @@ class HibernateDatastoreSpringInitializerSpec extends Specification {
     void 'Test configure multiple data sources'() {
         given: 'An initializer instance'
         Map config = [
+                'dataSource.dbCreate'      : 'create',
                 'dataSource.url'           : 'jdbc:h2:mem:people;LOCK_TIMEOUT=10000',
                 'dataSource.dialect'       : H2Dialect.name,
                 'dataSource.formatSql'     : 'true',
