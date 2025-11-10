@@ -67,6 +67,7 @@ class HibernateGrailsPlugin extends Plugin {
                     Class convert(String source) {
                         Class.forName(source)
                     }
+
                 })
                 ((PropertySourcesConfig) config).setConversionService(conversionService)
             }
