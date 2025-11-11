@@ -1,0 +1,51 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.gorm.flushMode",
+      "type": "java.lang.String",
+      "description": "The flush mode to use.",
+      "defaultValue": "COMMIT"
+    },
+    {
+      "name": "grails.gorm.failOnError",
+      "type": "java.lang.Boolean",
+      "description": "Whether to throw an exception on validation error.",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.gorm.default.mapping",
+      "type": "java.lang.String",
+      "description": "The default mapping to apply to all classes."
+    },
+    {
+      "name": "grails.gorm.default.constraints",
+      "type": "java.lang.String",
+      "description": "The default constraints to apply to all classes."
+    },
+    {
+      "name": "grails.gorm.multiTenancy.mode",
+      "type": "java.lang.String",
+      "description": "The multi tenancy mode.",
+      "defaultValue": "NONE"
+    },
+    {
+      "name": "grails.transaction.chainedTransactionManager.blacklistPattern",
+      "type": "java.lang.String",
+      "description": "The pattern of transaction manager bean names to deny to register."
+    },
+    {
+      "name": "grails.transaction.chainedTransactionManager.whitelistPattern",
+      "type": "java.lang.String",
+      "description": "The pattern of transaction manager bean names to allow to register.",
+      "defaultValue": "(?i).*transactionManager(_.+)?"
+    },
+    {
+      "name": "grails.transaction.chainedTransactionManager.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Wheather to enable chained transaction management.",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

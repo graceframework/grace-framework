@@ -1,0 +1,19 @@
+dependencies {
+    compileOnly "org.graceframework:grace-core"
+    compileOnly "org.graceframework:grace-bootstrap"
+    compileOnly "org.graceframework:grace-boot"
+    compileOnly "org.spockframework:spock-core", {
+        exclude group: "junit", module: "junit-dep"
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
+
+    api project(":grace-datastore-gorm-mongodb-ext")
+    api project(":grace-datastore-gorm-mongodb")
+    api "org.graceframework:grace-datastore-gorm-support:$datastoreVersion"
+    api "org.graceframework:grace-datastore-web:$datastoreVersion"
+
+    api("org.springframework.boot:spring-boot-autoconfigure")
+    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+}
