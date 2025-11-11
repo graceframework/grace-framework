@@ -37,10 +37,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import grails.artefact.ArtefactTypes;
 import grails.boot.config.GrailsComponentScanner;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.datastore.gorm.events.AutoTimestampEventListener;
 import org.grails.datastore.gorm.events.ConfigurableApplicationContextEventPublisher;
 import org.grails.datastore.gorm.plugin.support.PersistenceContextInterceptorAggregator;
@@ -67,7 +67,7 @@ public class MongoDbGormAutoConfiguration implements ApplicationContextAware {
     @Primary
     @ConditionalOnMissingBean
     public MongoDatastore mongoDatastore(ObjectProvider<MongoClient> mongo, ObjectProvider<GrailsApplication> grailsApplication) {
-        GrailsClass[] grailsClasses = grailsApplication.getObject().getArtefacts(DomainClassArtefactHandler.TYPE);
+        GrailsClass[] grailsClasses = grailsApplication.getObject().getArtefacts(ArtefactTypes.DOMAIN_CLASS);
         Set<Class<?>> domainClasses = new HashSet<>();
         for (GrailsClass grailsClass : grailsClasses) {
             if (grailsClass.getClazz() != null) {
