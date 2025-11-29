@@ -1,0 +1,304 @@
+=== 6.3.0
+
+link:{github}/releases/tag/v6.3.0[release notes]
+
+⭐️ New Features
+
+* Setup github docs workflows
+* Use 'grace-doc' Gradle plugin to generate documentation link:{github}/issues/64[#64]
+
+🛠 Improvements
+
+* Update README - Add documentation link
+* Update README - Add document badge - Update badge versions - Remove Spring Boot badge - Simplify the description
+* Remove jansi dependency for documentation
+* Update github workflows - Upgrade to setup-gradle@v4
+* Correct the project name
+* Clean up build.grade and gradle.properties link:{github}/issues/61[#61]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-RC2 link:{github}/issues/63[#63]
+* Upgrade to Grace 2023.3.0-RC1 link:{github}/issues/58[#58]
+* Upgrade to Grace Data 2023.3.0 link:{github}/issues/59[#59]
+* Upgrade to Grace Data Hibernate 2023.3.0 link:{github}/issues/60[#60]
+* Upgrade to Gradle 8.14 link:{github}/issues/62[#62]
+* Upgrade to Java Parser 3.26.4 link:{github}/issues/65[#65]
+
+=== 6.3.0-RC1
+
+link:{github}/releases/tag/v6.3.0-RC1[release notes]
+
+🛠 Improvements
+
+* Update README Update badge versions of Grace, Groovy and Spring Boot
+* Streamline Gradle build scripts: using the Spring Dependency Management Plugin to manage dependencies and versions link:{github}/issues/57[#57]
+* Remove the unnecessary workaround for removing the generated extra dependencyManagement of POM link:{github}/issues/56[#56]
+* Exclude transitive dependency on liquibase-commercial link:{github}/issues/54[#54]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-M2 link:{github}/issues/50[#50]
+* Upgrade to Grace Data 2023.3.0-RC1 link:{github}/issues/51[#51]
+* Upgrade to Grace Data Hibernate 2023.3.0-RC1 link:{github}/issues/53[#53]
+* Upgrade to Gradle 8.13 link:{github}/issues/55[#55]
+* Upgrade to Groovy 4.0.26 link:{github}/issues/52[#52]
+
+⚙️ Tasks
+
+* Release v6.3.0-RC1
+
+=== 6.3.0-M1
+
+link:{github}/releases/tag/v6.3.0-M1[release notes]
+
+⭐️ New Features
+
+* Migration Generator link:{github}/issues/47[#47]
+
+🛠 Improvements
+
+* Update README Update badge versions of Grace and Spring Boot
+* Update github workflows Switch to 6.3.x branch
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-M1 link:{github}/issues/44[#44]
+* Upgrade to Grace Data 2023.3.0-M1 link:{github}/issues/48[#48]
+* Upgrade to Grace Data Hibernate 2023.3.0-M1 link:{github}/issues/49[#49]
+* Upgrade to Liquibase 4.27.0 link:{github}/issues/45[#45]
+* Upgrade to Liquibase Hibernate 4.27.0 link:{github}/issues/46[#46]
+
+⚙️ Tasks
+
+* Release v6.3.0-M1
+* Set version to 6.3.0-SNAPSHOT
+
+=== 6.2.0
+
+link:{github}/releases/tag/v6.2.0[release notes]
+
+🛠 Improvements
+
+* Update README
+* Update GitHub issue template link:{github}/issues/39[#39]
+* Update build scripts to avoid deprecation warnings with Gradle 8 link:{github}/issues/38[#38]
+* Update GitHub issue template link:{github}/issues/37[#37]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-RC1 link:{github}/issues/40[#40]
+* Upgrade to Grace Data 2023.2.0 link:{github}/issues/41[#41]
+* Upgrade to Grace Data Hibernate 2023.2.0 link:{github}/issues/42[#42]
+
+⚙️ Tasks
+
+* Release v6.2.0
+
+=== 6.2.0-RC1
+
+link:{github}/releases/tag/v6.2.0-RC1[release notes]
+
+🛠 Improvements
+
+* Remove unused plugin `grace-gsp` link:{github}/issues/35[#35]
+* Excludes demo classes in plugin jar link:{github}/issues/34[#34]
+* Cleanup build scripts link:{github}/issues/33[#33]
+
+🐞 Bug Fixes
+
+* Update GitHub issue template link:{github}/issues/37[#37]
+* Remove extra dependencyManagement of generated POM link:{github}/issues/36[#36]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-M3 link:{github}/issues/31[#31]
+* Upgrade to Grace 2023.2.0-M2 link:{github}/issues/28[#28]
+* Upgrade to Grace Data 2023.2.0-RC1 link:{github}/issues/29[#29]
+* Upgrade to Grace Data Hibernate 2023.2.0-RC1 link:{github}/issues/30[#30]
+* Upgrade to Gradle 8.12 link:{github}/issues/32[#32]
+
+⚙️ Tasks
+
+* Release v6.2.0-RC1
+
+=== 6.2.0-M1
+
+link:{github}/releases/tag/v6.2.0-M1[release notes]
+
+🛠 Improvements
+
+* Update README Update badge of Grace to current version
+* Update github workflows Switch to 6.2.x branch
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-M1 link:{github}/issues/22[#22]
+* Upgrade to Grace Data 2023.2.0-M1 link:{github}/issues/26[#26]
+* Upgrade to Grace Data Hibernate 2023.2.0-M1 link:{github}/issues/27[#27]
+* Upgrade to H2 2.2.224 link:{github}/issues/25[#25]
+* Upgrade to Liquibase 4.24.0 link:{github}/issues/23[#23]
+* Upgrade to Liquibase Hibernate 4.24.0 link:{github}/issues/24[#24]
+
+⚙️ Tasks
+
+* Release v6.2.0-M1
+* Set version to 6.2.0-SNAPSHOT
+
+=== 6.1.0
+
+link:{github}/releases/tag/v6.1.0[release notes]
+
+🛠 Improvements
+
+* Update Badges
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-RC1 link:{github}/issues/17[#17]
+* Upgrade to Grace Data 2023.1.0 link:{github}/issues/20[#20]
+* Upgrade to Grace Data Hibernate 2023.1.0 link:{github}/issues/19[#19]
+* Upgrade to Groovy 4.0.24 link:{github}/issues/18[#18]
+
+⚙️ Tasks
+
+* Release v6.1.0
+
+=== 6.1.0-RC1
+
+link:{github}/releases/tag/v6.1.0-RC1[release notes]
+
+🛠 Improvements
+
+* Set Jar `archiveClassifier` to `plugin` link:{github}/issues/16[#16]
+* Use Java 17 toolchain link:{github}/issues/15[#15]
+* Upload artifact `grails-plugin.xml` with plugin link:{github}/issues/14[#14]
+* Upgrade to Gradle Nexus Publish Plugin 2.0.0 link:{github}/issues/13[#13]
+* build: Convert indentation to Spaces
+* Use `gradlePluginPortal()` link:{github}/issues/12[#12]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M3 link:{github}/issues/9[#9]
+* Upgrade to Grace Data 2023.1.0-RC1 link:{github}/issues/10[#10]
+* Upgrade to Grace Data Hibernate 2023.1.0-RC1 link:{github}/issues/11[#11]
+
+⚙️ Tasks
+
+* Release v6.1.0-RC1
+
+=== 6.1.0-M3
+
+link:{github}/releases/tag/v6.1.0-M3[release notes]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M2 link:{github}/issues/6[#6]
+* Upgrade to Grace Data 2023.1.0-M3 link:{github}/issues/7[#7]
+* Upgrade to Grace Data Hibernate 2023.1.0-M3 link:{github}/issues/8[#8]
+
+⚙️ Tasks
+
+* Release v6.1.0-M3
+
+=== 6.1.0-M2
+
+link:{github}/releases/tag/v6.1.0-M2[release notes]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M1 link:{github}/issues/3[#3]
+* Upgrade to Grace Data 2023.1.0-M2 link:{github}/issues/4[#4]
+* Upgrade to Grace Data Hibernate 2023.1.0-M2 link:{github}/issues/5[#5]
+
+⚙️ Tasks
+
+* Release v6.1.0-M2
+
+=== 6.1.0-M1
+
+link:{github}/releases/tag/v6.1.0-M1[release notes]
+
+🛠 Improvements
+
+* Excludes `opencsv` and `javax.xml.bind:jaxb-api` of `liquibase-core`
+* Update README
+* Update README
+* Update README
+* Update README
+
+🚀 Dependency Upgrades
+
+* Upgrade to Liquibase 4.20.0 link:{github}/issues/2[#2]
+* Upgrade to GORM Hibernate 2023.1.0-M1 link:{github}/issues/1[#1]
+* Upgrade to Groovy 4.0.23
+* Upgrade to Grace 2023.0.2
+
+⚙️ Tasks
+
+* Release v6.1.0-M1
+* Update github workflows
+* Set version to 6.1.0-SNAPSHOT
+
+=== 6.0.1
+
+link:{github}/releases/tag/v6.0.1[release notes]
+
+* Release v6.0.1
+* Required Grace version should be `2023.0.0 > *`
+* Upgrade to Gradle Wrapper 7.6.4
+* Upgrade to GORM Hibernate 2023.0.1
+* Upgrade to Grace 2023.0.0
+* Set version to 6.0.1-SNAPSHOT
+
+=== 6.0.0
+
+link:{github}/releases/tag/v6.0.0[release notes]
+
+* Release v6.0.0
+* Upgrade to Grace Data Hibernate 2023.0.0
+* Upgrade to Groovy 4.0.22
+* Upgrade to Grace 2023.0.0-RC2
+
+=== 6.0.0-RC1
+
+link:{github}/releases/tag/v6.0.0-RC1[release notes]
+
+* Release v6.0.0-RC1
+* Upgrade to Grace Data Hibernate 2023.0.0-RC1
+* Upgrade to Groovy 4.0.21
+* Upgrade to Grace 2023.0.0-M7
+
+=== 6.0.0-M3
+
+link:{github}/releases/tag/v6.0.0-M3[release notes]
+
+* Release v6.0.0-M3
+* Fixes Groovy STC error
+* Upgrade to Groovy 4.0.12
+* Upgrade to Grace Data Hibernate 2023.0.0-M5
+* Upgrade to Grace 2023.0.0-M6
+
+=== 6.0.0-M2
+
+link:{github}/releases/tag/v6.0.0-M2[release notes]
+
+* Release v6.0.0-M2
+* Upgrade to Grace GORM Hibernate 2023.0.0-M4
+* Upgrade to Grace 2023.0.0-M5
+* Fixes execute command [dbm-create-changelog] error
+
+=== 6.0.0-M1
+
+link:{github}/releases/tag/v6.0.0-M1[release notes]
+
+* Release v6.0.0-M1
+* Use hibernate-core-jakarta
+* Upgrade to Grace Data Hibernate 2023.0.0-M3
+* Migrate to Groovy 3
+* Migrate to Jakarta Servlet API 6.0
+* Upgrade to Groovy 4.0.11
+* Upgrade to Grace Data Hibernate 2023.0.0-M2
+* Upgrade to Grace 2023.0.0-M2
+* Grace: update github workflows
+* Set version to 6.0.0-SNAPSHOT

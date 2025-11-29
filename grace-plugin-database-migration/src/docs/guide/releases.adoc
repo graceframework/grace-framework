@@ -1,0 +1,28 @@
+To make it easier for users to use and upgrade, Plugin adopts a version policy consistent with the https://github.com/graceframework/grace-framework[Grace Framework].
+
+[cols="1,1"]
+|===
+| Plugin Version
+| Grace Version
+
+| link:{github}/tree/6.3.x[6.3.x]
+| 2023.3.x
+
+| link:{github}/tree/6.2.x[6.2.x]
+| 2023.2.x
+
+| link:{github}/tree/6.1.x[6.1.x]
+| 2023.1.x
+
+| link:{github}/tree/6.0.x[6.0.x]
+| 2023.0.x
+
+| link:{github}/tree/5.2.x[5.2.x]
+| 2022.2.x
+
+| link:{github}/tree/5.1.x[5.1.x]
+| 2022.1.x
+
+| link:{github}/tree/5.0.x[5.0.x]
+| 2022.0.x
+|===
