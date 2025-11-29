@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,9 @@ package org.grails.plugins.databasemigration.liquibase
 import groovy.transform.CompileStatic
 import liquibase.parser.core.ParsedNode
 import org.codehaus.groovy.runtime.InvokerHelper
-import org.grails.plugins.databasemigration.DatabaseMigrationException
 import org.springframework.context.ApplicationContext
+
+import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
@@ -87,12 +88,13 @@ class DatabaseChangeLogBuilder extends BuilderSupport {
         if (currentNode?.name == 'grailsChange') {
             processGrailsChangeProperty(methodName, args)
             return null
-        } else if (currentNode?.name == 'grailsPrecondition') {
+        }
+        else if (currentNode?.name == 'grailsPrecondition') {
             processGrailsPreconditionProperty(methodName, args)
             return null
-        } else {
-            return super.invokeMethod(methodName, args)
         }
+
+        return super.invokeMethod(methodName, args)
     }
 
     protected void processGrailsChangeProperty(String methodName, Object args) {
@@ -100,17 +102,23 @@ class DatabaseChangeLogBuilder extends BuilderSupport {
         def arg = InvokerHelper.asList(args)[0]
         if (name == 'init' && arg instanceof Closure) {
             currentNode.addChild(null, 'init', arg)
-        } else if (name == 'validate' && arg instanceof Closure) {
+        }
+        else if (name == 'validate' && arg instanceof Closure) {
             currentNode.addChild(null, 'validate', arg)
-        } else if (name == 'change' && arg instanceof Closure) {
+        }
+        else if (name == 'change' && arg instanceof Closure) {
             currentNode.addChild(null, 'change', arg)
-        } else if (name == 'rollback' && arg instanceof Closure) {
+        }
+        else if (name == 'rollback' && arg instanceof Closure) {
             currentNode.addChild(null, 'rollback', arg)
-        } else if (name == 'confirm' && arg instanceof CharSequence) {
+        }
+        else if (name == 'confirm' && arg instanceof CharSequence) {
             currentNode.addChild(null, 'confirm', arg)
-        } else if (name == 'checksum' && arg instanceof CharSequence) {
+        }
+        else if (name == 'checksum' && arg instanceof CharSequence) {
             currentNode.addChild(null, 'checksum', arg)
-        } else {
+        }
+        else {
             throw new DatabaseMigrationException("Unknown method name: ${methodName}")
         }
     }
@@ -120,8 +128,10 @@ class DatabaseChangeLogBuilder extends BuilderSupport {
         def arg = InvokerHelper.asList(args)[0]
         if (name == 'check' && arg instanceof Closure) {
             currentNode.addChild(null, 'check', arg)
-        } else {
+        }
+        else {
             throw new DatabaseMigrationException("Unknown method name: ${methodName}")
         }
     }
+
 }

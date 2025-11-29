@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2024 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,37 +33,39 @@ import liquibase.util.StringUtil
 @CompileStatic
 class GroovyDiffToChangeLogCommandStep extends DiffChangelogCommandStep {
 
-    public static final String[] COMMAND_NAME = new String[] {"groovyDiffChangelog"}
+    public static final String[] COMMAND_NAME = new String[] { 'groovyDiffChangelog' }
 
     @Override
     void run(CommandResultsBuilder resultsBuilder) {
         CommandScope commandScope = resultsBuilder.getCommandScope()
         Database referenceDatabase = commandScope.getArgumentValue(ReferenceDbUrlConnectionCommandStep.REFERENCE_DATABASE_ARG)
-        String changeLogFile = commandScope.getArgumentValue(CHANGELOG_FILE_ARG);
+        String changeLogFile = commandScope.getArgumentValue(CHANGELOG_FILE_ARG)
 
-        InternalSnapshotCommandStep.logUnsupportedDatabase(referenceDatabase, this.getClass());
+        InternalSnapshotCommandStep.logUnsupportedDatabase(referenceDatabase, this.getClass())
 
         DiffOutputControl diffOutputControl = (DiffOutputControl) resultsBuilder.getResult(DiffOutputControlCommandStep.DIFF_OUTPUT_CONTROL.getName())
 
         DiffResult diffResult = (DiffResult) resultsBuilder.getResult(DiffCommandStep.DIFF_RESULT.getName())
 
-        PrintStream outputStream = new PrintStream(resultsBuilder.getOutputStream());
+        PrintStream outputStream = new PrintStream(resultsBuilder.getOutputStream())
 
-        ObjectQuotingStrategy originalStrategy = referenceDatabase.getObjectQuotingStrategy();
+        ObjectQuotingStrategy originalStrategy = referenceDatabase.getObjectQuotingStrategy()
         try {
-            referenceDatabase.setObjectQuotingStrategy(ObjectQuotingStrategy.QUOTE_ALL_OBJECTS);
+            referenceDatabase.setObjectQuotingStrategy(ObjectQuotingStrategy.QUOTE_ALL_OBJECTS)
             if (StringUtil.trimToNull(changeLogFile) == null) {
-                createDiffToChangeLogObject(diffResult, diffOutputControl, true).print(outputStream, ChangeLogSerializerFactory.instance.getSerializer('groovy'))
-            } else {
-                createDiffToChangeLogObject(diffResult, diffOutputControl, true).print(changeLogFile, ChangeLogSerializerFactory.instance.getSerializer(changeLogFile))
+                createDiffToChangeLogObject(diffResult, diffOutputControl, true).print(outputStream,
+                        ChangeLogSerializerFactory.instance.getSerializer('groovy'))
+            }
+            else {
+                createDiffToChangeLogObject(diffResult, diffOutputControl, true).print(changeLogFile,
+                        ChangeLogSerializerFactory.instance.getSerializer(changeLogFile))
             }
         }
         finally {
-            referenceDatabase.setObjectQuotingStrategy(originalStrategy);
-            outputStream.flush();
+            referenceDatabase.setObjectQuotingStrategy(originalStrategy)
+            outputStream.flush()
         }
-        resultsBuilder.addResult("statusCode", 0);
-
+        resultsBuilder.addResult('statusCode', 0)
     }
 
     @Override

@@ -1,10 +1,11 @@
-/* Copyright 2010-2013 SpringSource.
+/*
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +47,6 @@ class ChangelogXml2Groovy {
     }
 
     protected static void convertNode(Node node, StringBuilder groovy, int indentLevel) {
-
         groovy.append NEWLINE
         appendWithIndent indentLevel, groovy, (String) node.name()
 
@@ -55,7 +55,8 @@ class ChangelogXml2Groovy {
         for (child in node.children()) {
             if (child instanceof String) {
                 mixedText = child
-            } else {
+            }
+            else {
                 children << child
             }
         }
@@ -69,7 +70,8 @@ class ChangelogXml2Groovy {
             }
             appendWithIndent indentLevel, groovy, '}'
             groovy.append NEWLINE
-        } else {
+        }
+        else {
             groovy.append NEWLINE
         }
     }
@@ -104,4 +106,5 @@ class ChangelogXml2Groovy {
         indentLevel.times { groovy.append '    ' }
         groovy.append s
     }
+
 }

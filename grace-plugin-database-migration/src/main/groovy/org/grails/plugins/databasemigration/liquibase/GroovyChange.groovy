@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2013 SpringSource.
+ * Copyright 2015-2025 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  */
 package org.grails.plugins.databasemigration.liquibase
 
-import grails.config.Config
-import grails.core.GrailsApplication
+import java.sql.Connection
+
 import groovy.sql.Sql
 import groovy.transform.CompileStatic
 import liquibase.Scope
@@ -37,10 +37,12 @@ import liquibase.parser.core.ParsedNode
 import liquibase.parser.core.ParsedNodeException
 import liquibase.resource.ResourceAccessor
 import liquibase.statement.SqlStatement
-import org.grails.plugins.databasemigration.DatabaseMigrationTransactionManager
 import org.springframework.context.ApplicationContext
 
-import java.sql.Connection
+import grails.config.Config
+import grails.core.GrailsApplication
+
+import org.grails.plugins.databasemigration.DatabaseMigrationTransactionManager
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
@@ -51,7 +53,9 @@ import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_N
  * @author Kazuki YAMAMOTO
  */
 @CompileStatic
-@DatabaseChange(name = "grailsChange", description = "Adds creates a primary key out of an existing column or set of columns.", priority = ChangeMetaData.PRIORITY_DEFAULT)
+@DatabaseChange(name = 'grailsChange',
+        description = 'Adds creates a primary key out of an existing column or set of columns.',
+        priority = ChangeMetaData.PRIORITY_DEFAULT)
 class GroovyChange extends AbstractChange {
 
     ApplicationContext ctx
@@ -107,9 +111,11 @@ class GroovyChange extends AbstractChange {
         initClosure.delegate = this
         try {
             initClosure()
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new SetupException(e)
-        } finally {
+        }
+        finally {
             initClosureCalled = true
         }
     }
@@ -125,7 +131,8 @@ class GroovyChange extends AbstractChange {
         validateClosure.delegate = this
         try {
             validateClosure()
-        } finally {
+        }
+        finally {
             validateClosureCalled = true
         }
 
@@ -145,10 +152,11 @@ class GroovyChange extends AbstractChange {
         if (shouldRun() && changeClosure) {
             changeClosure.delegate = this
             try {
-                if(!changeClosureCalled) {
+                if (!changeClosureCalled) {
                     withNewTransaction(changeClosure)
                 }
-            } finally {
+            }
+            finally {
                 changeClosureCalled = true
             }
         }
@@ -245,9 +253,12 @@ class GroovyChange extends AbstractChange {
 
         if (!sql) {
             sql = new Sql(connection) {
+
+                @Override
                 protected void closeResources(Connection c) {
                     // do nothing, let Liquibase close the connection
                 }
+
             }
         }
 
@@ -298,7 +309,7 @@ class GroovyChange extends AbstractChange {
      * @return Whether the database executor is instance of LoggingExecutor
      */
     protected boolean shouldRun() {
-        !(Scope.getCurrentScope().getSingleton(ExecutorService.class).getExecutor("jdbc", database) instanceof LoggingExecutor)
+        !(Scope.getCurrentScope().getSingleton(ExecutorService).getExecutor('jdbc', database) instanceof LoggingExecutor)
     }
 
     /**
@@ -311,4 +322,5 @@ class GroovyChange extends AbstractChange {
         new DatabaseMigrationTransactionManager(ctx, dataSourceName)
                 .withNewTransaction callable
     }
+
 }

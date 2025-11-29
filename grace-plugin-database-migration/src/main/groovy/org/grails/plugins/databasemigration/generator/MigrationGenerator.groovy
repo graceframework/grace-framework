@@ -25,7 +25,7 @@ import grails.cli.generator.AbstractGenerator
 
 /**
  * @author Michael Yan
- * @since 6.3.0
+ * @since 2024.0.0
  */
 @CompileStatic
 class MigrationGenerator extends AbstractGenerator {

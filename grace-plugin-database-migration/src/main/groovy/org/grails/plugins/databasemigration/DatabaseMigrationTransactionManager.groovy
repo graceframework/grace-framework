@@ -1,11 +1,27 @@
+/*
+ * Copyright 2015-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.plugins.databasemigration
 
-import grails.gorm.transactions.GrailsTransactionTemplate
 import org.springframework.context.ApplicationContext
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.support.DefaultTransactionDefinition
 import org.springframework.util.Assert
+
+import grails.gorm.transactions.GrailsTransactionTemplate
 
 /**
  * Created by Jim on 7/15/2016.
@@ -25,12 +41,12 @@ class DatabaseMigrationTransactionManager {
      * @return The transactionManager bean for the current dataSource
      */
     PlatformTransactionManager getTransactionManager() {
-        String dataSource = this.dataSource ?: "dataSource"
-        String beanName = "transactionManager"
-        if (dataSource != "dataSource") {
+        String dataSource = this.dataSource ?: 'dataSource'
+        String beanName = 'transactionManager'
+        if (dataSource != 'dataSource') {
             beanName += "_${dataSource}"
         }
-        applicationContext.getBean(beanName, PlatformTransactionManager)
+        this.applicationContext.getBean(beanName, PlatformTransactionManager)
     }
 
     /**
@@ -92,15 +108,16 @@ class DatabaseMigrationTransactionManager {
         withTransaction(props, callable)
     }
 
-    void  withTransaction(Map transactionProperties, Closure callable) {
+    void withTransaction(Map transactionProperties, Closure callable) {
         def transactionDefinition = new DefaultTransactionDefinition()
         transactionProperties.each { k, v ->
-            if(v instanceof CharSequence && !(v instanceof String)) {
+            if (v instanceof CharSequence && !(v instanceof String)) {
                 v = v.toString()
             }
             try {
                 transactionDefinition[k as String] = v
-            } catch (MissingPropertyException mpe) {
+            }
+            catch (MissingPropertyException mpe) {
                 throw new IllegalArgumentException("[${k}] is not a valid transaction property.", mpe)
             }
         }
@@ -114,7 +131,7 @@ class DatabaseMigrationTransactionManager {
      * @return The result of the closure execution
      */
     void withTransaction(TransactionDefinition definition, Closure callable) {
-        Assert.notNull transactionManager, "No transactionManager bean configured"
+        Assert.notNull transactionManager, 'No transactionManager bean configured'
 
         if (!callable) {
             return
@@ -122,4 +139,5 @@ class DatabaseMigrationTransactionManager {
 
         new GrailsTransactionTemplate(transactionManager, definition).execute(callable)
     }
+
 }

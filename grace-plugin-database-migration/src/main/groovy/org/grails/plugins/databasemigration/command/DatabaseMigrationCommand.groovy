@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2024 original authors
+ * Copyright 2022-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,11 @@
  */
 package org.grails.plugins.databasemigration.command
 
-import grails.config.ConfigMap
+import java.nio.file.Path
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
@@ -62,14 +66,12 @@ import liquibase.statement.core.RawSqlStatement
 import liquibase.structure.core.Catalog
 import liquibase.util.LiquibaseUtil
 import liquibase.util.StreamUtil
+
+import grails.config.ConfigMap
+
 import org.grails.build.parsing.CommandLine
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 import org.grails.plugins.databasemigration.NoopVisitor
-
-import java.nio.file.Path
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
 
 import static org.grails.plugins.databasemigration.DatabaseMigrationGrailsPlugin.getDataSourceName
 import static org.grails.plugins.databasemigration.DatabaseMigrationGrailsPlugin.isDefaultDataSource
@@ -88,11 +90,11 @@ trait DatabaseMigrationCommand {
     abstract ConfigMap getConfig()
 
     String optionValue(String name) {
-        commandLine.optionValue(name)?.toString()
+        this.commandLine.optionValue(name)?.toString()
     }
 
     boolean hasOption(String name) {
-        commandLine.hasOption(name)
+        this.commandLine.hasOption(name)
     }
 
     String getContexts() {
@@ -103,7 +105,7 @@ trait DatabaseMigrationCommand {
     }
 
     List<String> getArgs() {
-        commandLine.remainingArgs
+        this.commandLine.remainingArgs
     }
 
     File getChangeLogLocation() {
@@ -119,7 +121,7 @@ trait DatabaseMigrationCommand {
         if (changelogFileName) {
             return changelogFileName
         }
-        return isDefaultDataSource(dataSource) ? 'changelog.groovy' : "changelog-${dataSource}.groovy"
+        return isDefaultDataSource(this.dataSource) ? 'changelog.groovy' : "changelog-${this.dataSource}.groovy"
     }
 
     File resolveChangeLogFile(String filename) {
@@ -129,14 +131,14 @@ trait DatabaseMigrationCommand {
         if (getExtension(filename)) {
             return new File(changeLogLocation, filename)
         }
-        if (dataSource) {
-            return new File(changeLogLocation, "${filename}-${dataSource}.groovy")
+        if (this.dataSource) {
+            return new File(changeLogLocation, "${filename}-${this.dataSource}.groovy")
         }
         return new File(changeLogLocation, "${filename}.groovy")
     }
 
     Map<String, String> getDataSourceConfig(ConfigMap config = this.config) {
-        def dataSourceName = dataSource ?: 'dataSource'
+        def dataSourceName = this.dataSource ?: 'dataSource'
 
         if (dataSourceName == 'dataSource' && config.containsKey(dataSourceName)) {
             return (Map<String, String>) (config.getProperty(dataSourceName, Map) ?: [:])
@@ -152,7 +154,7 @@ trait DatabaseMigrationCommand {
         return (Map<String, String>) dataSources.get(dataSourceName)
     }
 
-    void withFileOrSystemOutWriter(String filename, @ClosureParams(value = SimpleType, options = "java.io.Writer") Closure closure) {
+    void withFileOrSystemOutWriter(String filename, @ClosureParams(value = SimpleType, options = 'java.io.Writer') Closure closure) {
         if (!filename) {
             closure.call(new PrintWriter(System.out))
             return
@@ -193,17 +195,18 @@ trait DatabaseMigrationCommand {
 
     ResourceAccessor createResourceAccessor() {
         new CompositeResourceAccessor(
-            new FileSystemResourceAccessor(changeLogLocation),
-            new ClassLoaderResourceAccessor())
-
+                new FileSystemResourceAccessor(changeLogLocation),
+                new ClassLoaderResourceAccessor())
     }
 
-    void withDatabase(Map<String, String> dataSourceConfig = null, @ClosureParams(value = SimpleType, options = 'liquibase.database.Database') Closure closure) {
+    void withDatabase(Map<String, String> dataSourceConfig = null,
+            @ClosureParams(value = SimpleType, options = 'liquibase.database.Database') Closure closure) {
         def database = null
         try {
             database = createDatabase(defaultSchema, dataSource, dataSourceConfig ?: getDataSourceConfig())
             closure.call(database)
-        } finally {
+        }
+        finally {
             database?.close()
         }
     }
@@ -227,6 +230,7 @@ trait DatabaseMigrationCommand {
                 null,
                 new ClassLoaderResourceAccessor(Thread.currentThread().contextClassLoader)
         )
+
         configureDatabase(database)
         return database
     }
@@ -243,7 +247,7 @@ trait DatabaseMigrationCommand {
     void doGenerateChangeLog(File changeLogFile, Database originalDatabase) {
         def changeLogFilePath = changeLogFile?.path
         def compareControl = new CompareControl([] as CompareControl.SchemaComparison[], null as String)
-        final CommandScope commandScope = new CommandScope("groovyGenerateChangeLog")
+        final CommandScope commandScope = new CommandScope('groovyGenerateChangeLog')
         commandScope.addArgumentValue(ReferenceDbUrlConnectionCommandStep.REFERENCE_DATABASE_ARG, originalDatabase)
         commandScope.addArgumentValue(DiffChangelogCommandStep.CHANGELOG_FILE_ARG, changeLogFilePath)
         commandScope.addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, originalDatabase)
@@ -259,7 +263,7 @@ trait DatabaseMigrationCommand {
     void doDiffToChangeLog(File changeLogFile, Database referenceDatabase, Database targetDatabase) {
         def changeLogFilePath = changeLogFile?.path
         def compareControl = new CompareControl([] as CompareControl.SchemaComparison[], null as String)
-        final CommandScope commandScope = new CommandScope("groovyDiffChangelog")
+        final CommandScope commandScope = new CommandScope('groovyDiffChangelog')
         commandScope.addArgumentValue(ReferenceDbUrlConnectionCommandStep.REFERENCE_DATABASE_ARG, referenceDatabase)
         commandScope.addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, targetDatabase)
         commandScope.addArgumentValue(DiffChangelogCommandStep.CHANGELOG_FILE_ARG, changeLogFilePath)
@@ -276,10 +280,10 @@ trait DatabaseMigrationCommand {
         LabelExpression labelExpression = liquibase.changeLogParameters.labels
         liquibase.changeLogParameters.setContexts(contexts)
 
-        final ExecutorService executorService = Scope.getCurrentScope().getSingleton(ExecutorService.class)
-        final Executor oldTemplate = executorService.getExecutor("jdbc", database)
+        final ExecutorService executorService = Scope.getCurrentScope().getSingleton(ExecutorService)
+        final Executor oldTemplate = executorService.getExecutor('jdbc', database)
         final LoggingExecutor outputTemplate = new LoggingExecutor(oldTemplate, output, database)
-        executorService.setExecutor("jdbc", database, outputTemplate)
+        executorService.setExecutor('jdbc', database, outputTemplate)
 
         outputHeader(outputTemplate, (String) "Previous $count SQL Changeset(s) Skipping $skip Script", liquibase, database)
 
@@ -302,34 +306,36 @@ trait DatabaseMigrationCommand {
             logIterator.run(new NoopVisitor(database), new RuntimeEnvironment(database, contexts, labelExpression))
 
             output.flush()
-        } finally {
+        }
+        finally {
             try {
                 lockService.releaseLock()
-                executorService.setExecutor("jdbc", database, oldTemplate)
-            } catch (LockException e) {
+                executorService.setExecutor('jdbc', database, oldTemplate)
+            }
+            catch (LockException e) {
                 throw new LiquibaseException(e.message, e.cause)
             }
         }
     }
 
     void outputHeader(Executor executor, String message, Liquibase liquibase, Database database) throws DatabaseException {
-        executor.comment("*********************************************************************")
+        executor.comment('*********************************************************************')
         executor.comment(message)
-        executor.comment("*********************************************************************")
-        executor.comment("Change Log: " + liquibase.changeLogFile)
-        executor.comment("Ran at: " + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()))
+        executor.comment('*********************************************************************')
+        executor.comment('Change Log: ' + liquibase.changeLogFile)
+        executor.comment('Ran at: ' + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()))
         DatabaseConnection connection = liquibase.getDatabase().getConnection()
         if (connection != null) {
-            executor.comment("Against: " + connection.getConnectionUserName() + "@" + connection.getURL())
+            executor.comment('Against: ' + connection.getConnectionUserName() + '@' + connection.getURL())
         }
-        executor.comment("Liquibase version: " + LiquibaseUtil.getBuildVersion())
-        executor.comment("*********************************************************************" + StreamUtil.getLineSeparator())
+        executor.comment('Liquibase version: ' + LiquibaseUtil.getBuildVersion())
+        executor.comment('*********************************************************************' + StreamUtil.getLineSeparator())
 
         if (database instanceof OracleDatabase) {
-            executor.execute(new RawSqlStatement("SET DEFINE OFF;"))
+            executor.execute(new RawSqlStatement('SET DEFINE OFF;'))
         }
         if (database instanceof MSSQLDatabase && database.getDefaultCatalogName() != null) {
-            executor.execute(new RawSqlStatement("USE " + database.escapeObjectName(database.getDefaultCatalogName(), Catalog.class) + ";"))
+            executor.execute(new RawSqlStatement('USE ' + database.escapeObjectName(database.getDefaultCatalogName(), Catalog) + ';'))
         }
     }
 
@@ -339,7 +345,7 @@ trait DatabaseMigrationCommand {
         String excludeObjects = config.getProperty("${configPrefix}.excludeObjects".toString(), String)
         String includeObjects = config.getProperty("${configPrefix}.includeObjects".toString(), String)
         if (excludeObjects && includeObjects) {
-            throw new DatabaseMigrationException("Cannot specify both excludeObjects and includeObjects")
+            throw new DatabaseMigrationException('Cannot specify both excludeObjects and includeObjects')
         }
         if (excludeObjects) {
             diffOutputControl.objectChangeFilter = new StandardObjectChangeFilter(StandardObjectChangeFilter.FilterType.EXCLUDE, excludeObjects)
@@ -369,8 +375,10 @@ trait DatabaseMigrationCommand {
             case ['xml']:
                 def text = srcChangeLogFile.text
                 if (text =~ '<databaseChangeLog[^>]*/>') {
-                    srcChangeLogFile.write(text.replaceFirst('(<databaseChangeLog[^>]*)/>', "\$1>\n    <include file=\"$relativePath\"/>\n</databaseChangeLog>"))
-                } else {
+                    srcChangeLogFile.write(text.replaceFirst('(<databaseChangeLog[^>]*)/>',
+                            "\$1>\n    <include file=\"$relativePath\"/>\n</databaseChangeLog>"))
+                }
+                else {
                     srcChangeLogFile.write(text.replaceFirst('</databaseChangeLog>', "    <include file=\"$relativePath\"/>\n\$0"))
                 }
                 break
@@ -387,12 +395,13 @@ trait DatabaseMigrationCommand {
     }
 
     private String getExtension(String fileName) {
-        String extension = ""
+        String extension = ''
 
         int i = fileName.lastIndexOf('.')
         if (i > 0) {
-            extension = fileName.substring(i+1)
+            extension = fileName.substring(i + 1)
         }
         extension
     }
+
 }

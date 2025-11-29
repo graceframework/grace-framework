@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
 import liquibase.parser.ChangeLogParserFactory
 import liquibase.serializer.ChangeLogSerializerFactory
+
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
@@ -46,7 +47,8 @@ class DbmChangelogToGroovy implements ScriptDatabaseMigrationCommand {
             if (destChangeLogFile.exists()) {
                 if (hasOption('force')) {
                     destChangeLogFile.delete()
-                } else {
+                }
+                else {
                     throw new DatabaseMigrationException("ChangeLogFile ${destChangeLogFile} already exists!")
                 }
             }
@@ -62,7 +64,8 @@ class DbmChangelogToGroovy implements ScriptDatabaseMigrationCommand {
         }
     }
 
-    private static void withFileOrSystemOutputStream(File file, @ClosureParams(value = SimpleType, options = "java.io.OutputStream") Closure closure) {
+    private static void withFileOrSystemOutputStream(File file,
+            @ClosureParams(value = SimpleType, options = 'java.io.OutputStream') Closure closure) {
         if (!file) {
             closure.call(System.out)
             return
@@ -75,4 +78,5 @@ class DbmChangelogToGroovy implements ScriptDatabaseMigrationCommand {
             closure.call(out)
         }
     }
+
 }

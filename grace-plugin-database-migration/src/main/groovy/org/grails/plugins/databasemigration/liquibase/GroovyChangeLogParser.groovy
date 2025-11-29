@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,6 @@
  */
 package org.grails.plugins.databasemigration.liquibase
 
-import grails.config.ConfigMap
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import liquibase.changelog.ChangeLogParameters
@@ -25,7 +24,8 @@ import liquibase.parser.core.xml.AbstractChangeLogParser
 import liquibase.resource.ResourceAccessor
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.context.ApplicationContext
-import grails.io.IOUtils
+
+import grails.config.ConfigMap
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
@@ -40,13 +40,15 @@ class GroovyChangeLogParser extends AbstractChangeLogParser {
 
     @Override
     @CompileDynamic
-    protected ParsedNode parseToNode(String physicalChangeLogLocation, ChangeLogParameters changeLogParameters, ResourceAccessor resourceAccessor) throws ChangeLogParseException {
+    protected ParsedNode parseToNode(String physicalChangeLogLocation, ChangeLogParameters changeLogParameters,
+            ResourceAccessor resourceAccessor) throws ChangeLogParseException {
         def inputStream = null
         def changeLogText = null
         try {
             inputStream = resourceAccessor.openStreams(null, physicalChangeLogLocation)?.first()
             changeLogText = inputStream?.text
-        } finally {
+        }
+        finally {
             SpringIOUtils.closeQuietly(inputStream)
         }
 
@@ -72,7 +74,8 @@ class GroovyChangeLogParser extends AbstractChangeLogParser {
             builder.dataSourceName = changeLogParameters.getValue(DATA_SOURCE_NAME_KEY, null)
             builder.applicationContext = applicationContext
             builder.databaseChangeLog(databaseChangeLogBlock) as ParsedNode
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new ChangeLogParseException(e)
         }
     }
@@ -97,4 +100,5 @@ class GroovyChangeLogParser extends AbstractChangeLogParser {
             changeLogParameters.set(name as String, value as String, contexts as String, labels, databases, true, null)
         }
     }
+
 }

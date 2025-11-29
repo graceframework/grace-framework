@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,6 @@ import liquibase.snapshot.SnapshotControl
 import liquibase.structure.DatabaseObject
 import org.hibernate.boot.Metadata
 import org.hibernate.boot.MetadataSources
-import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder
 import org.hibernate.dialect.Dialect
 import org.hibernate.service.ServiceRegistry
 
@@ -34,7 +33,7 @@ import org.hibernate.service.ServiceRegistry
 class GormDatabase extends HibernateDatabase {
 
     final String shortName = 'GORM'
-    final String DefaultDatabaseProductName = 'getDefaultDatabaseProductName'
+    final String defaultDatabaseProductName = 'getDefaultDatabaseProductName'
 
     private Dialect dialect
     private Metadata metadata
@@ -48,10 +47,13 @@ class GormDatabase extends HibernateDatabase {
         this.metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build()
         SnapshotControl snapshotControl = new SnapshotControl(this, null, null)
         GormDatabase database = this
-        OfflineConnection connection = new OfflineConnection("offline:gorm", null) {
+        OfflineConnection connection = new OfflineConnection('offline:gorm', null) {
+
+            @Override
             DatabaseSnapshot getSnapshot(DatabaseObject[] examples) {
                 new JdbcDatabaseSnapshot(examples, database, snapshotControl)
             }
+
         }
         this.connection = connection
     }
@@ -65,7 +67,7 @@ class GormDatabase extends HibernateDatabase {
      * Return the hibernate {@link Metadata} used by this database.
      */
     @Override
-    public Metadata getMetadata() {
+    Metadata getMetadata() {
         metadata
     }
 
@@ -74,15 +76,9 @@ class GormDatabase extends HibernateDatabase {
         //no op
     }
 
-
     @Override
     boolean isCorrectDatabaseImplementation(DatabaseConnection conn) throws DatabaseException {
         return false
     }
 
 }
-
-
-
-
-

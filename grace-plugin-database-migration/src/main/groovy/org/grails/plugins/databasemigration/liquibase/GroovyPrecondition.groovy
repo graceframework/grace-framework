@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2013 SpringSource.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  */
 package org.grails.plugins.databasemigration.liquibase
 
-import grails.config.Config
-import grails.core.GrailsApplication
+import java.sql.Connection
+
 import groovy.sql.Sql
 import groovy.transform.CompileStatic
 import liquibase.CatalogAndSchema
@@ -40,7 +40,8 @@ import liquibase.snapshot.SnapshotControl
 import liquibase.snapshot.SnapshotGeneratorFactory
 import org.springframework.context.ApplicationContext
 
-import java.sql.Connection
+import grails.config.Config
+import grails.core.GrailsApplication
 
 /**
  * Custom Groovy-based precondition.
@@ -88,7 +89,8 @@ class GroovyPrecondition extends AbstractPrecondition {
     }
 
     @Override
-    void check(Database database, DatabaseChangeLog changeLog, ChangeSet changeSet, ChangeExecListener changeExecListener) throws PreconditionFailedException, PreconditionErrorException {
+    void check(Database database, DatabaseChangeLog changeLog, ChangeSet changeSet,
+            ChangeExecListener changeExecListener) throws PreconditionFailedException, PreconditionErrorException {
         this.database = database
         this.changeLog = changeLog
         this.changeSet = changeSet
@@ -101,11 +103,14 @@ class GroovyPrecondition extends AbstractPrecondition {
 
         try {
             checkClosure()
-        } catch (PreconditionFailedException e) {
+        }
+        catch (PreconditionFailedException e) {
             throw e
-        } catch (AssertionError e) {
+        }
+        catch (AssertionError e) {
             throw new PreconditionFailedException(e.message, changeLog, this)
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new PreconditionErrorException(e, changeLog, this)
         }
     }
@@ -122,9 +127,11 @@ class GroovyPrecondition extends AbstractPrecondition {
 
         if (!sql) {
             sql = new Sql(connection) {
+
                 protected void closeResources(Connection c) {
                     // do nothing, let Liquibase close the connection
                 }
+
             }
         }
 
@@ -188,8 +195,10 @@ class GroovyPrecondition extends AbstractPrecondition {
     DatabaseSnapshot createDatabaseSnapshot(String schemaName = null) {
         try {
             return SnapshotGeneratorFactory.instance.createSnapshot(new CatalogAndSchema(null, schemaName), database, new SnapshotControl(database))
-        } catch (DatabaseException e) {
+        }
+        catch (DatabaseException e) {
             throw new PreconditionErrorException(e, changeLog, this)
         }
     }
+
 }

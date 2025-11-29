@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.grails.plugins.databasemigration.liquibase
+
+import java.sql.Connection
 
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
@@ -24,8 +26,6 @@ import liquibase.integration.spring.SpringLiquibase
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.resource.ResourceAccessor
 import org.springframework.context.ApplicationContext
-
-import java.sql.Connection
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
@@ -46,7 +46,7 @@ class GrailsLiquibase extends SpringLiquibase {
 
     @Override
     protected Liquibase createLiquibase(Connection connection) throws LiquibaseException {
-        Liquibase liquibase = new Liquibase(getChangeLog(), new ClassLoaderResourceAccessor(), createDatabase (connection, null))
+        Liquibase liquibase = new Liquibase(getChangeLog(), new ClassLoaderResourceAccessor(), createDatabase(connection, null))
         if (parameters != null) {
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
                 liquibase.setChangeLogParameter(entry.getKey(), entry.getValue())
@@ -59,7 +59,6 @@ class GrailsLiquibase extends SpringLiquibase {
 
         return liquibase
     }
-
 
     @Override
     protected Database createDatabase(Connection connection, ResourceAccessor accessor) throws DatabaseException {
@@ -98,4 +97,5 @@ class GrailsLiquibase extends SpringLiquibase {
             migrationCallbacks.invokeMethod('afterMigrations', [database] as Object[])
         }
     }
+
 }
