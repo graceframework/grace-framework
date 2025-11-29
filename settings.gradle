@@ -60,6 +60,7 @@ include (
         'grace-plugin-dynamic-modules',
         'grace-plugin-events',
         'grace-plugin-fields',
+        'grace-plugin-geb',
         'grace-plugin-gsp',
         'grace-plugin-interceptors',
         'grace-plugin-i18n',
