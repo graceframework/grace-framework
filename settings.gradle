@@ -53,6 +53,7 @@ include (
         'grace-plugin-controllers',
         'grace-plugin-converters',
         'grace-plugin-core',
+        'grace-plugin-database-migration',
         'grace-plugin-databinding',
         'grace-plugin-datasource',
         'grace-plugin-domain-class',

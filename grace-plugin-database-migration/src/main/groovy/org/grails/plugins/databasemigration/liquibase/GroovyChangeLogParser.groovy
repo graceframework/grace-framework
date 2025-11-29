@@ -25,7 +25,7 @@ import liquibase.parser.core.xml.AbstractChangeLogParser
 import liquibase.resource.ResourceAccessor
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.context.ApplicationContext
-import org.grails.io.support.SpringIOUtils
+import grails.io.IOUtils
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
