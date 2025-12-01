@@ -15,14 +15,14 @@ geb = "8.0.0"
 glassfish-expressly = "5.0.0"
 glassfish-web-jsp-jstl = "3.0.1"
 gpars = "1.2.1"
-gradle = "8.14.3"
-gradle-git-properties = "2.4.2"
 grace-async = "7.0.0-M1"
 grace-events = "7.0.0-SNAPSHOT"
 grace-data = "2024.0.0-SNAPSHOT"
 grace-data-hibernate = "2024.0.0-SNAPSHOT"
 grace-data-mongodb = "2024.0.0-SNAPSHOT"
 grace-doc-engine = "2.0.0-M1"
+gradle = "8.14.3"
+gradle-git-properties = "2.4.2"
 groovy = "4.0.29"
 gson = "2.11.0"
 h2 = "2.3.232"
@@ -88,7 +88,6 @@ geb-spock = { module = "org.apache.groovy.geb:geb-spock", version.ref = "geb" }
 glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
 glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
 gpars = { module = "org.codehaus.gpars:gpars", version.ref = "gpars" }
-gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 grace-async-core = { module = "org.graceframework.async:grace-async-core", version.ref = "grace-async" }
 grace-async-gpars = { module = "org.graceframework.async:grace-async-gpars", version.ref = "grace-async" }
 grace-async-rxjava = { module = "org.graceframework.async:grace-async-rxjava", version.ref = "grace-async" }
@@ -114,6 +113,7 @@ grace-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-
 grace-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-data" }
 grace-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-data" }
 grace-doc-engine = { module = "org.graceframework:grace-doc-engine", version.ref = "grace-doc-engine" }
+gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 groovy-ant = { module = "org.apache.groovy:groovy-ant", version.ref = "groovy" }
 groovy-bom = { module = "org.apache.groovy:groovy-bom", version.ref = "groovy" }
 groovy-console = { module = "org.apache.groovy:groovy-console", version.ref = "groovy" }
