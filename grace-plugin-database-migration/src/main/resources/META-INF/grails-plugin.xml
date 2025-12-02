@@ -1,0 +1,3 @@
+<plugin name='databaseMigration'>
+  <type>org.grails.plugins.databasemigration.DatabaseMigrationGrailsPlugin</type>
+</plugin>
