@@ -1,4 +1,4 @@
-migrationDir = ".*/grails-app/migrations/.*"
+migrationDir = ".*/db/migrations/.*"
 
 final String STRING = String.name
 
@@ -21,7 +21,6 @@ contributor([changelogBody]) {
                     parameter(name: 'description', type: STRING)
             ],
             body: {}
-
     ], type: void
 
     method name: "include", params: [
@@ -112,44 +111,6 @@ provideChildsOf("changeSet") {
     ], type: void
 }
 
-//liquibase changes
-List columnArgs = [
-        parameter(name: 'name', type: STRING),
-        parameter(name: 'type', type: STRING),
-        parameter(name: 'value', type: STRING),
-        parameter(name: 'valueNumeric', type: STRING),
-        parameter(name: 'valueBoolean', type: STRING),
-        parameter(name: 'valueDate', type: STRING),
-        parameter(name: 'defaultValue', type: STRING),
-        parameter(name: 'defaultValueNumeric', type: STRING),
-        parameter(name: 'defaultValueBoolean', type: STRING),
-        parameter(name: 'defaultValueDate', type: STRING),
-        parameter(name: 'autoIncrement', type: STRING),
-        parameter(name: 'beforeColumn', type: STRING),
-        parameter(name: 'afterColumn', type: STRING),
-        parameter(name: 'position', type: STRING),
-        parameter(name: 'descending', type: STRING),
-
-]
-
-columnType = {
-    method name: "column", params: [
-            args: columnArgs,
-            body: {}
-    ], type: void
-}
-
-columnTypeNoBody = {
-    method name: "column", params: [
-            args: columnArgs
-    ], type: void
-}
-
-List param = [
-        parameter(name: 'name', type: STRING),
-        parameter(name: 'value', type: STRING)
-]
-
 provideChildsOf("changeSet") {
     method name: "createTable", params: [
             args: [
@@ -161,10 +122,52 @@ provideChildsOf("changeSet") {
             ],
             body: {}
     ], type: void
-
 }
-provideChildsOf("createTable", columnType)
-provideChildsOf("createTable", columnTypeNoBody)
+
+provideChildsOf("createTable") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("createTable") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
 
 provideChildsOf("changeSet") {
     method name: "createView", params: [
@@ -176,7 +179,6 @@ provideChildsOf("changeSet") {
                     parameter(name: 'viewName', type: STRING)
             ]
     ], type: void
-
 }
 
 provideChildsOf("column") {
@@ -222,8 +224,51 @@ provideChildsOf("changeSet") {
             body: {}
     ], type: void
 }
-provideChildsOf("addColumn", columnType)
-provideChildsOf("addColumn", columnTypeNoBody)
+
+provideChildsOf("addColumn") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("addColumn") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
 
 provideChildsOf("changeSet") {
     method name: "addDefaultValue", params: [
@@ -320,8 +365,51 @@ provideChildsOf("changeSet") {
             body: {}
     ], type: void
 }
-provideChildsOf("createIndex", columnType)
-provideChildsOf("createIndex", columnTypeNoBody)
+
+provideChildsOf("createIndex") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("createIndex") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
 
 provideChildsOf("changeSet") {
     method name: "delete", params: [
@@ -602,8 +690,50 @@ provideChildsOf("changeSet") {
             body: {}
     ], type: void
 }
-provideChildsOf("insert", columnType)
-provideChildsOf("insert", columnTypeNoBody)
+provideChildsOf("insert") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("insert") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
 
 provideChildsOf("changeSet") {
     method name: "loadData", params: [
@@ -619,8 +749,51 @@ provideChildsOf("changeSet") {
             body: {}
     ], type: void
 }
-provideChildsOf("loadData", columnType)
-provideChildsOf("loadData", columnTypeNoBody)
+
+provideChildsOf("loadData") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("loadData") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
 
 provideChildsOf("changeSet") {
     method name: "loadUpdateData", params: [
@@ -637,8 +810,51 @@ provideChildsOf("changeSet") {
             body: {}
     ], type: void
 }
-provideChildsOf("loadUpdateData", columnType)
-provideChildsOf("loadUpdateData", columnTypeNoBody)
+
+provideChildsOf("loadUpdateData") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("loadUpdateData") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
 
 provideChildsOf("changeSet") {
     method name: "mergeColumns", params: [
@@ -682,5 +898,48 @@ provideChildsOf("changeSet") {
             body: {}
     ], type: void
 }
-provideChildsOf("update", columnType)
-provideChildsOf("update", columnTypeNoBody)
+
+provideChildsOf("update") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ],
+            body: {}
+    ], type: void
+}
+
+provideChildsOf("update") {
+    method name: "column", params: [
+            args: [
+                    parameter(name: 'name', type: STRING),
+                    parameter(name: 'type', type: STRING),
+                    parameter(name: 'value', type: STRING),
+                    parameter(name: 'valueNumeric', type: STRING),
+                    parameter(name: 'valueBoolean', type: STRING),
+                    parameter(name: 'valueDate', type: STRING),
+                    parameter(name: 'defaultValue', type: STRING),
+                    parameter(name: 'defaultValueNumeric', type: STRING),
+                    parameter(name: 'defaultValueBoolean', type: STRING),
+                    parameter(name: 'defaultValueDate', type: STRING),
+                    parameter(name: 'autoIncrement', type: STRING),
+                    parameter(name: 'beforeColumn', type: STRING),
+                    parameter(name: 'afterColumn', type: STRING),
+                    parameter(name: 'position', type: STRING),
+                    parameter(name: 'descending', type: STRING),
+            ]
+    ], type: void
+}
