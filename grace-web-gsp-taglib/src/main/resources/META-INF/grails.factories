@@ -1,2 +1,0 @@
-org.grails.taglib.TagInvocationContextCustomizer=org.grails.plugins.web.taglib.RenderTagInvocationContextCustomizer
-org.grails.taglib.NamespacedTagDispatcher=org.grails.plugins.web.taglib.TemplateNamespacedTagDispatcher

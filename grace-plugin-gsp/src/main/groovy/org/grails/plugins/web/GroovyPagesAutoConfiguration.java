@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,9 +62,9 @@ import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator;
 import org.grails.web.pages.DefaultGroovyPagesUriService;
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings;
 import org.grails.web.pages.GroovyPagesServlet;
-import org.grails.web.pages.StandaloneTagLibraryLookup;
 import org.grails.web.servlet.view.GroovyPageViewResolver;
 import org.grails.web.sitemesh.GroovyPageLayoutFinder;
+import org.grails.web.taglib.StandaloneTagLibraryLookup;
 import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
