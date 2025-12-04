@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ import grails.util.Holders;
 import grails.web.mvc.FlashScope;
 import grails.web.pages.GroovyPagesUriService;
 
-import org.grails.gsp.ResourceAwareTemplateEngine;
 import org.grails.web.pages.DefaultGroovyPagesUriService;
 import org.grails.web.util.GrailsApplicationAttributes;
 
@@ -64,9 +63,6 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
 
     private ApplicationContext appContext;
 
-    // Beans used very often
-    private ResourceAwareTemplateEngine pagesTemplateEngine;
-
     private GrailsApplication grailsApplication;
 
     private GroovyPagesUriService groovyPagesUriService;
@@ -85,6 +81,7 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         }
     }
 
+    @Override
     public ApplicationContext getApplicationContext() {
         return this.appContext;
     }
@@ -115,6 +112,7 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         }
     }
 
+    @Override
     public String getPluginContextPath(HttpServletRequest request) {
         GroovyObject controller = getController(request);
         if (controller != null && getPluginManager() != null) {
@@ -125,10 +123,12 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         return "";
     }
 
+    @Override
     public GroovyObject getController(ServletRequest request) {
         return (GroovyObject) request.getAttribute(CONTROLLER);
     }
 
+    @Override
     public String getControllerUri(ServletRequest request) {
         return "/" + getControllerName(request);
     }
@@ -166,10 +166,12 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         return appUri;
     }
 
+    @Override
     public ServletContext getServletContext() {
         return this.context;
     }
 
+    @Override
     public FlashScope getFlashScope(ServletRequest request) {
         if (!(request instanceof HttpServletRequest)) {
             return null;
@@ -196,35 +198,30 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         return fs;
     }
 
+    @Override
     public String getTemplateUri(CharSequence templateName, ServletRequest request) {
         Assert.notNull(templateName, "Argument [template] cannot be null");
         return getGroovyPagesUriService().getTemplateURI(getControllerName(request), templateName.toString());
     }
 
+    @Override
     public String getViewUri(String viewName, HttpServletRequest request) {
         Assert.notNull(viewName, "Argument [view] cannot be null");
         return getGroovyPagesUriService().getDeployedViewURI(getControllerName(request), viewName);
     }
 
+    @Override
     public String getControllerActionUri(ServletRequest request) {
         GroovyObject controller = getController(request);
         return (String) controller.getProperty("actionUri");
     }
 
+    @Override
     public Errors getErrors(ServletRequest request) {
         return (Errors) request.getAttribute(ERRORS);
     }
 
-    public ResourceAwareTemplateEngine getPagesTemplateEngine() {
-        if (this.pagesTemplateEngine == null) {
-            this.pagesTemplateEngine = fetchBeanFromAppCtx(ResourceAwareTemplateEngine.BEAN_ID);
-        }
-        if (this.pagesTemplateEngine == null && logger.isWarnEnabled()) {
-            logger.warn("No bean named [" + ResourceAwareTemplateEngine.BEAN_ID + "] defined in Spring application context!");
-        }
-        return this.pagesTemplateEngine;
-    }
-
+    @Override
     public GrailsApplication getGrailsApplication() {
         if (this.grailsApplication == null) {
             this.grailsApplication = fetchBeanFromAppCtx(GrailsApplication.APPLICATION_ID);
@@ -235,18 +232,22 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         return this.grailsApplication;
     }
 
+    @Override
     public Writer getOut(HttpServletRequest request) {
         return (Writer) request.getAttribute(OUT);
     }
 
+    @Override
     public void setOut(HttpServletRequest request, Writer out2) {
         request.setAttribute(OUT, out2);
     }
 
+    @Override
     public String getNoSuffixViewURI(GroovyObject controller, String viewName) {
         return getGroovyPagesUriService().getNoSuffixViewURI(controller, viewName);
     }
 
+    @Override
     public String getTemplateURI(GroovyObject controller, String templateName) {
         return getGroovyPagesUriService().getTemplateURI(controller, templateName);
     }
@@ -256,6 +257,7 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         return getGroovyPagesUriService().getTemplateURI(controller, templateName, includeExtension);
     }
 
+    @Override
     public GroovyPagesUriService getGroovyPagesUriService() {
         if (this.groovyPagesUriService == null) {
             this.groovyPagesUriService = fetchBeanFromAppCtx(GroovyPagesUriService.BEAN_ID);
@@ -266,6 +268,7 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         return this.groovyPagesUriService;
     }
 
+    @Override
     public MessageSource getMessageSource() {
         if (this.messageSource == null) {
             this.messageSource = fetchBeanFromAppCtx("messageSource");

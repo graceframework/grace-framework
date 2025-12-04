@@ -33,6 +33,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import grails.artefact.ArtefactTypes;
@@ -193,15 +194,17 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                     }
                     else {
                         url = this.gspFile;
-                        GrailsApplicationAttributes attrs = null;
                         try {
-                            attrs = grailsApplicationAttributesConstructor.newInstance(servletContext);
+                            WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+                            if (webApplicationContext != null) {
+                                ResourceAwareTemplateEngine engine =
+                                        webApplicationContext.getBean(ResourceAwareTemplateEngine.BEAN_ID, ResourceAwareTemplateEngine.class);
+                                this.lineNumber = engine.mapStackLineNumber(url, this.lineNumber);
+                            }
                         }
                         catch (Exception e) {
                             ReflectionUtils.rethrowRuntimeException(e);
                         }
-                        ResourceAwareTemplateEngine engine = attrs.getPagesTemplateEngine();
-                        this.lineNumber = engine.mapStackLineNumber(url, this.lineNumber);
                     }
                     fileLocation = "grails-app" + urlPrefix + this.fileName;
                 }
