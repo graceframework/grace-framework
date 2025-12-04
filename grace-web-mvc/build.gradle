@@ -1,8 +1,9 @@
 dependencies {
     api project(":grace-web-common")
+    api project(":grace-gsp")
+    api project(":grace-web-sitemesh")
     api project(":grace-web-url-mappings")
 
-    api project(":grace-web-sitemesh")
     compileOnlyApi libs.jakarta.servlet
 
     testImplementation libs.jakarta.servlet

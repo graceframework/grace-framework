@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ import org.springframework.validation.Errors;
 import grails.core.ApplicationAttributes;
 import grails.web.mvc.FlashScope;
 import grails.web.pages.GroovyPagesUriService;
-
-import org.grails.gsp.ResourceAwareTemplateEngine;
 
 /**
  * Defines the names of and methods to retrieve Grails specific request and servlet attributes.
@@ -199,11 +197,6 @@ public interface GrailsApplicationAttributes extends ApplicationAttributes {
      * @return The errors instance contained within the request
      */
     Errors getErrors(ServletRequest request);
-
-    /**
-     * @return Retrieves the shared GSP template engine
-     */
-    ResourceAwareTemplateEngine getPagesTemplateEngine();
 
     /**
      * Holds the current response write for the request

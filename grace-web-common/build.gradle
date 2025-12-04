@@ -5,8 +5,6 @@ dependencies {
     api project(":grace-encoder")
     api project(":grace-util")
 
-    api project(":grace-gsp")
-
     compileOnlyApi libs.jakarta.servlet
     api libs.groovy.templates
     api libs.spring.contextSupport
