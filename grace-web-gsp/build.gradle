@@ -1,9 +1,20 @@
 dependencies {
-    compileOnly libs.ant
-    compileOnlyApi libs.jakarta.servlet
     api project(":grace-gsp")
     api project(":grace-web-common")
     api project(":grace-web-sitemesh")
+
+    compileOnly libs.ant
+    compileOnlyApi libs.jakarta.servlet
+    // Required for JSP support
+    compileOnlyApi libs.jakarta.el
+    compileOnlyApi libs.jakarta.servlet.jsp, {
+        exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
+    }
+    compileOnlyApi libs.jakarta.servlet.jsp.jstl, {
+        exclude group: 'jakarta.el', module: 'jakarta.el-api'
+        exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
+    }
+    compileOnly libs.glassfish.web.jsp.jstl
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
