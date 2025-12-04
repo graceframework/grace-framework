@@ -34,7 +34,6 @@ include (
         'grace-web-common',
         'grace-web-databinding',
         'grace-web-gsp',
-        'grace-web-jsp',
         'grace-web-mvc',
         'grace-web-sitemesh',
         'grace-web-taglib',
