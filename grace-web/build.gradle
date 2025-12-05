@@ -2,7 +2,6 @@ dependencies {
     api project(":grace-api")
     api project(":grace-plugin-api")
     api project(":grace-web-common")
-    api project(":grace-web-databinding")
     api project(":grace-web-gsp")
     api project(":grace-web-mvc")
     api project(":grace-web-sitemesh")
