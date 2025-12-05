@@ -2,11 +2,15 @@ dependencies {
     api project(":grace-api")
     api project(":grace-bootstrap")
     api project(":grace-core")
+    compileOnly project(":grace-cli")
     api project(":grace-plugin-controllers")
     api project(":grace-util")
     api project(":grace-web-url-mappings")
 
     compileOnly libs.jakarta.servlet
+    compileOnly libs.jansi
+    compileOnly libs.jline
+
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
