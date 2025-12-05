@@ -1,6 +1,5 @@
 dependencies {
     api project(":grace-api")
-    api project(":grace-cli")
     api project(":grace-util")
     api project(":grace-web-common")
 
@@ -8,8 +7,6 @@ dependencies {
 
     compileOnlyApi libs.jakarta.servlet
     implementation libs.caffeine
-    compileOnly libs.jansi
-    compileOnly libs.jline
 
     testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test-suite-base")
