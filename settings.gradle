@@ -32,7 +32,6 @@ include (
         'grace-views-markup',
         'grace-web',
         'grace-web-common',
-        'grace-web-databinding',
         'grace-web-gsp',
         'grace-web-mvc',
         'grace-web-sitemesh',

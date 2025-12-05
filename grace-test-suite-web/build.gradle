@@ -23,7 +23,7 @@ dependencies {
     testImplementation project(":grace-plugin-controllers")
     testImplementation project(":grace-plugin-rest")
     testImplementation project(":grace-web")
-    testImplementation project(":grace-web-databinding")
+    testImplementation project(":grace-web-common")
     testImplementation project(":grace-spring")
     testImplementation project(":grace-test-support")
 
