@@ -3,7 +3,7 @@ dependencies {
     api project(":grace-bootstrap")
     api project(":grace-plugin-api")
     api project(":grace-util")
-    compileOnly project(":grace-web-common")
+    compileOnly project(":grace-web")
 
     api libs.groovy.ant
     api libs.spring.boot.autoconfigure

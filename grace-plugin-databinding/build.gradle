@@ -1,7 +1,7 @@
 dependencies {
     api project(":grace-api")
     api project(":grace-plugin-api")
-    api project(":grace-web-common")
+    api project(":grace-web")
 
     compileOnly libs.jakarta.servlet
     api libs.spring.boot.autoconfigure

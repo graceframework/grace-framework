@@ -31,7 +31,7 @@ include (
         'grace-views-json',
         'grace-views-markup',
         'grace-web',
-        'grace-web-common',
+        // 'grace-web-common',
         'grace-web-gsp',
         'grace-web-mvc',
         'grace-web-sitemesh',

@@ -5,7 +5,7 @@ dependencies {
     api project(":grace-plugin-api")
     runtimeOnly project(":grace-plugin-controllers")
     api project(":grace-util")
-    api project(":grace-web-common")
+    api project(":grace-web")
 
     api libs.commons.lang3
     compileOnly libs.jakarta.servlet

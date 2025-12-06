@@ -4,7 +4,7 @@ dependencies {
     api project(":grace-encoder")
     api project(":grace-plugin-domain-class")
     api project(":grace-plugin-rest")
-    api project(":grace-web-common")
+    api project(":grace-web")
     api project(":grace-web-url-mappings")
     api libs.grace.datastore.gorm.support
     api libs.caffeine

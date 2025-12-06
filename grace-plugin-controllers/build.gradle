@@ -6,6 +6,8 @@ dependencies {
     api project(":grace-plugin-databinding")
     api project(":grace-plugin-mimetypes")
     api project(":grace-plugin-validation")
+    api project(":grace-web-gsp")
+    api project(":grace-web-mvc")
     api project(":grace-util")
 
     compileOnly libs.jakarta.servlet

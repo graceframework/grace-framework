@@ -2,7 +2,7 @@ dependencies {
     compileOnly libs.jakarta.annotation.api
     compileOnlyApi libs.jakarta.servlet
     api project(":grace-taglib")
-    api project(":grace-web-common")
+    api project(":grace-web")
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test

@@ -4,7 +4,7 @@ dependencies {
     api libs.grace.datastore.gorm.validation
 
     testImplementation project(":grace-plugin-domain-class")
-    testImplementation project(":grace-web-common")
+    testImplementation project(":grace-web")
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
 }

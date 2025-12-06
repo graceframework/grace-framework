@@ -1,16 +1,22 @@
 dependencies {
     api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-databinding")
+    api project(":grace-encoder")
     api project(":grace-plugin-api")
-    api project(":grace-web-common")
-    api project(":grace-web-gsp")
-    api project(":grace-web-mvc")
-    api project(":grace-web-sitemesh")
-    api project(":grace-web-taglib")
-    api project(":grace-web-url-mappings")
+    api project(":grace-util")
 
+    compileOnly libs.grace.datastore.core
+    compileOnly libs.jakarta.annotation.api
     compileOnlyApi libs.jakarta.servlet
-    compileOnly libs.grace.datastore.gorm.support
+    api libs.groovy.templates
+    api libs.spring.contextSupport
+    api libs.spring.web
+    api libs.spring.webmvc
+    compileOnly libs.jsr305
+    implementation libs.caffeine
 
     testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
     testImplementation project(":grace-test")
 }

@@ -3,7 +3,7 @@ dependencies {
     api libs.sitemesh, {
         exclude module: 'jakarta.servlet-api'
     }
-    api project(":grace-web-common")
+    api project(":grace-web")
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
