@@ -11,5 +11,5 @@ dependencies {
 
     testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test")
-    testImplementation project(":grace-web-common")
+    testImplementation project(":grace-web")
 }

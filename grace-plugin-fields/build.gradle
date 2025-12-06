@@ -2,7 +2,7 @@ dependencies {
     api project(":grace-plugin-databinding")
     api project(":grace-plugin-validation")
     api project(":grace-scaffolding-core")
-    api project(":grace-web-common")
+    api project(":grace-web")
     api project(":grace-web-gsp")
     api project(":grace-web-taglib")
     implementation libs.grace.datastore.core

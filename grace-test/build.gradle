@@ -3,6 +3,9 @@ dependencies {
     api project(":grace-plugin-converters")
     api project(":grace-plugin-mimetypes")
     api project(":grace-web")
+    api project(":grace-web-gsp")
+    api project(":grace-web-mvc")
+    api project(":grace-web-taglib")
 
     api libs.ant
     api libs.ant.junit

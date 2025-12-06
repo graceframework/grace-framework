@@ -1,7 +1,7 @@
 dependencies {
     api project(":grace-api")
     api project(":grace-util")
-    api project(":grace-web-common")
+    api project(":grace-web")
 
     api(libs.grace.datastore.gorm.validation)
 
