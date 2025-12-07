@@ -1,8 +1,10 @@
 dependencies {
     api project(":grace-gsp")
     api project(":grace-web")
-    api project(":grace-web-sitemesh")
 
+    api libs.sitemesh, {
+        exclude module: 'jakarta.servlet-api'
+    }
     compileOnly libs.ant
     compileOnlyApi libs.jakarta.servlet
     // Required for JSP support

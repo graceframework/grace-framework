@@ -6,7 +6,6 @@ dependencies {
     api project(":grace-plugin-codecs")
     api project(":grace-web-gsp")
     api project(":grace-web-mvc")
-    api project(":grace-web-sitemesh")
     api project(":grace-web-taglib")
     api project(":grace-web-url-mappings")
     api libs.spring.boot.autoconfigure
