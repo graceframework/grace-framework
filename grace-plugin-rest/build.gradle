@@ -20,11 +20,7 @@ dependencies {
         transitive = false
     }
     compileOnly libs.grace.datastore.gorm.support
-    compileOnly(project(":grace-web-gsp")) {
-        exclude group:'org.graceframework', module:'grace-core'
-        exclude group:'org.graceframework', module:'grace-encoder'
-        exclude group:'org.graceframework', module:'grace-web-common'
-    }
+    compileOnly project(":grace-web-gsp")
     implementation libs.caffeine
 
     testImplementation libs.jakarta.servlet

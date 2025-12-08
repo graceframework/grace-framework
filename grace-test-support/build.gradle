@@ -10,6 +10,7 @@ dependencies {
 
     api libs.grace.async.core
     api project(":grace-plugin-gsp")
+    api project(":grace-plugin-taglibs")
     api project(":grace-views-json")
     api project(":grace-web-gsp")
     api libs.groovy.test.junit5

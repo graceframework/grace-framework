@@ -48,14 +48,7 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
     testImplementation libs.grace.async.core
-    testImplementation project(":grace-plugin-gsp"), {
-        exclude module:'grace-plugin-codecs'
-        exclude module:'grace-plugin-controllers'
-        exclude module:'grace-core'
-        exclude module:'grace-plugin-domain-class'
-        exclude module:'grace-web-common'
-        exclude module:'grace-encoder'
-    }
+    testImplementation project(":grace-plugin-gsp")
 
     testRuntimeOnly libs.h2
     testRuntimeOnly libs.aspectj.rt

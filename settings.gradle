@@ -64,6 +64,7 @@ include (
         'grace-plugin-rest',
         'grace-plugin-scaffolding',
         'grace-plugin-services',
+        'grace-plugin-taglibs',
         'grace-plugin-url-mappings',
         'grace-plugin-validation',
 

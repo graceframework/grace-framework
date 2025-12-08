@@ -64,7 +64,6 @@ import org.grails.web.pages.FilteringCodecsByContentTypeSettings;
 import org.grails.web.pages.GroovyPagesServlet;
 import org.grails.web.servlet.view.GroovyPageViewResolver;
 import org.grails.web.sitemesh.GroovyPageLayoutFinder;
-import org.grails.web.taglib.StandaloneTagLibraryLookup;
 import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
@@ -191,12 +190,6 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public DefaultGrailsTagDateHelper grailsTagDateHelper() {
-        return new DefaultGrailsTagDateHelper();
-    }
-
-    @Bean
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public ServletRegistrationBean<GroovyPagesServlet> groovyPagesServlet() {
         ServletRegistrationBean<GroovyPagesServlet> servletRegistration = new ServletRegistrationBean<>();
@@ -251,14 +244,6 @@ public class GroovyPagesAutoConfiguration {
         }
 
         return groovyPageViewResolver;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public StandaloneTagLibraryLookup gspTagLibraryLookup(ObjectProvider<GrailsApplication> grailsApplication) {
-        StandaloneTagLibraryLookup tagLibraryLookup = new StandaloneTagLibraryLookup();
-        grailsApplication.ifAvailable(tagLibraryLookup::setGrailsApplication);
-        return tagLibraryLookup;
     }
 
     @Bean({"groovyTemplateEngine", "groovyPagesTemplateEngine"})
