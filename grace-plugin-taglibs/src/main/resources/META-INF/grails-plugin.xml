@@ -1,0 +1,3 @@
+<plugin name="taglibs">
+  <type>org.grails.plugins.web.TaglibsGrailsPlugin</type>
+</plugin>

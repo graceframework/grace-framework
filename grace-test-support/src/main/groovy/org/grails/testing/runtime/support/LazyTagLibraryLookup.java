@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.springframework.context.support.GenericApplicationContext;
 
 import grails.core.gsp.GrailsTagLibClass;
 
-import org.grails.plugins.web.GroovyPagesGrailsPlugin;
+import org.grails.plugins.web.TaglibsGrailsPlugin;
 import org.grails.taglib.TagLibraryLookup;
 
 /**
@@ -36,7 +36,7 @@ import org.grails.taglib.TagLibraryLookup;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class LazyTagLibraryLookup extends TagLibraryLookup {
 
-    List<Class> tagLibClasses = (List<Class>) new GroovyPagesGrailsPlugin().getProvidedArtefacts();
+    List<Class> tagLibClasses = (List<Class>) new TaglibsGrailsPlugin().getProvidedArtefacts();
 
     private final Map<String, GrailsTagLibClass> lazyLoadableTagLibs = new HashMap<>();
 
