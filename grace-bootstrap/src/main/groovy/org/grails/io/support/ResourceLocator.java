@@ -29,6 +29,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
+import grails.util.BuildSettings;
 import grails.util.Environment;
 
 /**
@@ -84,19 +85,11 @@ public class ResourceLocator {
     private void initializeForSearchLocation(String searchLocation) {
         String searchLocationPlusSlash = searchLocation.endsWith("/") ? searchLocation : searchLocation + FILE_SEPARATOR;
         try {
-            File[] directories = new File(searchLocationPlusSlash + GrailsResourceUtils.GRAILS_APP_DIR)
+            File[] directories = new File(searchLocationPlusSlash + BuildSettings.GRAILS_APP_PATH)
                     .listFiles(file -> file.isDirectory() && !file.isHidden());
 
             if (directories != null) {
                 for (File directory : directories) {
-                    this.classSearchDirectories.add(directory.getCanonicalPath());
-                }
-            }
-            File[] appDirectories = new File(searchLocationPlusSlash + "app")
-                    .listFiles(file -> file.isDirectory() && !file.isHidden());
-
-            if (appDirectories != null) {
-                for (File directory : appDirectories) {
                     this.classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }

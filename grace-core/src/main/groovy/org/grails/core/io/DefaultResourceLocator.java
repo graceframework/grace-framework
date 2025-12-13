@@ -33,9 +33,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
+import grails.util.BuildSettings;
 import grails.util.Environment;
 
-import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.BinaryGrailsPlugin;
 
 /**
@@ -93,7 +93,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
     private void initializeForSearchLocation(String searchLocation) {
         String searchLocationPlusSlash = searchLocation.endsWith("/") ? searchLocation : searchLocation + FILE_SEPARATOR;
         try {
-            File[] directories = new File(searchLocationPlusSlash + GrailsResourceUtils.GRAILS_APP_DIR)
+            File[] directories = new File(searchLocationPlusSlash + BuildSettings.GRAILS_APP_PATH)
                     .listFiles(file -> file.isDirectory() && !file.isHidden());
 
             if (directories != null) {
