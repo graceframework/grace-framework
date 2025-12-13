@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -157,7 +158,6 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
     public ResourceLocator grailsResourceLocator(GroovyPagesProperties groovyPagesProperties, ObjectProvider<GrailsApplication> grailsApplication) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
@@ -168,6 +168,7 @@ public class GroovyPagesAutoConfiguration {
                 (developmentMode && env == Environment.DEVELOPMENT) ? 0L : groovyPagesProperties.getReload().getInterval());
 
         CachingGroovyPageStaticResourceLocator groovyPageStaticResourceLocator = new CachingGroovyPageStaticResourceLocator();
+        groovyPageStaticResourceLocator.setSearchLocation(BuildSettings.BASE_DIR.getAbsolutePath());
 
         if (enableReload) {
             groovyPageStaticResourceLocator.setCacheTimeout(gspCacheTimeout);
@@ -178,7 +179,8 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(ObjectProvider<ResourceLocator> grailsResourceLocator) {
+    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(
+            @Qualifier("grailsResourceLocator") ObjectProvider<ResourceLocator> grailsResourceLocator) {
         return new ErrorsViewStackTracePrinter(grailsResourceLocator.getObject());
     }
 
