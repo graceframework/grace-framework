@@ -17,14 +17,17 @@ package org.grails.web.errors
 
 import org.springframework.core.io.Resource
 
+import grails.util.BuildSettings
+import grails.util.GrailsStringUtils
+
 import org.grails.core.exceptions.DefaultErrorsPrinter
 import org.grails.core.io.ResourceLocator
-import org.grails.io.support.GrailsResourceUtils
 
 /**
  * Customized Stack trace output for the errors view.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
@@ -59,10 +62,13 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
         String path = resource.filename
         // try calc better path
         try {
-            String abs = resource.file.absolutePath
-            int i = abs.indexOf(GrailsResourceUtils.GRAILS_APP_DIR)
-            if (i > -1) {
-                path = abs[i..-1]
+            String abs = resource.getFile().absolutePath
+            String base = GrailsStringUtils.cleanPath(BuildSettings.BASE_DIR.absolutePath)
+            if (abs.startsWith(base)) {
+                path = abs - base
+                if (path.startsWith(File.separator)) {
+                    path = path.substring(1)
+                }
             }
         }
         catch (ignored) {
