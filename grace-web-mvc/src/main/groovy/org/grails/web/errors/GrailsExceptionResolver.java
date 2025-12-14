@@ -63,7 +63,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
     public static final String EXCEPTION_ATTRIBUTE = WebUtils.EXCEPTION_ATTRIBUTE;
 
-    protected static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    protected static final String LINE_SEPARATOR = System.lineSeparator();
 
     protected ServletContext servletContext;
 
@@ -316,6 +316,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         if (message != null) {
             sb.append(message).append(". ");
         }
+        sb.append(LINE_SEPARATOR);
         sb.append("Stacktrace follows:");
 
         return sb.toString();
