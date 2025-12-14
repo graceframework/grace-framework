@@ -316,7 +316,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
             task.systemProperty Metadata.APPLICATION_VERSION, project.version
             task.systemProperty Metadata.APPLICATION_GRAILS_VERSION, grailsVersion
             task.systemProperty Environment.KEY, defaultGrailsEnv
-            task.systemProperty Environment.FULL_STACKTRACE, System.getProperty(Environment.FULL_STACKTRACE) ?: ''
             if (task.minHeapSize == null) {
                 task.minHeapSize = '768m'
             }

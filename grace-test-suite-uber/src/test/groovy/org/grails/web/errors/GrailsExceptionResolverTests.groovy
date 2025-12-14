@@ -8,6 +8,7 @@ import grails.web.CamelCaseUrlConverter
 import grails.web.UrlConverter
 import grails.web.mapping.UrlMappingsHolder
 import org.grails.config.PropertySourcesConfig
+import org.grails.exceptions.reporting.DefaultStackTraceFilterer
 import org.grails.plugins.testing.GrailsMockHttpServletRequest
 import org.grails.plugins.testing.GrailsMockHttpServletResponse
 import org.grails.support.MockApplicationContext
@@ -89,6 +90,7 @@ class GrailsExceptionResolverTests {
         resolver.servletContext = mockContext
         resolver.exceptionMappings = ['java.lang.Exception': '/error'] as Properties
         resolver.grailsApplication = application
+        resolver.stackFilterer = new DefaultStackTraceFilterer()
 
         def ex = new Exception()
         def request = webRequest.currentRequest
@@ -118,6 +120,7 @@ class GrailsExceptionResolverTests {
         resolver.servletContext = mockContext
         resolver.exceptionMappings = ['java.lang.Exception': '/error'] as Properties
         resolver.grailsApplication = application
+        resolver.stackFilterer = new DefaultStackTraceFilterer()
 
         def ex = new Exception()
         def request = webRequest.currentRequest
@@ -149,6 +152,7 @@ class GrailsExceptionResolverTests {
         resolver.servletContext = mockContext
         resolver.exceptionMappings = ['java.lang.Exception': '/error'] as Properties
         resolver.grailsApplication = application
+        resolver.stackFilterer = new DefaultStackTraceFilterer()
 
         def ex = new Exception()
         def request = webRequest.currentRequest
@@ -199,7 +203,9 @@ grails.exceptionresolver.params.exclude = ['jennysPhoneNumber']
         request.addParameter "jennysPhoneNumber", "8675309"
 
         System.setProperty(Environment.KEY, Environment.DEVELOPMENT.name)
-        def msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+        def resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+        resolver.stackFilterer = new DefaultStackTraceFilterer()
+        def msg = resolver.getRequestLogMessage(request)
 
         assertEquals '''Exception occurred when processing request: [GET] /execute/me - parameters:
 foo: bar
@@ -227,15 +233,18 @@ Stacktrace follows:'''.replaceAll('[\n\r]', '')
 Stacktrace follows:'''.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.DEVELOPMENT.name)
-            def msg = new GrailsExceptionResolver(grailsApplication:application).getRequestLogMessage(request)
+            def resolver = new GrailsExceptionResolver(grailsApplication:application)
+            def msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithParameters, msg.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.PRODUCTION.name)
-            msg = new GrailsExceptionResolver(grailsApplication:application).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:application)
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithoutParameters, msg.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.TEST.name)
-            msg = new GrailsExceptionResolver(grailsApplication:application).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:application)
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithoutParameters, msg.replaceAll('[\n\r]', '')
 
             def config = new ConfigSlurper().parse('''
@@ -243,15 +252,18 @@ grails.exceptionresolver.logRequestParameters = false
 ''')
 
             System.setProperty(Environment.KEY, Environment.DEVELOPMENT.name)
-            msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithoutParameters, msg.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.PRODUCTION.name)
-            msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithoutParameters, msg.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.TEST.name)
-            msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithoutParameters, msg.replaceAll('[\n\r]', '')
 
             config = new ConfigSlurper().parse('''
@@ -259,15 +271,18 @@ grails.exceptionresolver.logRequestParameters = true
 ''')
 
             System.setProperty(Environment.KEY, Environment.DEVELOPMENT.name)
-            msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithParameters, msg.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.PRODUCTION.name)
-            msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithParameters, msg.replaceAll('[\n\r]', '')
 
             System.setProperty(Environment.KEY, Environment.TEST.name)
-            msg = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config))).getRequestLogMessage(request)
+            resolver = new GrailsExceptionResolver(grailsApplication:new DefaultGrailsApplication(config:new PropertySourcesConfig().merge(config)))
+            msg = resolver.getRequestLogMessage(request)
             assertEquals msgWithParameters, msg.replaceAll('[\n\r]', '')
         } finally {
             System.setProperty(Environment.KEY, oldEnvName)

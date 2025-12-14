@@ -29,7 +29,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerInvocationException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
@@ -47,7 +46,6 @@ import grails.web.mapping.exceptions.UrlMappingException;
 
 import org.grails.core.exceptions.GrailsRuntimeException;
 import org.grails.exceptions.ExceptionUtils;
-import org.grails.exceptions.reporting.DefaultStackTraceFilterer;
 import org.grails.exceptions.reporting.StackTraceFilterer;
 import org.grails.web.mapping.DefaultUrlMappingInfo;
 import org.grails.web.mapping.UrlMappingUtils;
@@ -114,7 +112,6 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     @Override
     public void setGrailsApplication(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;
-        createStackFilterer();
     }
 
     /**
@@ -324,16 +321,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         return sb.toString();
     }
 
-    protected void createStackFilterer() {
-        try {
-            Class filtererClass = this.grailsApplication.getConfig().getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS,
-                    Class.class, DefaultStackTraceFilterer.class);
-            this.stackFilterer = BeanUtils.instantiateClass(filtererClass, StackTraceFilterer.class);
-        }
-        catch (Throwable t) {
-            logger.error("Problem instantiating StackTracePrinter class, using default: " + t.getMessage());
-            this.stackFilterer = new DefaultStackTraceFilterer();
-        }
+    public void setStackTraceFilterer(StackTraceFilterer stackTraceFilterer) {
+        this.stackFilterer = stackTraceFilterer;
     }
 
 }
