@@ -29,10 +29,9 @@ class StackTracePrinterSpec extends Specification {
 
         then:"The formatting is correctly applied"
             result != null
-            result.contains '|     7 | callMe . . . . . . in test.FooController'
+            result.contains '->>  7 | callMe             in test.FooController'
     }
 
-    @Requires({jvm.isJava8()})
     void "Test pretty print nested stack trace"() {
       given: "a controller that throws an exception"
             final gcl = new GroovyClassLoader()
