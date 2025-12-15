@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import grails.web.http.HttpHeaders
 import grails.web.mapping.UrlMapping
 import grails.web.mapping.UrlMappingInfo
 import grails.web.mapping.UrlMappingsHolder
-import grails.web.mapping.cors.GrailsCorsConfiguration
 import grails.web.mime.MimeType
 import grails.web.mime.MimeTypeResolver
 
@@ -211,10 +210,6 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
             request.removeAttribute(MATCHED_REQUEST)
         }
 
-    }
-
-    void setGrailsCorsConfiguration(GrailsCorsConfiguration grailsCorsConfiguration) {
-        this.corsConfigurations = grailsCorsConfiguration.corsConfigurations
     }
 
 }
