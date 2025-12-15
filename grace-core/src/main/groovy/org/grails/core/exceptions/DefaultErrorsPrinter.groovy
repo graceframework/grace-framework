@@ -31,6 +31,7 @@ import org.grails.exceptions.reporting.StackTracePrinter
  *
  * @author Graeme Rocher
  * @author Marc Palmer
+ * @author Michael Yan
  * @since 2.0
  */
 class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnippetPrinter {
@@ -82,7 +83,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                     }
                 }
 
-                if (!className || !lineNumber) {
+                if (!className || lineNumber < 0) {
                     continue
                 }
 

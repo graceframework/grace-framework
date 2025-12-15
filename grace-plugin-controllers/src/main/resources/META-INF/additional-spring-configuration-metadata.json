@@ -38,6 +38,12 @@
       "defaultValue": "\/static\/**"
     },
     {
+      "name": "grails.full.stacktrace",
+      "description": "Whether the display of full stack traces is needed.",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
       "name": "grails.exceptionresolver.logRequestParameters",
       "description": "Whether to log request parameters in the console.",
       "type": "java.lang.Boolean",

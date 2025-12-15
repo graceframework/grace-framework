@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Default implementation of StackTraceFilterer.
  *
- * @since 2.0
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 2.0
  */
 public class DefaultStackTraceFilterer implements StackTraceFilterer {
 
@@ -37,16 +38,18 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     private static final String[] DEFAULT_INTERNAL_PACKAGES = new String[] {
             "org.codehaus.groovy.runtime.",
             "org.codehaus.groovy.reflection.",
+            "org.codehaus.groovy.vmplugin.",
             "org.codehaus.groovy.ast.",
             "org.springframework.web.filter",
             "org.springframework.boot.actuate",
-            "org.mortbay.",
             "groovy.lang.",
             "org.apache.catalina.",
             "org.apache.coyote.",
             "org.apache.tomcat.",
             "net.sf.cglib.proxy.",
             "sun.",
+            "jdk.internal.reflect.",
+            "java.lang.",
             "java.lang.reflect.",
             "org.springframework.boot.devtools.",
             "org.springsource.loaded.",
@@ -69,6 +72,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         this.packagesToFilter.addAll(Arrays.asList(DEFAULT_INTERNAL_PACKAGES));
     }
 
+    @Override
     public void addInternalPackage(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Package name cannot be null");
@@ -76,10 +80,12 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         this.packagesToFilter.add(name);
     }
 
+    @Override
     public void setCutOffPackage(String cutOffPackage) {
         this.cutOffPackage = cutOffPackage;
     }
 
+    @Override
     public Throwable filter(Throwable source, boolean recursive) {
         if (recursive) {
             Throwable current = source;
@@ -87,10 +93,12 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
                 current = filter(current);
                 current = current.getCause();
             }
+            return current;
         }
         return filter(source);
     }
 
+    @Override
     public Throwable filter(Throwable source) {
         if (this.shouldFilter) {
             StackTraceElement[] trace = source.getStackTrace();
@@ -149,8 +157,14 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         return true;
     }
 
+    @Override
     public void setShouldFilter(boolean shouldFilter) {
         this.shouldFilter = shouldFilter;
+    }
+
+    @Override
+    public boolean isShouldFilter() {
+        return this.shouldFilter;
     }
 
 }

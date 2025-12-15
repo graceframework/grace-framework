@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2022 the original author or authors.
+ * Copyright 2009-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.grails.core.exceptions.GrailsException;
  * Thrown when validation fails during a .save().
  *
  * @author Jeff Brown
+ * @author Michael Yan
  * @since 1.2
  */
 public class ValidationException extends GrailsException {
@@ -54,8 +55,11 @@ public class ValidationException extends GrailsException {
 
     public static String formatErrors(Errors errors, String msg) {
         StringBuilder b = new StringBuilder();
-        if (msg != null && msg.length() > 0) {
-            b.append(msg).append(":\n");
+        if (msg != null && !msg.isEmpty()) {
+            b.append(msg);
+        }
+        if (errors.hasErrors()) {
+            b.append(":\n");
         }
         for (ObjectError error : errors.getAllErrors()) {
             b.append("- ").append(error).append("\n");

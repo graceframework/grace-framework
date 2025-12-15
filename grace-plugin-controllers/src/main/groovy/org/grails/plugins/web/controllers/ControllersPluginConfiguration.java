@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 the original author or authors.
+ * Copyright 2022-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import jakarta.servlet.DispatcherType;
 import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.Servlet;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -43,7 +44,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import grails.config.Config;
 import grails.config.Settings;
 import grails.core.GrailsApplication;
+import grails.util.Environment;
 
+import org.grails.exceptions.reporting.DefaultStackTraceFilterer;
+import org.grails.exceptions.reporting.StackTraceFilterer;
 import org.grails.web.errors.GrailsExceptionResolver;
 import org.grails.web.filters.HiddenHttpMethodFilter;
 import org.grails.web.filters.OrderedHiddenHttpMethodFilter;
@@ -81,11 +85,30 @@ public class ControllersPluginConfiguration {
     }
 
     @Bean
-    public GrailsExceptionResolver exceptionHandler() {
+    @ConditionalOnMissingBean
+    public StackTraceFilterer stackTraceFilterer(ObjectProvider<GrailsApplication> grailsApplicationProvider) {
+        GrailsApplication grailsApplication = grailsApplicationProvider.getIfAvailable();
+        Config config = grailsApplication.getConfig();
+        boolean shouldFilter = !config.getProperty(Environment.FULL_STACKTRACE, Boolean.class, Boolean.FALSE);
+        Class<?> filtererClass = config.getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS,
+                Class.class, DefaultStackTraceFilterer.class);
+
+        StackTraceFilterer filtererBean = BeanUtils.instantiateClass(filtererClass, StackTraceFilterer.class);
+        filtererBean.setShouldFilter(shouldFilter);
+        return filtererBean;
+    }
+
+    @Bean
+    public GrailsExceptionResolver exceptionHandler(ObjectProvider<GrailsApplication> grailsApplicationProvider,
+            ObjectProvider<StackTraceFilterer> stackTraceFiltererObjectProvider) {
         GrailsExceptionResolver exceptionResolver = new GrailsExceptionResolver();
+        exceptionResolver.setGrailsApplication(grailsApplicationProvider.getIfAvailable());
+        exceptionResolver.setStackTraceFilterer(stackTraceFiltererObjectProvider.getIfAvailable());
+
         Properties exceptionMappings = new Properties();
         exceptionMappings.put("java.lang.Exception", "/error");
         exceptionResolver.setExceptionMappings(exceptionMappings);
+
         return exceptionResolver;
     }
 

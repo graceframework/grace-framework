@@ -29,7 +29,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerInvocationException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
@@ -47,7 +46,6 @@ import grails.web.mapping.exceptions.UrlMappingException;
 
 import org.grails.core.exceptions.GrailsRuntimeException;
 import org.grails.exceptions.ExceptionUtils;
-import org.grails.exceptions.reporting.DefaultStackTraceFilterer;
 import org.grails.exceptions.reporting.StackTraceFilterer;
 import org.grails.web.mapping.DefaultUrlMappingInfo;
 import org.grails.web.mapping.UrlMappingUtils;
@@ -59,13 +57,14 @@ import org.grails.web.util.WebUtils;
  * Wraps any runtime exceptions with a GrailsWrappedException instance.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GrailsExceptionResolver extends SimpleMappingExceptionResolver implements ServletContextAware, GrailsApplicationAware {
 
     public static final String EXCEPTION_ATTRIBUTE = WebUtils.EXCEPTION_ATTRIBUTE;
 
-    protected static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    protected static final String LINE_SEPARATOR = System.lineSeparator();
 
     protected ServletContext servletContext;
 
@@ -114,7 +113,6 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     @Override
     public void setGrailsApplication(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;
-        createStackFilterer();
     }
 
     /**
@@ -265,14 +263,22 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         StringBuilder sb = new StringBuilder();
 
         sb.append(exceptionName)
-                .append(" occurred when processing request: ")
-                .append("[").append(request.getMethod().toUpperCase()).append("] ");
+                .append(" occurred when processing request:")
+                .append(LINE_SEPARATOR);
+        sb.append("URI: ");
 
         if (request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE) != null) {
             sb.append(request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE));
         }
         else {
             sb.append(request.getRequestURI());
+        }
+
+        sb.append(LINE_SEPARATOR);
+        sb.append("Method: ").append(request.getMethod().toUpperCase()).append(LINE_SEPARATOR);
+
+        if (message != null) {
+            sb.append("Message: ").append(message).append(LINE_SEPARATOR);
         }
 
         Config config = this.grailsApplication != null ? this.grailsApplication.getConfig() : null;
@@ -285,9 +291,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             if (params.hasMoreElements()) {
                 String param;
                 String[] values;
-                int i;
 
-                sb.append(" - parameters:");
+                sb.append("Parameters:");
 
                 List<String> blackList = (config.getProperty(Settings.SETTING_EXCEPTION_RESOLVER_PARAM_EXCLUDES,
                         List.class, Collections.emptyList()));
@@ -299,41 +304,39 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
                     param = params.nextElement();
                     values = request.getParameterValues(param);
 
-                    if (values != null) {
-                        for (i = 0; i < values.length; i++) {
-                            sb.append(LINE_SEPARATOR).append(param).append(": ");
+                    String paramName = param;
+                    if (paramName.endsWith("[]")) {
+                        paramName = paramName.substring(0, paramName.length() - 2);
+                    }
 
-                            if (blackList.contains(param)) {
-                                sb.append("***");
-                            }
-                            else {
-                                sb.append(values[i]);
-                            }
+                    sb.append(LINE_SEPARATOR).append("  - ").append(paramName).append(": ");
+                    if (values != null && values.length > 0) {
+                        if (blackList.contains(paramName)) {
+                            sb.append("[FILTERED]");
+                        }
+                        else {
+                            sb.append(String.join(", ", values));
                         }
                     }
                 }
+
+                sb.append(LINE_SEPARATOR);
             }
         }
 
         sb.append(LINE_SEPARATOR);
-        if (message != null) {
-            sb.append(message).append(". ");
+        if (this.stackFilterer.isShouldFilter()) {
+            sb.append("Filtered stacktrace:");
         }
-        sb.append("Stacktrace follows:");
+        else {
+            sb.append("Full stacktrace:");
+        }
 
         return sb.toString();
     }
 
-    protected void createStackFilterer() {
-        try {
-            Class filtererClass = this.grailsApplication.getConfig().getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS,
-                    Class.class, DefaultStackTraceFilterer.class);
-            this.stackFilterer = BeanUtils.instantiateClass(filtererClass, StackTraceFilterer.class);
-        }
-        catch (Throwable t) {
-            logger.error("Problem instantiating StackTracePrinter class, using default: " + t.getMessage());
-            this.stackFilterer = new DefaultStackTraceFilterer();
-        }
+    public void setStackTraceFilterer(StackTraceFilterer stackTraceFilterer) {
+        this.stackFilterer = stackTraceFilterer;
     }
 
 }
