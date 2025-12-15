@@ -263,7 +263,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         StringBuilder sb = new StringBuilder();
 
         sb.append(exceptionName)
-                .append(" occurred when processing request: ")
+                .append(" occurred when processing request:")
                 .append(LINE_SEPARATOR);
         sb.append("URI: ");
 
