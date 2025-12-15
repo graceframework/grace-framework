@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,9 @@ package org.grails.exceptions.reporting;
 /**
  * Improves the output of stack traces produced by exceptions in a Grails application.
  *
- * @since 2.0
  * @author Graeme Rocher
+ * @author Michaael Yan
+ * @since 2.0
  */
 public interface StackTraceFilterer {
 
@@ -61,5 +62,10 @@ public interface StackTraceFilterer {
      * @param shouldFilter Whether to filter stack traces or not
      */
     void setShouldFilter(boolean shouldFilter);
+
+    /**
+     * @return boolean Whether to filter stack traces or not
+     */
+    boolean isShouldFilter();
 
 }

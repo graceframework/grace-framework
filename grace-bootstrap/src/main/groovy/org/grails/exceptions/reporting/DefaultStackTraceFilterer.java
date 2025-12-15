@@ -72,6 +72,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         this.packagesToFilter.addAll(Arrays.asList(DEFAULT_INTERNAL_PACKAGES));
     }
 
+    @Override
     public void addInternalPackage(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Package name cannot be null");
@@ -79,10 +80,12 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         this.packagesToFilter.add(name);
     }
 
+    @Override
     public void setCutOffPackage(String cutOffPackage) {
         this.cutOffPackage = cutOffPackage;
     }
 
+    @Override
     public Throwable filter(Throwable source, boolean recursive) {
         if (recursive) {
             Throwable current = source;
@@ -95,6 +98,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         return filter(source);
     }
 
+    @Override
     public Throwable filter(Throwable source) {
         if (this.shouldFilter) {
             StackTraceElement[] trace = source.getStackTrace();
@@ -153,8 +157,14 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
         return true;
     }
 
+    @Override
     public void setShouldFilter(boolean shouldFilter) {
         this.shouldFilter = shouldFilter;
+    }
+
+    @Override
+    public boolean isShouldFilter() {
+        return this.shouldFilter;
     }
 
 }

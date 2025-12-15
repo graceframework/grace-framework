@@ -57,6 +57,7 @@ import org.grails.web.util.WebUtils;
  * Wraps any runtime exceptions with a GrailsWrappedException instance.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GrailsExceptionResolver extends SimpleMappingExceptionResolver implements ServletContextAware, GrailsApplicationAware {
@@ -263,13 +264,21 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
         sb.append(exceptionName)
                 .append(" occurred when processing request: ")
-                .append("[").append(request.getMethod().toUpperCase()).append("] ");
+                .append(LINE_SEPARATOR);
+        sb.append("URI: ");
 
         if (request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE) != null) {
             sb.append(request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE));
         }
         else {
             sb.append(request.getRequestURI());
+        }
+
+        sb.append(LINE_SEPARATOR);
+        sb.append("Method: ").append(request.getMethod().toUpperCase()).append(LINE_SEPARATOR);
+
+        if (message != null) {
+            sb.append("Message: ").append(message).append(LINE_SEPARATOR);
         }
 
         Config config = this.grailsApplication != null ? this.grailsApplication.getConfig() : null;
@@ -282,9 +291,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             if (params.hasMoreElements()) {
                 String param;
                 String[] values;
-                int i;
 
-                sb.append(" - parameters:");
+                sb.append("Parameters:");
 
                 List<String> blackList = (config.getProperty(Settings.SETTING_EXCEPTION_RESOLVER_PARAM_EXCLUDES,
                         List.class, Collections.emptyList()));
@@ -296,28 +304,33 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
                     param = params.nextElement();
                     values = request.getParameterValues(param);
 
-                    if (values != null) {
-                        for (i = 0; i < values.length; i++) {
-                            sb.append(LINE_SEPARATOR).append(param).append(": ");
+                    String paramName = param;
+                    if (paramName.endsWith("[]")) {
+                        paramName = paramName.substring(0, paramName.length() - 2);
+                    }
 
-                            if (blackList.contains(param)) {
-                                sb.append("***");
-                            }
-                            else {
-                                sb.append(values[i]);
-                            }
+                    sb.append(LINE_SEPARATOR).append("  - ").append(paramName).append(": ");
+                    if (values != null && values.length > 0) {
+                        if (blackList.contains(paramName)) {
+                            sb.append("[FILTERED]");
+                        }
+                        else {
+                            sb.append(String.join(", ", values));
                         }
                     }
                 }
+
+                sb.append(LINE_SEPARATOR);
             }
         }
 
         sb.append(LINE_SEPARATOR);
-        if (message != null) {
-            sb.append(message).append(". ");
+        if (this.stackFilterer.isShouldFilter()) {
+            sb.append("Filtered stacktrace:");
         }
-        sb.append(LINE_SEPARATOR);
-        sb.append("Stacktrace follows:");
+        else {
+            sb.append("Full stacktrace:");
+        }
 
         return sb.toString();
     }
