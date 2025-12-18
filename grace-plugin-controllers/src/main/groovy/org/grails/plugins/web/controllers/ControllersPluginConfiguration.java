@@ -51,6 +51,7 @@ import org.grails.exceptions.reporting.StackTraceFilterer;
 import org.grails.web.errors.GrailsExceptionResolver;
 import org.grails.web.filters.HiddenHttpMethodFilter;
 import org.grails.web.filters.OrderedHiddenHttpMethodFilter;
+import org.grails.web.mapping.mvc.GrailsUrlMappingsExceptionResolver;
 import org.grails.web.servlet.mvc.GrailsDispatcherServlet;
 import org.grails.web.servlet.mvc.GrailsWebRequestFilter;
 import org.grails.web.servlet.mvc.ParameterCreationListener;
@@ -101,7 +102,7 @@ public class ControllersPluginConfiguration {
     @Bean
     public GrailsExceptionResolver exceptionHandler(ObjectProvider<GrailsApplication> grailsApplicationProvider,
             ObjectProvider<StackTraceFilterer> stackTraceFiltererObjectProvider) {
-        GrailsExceptionResolver exceptionResolver = new GrailsExceptionResolver();
+        GrailsUrlMappingsExceptionResolver exceptionResolver = new GrailsUrlMappingsExceptionResolver();
         exceptionResolver.setGrailsApplication(grailsApplicationProvider.getIfAvailable());
         exceptionResolver.setStackTraceFilterer(stackTraceFiltererObjectProvider.getIfAvailable());
 

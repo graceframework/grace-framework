@@ -1,28 +1,35 @@
 package org.grails.web.errors
 
-import grails.web.mapping.UrlMappingsHolder
-import grails.web.mapping.exceptions.UrlMappingException
+import jakarta.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+
+import org.apache.groovy.util.Maps
 import org.springframework.mock.web.MockHttpServletRequest
+import org.springframework.mock.web.MockHttpServletResponse
+import org.springframework.validation.SimpleErrors
+import org.springframework.web.servlet.ModelAndView
 import spock.lang.Specification
 
-import jakarta.servlet.http.HttpServletRequest
+import grails.validation.ValidationException
+
+import org.grails.exceptions.reporting.DefaultStackTraceFilterer
 
 class GrailsExceptionResolverSpec extends Specification {
 
-    def "exception not thrown if an UrlMappingException is thrown while trying to match a request uri with a UrlMappingInfo "() {
+    def "The viewName will be '/error' if throw a ValidationException"() {
         given:
-        GrailsExceptionResolver grailsExceptionResolver = new GrailsExceptionResolver()
+        HttpServletRequest request = new MockHttpServletRequest()
+        HttpServletResponse response = new MockHttpServletResponse()
+        GrailsExceptionResolver exceptionResolver = new GrailsExceptionResolver()
+        exceptionResolver.stackFilterer = new DefaultStackTraceFilterer()
+        exceptionResolver.setExceptionMappings(Maps.of('java.lang.Exception', '/error') as Properties)
 
         when:
-        def urlMappingsHolder = Mock(UrlMappingsHolder)
-        urlMappingsHolder.match(_ as String) >> { String uri ->
-            throw new UrlMappingException('Unable to establish controller name to dispatch for')
-        }
-        HttpServletRequest request = new MockHttpServletRequest()
-        Map params = grailsExceptionResolver.extractRequestParamsWithUrlMappingHolder(urlMappingsHolder, request)
+        ValidationException validationException = new ValidationException('Validation Exception', new SimpleErrors('This is a simple error'))
+        ModelAndView modelAndView = exceptionResolver.resolveException(request, response, null, validationException)
 
         then:
-        noExceptionThrown()
-        params.isEmpty()
+        modelAndView.viewName == '/error'
     }
+
 }

@@ -8,6 +8,7 @@ dependencies {
     api project(":grace-plugin-validation")
     api project(":grace-web-gsp")
     api project(":grace-web-mvc")
+    api project(":grace-web-url-mappings")
     api project(":grace-util")
 
     compileOnly libs.jakarta.servlet
