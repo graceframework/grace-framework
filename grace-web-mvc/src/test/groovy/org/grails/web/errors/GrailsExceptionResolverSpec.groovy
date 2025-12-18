@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpServletRequest
 
 import org.apache.groovy.util.Maps
+import org.springframework.http.HttpStatusCode
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.validation.SimpleErrors
@@ -30,6 +31,7 @@ class GrailsExceptionResolverSpec extends Specification {
 
         then:
         modelAndView.viewName == '/error'
+        modelAndView.status == HttpStatusCode.valueOf(500)
     }
 
 }
