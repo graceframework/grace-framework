@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,29 +17,17 @@ package grails.rest.render
 
 import groovy.transform.CompileStatic
 
-import grails.web.mime.MimeType
-
 /**
- * Abstract implementation of the {@link Renderer} interface
+ * Abstract implementation of RenderContext
  *
  * @author Graeme Rocher
  * @since 2.3
- *
  */
 @CompileStatic
-abstract class AbstractRenderer<T> implements Renderer<T> {
+abstract class AbstractRenderContext implements RenderContext {
 
-    Class<T> targetType
-    MimeType[] mimeTypes
-
-    AbstractRenderer(Class<T> targetType, MimeType mimeType) {
-        this.targetType = targetType
-        this.mimeTypes = [mimeType] as MimeType[]
-    }
-
-    AbstractRenderer(Class<T> targetType, MimeType[] mimeTypes) {
-        this.targetType = targetType
-        this.mimeTypes = mimeTypes
-    }
+    List<String> includes
+    List<String> excludes
+    Map<String, Object> arguments
 
 }

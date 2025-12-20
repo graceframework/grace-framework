@@ -33,6 +33,7 @@ include (
         'grace-web',
         'grace-web-gsp',
         'grace-web-mvc',
+        'grace-web-rest',
         'grace-web-taglib',
         'grace-web-url-mappings',
 

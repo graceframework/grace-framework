@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,17 @@
  */
 package grails.rest.render
 
-import groovy.transform.CompileStatic
-
 /**
- * Abstract implementation of RenderContext
+ * A container a renderer is a render that renders a container of objects (Example: List of Book instances)
  *
  * @author Graeme Rocher
  * @since 2.3
  */
-@CompileStatic
-abstract class AbstractRenderContext implements RenderContext {
+interface ContainerRenderer<T, C> extends Renderer<T> {
 
-    List<String> includes
-    List<String> excludes
-    Map<String, Object> arguments
+    /**
+     * @return The underlying type wrapped by the container. For example with List<Book>, this method would return Book
+     */
+    Class<C> getComponentType()
 
 }

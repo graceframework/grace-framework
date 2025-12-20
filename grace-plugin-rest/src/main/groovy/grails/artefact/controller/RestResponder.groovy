@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import grails.rest.render.RendererRegistry
 import grails.web.mime.MimeType
 
 import org.grails.datastore.mapping.model.config.GormProperties
-import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 import org.grails.plugins.web.rest.render.ServletRenderContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
@@ -45,8 +44,8 @@ import org.grails.web.util.GrailsApplicationAttributes
 /**
  *
  * @author Jeff Brown
+ * @author Michael Yan
  * @since 3.0
- *
  */
 @CompileStatic
 trait RestResponder {
@@ -153,12 +152,6 @@ trait RestResponder {
         List<String> formats = calculateFormats(webRequest.actionName, value, args)
         HttpServletResponse response = webRequest.getCurrentResponse()
         MimeType[] mimeTypes = getResponseFormat(response)
-        RendererRegistry registry = rendererRegistry
-        if (registry == null) {
-            registry = new DefaultRendererRegistry()
-            registry.initialize()
-        }
-
         Renderer<Object> renderer = null
 
         for (MimeType mimeType in mimeTypes) {
@@ -179,7 +172,7 @@ trait RestResponder {
                     if (proxyHandler != null && target != null) {
                         target = proxyHandler.unwrapIfProxy(target)
                     }
-                    Renderer<Errors> errorsRenderer = registry.findContainerRenderer(mimeType, Errors, target)
+                    Renderer<Errors> errorsRenderer = rendererRegistry.findContainerRenderer(mimeType, Errors, target)
                     if (errorsRenderer) {
                         ServletRenderContext context = new ServletRenderContext(webRequest, [model: args.model])
                         if (args.view) {
@@ -199,14 +192,14 @@ trait RestResponder {
                 }
 
                 Class<Object> valueType = value.getClass()
-                if (registry.isContainerType(valueType)) {
-                    renderer = registry.findContainerRenderer(mimeType, valueType, value)
+                if (rendererRegistry.isContainerType(valueType)) {
+                    renderer = rendererRegistry.findContainerRenderer(mimeType, valueType, value)
                     if (renderer == null) {
-                        renderer = registry.findRenderer(mimeType, value)
+                        renderer = rendererRegistry.findRenderer(mimeType, value)
                     }
                 }
                 else {
-                    renderer = registry.findRenderer(mimeType, value)
+                    renderer = rendererRegistry.findRenderer(mimeType, value)
                 }
             }
 

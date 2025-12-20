@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2022-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.rest.render
+package grails.rest.render;
 
 /**
- * A container a renderer is a render that renders a container of objects (Example: List of Book instances)
+ * Callback interface that can be used to customize a {@link RendererRegistry}.
  *
- * @author Graeme Rocher
- * @since 2.3
+ * @author Michael Yan
+ * @since 2024.0.0
+ * @see RendererRegistry
  */
-interface ContainerRenderer<T, C> extends Renderer<T> {
+@FunctionalInterface
+public interface RendererRegistryCustomizer {
 
     /**
-     * @return The underlying type wrapped by the container. For example with List<Book>, this method would return Book
+     * Callback to customize a {@link RendererRegistry} instance.
+     * @param rendererRegistry the renderer registry to customize
      */
-    Class<C> getComponentType()
+    void customize(RendererRegistry rendererRegistry);
 
 }

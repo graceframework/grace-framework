@@ -5,6 +5,7 @@ dependencies {
     api project(':grace-plugin-api')
     api project(":grace-plugin-controllers")
     api project(":grace-plugin-converters")
+    api project(":grace-web-rest")
     api project(":grace-web-url-mappings")
     api project(":grace-util")
 

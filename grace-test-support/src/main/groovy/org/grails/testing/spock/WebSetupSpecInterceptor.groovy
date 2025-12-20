@@ -27,6 +27,8 @@ import grails.artefact.ArtefactTypes
 import grails.config.Config
 import grails.config.Settings
 import grails.core.GrailsApplication
+import grails.rest.render.RendererRegistry
+import grails.rest.render.RendererRegistryCustomizer
 import grails.testing.web.GrailsWebUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
 import grails.web.CamelCaseUrlConverter
@@ -40,6 +42,7 @@ import org.grails.gsp.jsp.TagLibraryResolverImpl
 import org.grails.plugins.codecs.CodecsGrailsPlugin
 import org.grails.plugins.codecs.DefaultCodecLookup
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
+import org.grails.plugins.web.rest.render.DefaultRendererRegistryCustomizer
 import org.grails.testing.runtime.support.GroovyPageUnitTestResourceLoader
 import org.grails.testing.runtime.support.LazyTagLibraryLookup
 import org.grails.validation.ConstraintEvalUtils
@@ -90,6 +93,13 @@ class WebSetupSpecInterceptor implements IMethodInterceptor {
 
             rendererRegistry(DefaultRendererRegistry) {
                 modelSuffix = config.getProperty('grails.scaffolding.templates.domainSuffix', '')
+                groovyPageLocator = ref('groovyPageLocator')
+                proxyHandler = ref('proxyHandler')
+            }
+            defaultRendererRegistryCustomizer(DefaultRendererRegistryCustomizer) {
+                modelSuffix = config.getProperty('grails.scaffolding.templates.domainSuffix', '')
+                groovyPageLocator = ref('groovyPageLocator')
+                proxyHandler = ref('proxyHandler')
             }
             String urlConverterType = config.getProperty(Settings.WEB_URL_CONVERTER)
             "${grails.web.UrlConverter.BEAN_NAME}"(urlConverterType == 'hyphenated' ? HyphenatedUrlConverter : CamelCaseUrlConverter)
@@ -167,6 +177,9 @@ class WebSetupSpecInterceptor implements IMethodInterceptor {
         }
 
         grailsApplication.mainContext.getBean(DefaultCodecLookup).reInitialize()
+        Collection<RendererRegistryCustomizer> rendererRegistryCustomizers = grailsApplication.mainContext.getBeansOfType(RendererRegistryCustomizer).values()
+        RendererRegistry rendererRegistry = grailsApplication.mainContext.getBean(RendererRegistry)
+        rendererRegistryCustomizers.each { it.customize(rendererRegistry) }
     }
 
 }
