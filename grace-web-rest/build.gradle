@@ -1,0 +1,16 @@
+dependencies {
+    api project(":grace-web")
+    api project(":grace-web-gsp")
+    api project(":grace-web-mvc")
+    api project(":grace-web-url-mappings")
+
+    compileOnlyApi libs.jakarta.servlet
+    compileOnly(libs.grace.datastore.gorm) {
+        transitive = false
+    }
+    compileOnly libs.grace.datastore.gorm.support
+    implementation libs.caffeine
+
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
+}
