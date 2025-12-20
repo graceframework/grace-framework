@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.plugins.web.rest.render
 
 import grails.rest.render.AbstractRenderer
@@ -23,6 +22,8 @@ import grails.web.mime.MimeType
 import org.springframework.validation.BeanPropertyBindingResult
 import org.springframework.validation.Errors
 import spock.lang.Specification
+
+import org.grails.plugins.web.rest.render.xml.DefaultXmlRenderer
 
 class DefaultRendererRegistrySpec extends Specification {
 
@@ -42,8 +43,7 @@ class DefaultRendererRegistrySpec extends Specification {
     void "Test that the registry returns an appropriate render for a container type"() {
         when:"A registry with a specific renderer"
             def registry = new DefaultRendererRegistry()
-            registry.initialize()
-
+            registry.addContainerRenderer(Object, new DefaultXmlRenderer<>(Errors))
 
         then:"An errors renderer can be found"
             registry.findContainerRenderer(MimeType.XML, Errors, new BeanPropertyBindingResult("foo", "bar"))
@@ -66,8 +66,8 @@ class DefaultRendererRegistrySpec extends Specification {
     void "Test that registry returns appropriate renderer for type"() {
         given:"A registry with a specific renderer"
             def registry = new DefaultRendererRegistry()
-            registry.initialize()
             def mimeType = new MimeType("text/xml", 'xml')
+            registry.addDefaultRenderer(new DefaultXmlRenderer(Object, mimeType))
             registry.addRenderer(new AbstractRenderer(URL,mimeType) {
                 @Override
                 void render(Object object, RenderContext context) {
@@ -85,8 +85,8 @@ class DefaultRendererRegistrySpec extends Specification {
     void "Test that registry returns appropriate renderer for subclass"() {
         given:"A registry with a specific renderer"
             def registry = new DefaultRendererRegistry()
-            registry.initialize()
             def mimeType = new MimeType("text/xml", 'xml')
+            registry.addDefaultRenderer(new DefaultXmlRenderer(Object, mimeType))
             registry.addRenderer(new AbstractRenderer(CharSequence,mimeType) {
                 @Override
                 void  render(Object object, RenderContext context) {
@@ -105,8 +105,8 @@ class DefaultRendererRegistrySpec extends Specification {
     void "Test that registry fallbacks to a default renderer if none found"() {
         given:"A registry with a specific renderer"
             def registry = new DefaultRendererRegistry()
-            registry.initialize()
             def mimeType = new MimeType("text/xml", 'xml')
+            registry.addDefaultRenderer(new DefaultXmlRenderer(Object, mimeType))
             registry.addDefaultRenderer(new AbstractRenderer(Object,mimeType) {
                 @Override
                 void  render(Object object, RenderContext context) {
@@ -120,5 +120,5 @@ class DefaultRendererRegistrySpec extends Specification {
             registry.findRenderer(mimeType, "foo")
             registry.findRenderer(mimeType, "foo").mimeTypes.contains mimeType
     }
-}
 
+}

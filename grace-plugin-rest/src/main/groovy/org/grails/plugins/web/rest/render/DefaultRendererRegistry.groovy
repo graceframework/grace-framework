@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,12 @@ package org.grails.plugins.web.rest.render
 
 import java.util.concurrent.ConcurrentHashMap
 
-import jakarta.annotation.PostConstruct
-
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.BeanPropertyBindingResult
-import org.springframework.validation.Errors
 
 import grails.core.support.proxy.ProxyHandler
 import grails.rest.render.ContainerRenderer
@@ -34,9 +31,6 @@ import grails.rest.render.RendererRegistry
 import grails.util.GrailsClassUtils
 import grails.web.mime.MimeType
 
-import org.grails.plugins.web.rest.render.html.DefaultHtmlRenderer
-import org.grails.plugins.web.rest.render.json.DefaultJsonRenderer
-import org.grails.plugins.web.rest.render.xml.DefaultXmlRenderer
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 import org.grails.web.util.ClassAndMimeTypeRegistry
 
@@ -44,6 +38,7 @@ import org.grails.web.util.ClassAndMimeTypeRegistry
  * Default implementation of the {@link RendererRegistry} interface
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
@@ -66,29 +61,6 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
     DefaultRendererRegistry() {
     }
 
-    @PostConstruct
-    void initialize() {
-        addDefaultRenderer(new DefaultXmlRenderer<Object>(Object, groovyPageLocator, this))
-        addDefaultRenderer(new DefaultJsonRenderer<Object>(Object, groovyPageLocator, this))
-        DefaultHtmlRenderer defaultHtmlRenderer = new DefaultHtmlRenderer<Object>(Object)
-        defaultHtmlRenderer.suffix = modelSuffix
-        defaultHtmlRenderer.proxyHandler = proxyHandler
-        addDefaultRenderer(defaultHtmlRenderer)
-        DefaultHtmlRenderer allHtmlRenderer = new DefaultHtmlRenderer<Object>(Object, MimeType.ALL)
-        allHtmlRenderer.suffix = modelSuffix
-        allHtmlRenderer.proxyHandler = proxyHandler
-        addDefaultRenderer(allHtmlRenderer)
-        containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.XML), new DefaultXmlRenderer(Errors))
-        containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.TEXT_XML), new DefaultXmlRenderer(Errors))
-        containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.JSON), new DefaultJsonRenderer(Errors))
-        containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.TEXT_JSON), new DefaultJsonRenderer(Errors))
-        DefaultHtmlRenderer defaultContainerHtmlRenderer = new DefaultHtmlRenderer(Errors)
-        defaultContainerHtmlRenderer.suffix = modelSuffix
-        defaultContainerHtmlRenderer.proxyHandler = proxyHandler
-        containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.HTML), defaultContainerHtmlRenderer)
-        containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.ALL), defaultContainerHtmlRenderer)
-    }
-
     @Autowired(required = false)
     void setRenderers(Renderer[] renderers) {
         for (Renderer r in renderers) {
@@ -97,7 +69,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
     }
 
     @Override
-    def <T> void addRenderer(Renderer<T> renderer) {
+    <T> void addRenderer(Renderer<T> renderer) {
         if (renderer instanceof ContainerRenderer) {
             ContainerRenderer cr = (ContainerRenderer) renderer
             addContainerRenderer(cr.componentType, cr)
