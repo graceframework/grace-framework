@@ -1,17 +1,11 @@
 dependencies {
-    api project(":grace-boot")
+    compileOnly project(":grace-boot")
     api project(":grace-bootstrap")
     api project(":grace-core")
-    // compileOnly "org.spockframework:spock-core", {
-    //     exclude group: "junit", module: "junit-dep"
-    //     exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-    //     exclude group: 'org.hamcrest', module: 'hamcrest-core'
-    // }
 
     api libs.grace.datastore.core
     api libs.grace.datastore.gorm
     api libs.grace.datastore.gorm.mongodb
-    api libs.grace.datastore.gorm.mongodb.ext
     api libs.grace.datastore.gorm.support
     api libs.grace.datastore.web
 
