@@ -1,0 +1,4 @@
+dependencies {
+    api project(":grace-plugin-async")
+    api libs.grace.async.rxjava3
+}
