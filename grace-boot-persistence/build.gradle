@@ -1,0 +1,6 @@
+dependencies {
+    api project(":grace-plugin-domain-class")
+    api project(":grace-plugin-datasource")
+    api libs.grace.datastore.gorm
+    api libs.grace.datastore.gorm.support
+}
