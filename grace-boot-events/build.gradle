@@ -1,0 +1,6 @@
+dependencies {
+    api project(":grace-plugin-events")
+    api libs.grace.events.rxjava3
+    api libs.grace.events.spring
+    api libs.grace.events.transform
+}

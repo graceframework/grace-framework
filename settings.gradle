@@ -6,6 +6,7 @@ include (
         'grace-boot',
         'grace-boot-async',
         'grace-boot-cache',
+        'grace-boot-events',
         'grace-boot-hibernate',
         'grace-boot-logging',
         'grace-boot-mongodb',
