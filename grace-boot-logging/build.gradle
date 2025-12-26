@@ -1,0 +1,4 @@
+dependencies {
+    api project(":grace-logging")
+    api libs.spring.boot.starter.logging
+}
