@@ -7,6 +7,7 @@ include (
         'grace-boot-cache',
         'grace-boot-hibernate',
         'grace-boot-mongodb',
+        'grace-boot-rest',
         'grace-boot-web',
         'grace-bootstrap',
         'grace-cache-core',
