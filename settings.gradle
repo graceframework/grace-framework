@@ -9,6 +9,7 @@ include (
         'grace-boot-logging',
         'grace-boot-mongodb',
         'grace-boot-persistence',
+        'grace-boot-plugin',
         'grace-boot-rest',
         'grace-boot-web',
         'grace-bootstrap',

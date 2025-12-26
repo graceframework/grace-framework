@@ -1,0 +1,5 @@
+dependencies {
+    api project(":grace-boot")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-core")
+}
