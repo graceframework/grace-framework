@@ -28,6 +28,7 @@ gson = "2.11.0"
 h2 = "2.3.232"
 hsqldb = "2.7.3"
 hibernate = "5.6.15.Final"
+hibernate-validator = "8.0.2.Final"
 itext = "2.0.8"
 jackson-databind = "2.18.5"
 jansi = "1.18"
@@ -136,6 +137,7 @@ groovy-xml = { module = "org.apache.groovy:groovy-xml", version.ref = "groovy" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 hibernate-core = { module = "org.hibernate:hibernate-core-jakarta", version.ref = "hibernate" }
+hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
 hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }
 itext = { module = "com.lowagie:itext", version.ref = "itext" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }

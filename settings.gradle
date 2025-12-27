@@ -13,6 +13,7 @@ include (
         'grace-boot-persistence',
         'grace-boot-plugin',
         'grace-boot-rest',
+        'grace-boot-validation',
         'grace-boot-web',
         'grace-bootstrap',
         'grace-cache-core',
