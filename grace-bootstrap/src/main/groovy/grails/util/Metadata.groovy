@@ -19,12 +19,12 @@ import java.lang.ref.Reference
 import java.lang.ref.SoftReference
 
 import groovy.transform.CompileStatic
-import org.springframework.boot.context.properties.source.ConfigurationPropertySources
 import org.springframework.boot.env.PropertiesPropertySourceLoader
 import org.springframework.boot.env.YamlPropertySourceLoader
 import org.springframework.core.env.ConfigurablePropertyResolver
 import org.springframework.core.env.MapPropertySource
 import org.springframework.core.env.MutablePropertySources
+import org.springframework.core.env.PropertySourcesPropertyResolver
 import org.springframework.core.env.StandardEnvironment
 import org.springframework.core.env.SystemEnvironmentPropertySource
 import org.springframework.core.io.InputStreamResource
@@ -59,17 +59,17 @@ class Metadata {
 
     private Metadata() {
         loadFromDefault()
-        this.propertyResolver = ConfigurationPropertySources.createPropertyResolver(propertySources)
+        this.propertyResolver = new PropertySourcesPropertyResolver(propertySources)
     }
 
     private Metadata(Map<String, Object> properties) {
         this.propertySources.addFirst(new MapPropertySource("default", properties))
-        this.propertyResolver = ConfigurationPropertySources.createPropertyResolver(propertySources)
+        this.propertyResolver = new PropertySourcesPropertyResolver(propertySources)
     }
 
     private Metadata(InputStream inputStream) {
         loadFromInputStream(inputStream)
-        this.propertyResolver = ConfigurationPropertySources.createPropertyResolver(propertySources)
+        this.propertyResolver = new PropertySourcesPropertyResolver(propertySources)
     }
 
     /**
