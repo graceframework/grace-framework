@@ -1,0 +1,5 @@
+dependencies {
+    api project(":grace-test")
+    api project(":grace-test-support")
+    api libs.spring.boot.starter.test
+}
