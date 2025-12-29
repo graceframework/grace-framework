@@ -16,6 +16,7 @@ dependencies {
     implementation project(":grace-bootstrap")
     implementation project(":grace-cli")
     implementation project(":grace-core")
+    compileOnly project(":grace-plugin-api")
     compileOnly project(":grace-shell")
     implementation libs.grace.datastore.gorm
     implementation libs.grace.datastore.gorm.support

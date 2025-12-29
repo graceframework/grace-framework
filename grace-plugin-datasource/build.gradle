@@ -1,6 +1,6 @@
 dependencies {
     api project(":grace-core")
-    api project(':grace-plugin-api')
+    compileOnly project(':grace-plugin-api')
 
     api libs.grace.datastore.core
     api libs.grace.datastore.gorm
@@ -12,6 +12,7 @@ dependencies {
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
+    testImplementation project(':grace-plugin-api')
     testImplementation libs.assertj.core
     testImplementation libs.h2
     testImplementation libs.spring.boot.test

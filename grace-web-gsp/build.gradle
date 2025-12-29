@@ -1,5 +1,6 @@
 dependencies {
     api project(":grace-gsp")
+    compileOnly project(":grace-plugin-api")
     api project(":grace-web")
 
     api libs.sitemesh, {
@@ -20,6 +21,7 @@ dependencies {
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
+    testImplementation project(":grace-plugin-core")
     testImplementation project(":grace-test")
     testRuntimeOnly project(":grace-spring")
 }

@@ -2,6 +2,7 @@ dependencies {
     api libs.groovy.core
     api project(":grace-core")
     api project(":grace-encoder")
+    compileOnly project(":grace-plugin-api")
     api project(":grace-plugin-domain-class")
     api project(":grace-plugin-rest")
     api project(":grace-web")

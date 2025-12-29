@@ -1,4 +1,5 @@
 dependencies {
+    compileOnly project(":grace-plugin-api")
     api project(":grace-plugin-databinding")
     api project(":grace-plugin-validation")
     api project(":grace-scaffolding-core")

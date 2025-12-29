@@ -1,7 +1,7 @@
 dependencies {
     compileOnly libs.jakarta.servlet
     api project(":grace-core")
-    api project(":grace-plugin-api")
+    compileOnly project(":grace-plugin-api")
     api project(":grace-plugin-codecs")
     implementation project(":grace-plugin-taglibs")
     api project(":grace-web-gsp")

@@ -1,8 +1,10 @@
 dependencies {
     api project(":grace-gsp")
+    compileOnly project(":grace-plugin-api")
     api project(":grace-web")
 
     compileOnlyApi libs.jakarta.servlet
+    compileOnly libs.spring.boot.autoconfigure
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test

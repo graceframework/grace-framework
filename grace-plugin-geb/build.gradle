@@ -1,6 +1,6 @@
 dependencies {
     api libs.geb.core
     api libs.geb.spock
-    implementation project(":grace-plugin-api")
+    compileOnly project(":grace-plugin-api")
     compileOnly project(":grace-core")
 }

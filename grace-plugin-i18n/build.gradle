@@ -1,7 +1,7 @@
 dependencies {
     api project(":grace-api")
     api project(":grace-bootstrap")
-    api project(":grace-plugin-api")
+    compileOnly project(":grace-plugin-api")
     api project(":grace-util")
     compileOnly project(":grace-web")
 
