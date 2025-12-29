@@ -1,0 +1,3 @@
+<plugin name='mongodb'>
+  <type>grails.plugins.mongodb.MongodbGrailsPlugin</type>
+</plugin>
