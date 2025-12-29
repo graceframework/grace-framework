@@ -5,7 +5,6 @@ dependencies {
     api project(":grace-plugin-api")
     api project(":grace-plugin-core")
     api project(":grace-spring")
-    api project(":grace-web")
 
     api libs.jakarta.annotation.api
     compileOnly libs.jakarta.servlet
@@ -17,6 +16,7 @@ dependencies {
     api libs.spring.context
     api libs.spring.core
     api libs.spring.web
+    api libs.spring.webmvc
 
     compileOnly libs.jsr305
     compileOnly libs.spring.boot.devtools
