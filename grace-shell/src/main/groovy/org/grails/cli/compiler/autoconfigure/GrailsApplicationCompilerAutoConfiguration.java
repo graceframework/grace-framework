@@ -37,8 +37,8 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
     @Override
     public void applyDependencies(DependencyCustomizer dependencies) {
         dependencies.add("spring-boot-starter-actuator");
-        dependencies.add("spring-boot-starter-logging");
-        dependencies.add("spring-boot-starter-validation");
+        dependencies.add("grace-boot-logging");
+        dependencies.add("grace-plugin-management");
         dependencies.ifAnyMissingClasses("org.springframework.web.servlet.mvc.Controller").add("spring-boot-starter-web");
         dependencies.ifAnyMissingClasses("grails.boot.Grails").add("grace-boot");
         dependencies.ifAnyMissingClasses("grails.core.DefaultGrailsApplication").add("grace-core");
@@ -48,7 +48,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
         dependencies.ifAnyMissingClasses("org.grails.plugins.converters.ConvertersGrailsPlugin").add("grace-plugin-converters");
         dependencies.ifAnyMissingClasses("org.grails.plugins.databinding.DataBindingConfiguration").add("grace-plugin-databinding");
         dependencies.ifAnyMissingClasses("org.grails.plugins.domain.DomainClassGrailsPlugin").add("grace-plugin-domain-class");
-        dependencies.ifAnyMissingClasses("org.grails.plugins.web.GroovyPagesAutoConfiguration").add("grace-plugin-gsp");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.GroovyPagesAutoConfiguration").add("grace-plugin-gsp", "grace-plugin-taglibs");
         dependencies.ifAnyMissingClasses("org.grails.plugins.i18n.I18nGrailsPlugin").add("grace-plugin-i18n");
         dependencies.ifAnyMissingClasses("org.grails.plugins.web.interceptors.InterceptorsGrailsPlugin").add("grace-plugin-interceptors");
         dependencies.ifAnyMissingClasses("org.grails.plugins.web.mime.MimeTypesConfiguration").add("grace-plugin-mimetypes");

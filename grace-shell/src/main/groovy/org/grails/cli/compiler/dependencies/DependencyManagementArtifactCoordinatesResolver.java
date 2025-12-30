@@ -15,8 +15,6 @@
  */
 package org.grails.cli.compiler.dependencies;
 
-import java.util.Set;
-
 import org.springframework.util.StringUtils;
 
 /**
@@ -29,8 +27,6 @@ import org.springframework.util.StringUtils;
  * @since 2022.1.0
  */
 public class DependencyManagementArtifactCoordinatesResolver implements ArtifactCoordinatesResolver {
-
-    public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate", "scaffolding");
 
     private final DependencyManagement dependencyManagement;
 
@@ -66,11 +62,7 @@ public class DependencyManagementArtifactCoordinatesResolver implements Artifact
             if (id.startsWith("grace")) {
                 return new Dependency("org.graceframework", id, this.dependencyManagement.getGrailsVersion());
             }
-            Dependency dependency = this.dependencyManagement.find(id);
-            if (GRAILS_PLUGINS.contains(id)) {
-                return new Dependency("org.graceframework.plugins", id, dependency.getVersion(), dependency.getClassifier());
-            }
-            return dependency;
+            return this.dependencyManagement.find(id);
         }
         return null;
     }
