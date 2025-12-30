@@ -10,3 +10,17 @@ dependencies {
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 }
+
+tasks.register("syncScripts", Sync) {
+    from("src/main/scripts")
+    into("build/resources/main/META-INF/commands")
+}
+
+tasks.register("syncTemplates", Sync) {
+    from("src/main/templates")
+    into("build/resources/main/META-INF/templates")
+}
+
+processResources {
+    dependsOn = ["syncScripts", "syncTemplates"]
+}
