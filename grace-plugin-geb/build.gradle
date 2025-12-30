@@ -1,8 +1,12 @@
 dependencies {
+    compileOnly project(":grace-core")
+    compileOnly project(":grace-plugin-api")
     api libs.geb.core
     api libs.geb.spock
-    compileOnly project(":grace-plugin-api")
-    compileOnly project(":grace-core")
+    implementation libs.selenium.api
+    implementation libs.selenium.support
+    implementation libs.selenium.chromeDriver
+    implementation libs.selenium.firefoxDriver
 }
 
 tasks.register("syncScripts", Sync) {
