@@ -1062,7 +1062,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<GradleDependency> gradleDependencies = convertToGradleDependencies(dependencies, grailsVersion)
 
         String dependenciesString = gradleDependencies
-                .sort({ GradleDependency dep -> dep.scope })
+                .sort({ GradleDependency dep1, GradleDependency dep2 -> dep1 <=> dep2 })
                 .collect({ GradleDependency dep -> dep.toString(4) })
                 .unique()
                 .join(ln)

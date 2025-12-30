@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2024 the original author or authors.
+ * Copyright 2017-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.grails.cli.profile.commands.io
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
 
-class GradleDependency {
+class GradleDependency implements Comparable<GradleDependency> {
 
     static final Map<String, String> SCOPE_MAP = [
             console: 'console',
@@ -90,6 +90,16 @@ class GradleDependency {
 
     String getScope() {
         scope
+    }
+
+    String getDependency() {
+        dependency
+    }
+
+    @Override
+    int compareTo(GradleDependency d) {
+        int s = this.scope <=> d.scope
+        (s == 0) ? this.dependency <=> d.dependency : s
     }
 
 }
