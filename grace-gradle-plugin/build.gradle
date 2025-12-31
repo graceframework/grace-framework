@@ -51,6 +51,13 @@ gradlePlugin {
     vcsUrl = 'https://github.com/graceframework/grace-framework.git'
 
     plugins {
+        graceApp {
+            displayName = "Grace Web App Gradle Plugin"
+            description = 'Adds webapp specific extensions'
+            id = 'org.graceframework.grace-app'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
+        }
         graceCore {
             displayName = "Grace Core Gradle Plugin"
             description = 'The main Grace gradle plugin implementation'
