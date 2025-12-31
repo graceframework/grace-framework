@@ -34,7 +34,26 @@ import org.grails.cli.profile.ProjectCommand
 class ListPluginsCommand implements Command, GlobalCommand, ProjectCommand {
 
     public static final String PLUGIN_REPO_URL = 'https://repo1.maven.org/maven2/org/graceframework/plugins'
-    private static final List<String> EXCLUDES = ['asset-pipeline-core', 'asset-pipeline-gradle', 'views-gradle', 'gsp']
+    private static final List<String> EXCLUDES = [
+        'asset-pipeline-core',
+        'asset-pipeline-gradle',
+        'async',
+        'cache',
+        'database-migration',
+        'dynamic-modules',
+        'events',
+        'fields',
+        'geb',
+        'gsp',
+        'hibernate',
+        'mongodb',
+        'scaffolding',
+        'views-component',
+        'views-gradle',
+        'views-json',
+        'views-json-templates',
+        'views-markup'
+    ]
 
     final String name = 'list-plugins'
     final CommandDescription description = new CommandDescription(name,
