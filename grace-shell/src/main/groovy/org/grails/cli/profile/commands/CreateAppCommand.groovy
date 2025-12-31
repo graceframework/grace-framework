@@ -1154,7 +1154,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     @CompileDynamic
     protected void updateSpringDependencies(GrailsConsoleAntBuilder ant, String grailsVersion, String springBootVersion, File targetDirectory) {
         if (!springBootVersion || !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
-            // Currently already upgraded to Spring Boot 3.2
+            // Currently already upgraded to Spring Boot 3.4
             return
         }
 
@@ -1214,7 +1214,7 @@ group """
             delete dir: "app/domain"
             delete dir: "app/i18n"
             delete {
-                fileset dir: "app/init", includes: "**/BootStrap.groovy"
+                fileset dir: "app/boot", includes: "**/Bootstrap.groovy"
             }
             delete dir: "app/services"
             delete dir: "app/taglib"
@@ -1239,10 +1239,21 @@ group """
                 replacetoken '    implementation "org.graceframework:grace-core"\n'
                 replacevalue ''
             }
+            replace(file: 'build.gradle') {
+                replacetoken '    developmentOnly("org.springframework.boot:spring-boot-devtools")\n'
+                replacevalue '    implementation "org.springframework.boot:spring-boot-web"\n'
+            }
+            replace(file: 'build.gradle') {
+                replacetoken '    console "org.graceframework:grace-console"\n'
+                replacevalue '    implementation "org.graceframework:grace-boot"\n'
+            }
             replaceregexp(match: '\\s+implementation "org.graceframework:grace-plugin-(.+)', replace: "", flags: "g") {
                 fileset(dir: ".", includes: 'build.gradle')
             }
-            replaceregexp(match: '\\s+implementation "org.graceframework.plugins:(.+)', replace: "", flags: "g") {
+            replaceregexp(match: '\\s+implementation "org.graceframework:grace-boot-(.+)', replace: "", flags: "g") {
+                fileset(dir: ".", includes: 'build.gradle')
+            }
+            replaceregexp(match: '\\s+testImplementation "org.graceframework:grace-boot-(.+)', replace: "", flags: "g") {
                 fileset(dir: ".", includes: 'build.gradle')
             }
             replaceregexp(match: '^tasks((.)*\\n)*', replace: "", flags: "gm") {
