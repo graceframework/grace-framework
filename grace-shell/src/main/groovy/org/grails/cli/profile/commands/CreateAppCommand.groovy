@@ -1030,7 +1030,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
         List<String> repositoryUrls = profile.repositories.sort().reverse()
         if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
-            repositoryUrls.add(0, "maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }")
+            repositoryUrls.add(0, """maven {
+        name = 'Maven Central Portal Snapshots'
+        url = 'https://central.sonatype.com/repository/maven-snapshots/'
+
+        mavenContent {
+            snapshotsOnly()
+        }
+    }""")
         }
         if (isSnapshotVersion) {
             repositoryUrls.add(0, 'mavenLocal()')
@@ -1075,7 +1082,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<String> buildRepositoryUrls = buildRepositories.sort().reverse()
 
         if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
-            buildRepositoryUrls.add(0, "maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }")
+            buildRepositoryUrls.add(0, """maven {
+        name = 'Maven Central Portal Snapshots'
+        url = 'https://central.sonatype.com/repository/maven-snapshots/'
+
+        mavenContent {
+            snapshotsOnly()
+        }
+    }""")
         }
         if (isSnapshotVersion) {
             buildRepositoryUrls.add(0, 'mavenLocal()')
