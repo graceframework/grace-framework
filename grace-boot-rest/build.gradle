@@ -8,5 +8,6 @@ dependencies {
     api project(":grace-plugin-rest")
     api project(":grace-plugin-url-mappings")
     api project(":grace-views-json")
+    api project(":grace-views-markup")
     api project(":grace-web")
 }
