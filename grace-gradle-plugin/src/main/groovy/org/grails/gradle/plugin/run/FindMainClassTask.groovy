@@ -15,6 +15,8 @@
  */
 package org.grails.gradle.plugin.run
 
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
@@ -39,6 +41,13 @@ import org.grails.io.support.MainClassFinder
 @CompileStatic
 class FindMainClassTask extends DefaultTask {
 
+    private Project project
+
+    @Inject
+    FindMainClassTask(Project project) {
+        this.project = project
+    }
+
     @TaskAction
     void setMainClassProperty() {
         Project project = this.project
@@ -48,7 +57,7 @@ class FindMainClassTask extends DefaultTask {
             bootRunTask.configure { BootRun bootRun ->
                 if (mainClass != null) {
                     bootRun.mainClass.set(mainClass)
-                    ExtraPropertiesExtension extraProperties = getProject()
+                    ExtraPropertiesExtension extraProperties = project
                             .getExtensions().getByType(ExtraPropertiesExtension)
                     extraProperties.set('mainClassName', mainClass)
                 }
