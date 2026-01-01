@@ -1,15 +1,16 @@
 dependencies {
     api project(":grace-boot")
-    api project(":grace-web")
+    api project(":grace-plugin-api")
     api project(":grace-plugin-codecs")
     api project(":grace-plugin-controllers")
     api project(":grace-plugin-converters")
+    api project(":grace-plugin-core")
     api project(":grace-plugin-databinding")
     api project(":grace-plugin-i18n")
     api project(":grace-plugin-interceptors")
     api project(":grace-plugin-mimetypes")
-    api project(":grace-plugin-rest")
     api project(":grace-plugin-url-mappings")
+    api project(":grace-web")
     api libs.spring.boot.starter
     api libs.spring.boot.starter.json
     api libs.spring.boot.starter.tomcat

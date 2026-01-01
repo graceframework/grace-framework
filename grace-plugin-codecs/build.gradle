@@ -1,9 +1,9 @@
 dependencies {
     api project(":grace-api")
+    api project(":grace-codecs")
     api project(":grace-core")
-    api project(":grace-plugin-api")
     api project(":grace-encoder")
-    runtimeOnly project(":grace-codecs")
+    api project(":grace-plugin-api")
 
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor

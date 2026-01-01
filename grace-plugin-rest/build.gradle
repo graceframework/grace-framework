@@ -5,9 +5,9 @@ dependencies {
     compileOnly project(':grace-plugin-api')
     api project(":grace-plugin-controllers")
     api project(":grace-plugin-converters")
+    api project(":grace-util")
     api project(":grace-web-rest")
     api project(":grace-web-url-mappings")
-    api project(":grace-util")
 
     compileOnly libs.jakarta.servlet
     api libs.jakarta.xml.bind.api
