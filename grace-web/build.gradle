@@ -1,7 +1,6 @@
 dependencies {
     api project(":grace-api")
     api project(":grace-core")
-    api project(":grace-databinding")
     api project(":grace-encoder")
     compileOnly project(":grace-plugin-api")
     api project(":grace-util")

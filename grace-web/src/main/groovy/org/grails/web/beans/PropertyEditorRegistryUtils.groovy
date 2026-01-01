@@ -28,7 +28,6 @@ import org.springframework.beans.propertyeditors.CustomNumberEditor
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.support.WebApplicationContextUtils
 
-import grails.databinding.DataBinder
 import grails.util.Environment
 
 import org.grails.web.binding.CompositeEditor
@@ -44,6 +43,7 @@ class PropertyEditorRegistryUtils {
 
     private static final String PROPERTY_EDITOR_REGISTRARS = 'org.codehaus.groovy.grails.PROPERTY_EDITOR_REGISTRARS'
     private static final String JSON_DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss'Z'"
+    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
 
     /**
      * Registers all known
@@ -57,7 +57,7 @@ class PropertyEditorRegistryUtils {
         NumberFormat floatFormat = NumberFormat.getInstance(locale)
         NumberFormat integerFormat = NumberFormat.getIntegerInstance(locale)
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DataBinder.DEFAULT_DATE_FORMAT, locale)
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT, locale)
 
         registry.registerCustomEditor(Date, new CustomDateEditor(dateFormat, true))
         registry.registerCustomEditor(BigDecimal, new CustomNumberEditor(BigDecimal, floatFormat, true))
