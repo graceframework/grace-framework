@@ -37,7 +37,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import grails.databinding.DataBinder;
 import grails.io.IOUtils;
 import grails.util.TypeConvertingMap;
 import grails.web.mime.MimeType;
@@ -71,6 +70,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     public static final String REQUEST_BODY_PARSED = "org.codehaus.groovy.grails.web.REQUEST_BODY_PARSED";
 
     public static final Object[] EMPTY_ARGS = new Object[0];
+
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
 
     /**
      * Does not populate the GrailsParameterMap from the request but instead uses the supplied values.
@@ -302,7 +303,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
             }
         }
 
-        DateFormat dateFormat = new SimpleDateFormat(DataBinder.DEFAULT_DATE_FORMAT,
+        DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT,
                 LocaleContextHolder.getLocale());
         StructuredDateEditor editor = new StructuredDateEditor(dateFormat, true);
         try {
