@@ -1,11 +1,10 @@
-apply plugin: org.grails.gradle.GrailsBuildPlugin
+// Gradle assemble tasks
 
 def libsConfigurations = []
 subprojects { subproject ->
-    if(subproject.name == 'grace-dependencies') return
-    if(subproject.name == 'grace-bom') return
-    if(subproject.name == 'grace-shell') {
-
+    if (subproject.name == 'grace-dependencies') return
+    if (subproject.name == 'grace-bom') return
+    if (subproject.name == 'grace-shell') {
         configurations {
             libsConfigurations << libs {
                 extendsFrom runtimeClasspath
@@ -18,34 +17,30 @@ subprojects { subproject ->
     }
 }
 
-task configurePopulateDependencies {
-    ext {
-        baseCachesDir = "$gradle.gradleUserHomeDir/caches"
-        cacheDir = "$baseCachesDir/modules-2"
-        metadata = "$cacheDir/metadata-2.1/descriptors"
-    }
+task configurePopulateDependencies(dependsOn: 'publishToDist') {
     doLast {
         def projectNames = rootProject.subprojects*.name
 
         def seen = []
         libsConfigurations.each { configuration ->
-            def pomArtifacts = pomFor(configuration).resolvedConfiguration.lenientConfiguration.getArtifacts().groupBy {
-                it.moduleVersion.id
-            }
-
             for (artifact in configuration.resolvedConfiguration.resolvedArtifacts) {
                 if (artifact in seen) continue
                 seen << artifact
                 def dependency = artifact.moduleVersion.id
                 if (!projectNames.contains(dependency.name)) {
-                    populateDependencies.into("$dependency.group/$dependency.name/jars") {
-                        from artifact.file // this will trigger the actual download if necessary
+                    if (dependency.group == 'org.graceframework') {
+                        populateDependencies.into('org.graceframework') {
+                            from artifact.file // this will trigger the actual download if necessary
+                        }
+                    } else {
+                        populateDependencies.into("$dependency.group/$dependency.name/jars") {
+                            from artifact.file // this will trigger the actual download if necessary
+                        }
                     }
-
-                    populateDependencies.into("$dependency.group/$dependency.name") {
-                        def pomFile = pomArtifacts[dependency]
-                        if (pomFile) {
-                            from pomFile.file
+                } else {
+                    populateDependencies.into('org.graceframework') {
+                        from(homeDistDir) {
+                            include artifact.file.name
                         }
                     }
                 }
@@ -93,7 +88,7 @@ class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateSt
         generator.classpath = projectArtifacts + getClasspath().resolvedConfiguration.resolvedArtifacts.collect { artifact ->
             def dependency = artifact.moduleVersion.id
             String installedFile = "lib/$dependency.group/$dependency.name/jars/$artifact.file.name"
-            if(dependency.group=='org.graceframework' && !project.file(installedFile).exists()) {
+            if (dependency.group == 'org.graceframework') {
                 installedFile = "dist/$artifact.file.name"
             }
             installedFile
@@ -123,24 +118,27 @@ task publishToDist { task ->
     }
 }
 
-task binZip(type: Zip, dependsOn: [publishToDist, grailsCreateStartScripts]) {
+task binZip(type: Zip, dependsOn: [publishToDist, populateDependencies, grailsCreateStartScripts]) {
     destinationDirectory = "${buildDir}/distributions" as File
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'bin'
 
-    exclude "**/CVS/**"
-
     into("grace-$grailsVersion") {
         from(projectDir) {
-            include 'bin/grace', 'bin/grace.bat', 'lib/', 'samples/', 'scripts/', 'LICENSE.txt', 'INSTALL.txt'
-            exclude 'ant/bin', 'src/grace', 'src/war'
+            include 'bin/grace', 'bin/grace.bat', 'LICENSE.txt', 'INSTALL.txt'
         }
-        from("conf") {
-            into "conf"
+        from("lib") {
+            into "lib"
+            exclude "org.graceframework/**"
+        }
+        from("lib/org.graceframework") {
+            into "dist"
+            include '**/*.jar'
         }
         from(homeDistDir) {
             into "dist"
+            include "grace-shell-*.jar"
             exclude "*.zip*"
             exclude "*.tar*"
             exclude '*-javadoc.jar*', '*-sources.jar*', 'ivy-*', '*.jar.sha*'
