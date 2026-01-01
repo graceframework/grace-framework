@@ -46,7 +46,7 @@ trait ParameterizedGrailsUnitTest<T> extends GrailsUnitTest {
                 mockArtefact(cutType)
                 String beanName = getBeanName(cutType)
                 if (beanName != null && applicationContext.containsBean(beanName)) {
-                    artefactInstance = applicationContext.getBean(beanName, T)
+                    artefactInstance = (T) applicationContext.getBean(beanName)
                 }
                 else {
                     artefactInstance = cutType.newInstance()
