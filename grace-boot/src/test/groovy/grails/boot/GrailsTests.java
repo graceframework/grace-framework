@@ -49,6 +49,7 @@ import grails.boot.config.GrailsAutoConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -100,13 +101,13 @@ public class GrailsTests {
     @Test
     void sourcesMustNotBeNull() {
         assertThatIllegalArgumentException().isThrownBy(() -> new Grails((Class<?>[]) null).run())
-                .withMessageContaining("PrimarySources must not be null");
+                .withMessageContaining("'primarySources' must not be null");
     }
 
     @Test
     void sourcesMustNotBeEmpty() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new Grails().run())
-                .withMessageContaining("Sources must not be empty");
+        assertThatIllegalStateException().isThrownBy(() -> new Grails().run())
+                .withMessageContaining("No sources defined");
     }
 
     @Test
