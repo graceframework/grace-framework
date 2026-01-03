@@ -1,3 +1,37 @@
+=== 2024.1.0-M1
+
+link:{github}/releases/tag/v2024.1.0-M1[release notes]
+
+🛠 Improvements
+
+* Update README
+* Add release notes for 2024.1.0-M1
+* Update doc.properties
+  - switch to 2024.1.x branch
+* Add release notes for 2024.0.0-M2
+* Update doc.properties
+  - switch to 2024.0.x branch
+  - update the copyright year
+
+🚀 Dependency Upgrades
+
+* Upgrade to AssertJ 3.27.6 link:{github}/issues/1300[#1300]
+* Upgrade to Byte Buddy 1.17.8 link:{github}/issues/1301[#1301]
+* Upgrade to Commons Codec 1.18.0 link:{github}/issues/1302[#1302]
+* Upgrade to Jackson Databind 2.19.4 link:{github}/issues/1303[#1303]
+* Upgrade to JUnit Jupiter 5.12.2 link:{github}/issues/1304[#1304]
+* Upgrade to JUnit Platform 1.12.2 link:{github}/issues/1305[#1305]
+* Upgrade to Selenium 4.31.0 link:{github}/issues/1306[#1306]
+* Upgrade to Selenium HtmlUnit 4.30.0 link:{github}/issues/1307[#1307]
+* Upgrade to SnakeYAML 2.4 link:{github}/issues/1308[#1308]
+* Upgrade to Spring Boot 3.5.9 link:{github}/issues/1299[#1299]
+
+⚙️ Tasks
+
+* Release v2024.1.0-M1
+* Switch to '2024.1.x' Update github workflows
+* Next development version: 2024.1.0-SNAPSHOT
+
 === 2024.0.0-M2
 
 link:{github}/releases/tag/v2024.0.0-M2[release notes]
