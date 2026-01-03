@@ -111,7 +111,7 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
 implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilterer.html'>StackTraceFilterer</a></pre>
 
     <p> Default implementation of StackTraceFilterer.
-  <DL><DT><B>Since:</B></DT><DD>2.0</DD></DL><DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD></DL></p>
+  <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>2.0</DD></DL></p>
 
           </li>
     </ul>
@@ -227,11 +227,17 @@ implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilter
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>public&nbsp;boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#isShouldFilter()">isShouldFilter</a></strong>()</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setCutOffPackage(java.lang.String)">setCutOffPackage</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> cutOffPackage)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setShouldFilter(boolean)">setShouldFilter</a></strong>(boolean shouldFilter)</code><br></td>
@@ -334,7 +340,7 @@ implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilter
                         <a name="addInternalPackage(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>addInternalPackage</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>addInternalPackage</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> name)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -342,7 +348,7 @@ implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilter
                         <a name="filter(java.lang.Throwable, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> <strong>filter</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> source, boolean recursive)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> <strong>filter</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> source, boolean recursive)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -350,7 +356,7 @@ implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilter
                         <a name="filter(java.lang.Throwable)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> <strong>filter</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> source)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> <strong>filter</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> source)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -364,10 +370,18 @@ implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilter
                             </li>
                         </ul>
                     
+                        <a name="isShouldFilter()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;boolean <strong>isShouldFilter</strong>()</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="setCutOffPackage(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>setCutOffPackage</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> cutOffPackage)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>setCutOffPackage</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> cutOffPackage)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -375,7 +389,7 @@ implements <a href='../../../../org/grails/exceptions/reporting/StackTraceFilter
                         <a name="setShouldFilter(boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;void <strong>setShouldFilter</strong>(boolean shouldFilter)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>setShouldFilter</strong>(boolean shouldFilter)</h4>
                                 <p></p>
                             </li>
                         </ul>

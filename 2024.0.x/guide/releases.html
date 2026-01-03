@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>2 Release History 2024.0.0-M2</title>
+    <title>2 Release History 2024.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -87,7 +87,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>2 Release History</h1>
 
-                    <p><strong>Version:</strong> 2024.0.0-M2</p>
+                    <p><strong>Version:</strong> 2024.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -108,7 +108,7 @@ function addJsClass() {
 <h1 id="releases"><a class="anchor" href="#releases"></a>2 Release History</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2023.3.x/docs/src/docs/guide/releases.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2024.0.x/docs/src/docs/guide/releases.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -166,12 +166,2260 @@ function addJsClass() {
 <h2 id="2024.x"><a class="anchor" href="#2024.x"></a>2.1 What's new in 2024.x</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2023.3.x/docs/src/docs/guide/releases/2024.x.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2024.0.x/docs/src/docs/guide/releases/2024.x.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
+<div class="sect2">
+<h3 id="_2024_0_0_m2">2024.0.0-M2</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0-M2">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="paragraph">
+<p>Modularizing the codebase</p>
+</div>
+<div class="paragraph">
+<p>link:https://spring.io/blog/2025/10/28/modularizing-spring-boot(Spring Boot 4 has refactored its codebase into a more modular structure), I believe this is the right direction for the future.
+The Grace framework 2024 &amp; 2025 will also start doing this. Grace&#8217;s plugins will be independent, more focused, and at the same time, they will integrate better with Spring Boot&#8217;s modules.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create grace-boot-async module <a href="https://github.com/graceframework/grace-framework/issues/1269">#1269</a></p>
+</li>
+<li>
+<p>Create grace-boot-cache module <a href="https://github.com/graceframework/grace-framework/issues/1208">#1208</a></p>
+</li>
+<li>
+<p>Create grace-boot-events module <a href="https://github.com/graceframework/grace-framework/issues/1270">#1270</a></p>
+</li>
+<li>
+<p>Create grace-boot-hibernate module <a href="https://github.com/graceframework/grace-framework/issues/1230">#1230</a></p>
+</li>
+<li>
+<p>Create grace-boot-logging module <a href="https://github.com/graceframework/grace-framework/issues/1257">#1257</a></p>
+</li>
+<li>
+<p>Create grace-boot-mongodb module <a href="https://github.com/graceframework/grace-framework/issues/1231">#1231</a></p>
+</li>
+<li>
+<p>Create grace-boot-persistence module <a href="https://github.com/graceframework/grace-framework/issues/1258">#1258</a></p>
+</li>
+<li>
+<p>Create grace-boot-plugin module <a href="https://github.com/graceframework/grace-framework/issues/1259">#1259</a></p>
+</li>
+<li>
+<p>Create grace-boot-rest module <a href="https://github.com/graceframework/grace-framework/issues/1256">#1256</a></p>
+</li>
+<li>
+<p>Create grace-boot-test module <a href="https://github.com/graceframework/grace-framework/issues/1272">#1272</a></p>
+</li>
+<li>
+<p>Create grace-boot-validation module <a href="https://github.com/graceframework/grace-framework/issues/1271">#1271</a></p>
+</li>
+<li>
+<p>Create grace-boot-web module <a href="https://github.com/graceframework/grace-framework/issues/1207">#1207</a></p>
+</li>
+<li>
+<p>Create grace-web-rest module <a href="https://github.com/graceframework/grace-framework/issues/1255">#1255</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Core plugins have been consolidated into the framework</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Merge grace-geb into the framework <a href="https://github.com/graceframework/grace-framework/issues/1239">#1239</a></p>
+</li>
+<li>
+<p>Merge grace-database-migration into the framework <a href="https://github.com/graceframework/grace-framework/issues/1238">#1238</a></p>
+</li>
+<li>
+<p>Merge MongoDB plugin into the framework <a href="https://github.com/graceframework/grace-framework/issues/1232">#1232</a></p>
+</li>
+<li>
+<p>Merge Hibernate plugin into the framework <a href="https://github.com/graceframework/grace-framework/issues/1229">#1229</a></p>
+</li>
+<li>
+<p>Merge grace-views into the framework <a href="https://github.com/graceframework/grace-framework/issues/1215">#1215</a></p>
+</li>
+<li>
+<p>Merge grace-scaffolding into the framework <a href="https://github.com/graceframework/grace-framework/issues/1212">#1212</a></p>
+</li>
+<li>
+<p>Merge grace-fields into the framework <a href="https://github.com/graceframework/grace-framework/issues/1211">#1211</a></p>
+</li>
+<li>
+<p>Merge grace-fields into the framework <a href="https://github.com/graceframework/grace-framework/issues/1211">#1211</a></p>
+</li>
+<li>
+<p>Merge grace-cache into the framework <a href="https://github.com/graceframework/grace-framework/issues/1209">#1209</a></p>
+</li>
+<li>
+<p>Merge grace-plugin-events into the framework <a href="https://github.com/graceframework/grace-framework/issues/1183">#1183</a></p>
+</li>
+<li>
+<p>Merge grace-plugin-async into the framework <a href="https://github.com/graceframework/grace-framework/issues/1183">#1183</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix deprecation warnings due to tasks calling getProject() at execution time <a href="https://github.com/graceframework/grace-framework/issues/1297">#1297</a></p>
+</li>
+<li>
+<p>Fix type cast warnnings in ParameterizedGrailsUnitTest <a href="https://github.com/graceframework/grace-framework/issues/1292">#1292</a></p>
+</li>
+<li>
+<p>Fixes the resources in the <code>app/*</code> not found in development mode <a href="https://github.com/graceframework/grace-framework/issues/1251">#1251</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>ResourceLocator should use <code>BuildSettings.GRAILS_APP_PATH</code> instead of <code>GrailsResourceUtils.GRAILS_APP_DIR</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Fixes errors for using <code>project.register(copyAstClasses)</code> <a href="https://github.com/graceframework/grace-framework/issues/1164">#1164</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Don&#8217;t include unused jars in the Shell CLI binary <a href="https://github.com/graceframework/grace-framework/issues/1296">#1296</a></p>
+</li>
+<li>
+<p>Decouple grace-web from grace-databinding GrailsParameterMap and PropertyEditorRegistryUtils use DataBinder.DEFAULT_DATE_FORMAT</p>
+</li>
+<li>
+<p>Restore grace-web-databinding module</p>
+</li>
+<li>
+<p>Remove explicit dependency on <code>grace-plugin-rest</code> for grace-boot-web <a href="https://github.com/graceframework/grace-framework/issues/1294">#1294</a></p>
+</li>
+<li>
+<p>Add explicit dependency on <code>grace-views-markup</code> for grace-boot-rest <a href="https://github.com/graceframework/grace-framework/issues/1293">#1293</a></p>
+</li>
+<li>
+<p>Provide <code>install</code> and <code>help</code> commands for fields plugin <a href="https://github.com/graceframework/grace-framework/issues/1291">#1291</a></p>
+</li>
+<li>
+<p>Update StartScriptGenerator templates for Grace Shell <a href="https://github.com/graceframework/grace-framework/issues/1290">#1290</a></p>
+</li>
+<li>
+<p>Exclude the plugins that have been consolidated into framework <a href="https://github.com/graceframework/grace-framework/issues/1288">#1288</a></p>
+</li>
+<li>
+<p>Update CreateAppCommand to support creating a minimal Grace 2024.0 app <a href="https://github.com/graceframework/grace-framework/issues/1287">#1287</a></p>
+</li>
+<li>
+<p>Migrate to Maven Central Portal Snapshots when using SNAPSHOT version to generate new project <a href="https://github.com/graceframework/grace-framework/issues/1286">#1286</a></p>
+</li>
+<li>
+<p>Provide <code>org.graceframework.grace-app</code> plugin <a href="https://github.com/graceframework/grace-framework/issues/1285">#1285</a></p>
+</li>
+<li>
+<p>Make Gradle dependencies sorted and grouped by scope and dependency <a href="https://github.com/graceframework/grace-framework/issues/1283">#1283</a></p>
+</li>
+<li>
+<p>Update autoconfigure compiler for Grace Application <a href="https://github.com/graceframework/grace-framework/issues/1282">#1282</a></p>
+</li>
+<li>
+<p>Provide install command for geb plugin to configure selenium drivers <a href="https://github.com/graceframework/grace-framework/issues/1281">#1281</a></p>
+</li>
+<li>
+<p>Add selenium api and drivers dependencies for geb plugin <a href="https://github.com/graceframework/grace-framework/issues/1280">#1280</a></p>
+</li>
+<li>
+<p>Plugins contain scripts and templates should include these into resources when packaging <a href="https://github.com/graceframework/grace-framework/issues/1279">#1279</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>grace-plugin-database-migration</p>
+</li>
+<li>
+<p>grace-plugin-fields</p>
+</li>
+<li>
+<p>grace-plugin-geb</p>
+</li>
+<li>
+<p>grace-plugin-scaffolding</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Grace Boot MongoDb: add missing <code>grails-plugin.xml</code> <a href="https://github.com/graceframework/grace-framework/issues/1278">#1278</a></p>
+</li>
+<li>
+<p>Grace Boot Hibernate: add missing <code>grails-plugin.xml</code> <a href="https://github.com/graceframework/grace-framework/issues/1277">#1277</a></p>
+</li>
+<li>
+<p>Grace Boot Web: Remove unnecessary dependency on grace-plugin-gsp <a href="https://github.com/graceframework/grace-framework/issues/1276">#1276</a></p>
+</li>
+<li>
+<p>Grace Boot: Remove unnecessary dependency on grace-web <a href="https://github.com/graceframework/grace-framework/issues/1275">#1275</a></p>
+</li>
+<li>
+<p>Cleanup dependency on grace-plugin-api <a href="https://github.com/graceframework/grace-framework/issues/1274">#1274</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>grace-core do not expose grace-plugin-api any more, so all the plugins should explicit depend on it.</p>
+</li>
+<li>
+<p>grace-web only use grace-plugin-api compileOnly now.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use PropertySourcesPropertyResolver provided by Spring Framework <a href="https://github.com/graceframework/grace-framework/issues/1273">#1273</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Don&#8217;t use ConfigurationPropertySources provided by Spring Boot, because some tags do not depend on Spring Boot</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Update dependencies for grace-boot-mongodb <a href="https://github.com/graceframework/grace-framework/issues/1120">#1120</a></p>
+</li>
+<li>
+<p>Update README - Update the versions of Groovy, Gradle, Spring Boot</p>
+</li>
+<li>
+<p>Remove duplicated <code>grails.factories</code> in grace-web-url-mappings <a href="https://github.com/graceframework/grace-framework/issues/1245">#1245</a></p>
+</li>
+<li>
+<p>Update <code>migration.gdsl</code> in the database-migration plugin <a href="https://github.com/graceframework/grace-framework/issues/1240">#1240</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Correct the <code>migrationDir</code> to <code>db/migrations</code></p>
+</li>
+<li>
+<p>Correct the <code>column</code> methods definded in <code>createTable</code> <code>addColumn</code> <code>createIndex</code> <code>insert</code> <code>loadData</code> <code>loadUpdateData</code> <code>update</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Add missing 'grails.factories' for 'database-migration' plugin</p>
+</li>
+<li>
+<p>Add missing 'grails-plugin.xml' for 'geb' plugin</p>
+</li>
+<li>
+<p>Add missing 'grails-plugin.xml' for 'database-migration' plugin</p>
+</li>
+<li>
+<p>Remove unused plugins in the gradle/grails.versions.toml</p>
+</li>
+<li>
+<p>Rearrange versions and libraries in the gradle/libs.versions.toml</p>
+</li>
+<li>
+<p>Code formatting with Checkstyle and Codenarc</p>
+</li>
+<li>
+<p>Add dependencies to Gradle Version Catalog</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add glassfish-expressly</p>
+</li>
+<li>
+<p>Add hibernate-core</p>
+</li>
+<li>
+<p>Add spring-orm</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Merge hibernate plugin into the framework <a href="https://github.com/graceframework/grace-framework/issues/1229">#1229</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>4cbe4aecf7 Cleanup build scripts</p>
+</li>
+<li>
+<p>48f7fadf01 Code formatting</p>
+</li>
+<li>
+<p>5cece78f27 Code formatting with Checkstyle and Codenarc</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Update the BOM of Grace Dependencies <a href="https://github.com/graceframework/grace-framework/issues/1220">#1220</a></p>
+</li>
+<li>
+<p>Update Gradle Version Catalog after importing 'cache' 'fields' 'scaffolding' 'views' plugins <a href="https://github.com/graceframework/grace-framework/issues/1219">#1219</a></p>
+</li>
+<li>
+<p>Rename the package of Grace Views <a href="https://github.com/graceframework/grace-framework/issues/1218">#1218</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Change the package of grace-views-json from <code>grails.plugin.json.view</code> &#8658; <code>org.grails.views.json</code></p>
+</li>
+<li>
+<p>Change the package of grace-views-markup from <code>grails.plugin.markup.view</code> &#8658; <code>org.grails.views.markup</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor Grace Json View API: Use native <code>groovy.json.*</code> API instead <a href="https://github.com/graceframework/grace-framework/issues/1217">#1217</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>grails.plugin.json.builder.StreamingJsonBuilder</code></p>
+</li>
+<li>
+<p>Remove <code>grails.plugin.json.builder.JsonOutput</code></p>
+</li>
+<li>
+<p>Remove <code>grails.plugin.json.builder.JsonGenerator</code></p>
+</li>
+<li>
+<p>Remove <code>grails.plugin.json.builder.DefaultJsonGenerator</code></p>
+</li>
+<li>
+<p>Add <code>grails.plugin.json.view.api.JsonWritable</code></p>
+</li>
+<li>
+<p>Add <code>grails.plugin.json.util.JsonToken</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor Grace Views Format Java and Groovy source and test code <a href="https://github.com/graceframework/grace-framework/issues/1216">#1216</a></p>
+</li>
+<li>
+<p>Merge grace-views into the framework <a href="https://github.com/graceframework/grace-framework/issues/1215">#1215</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Merge grace-views-gradle into grace-gradle-plugin</p>
+</li>
+<li>
+<p>Merge grace-views-json-testing-support into grace-test-support</p>
+</li>
+<li>
+<p>Update Gradle build script</p>
+</li>
+<li>
+<p>Update ViewsTransform JsonViewsTransform MarkupViewsTransform MarkupViewTemplateEngine</p>
+</li>
+<li>
+<p>Make tests works</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor Grace Fields Plugin <a href="https://github.com/graceframework/grace-framework/issues/1214">#1214</a></p>
+</li>
+<li>
+<p>Refactor Grace Scaffolding Core and Plugin <a href="https://github.com/graceframework/grace-framework/issues/1213">#1213</a></p>
+</li>
+<li>
+<p>Make grace-plugin-fields and grace-plugin-scaffolding works <a href="https://github.com/graceframework/grace-framework/issues/1211">#1211</a> <a href="https://github.com/graceframework/grace-framework/issues/1212">#1212</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add grace-scaffolding-core grace-plugin-fields grace-plugin-scaffolding submodules</p>
+</li>
+<li>
+<p>Update Gradle build script</p>
+</li>
+<li>
+<p>Add <code>grails-plugin.xml</code> for grace-plugin-fields and grace-plugin-scaffolding</p>
+</li>
+<li>
+<p>Add <code>@TagLib</code> to <code>FormFieldsTagLib</code></p>
+</li>
+<li>
+<p>Update <code>ContextMarkupRenderer</code> <code>ContextMarkupRendererImpl</code> <code>DomainMarkupRendererImpl</code> <code>DelegatingBeanPropertyAccessorImpl</code></p>
+</li>
+<li>
+<p>Update <code>DomainMarkupRendererSpec</code> and <code>FormFieldsTemplateServiceSpec</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor Grace Cache Core and Plugin <a href="https://github.com/graceframework/grace-framework/issues/1210">#1210</a></p>
+</li>
+<li>
+<p>Make grace-cache-core and grace-plugin-cache works <a href="https://github.com/graceframework/grace-framework/issues/1209">#1209</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add grace-cache-core and grace-plugin-cache submodules</p>
+</li>
+<li>
+<p>Update Gradle build script</p>
+</li>
+<li>
+<p>Add grails-plugin.xml</p>
+</li>
+<li>
+<p>Add <code>@TagLib</code> to <code>grails-plugin.xml</code></p>
+</li>
+<li>
+<p>Migrate some JUnit 4 tests to JUnit 5</p>
+</li>
+<li>
+<p>Remove demo tests</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Enhance <code>CodeGenConfig</code> <a href="https://github.com/graceframework/grace-framework/issues/1201">#1201</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add method <code>loadDefaultConfig()</code> to simplify usage</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Relocate <code>CodeGenConfig</code> from grace-api to grace-bootstrap <a href="https://github.com/graceframework/grace-framework/issues/1200">#1200</a></p>
+</li>
+<li>
+<p>Rename beans to <code>propertySourcesPlaceholderConfigurer</code> <code>beanPropertyOverrideConfigurer</code> to keep naming consistent with the <code>CoreConfiguration</code> <a href="https://github.com/graceframework/grace-framework/issues/1198">#1198</a></p>
+</li>
+<li>
+<p>Refine GroovyPagesTemplateRenderer</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove unused codes</p>
+</li>
+<li>
+<p>Decouple <code>grace-web-gsp</code> from <code>grace-plugin-domain-class</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Move <code>CamelCaseUrlConverterSpec</code> and <code>HyphenatedUrlConverterSpec</code> from grace-core to the grace-web-common <a href="https://github.com/graceframework/grace-framework/issues/1189">#1189</a></p>
+</li>
+<li>
+<p>BuildSettings.APP_BASE_DIR: rename <code>base.dir</code> to <code>grails.base.dir</code> <a href="https://github.com/graceframework/grace-framework/issues/1186">#1186</a></p>
+</li>
+<li>
+<p>Improve <code>EntityTraitInjector</code> and <code>GormTransformer</code> <a href="https://github.com/graceframework/grace-framework/issues/1184">#1184</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor <code>EntityTraitInjector</code> and <code>GormTransformer</code></p>
+</li>
+<li>
+<p>Add tests</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Remove the configuration of system properties in <code>GrailsGradlePlugin.configureGrailsBuildSettings()</code> <a href="https://github.com/graceframework/grace-framework/issues/1173">#1173</a> <a href="https://github.com/graceframework/grace-framework/issues/1157">#1157</a></p>
+</li>
+<li>
+<p>Update <code>GspCompileOptions</code>: remove the use of deprecated <code>AbstractOptions</code> <a href="https://github.com/graceframework/grace-framework/issues/1166">#1166</a> <a href="https://github.com/graceframework/grace-framework/issues/1165">#1165</a></p>
+</li>
+<li>
+<p>Enhance <code>FindMainClassTask</code> and <code>GrailsGradlePlugin.registerFindMainClassTask()</code> <a href="https://github.com/graceframework/grace-framework/issues/1163">#1163</a></p>
+</li>
+<li>
+<p>Add <code>configDir</code> to <code>GroovyPageForkCompileTask</code> And migrate <code>project.buildDir</code> to <code>project.layout.buildDirectory</code> <a href="https://github.com/graceframework/grace-framework/issues/1162">#1162</a></p>
+</li>
+<li>
+<p>Task <code>compileWebappGroovyPages</code> should dependsOn <code>classes</code> <a href="https://github.com/graceframework/grace-framework/issues/1161">#1161</a></p>
+</li>
+<li>
+<p>Update Gradle Version Catalog <a href="https://github.com/graceframework/grace-framework/issues/1145">#1145</a></p>
+</li>
+<li>
+<p>Rename <code>grace-gorm</code> to <code>grace-data</code> properties in the Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1144">#1144</a></p>
+</li>
+<li>
+<p>Improve GroovyCompiler to allow Groovy scripts to be recompiled and reloaded after modification <a href="https://github.com/graceframework/grace-framework/issues/1142">#1142</a></p>
+</li>
+<li>
+<p>Ensure that Grace Artefact classes are not registered prematurely into the Spring context <a href="https://github.com/graceframework/grace-framework/issues/1141">#1141</a></p>
+</li>
+<li>
+<p>Update .gitattributes to ensure the web fonts are treated as binary <a href="https://github.com/graceframework/grace-framework/issues/1138">#1138</a></p>
+</li>
+<li>
+<p>Migrate to Central Portal OSSRH Staging API <a href="https://github.com/graceframework/grace-framework/issues/1114">#1114</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🎯 Refactoring</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1295">#1295</a> Restore grace-web-databinding module</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Restore grace-web-databinding module</p>
+</li>
+<li>
+<p>Decouple grace-web from grace-databinding</p>
+<div class="ulist">
+<ul>
+<li>
+<p>GrailsParameterMap and PropertyEditorRegistryUtils use <code>DataBinder.DEFAULT_DATE_FORMAT</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1260">#1260</a> Create grace-web-rest module</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Introduce RendererRegistryCustomizer <a href="https://github.com/graceframework/grace-framework/issues/1260">#1260</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>RendererRegistryCustomizer</code> allow to customize <code>RendererRegistry</code>, like <code>DefaultRendererRegistryCustomizer</code>, to add more user-defined <code>Renderer</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1254">#1254</a> Refactor GrailsExceptionResolver</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Introduce <code>GrailsUrlMappingsExceptionResolver</code> to make grace-web-mvc decoupled from grace-web-url-mappings</p>
+</li>
+<li>
+<p><code>GrailsExceptionResolver</code> should not reuse cached controller attribute to find the given error path</p>
+</li>
+<li>
+<p>Cleanup <code>GrailsWrappedRuntimeException</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1253">#1253</a> Refactor grace-web-url-mappings</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate CORS related to grace-plugin-url-mappings</p>
+</li>
+<li>
+<p>Remove method <code>setGrailsCorsConfiguration()</code> in <code>UrlMappingsHandlerMapping</code>, use <code>AbstractHandlerMapping.setCorsConfigurations()</code> instead</p>
+</li>
+<li>
+<p>Relocate <code>UrlMappingsErrorPageCustomizer</code> and <code>AnsiConsoleUrlMappingsRendererSpec</code> to grace-plugin-url-mappings</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1252">#1252</a> Various improvements related to stack trace logging and exception display</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ErrorsViewStackTracePrinter should use <code>grailsResourceLocator</code> first</p>
+</li>
+<li>
+<p>And <code>grailsResourceLocator</code> need to set <code>searchLocation</code> to <code>BuildSettings.BASE_DIR</code></p>
+</li>
+<li>
+<p>Display the relative path of the file associated with the errors</p>
+</li>
+<li>
+<p>Auto-configure StackTraceFilterer bean on GrailsExceptionResolver</p>
+</li>
+<li>
+<p>Improve the log messages of exception&#8217;s stack trace</p>
+</li>
+<li>
+<p>Fixed StackTracePrinterSpec</p>
+</li>
+<li>
+<p>Add an additional Spring configuration metadata: <code>grails.full.stacktrace</code></p>
+</li>
+<li>
+<p>Formatting request parameters and log information, the excluded parameters will be marked [FILTERED] in the log</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1250">#1250</a> Create grace-plugin-taglibs</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create grace-plugin-taglibs Move <code>org/grails/plugins/web/taglib/*TagLib</code> from grace-plugin-gsp to grace-plugin-taglibs <a href="https://github.com/graceframework/grace-framework/issues/1249">#1249</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1248">#1248</a> Consolidate 'grace-web-sitemesh' into 'grace-web-gsp'</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Consolidate 'grace-web-sitemesh' into 'grace-web-gsp'</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1247">#1247</a> Make 'grace-web-mvc' decoupled from 'grace-web-sitemesh'</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Make 'grace-web-mvc' decoupled from 'grace-web-sitemesh'</p>
+</li>
+<li>
+<p>Update copyright year to 2025</p>
+</li>
+<li>
+<p>Remove 'grace-web-common' module <a href="https://github.com/graceframework/grace-framework/issues/1246">#1246</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1246">#1246</a> Consolidate 'grace-web-common' into 'grace-web'</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Consolidate 'grace-web-common' into 'grace-web'</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1245">#1245</a> Relocate <code>AnsiConsoleUrlMappingsRenderer</code> <code>UrlMappingsReportCommand</code> from grace-web-url-mappings to grace-plugin-url-mappings</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate <code>AnsiConsoleUrlMappingsRenderer</code> <code>UrlMappingsReportCommand</code> from grace-web-url-mappings to grace-plugin-url-mappings</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1244">#1244</a> Consolidate 'grace-web-databinding' into 'grace-web-common'</p>
+</div>
+<div class="paragraph">
+<p>Consolidate 'grace-web-databinding' into 'grace-web-common'
+  - Move <code>DataBinder</code> <code>WebDataBinding</code> <code>WebDataBindingTraitInjector</code> from 'grace-web-databinding' to 'grace-plugin-databinding'
+  - Move <code>org/grails/web/databinding/*</code> from 'grace-web-databinding' to 'grace-web-common'</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1243">#1243</a> Consolidate 'grace-web-jsp' into 'grace-web-gsp'</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Consolidate 'grace-web-jsp' into 'grace-web-gsp'</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1242">#1242</a> Cleanup dependencies</p>
+</div>
+<div class="paragraph">
+<p>Relocate <code>ErrorsViewStackTracePrinter</code> <code>GrailsWrappedRuntimeException</code> from <code>grace-web-common</code> to <code>grace-web-mvc</code>
+Remove <code>getPagesTemplateEngine()</code> of <code>GrailsApplicationAttributes</code>
+Update dependencies
+  - <code>grace-web-gsp</code> no longer depends on <code>grace-web-taglib</code>
+  - <code>grace-web-common</code> no longer depends on <code>grace-gsp</code>
+  - <code>grace-plugin-fields</code> should depends on <code>grace-web-taglib</code></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1241">#1241</a> 'grace-web-gsp-taglib' has been consolidated into 'grace-web-taglib' and 'grace-plugin-gsp'</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>grace-web-gsp-taglib</code> module its functionality has been consolidated into <code>grace-web-taglib</code> and <code>grace-plugin-gsp</code></p>
+</li>
+<li>
+<p>Relocate <code>org/grails/plugins/web/taglib/*</code> from <code>grace-web-gsp-taglib</code> to <code>grace-plugin-gsp</code></p>
+</li>
+<li>
+<p>Relocate <code>StandaloneTagLibraryLookup</code> from <code>grace-web-gsp-taglib</code> to <code>grace-web-taglib</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1205">#1205</a> Refactor GrailsApplicationLifeCycle</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>8d7161da21</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename GrailsApplicationLifeCycle to GrailsApplicationLifecycle</p>
+</li>
+<li>
+<p>Rewrite GrailsApplicationLifecycle using Java</p>
+</li>
+<li>
+<p>Remove GrailsApplicationLifeCycleAdapter</p>
+</li>
+<li>
+<p>Simplify Plugin</p>
+</li>
+<li>
+<p>Rename <code>GrailsApplicationPostProcessor.setGrailsApplicationLifeCycle()</code> to <code>GrailsApplicationPostProcessor.setGrailsApplicationLifecycle()</code></p>
+</li>
+<li>
+<p>Update GrailsApplicationBuilder</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1204">#1204</a> Refactor Grace Spring Boot and Grace Spring</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>f24e041d52 Move all classes in the grace-spring-boot into grace-spring</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The grace-spring-boot module contains some classes related to the Spring framework and Spring Boot,
+But now, all of theme have been relocated into grace-spring,
+you should use grace-spring directly.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1203">#1203</a> Refactor Grace Bootstrap</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>ConfigProperties</code> <code>ConfigPropertiesSpec</code> from grace-plugin-core to grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>NavigableMap</code> <code>NavigableMapConfig</code> from grace-api to grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>ConfigMapSpec</code> <code>NavigableMapSpec</code> from grace-api to grace-bootstrap</p>
+</li>
+<li>
+<p>Rename <code>GroovyConfigPropertySourceLoader</code> <code>YamlPropertySourceLoader</code> package from <code>org.grails.spring.boot.env</code> to <code>org.grails.config.loader</code></p>
+</li>
+<li>
+<p>Rename package <code>GroovyConfigPropertySourceLoaderSpec</code> <code>YamlPropertySourceLoaderSpec</code></p>
+</li>
+<li>
+<p>Update <code>grace-plugin-core/src/main/resources/META-INF/spring.factories</code></p>
+</li>
+<li>
+<p>Move the classes under the <code>org.grails.config</code> package from grace-core and grace-spring-boot to grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>CompositeConfig</code> <code>EnvironmentAwarePropertySource</code> <code>NavigableMapPropertySource</code> <code>PrefixedConfig</code> <code>PrefixedMapPropertySource</code> <code>PropertySourcesConfig</code> from grace-core to grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>NavigableMapNestedEqualitySpec</code> <code>NavigableMapPropertySourceSpec</code> <code>NavigableMapSpringProfilesSpec</code> <code>PropertyResolutionSpec</code> <code>PropertySourceConfigSpec</code> <code>PropertySourcesConfigSpec</code> <code>SystemEnvironmentConfigSpec</code> from grace-core to grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>GroovyConfigPropertySourceLoader</code> <code>YamlPropertySourceLoader</code> from grace-spring-boot to grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>GroovyConfigPropertySourceLoaderSpec</code> <code>YamlPropertySourceLoaderSpec</code> from grace-spring-boot to grace-bootstrap</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1202">#1202</a> Relocate <code>Named</code> and <code>Described</code> from grace-bootstrap to grace-api</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1199">#1199</a> Refactor GrailsApplication</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix doc typos</p>
+</li>
+<li>
+<p>Remove method <code>getMetadata()</code> in GrailsApplication <code>GrailsApplication</code> should not depend on <code>Metadata</code>, please use <code>Metadata.getCurrent()</code> instead</p>
+</li>
+<li>
+<p>Remove deprecated constants in GrailsApplication</p>
+<div class="ulist">
+<ul>
+<li>
+<p>CONFIG_CLASS</p>
+</li>
+<li>
+<p>DATA_SOURCE_CLASS</p>
+</li>
+<li>
+<p>PROJECT_META_FILE</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1197">#1197</a> Revisit Grace Spring Boot Module</p>
+</div>
+<div class="paragraph">
+<p>Move some classes to more appropriate modules</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate <code>GroovyConfigPropertySourceLoaderSpec</code> <code>YamlPropertySourceLoaderSpec</code> to <code>grace-spring-boot/src/test/groovy/org/grails/spring/boot/env/</code></p>
+</li>
+<li>
+<p>Relocate <code>ClassEditor</code> <code>PropertiesEditor</code> to <code>grace-spring-boot/src/main/groovy/org/grails/spring/beans/support/</code></p>
+</li>
+<li>
+<p>Move <code>ClassRelativeClassLoader</code> <code>ClassRelativeResourcePatternResolver</code> from grace-spring-boot to grace-plugin-i18n</p>
+</li>
+<li>
+<p>Move <code>GrailsPlaceholderConfigurer</code> <code>GrailsBeanPropertyOverrideConfigurer</code> from grace-spring-boot to grace-plugin-core</p>
+</li>
+<li>
+<p>Move <code>NavigableMapPropertySource</code> <code>NavigableMapPropertySourceSpec</code> from grace-api to grace-spring-boot</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1196">#1196</a> Refactor IOUtils</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor IOUtils Remove SpringIOUtils</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Using IOUtils instead Deprecated IOUtils.toString(Reader)</p>
+</li>
+<li>
+<p>Using IOUtils.copyToString(Reader)</p>
+</li>
+<li>
+<p>Enhance IOUtils.copy() methods</p>
+</li>
+<li>
+<p>Using FileCopyUtils.copy() to implement</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1195">#1195</a> Migrate to Spring Framework&#8217;s Resource API</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>PathMatchingResourcePatternResolver</code> instead of <code>CachingPathMatchingResourcePatternResolver</code></p>
+</li>
+<li>
+<p>Move <code>ResourceLocator</code> from grace-api to the grace-core</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>DefaultResourceLocator</code> from grace-plugin-api to the grace-core</p>
+</li>
+<li>
+<p>Remove <code>org.grails.coreio.PluginPathAwareFileSystemResourceLoader</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use <code>StaticResourceLoader</code> in the grace-bootstrap</p>
+</li>
+<li>
+<p>Use built-in classes such as Resource ResourceLoader provided by the Spring framework</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following classes have been removed
+  - AbstractFileResolvingResource
+  - AntPathMatcher
+  - ByteArrayResource
+  - ClassPathResource
+  - DefaultResourceLoader
+  - FileSystemResource
+  - FileSystemResourceLoader
+  - GrailsByteArrayResource
+  - GrailsResource
+  - PathMatchingResourcePatternResolver
+  - Resource
+  - ResourceLoader
+  - SpringResource
+  - UrlResource</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1194">#1194</a> Refactor Grace API</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>Mixin</code> <code>MixinTargetAware</code> from grace-api to grace-core</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>CacheEntry</code> <code>Pair</code> <code>Triple</code> from grace-api to grace-util</p>
+</li>
+<li>
+<p>Move <code>AbstractTypeConvertingMap</code> <code>TypeConvertingMap</code> <code>TypeConvertingMapTests</code> from grace-api to grace-util</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Move <code>CompositeConfig</code> <code>EnvironmentAwarePropertySource</code> <code>PrefixedConfig</code> <code>PrefixedMapPropertySource</code> <code>PropertySourcesConfig</code> from grace-api to the grace-core</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>NavigableMapPropertySourceSpec</code> from grace-core to grace-api</p>
+</li>
+<li>
+<p>Move <code>DefaultGrailsPluginTests</code> from grace-plugin-api to grace-test-suite-uber</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Move <code>DefaultErrorsPrinter</code> from grace-api to the grace-core</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>NewInstanceCreationException</code> to <code>GrailsClassCreationException</code> and relocate to grace-core</p>
+</li>
+<li>
+<p>Rename <code>GrailsDomainException</code> to <code>GrailsClassException</code> and relocate to grace-core</p>
+</li>
+<li>
+<p>Rename <code>InvalidPropertyException</code> to <code>GrailsPropertyInvalidException</code> and relocate to grace-core</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Move <code>AbstractGrailsClass</code> <code>AbstractInjectableGrailsClass</code> from grace-api to the grace-core</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>InvalidVersionException</code> <code>VersionComparator</code> <code>GrailsPlugin</code> <code>PluginSource</code> from grace-api to the grace-plugin-api</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Move <code>ConfigProperties</code> from grace-api to the grace-plugin-core</p>
+</li>
+<li>
+<p>Move <code>GrailsFactoriesLoader</code> from grace-api to the grace-bootstrap</p>
+</li>
+<li>
+<p>Move <code>Settings</code> from grace-api to the grace-bootstrap</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1193">#1193</a> Refactor GSP plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove deprecated <code>GrailsTagLibClass</code> <code>DefaultGrailsTagLibClass</code> <code>TagLibArtefactHandler</code></p>
+</li>
+<li>
+<p>Make <code>ControllerTagLibraryTraitInjector</code> inherit directly from <code>TraitInjectorAdapter</code></p>
+</li>
+<li>
+<p>Use <code>ArtefactTypes.TAG_LIBRARY</code> instead of <code>TagLibArtefactHandler.TYPE</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1192">#1192</a> Refactor Bootstrap Artefact</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate <code>BootstrapArtefactHandler</code> <code>BootstrapArtefactHandlerSpec</code> to grace-boot</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>GrailsBootstrapClass</code> <code>DefaultGrailsBootstrapClass</code> from grace-web to grace-boot</p>
+</li>
+<li>
+<p>Update <code>GrailsApplicationBuilder</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Auto-configure <code>BootstrapClassRunner</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>BootstrapClassRunner</code> from grace-plugin-controllers to grace-boot</p>
+</li>
+<li>
+<p>Rename <code>BootstrapClassRunner</code> to <code>GrailsBootstrapClassRunner</code></p>
+</li>
+<li>
+<p>Auto-configure <code>GrailsBootstrapClassRunner</code> in GrailsBootstrapAutoConfiguration</p>
+</li>
+<li>
+<p>Add <code>grails.bootstrap.skip</code> to Spring Configuration Metadata</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use <code>ArtefactTypes.BOOTSTRAP</code> instead of <code>BootstrapArtefactHandler.TYPE</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1191">#1191</a> Refactor Grace Boot</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor Grace Boot</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>ApplicationArtefactHandler</code> <code>ApplicationClassInjector</code> from grace-core to grace-boot</p>
+</li>
+<li>
+<p>Move <code>LoggingTransformerSpec</code> from grace-logging to grace-boot</p>
+</li>
+<li>
+<p>Update <code>ArtefactTypeAstTransformationSpec</code> <code>GlobalGrailsClassInjectorTransformationSpec</code> <code>GrailsAwareInjectionOperationSpec</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1190">#1190</a> Refactor Services plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor Services plugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>ArtefactTypes.SERVICE</code> instead of <code>ServiceArtefactHandler.TYPE</code></p>
+</li>
+<li>
+<p>Move <code>GrailsServiceClass</code> <code>DefaultGrailsServiceClass</code> from grace-core to grace-plugin-services</p>
+</li>
+<li>
+<p>Relocate <code>ServiceArtefactHandler</code> <code>ServiceArtefactHandlerSpec</code> to grace-plugin-services</p>
+</li>
+<li>
+<p>Update <code>ServiceUnitTest</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1189">#1189</a> Refactor Controllers and Controllers plugins</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>DefaultGrailsControllerClassSpec</code> to the grace-plugin-controllers</p>
+</li>
+<li>
+<p>Refactor UrlMappings plugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>ArtefactTypes.URL_MAPPINGS</code> instead of <code>UrlMappingsArtefactHandler.TYPE</code></p>
+</li>
+<li>
+<p>Move <code>GrailsUrlMappingsClass</code> <code>DefaultGrailsUrlMappingsClass</code> from grace-core to grace-web-common</p>
+</li>
+<li>
+<p>Relocate <code>UrlMappingsArtefactHandler</code> <code>UrlMappingsArtefactHandlerSpec</code> to grace-plugin-url-mappings</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor Controllers plugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>ArtefactTypes.CONTROLLER</code> instead of <code>ControllerArtefactHandler.TYPE</code></p>
+</li>
+<li>
+<p>Move <code>Action</code> <code>CamelCaseUrlConverter</code> <code>HyphenatedUrlConverter</code> <code>UrlConverter</code> from grace-core to grace-web-common</p>
+</li>
+<li>
+<p>Relocate <code>ControllerArtefactHandler</code> <code>ControllerArtefactHandlerSpec</code> to grace-plugin-controllers</p>
+</li>
+<li>
+<p>Update <code>LoggingTransformerSpec</code> in grace-logging</p>
+</li>
+<li>
+<p>Add <code>ControllerLoggingTransformerSpec</code> to grace-plugin-controllers</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1188">#1188</a> Refactor Domain Class plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate <code>DomainClassArtefactHandler</code> to grace-plugin-domain-class</p>
+</li>
+<li>
+<p>Decouple <code>DefaultGrailsApplication.addArtefact()</code> from <code>DomainClassArtefactHandler</code></p>
+</li>
+<li>
+<p>Introduce ArtefactTypes - Use <code>ArtefactTypes.DOMAIN_CLASS</code> instead of <code>DomainClassArtefactHandler.TYPE</code></p>
+</li>
+<li>
+<p>Use <code>GrailsASTUtils.isDomainClass()</code> instead of <code>DomainClassArtefactHandler.isDomainClass()</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1187">#1187</a> Refactor Domain Class plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>AnnotationDomainClassArtefactHandler</code></p>
+</li>
+<li>
+<p>Relocate <code>DefaultGrailsDomainClassInjector</code> to grace-plugin-domain-class</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1185">#1185</a> Refactor Domain Class plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Decouple <code>grace-core</code> from <code>grace-plugin-domain-class</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Update tests</p>
+</li>
+<li>
+<p>Move tests from <code>grace-core</code> into <code>grace-plugin-domain-class</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1183">#1183</a> Merge async and events plugins into the framework</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Code format</p>
+</li>
+<li>
+<p>Build async and events plugins</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add grace-plugin-async and grace-plugin-events</p>
+</li>
+<li>
+<p>Use Gradle version catalog to manage dependencies</p>
+</li>
+<li>
+<p>Add version and descriptor to plugins</p>
+</li>
+<li>
+<p>Update TransactionalPromiseDecorator and make tests pass</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1182">#1182</a> Restructure GORM Support</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>0d901fa098 Move ProxyHandler and PersistenceContextInterceptor to <code>grace-datastore-gorm-support</code> See graceframework/grace-data#73</p>
+</li>
+<li>
+<p>74555e5923 Add <code>EntityTraitInjector</code> and <code>GormTransformer</code> from <code>grace-datastore-gorm-support</code> See graceframework/grace-data#73</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1180">#1180</a> Refactor Gradle Doc Plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor DocPublisher</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>publishPdf()</code> to <code>generatePdfGuide()</code></p>
+</li>
+<li>
+<p>Remove <code>PublishPdfTask</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor GrailsDocGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>docs</code> to <code>publishGuide</code></p>
+</li>
+<li>
+<p>Add new properties <code>singlePdf</code> <code>generatePdf</code> to <code>PublishGuideTask</code></p>
+</li>
+<li>
+<p>Remove registed task <code>docsPdf</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1176">#1176</a> Refactor Gradle Doc Plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove obsolete MigrateLegacyDocs</p>
+</li>
+<li>
+<p>Refactor PublishGuideTask - Migrate all properties to lazy properties</p>
+</li>
+<li>
+<p>Refactor PublishGuideTask Remove Gradle&#8217;s deprecation warning "Invocation of Task.project at execution time has been deprecated."</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1175">#1175</a> Refactor Grace Banner</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor GrailsResourceBanner</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Align with Spring Boot&#8217;s <code>ResourceBanner</code></p>
+</li>
+<li>
+<p>Don&#8217;t return the default application name in <code>Metadata.getApplicationName()</code></p>
+</li>
+<li>
+<p>Add GrailsResourceBannerTests</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor GrailsResourceBanner</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove deprecated method <code>getApplicationVersion(Class&lt;?&gt; sourceClass)</code></p>
+</li>
+<li>
+<p>Get name and version from environment</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1174">#1174</a> Refactor Gradle plugins</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor GrailsGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>enableNative2Ascii()</code> in favor of using Gradle&#8217;s <code>ProcessResources</code></p>
+</li>
+<li>
+<p>Deprecated <code>native2ascii</code> and <code>native2asciiAnt</code> in <code>GrailsExtension</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refine GrailsPluginGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>ProcessPluginResourcesTask</code></p>
+</li>
+<li>
+<p>Improve <code>configurePluginResources()</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refine GrailsGradlePlugin and GrailsWebGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>configureProcessResources()</code> for <code>GrailsWebGradlePlugin</code></p>
+</li>
+<li>
+<p>Extract copying templates from <code>GrailsGradlePlugin.enableNative2Ascii()</code> to <code>GrailsWebGradlePlugin</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1172">#1172</a> Refactor Gradle Profile Plugin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor GrailsProfileGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add constants <code>PROCESS_PROFILE_RESOURCES_TASK_NAME</code> <code>COMPILE_PROFILE_TASK_NAME</code> <code>PROFILE_GROUP</code></p>
+</li>
+<li>
+<p>Add <code>registerOrGetJarTask()</code> and <code>registerOrGetSourcesJarTask()</code></p>
+</li>
+<li>
+<p>Improve <code>sourcesJarTask</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor GrailsProfileGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>ProfileResourcesProcessTask</code></p>
+</li>
+<li>
+<p>Improve <code>ProfileCompilerTask</code></p>
+</li>
+<li>
+<p>Refactor <code>GrailsProfileGradlePlugin</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1171">#1171</a> Support configuration of project resources and sources directories</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure the main sources and resources directories This PR allow developers to configure the app sources and resources,</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>grails {
+    appSourceDirs += ['models', 'repositories']
+    appResourceDirs += ['config']
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1170">#1170</a> Customize Groovy compiler configuration</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Support adding user defined node metadata This PR allow develpers to add some user defined node metadata by configuring <code>configScript.metaDataMap</code>,</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>configScript {
+    metaDataMap['APP_THEME'] = 'custom meta data'
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allow to provide a custom Groovy script file that configures the Groovy compiler The default Groovy script file should be placed in <code>config/groovy/compiler.groov</code>,</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>withConfig(configuration) {
+    inline(phase: 'CONVERSION') { source, context, classNode -&gt;
+        source.ast.putNodeMetaData('PROJECT_NAME', '${PROJECT_NAME}')
+        source.ast.putNodeMetaData('PROJECT_TYPE', '${PROJECT_TYPE}')
+        source.ast.putNodeMetaData('PROJECT_VERSION', '${PROJECT_VERSION}')
+        source.ast.putNodeMetaData('PROJECT_DIR', '${PROJECT_DIR}')
+        source.ast.putNodeMetaData('GRAILS_APP_DIR', '${GRAILS_APP_DIR}')
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1169">#1169</a> Refactor Gradle plugins</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor GrailsGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Introduce <code>GenerateBuildInfo</code></p>
+</li>
+<li>
+<p>Remove <code>@CompileDynamic</code> on <code>createBuildPropertiesTask()</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor GrailsGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Introduce <code>GenerateConfigScript</code></p>
+</li>
+<li>
+<p>Rename <code>configureGroovyASTMetadata()</code> to <code>configureGroovyCompiler()</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1168">#1168</a> Refactor Gradle plugins</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure the classpath of the Spring Boot&#8217;s BootArchive</p>
+</li>
+<li>
+<p>Change the generated gsp class name: remove the prefixed 'gsp', and append '_' before the view names</p>
+</li>
+<li>
+<p>Change the compiled gsp classes target directory</p>
+</li>
+<li>
+<p>Correct the Groovy build classes dirs</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1167">#1167</a> Refactor Gradle plugins</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve GroovyPagePlugin and GroovyPageForkCompileTask</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove unnecessary dependency on <code>jakarta.servlet-api</code></p>
+</li>
+<li>
+<p>Remove Configuration <code>providedCompile</code>, only use <code>compileClasspath</code></p>
+</li>
+<li>
+<p>Don&#8217;t call <code>Task.getProject()</code> from a task action</p>
+</li>
+<li>
+<p>Use <code>JavaPlugin.CLASSES_TASK_NAME</code> instead of <code>classes</code></p>
+</li>
+<li>
+<p>Use <code>GrailsGradlePlugin.GRAILS_EXTENSION_NAME</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor GrailsProfileGradlePlugin</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>BasePlugin.ASSEMBLE_TASK_NAME</code> instead of <code>assemble</code></p>
+</li>
+<li>
+<p>Rename <code>CONFIGURATION_NAME</code> to <code>GRAILS_CONFIGURATION_NAME</code></p>
+</li>
+<li>
+<p>Rename <code>RUNTIME_CONFIGURATION</code> to <code>PROFILE_CONFIGURATION_NAME</code></p>
+</li>
+<li>
+<p>Use Groovy style <code>project.configurations</code> and <code>project.extensions</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Update ApplicationContextCommandTask and ApplicationContextScriptTask</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>dependsOn</code> of the tasks <code>ApplicationContextCommandTask</code> and <code>ApplicationContextScriptTask</code></p>
+</li>
+<li>
+<p>Configure <code>dependsOn</code> when registering the tasks</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor <code>GrailsGradlePlugin</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>JavaPlugin.CLASSES_TASK_NAME</code> instead of <code>classes</code></p>
+</li>
+<li>
+<p>Use Groovy style <code>project.configurations</code> and <code>project.extensions</code></p>
+</li>
+<li>
+<p>Add <code>GRAILS_EXTENSION_NAME</code> <code>FIND_MAIN_CLASS_TASK_NAME</code> <code>BUILD_PROPERTIES_TASK_NAME</code></p>
+</li>
+<li>
+<p>Rename <code>CONSOLE_CONFIGURATION</code> to <code>CONSOLE_CONFIGURATION_NAME</code></p>
+</li>
+<li>
+<p>Rename <code>PROFILE_CONFIGURATION</code> to <code>PROFILE_CONFIGURATION_NAME</code></p>
+</li>
+<li>
+<p>Remove <code>addDefaultProfile()</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1164">#1164</a> Refactor Gradle Plugins</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve <code>GrailsPluginGradlePlugin</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use constant name of the Task and Configuration</p>
+</li>
+<li>
+<p>Use <code>tasks.register()</code> instead of <code>tasks.create()</code></p>
+</li>
+<li>
+<p>Cleanup codes</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Configure the main application class name fo <code>runScript</code> task</p>
+</li>
+<li>
+<p>refactor <code>configureGrailsBuildSettings()</code> and <code>configureSpringBootExtension()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Change <code>configureGrailsBuildSettings()</code> return to <code>void</code></p>
+</li>
+<li>
+<p>Migrate deprecated <code>project.buildDir</code></p>
+</li>
+<li>
+<p>Add helper methods to <code>SourceSets</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>configurePathingJar</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Enhance <code>buildClasspath()</code></p>
+</li>
+<li>
+<p>Use <code>project.layout.buildDirectory</code> instead of <code>project.buildDir</code></p>
+</li>
+<li>
+<p>Make <code>resolveClassesDirs()</code> private</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>enableNative2Ascii()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use inline <code>ant.native2ascii()</code></p>
+</li>
+<li>
+<p>Remove <code>createNative2AsciiTask</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>createBuildPropertiesTask()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Change its return type to <code>void</code></p>
+</li>
+<li>
+<p>Use <code>tasks.register()</code> instead of <code>tasks.create()</code></p>
+</li>
+<li>
+<p>Make build properties ordered</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>configureConsoleTask()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>createConsoleTask()</code> and <code>createShellTask</code></p>
+</li>
+<li>
+<p>Use <code>tasks.register()</code> instead of <code>tasks.create()</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>configureApplicationCommands()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>tasks.register()</code> instead of <code>tasks.create()</code></p>
+</li>
+<li>
+<p>Remove unnecessary <code>@CompileDynamic</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>configureRunScript()</code> and <code>configureRunCommand()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>tasks.register()</code> instead of <code>tasks.create()</code></p>
+</li>
+<li>
+<p>Remove unnecessary <code>@CompileDynamic</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>refactor <code>configureGroovyASTMetadata()</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>tasks.register()</code> instead of <code>tasks.create()</code></p>
+</li>
+<li>
+<p>Use <code>tasks.named()</code> instead of <code>tasks.getByName()</code></p>
+</li>
+<li>
+<p>Remove unnecessary <code>@CompileDynamic</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1157">#1157</a> Allow developers to customize the <code>app</code> directory</p>
+</div>
+<div class="paragraph">
+<p>Grails employs a structured directory layout that organizes files and folders based on their functionality, which is essential for maintaining code in a large application.</p>
+</div>
+<div class="paragraph">
+<p>The <code>app</code> directory is central to a Grails application, containing subdirectories for domains, services, views, controllers, taglibs and assets, which follow the MVC architectural pattern.</p>
+</div>
+<div class="paragraph">
+<p>In the past, Grails has always adhered to the convention of using <code>grails-app</code> as a fixed directory since its inception. In Grace, we can use <code>grails-app</code>, or the more concise <code>app</code>.
+Now, in the upcoming Grace 2024 version, we take it a step further by allowing developers to customize this directory. You are free to choose a more suitable specific directory, such as <code>web</code>, <code>admin</code>, <code>api</code>, or <code>store</code>.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1149">#1149</a> <code>Application</code> type artifacts are supported in both the <code>app/boot</code> and <code>src/main</code> directories</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Application</code> type artifacts are supported in both the <code>app/boot</code> and <code>src/main</code> directories</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move from <code>app/init</code> to <code>app/boot</code></p>
+</li>
+<li>
+<p>Update releated tests</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1148">#1148</a> Move artefact <code>Bootstrap.groovy</code> from <code>app\init</code> to <code>app\boot</code></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1147">#1147</a> Rename artefact type <code>BootStrap</code> to <code>Bootstrap</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>BootStrap.groovy</code> to <code>Bootstrap.groovy</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Update <code>DefaultGrailsBootstrapClass.BOOT_STRAP</code> to <code>Bootstrap</code> as the trailing part of the Bootstrap class type</p>
+</li>
+<li>
+<p>Rename <code>BootStrapClassRunner</code> to <code>BootstrapClassRunner</code></p>
+</li>
+<li>
+<p>Change the bean name to <code>bootstrapClassRunner</code> in <code>ControllersGrailsPlugin</code></p>
+</li>
+<li>
+<p>Update the other related tests</p>
+</li>
+<li>
+<p>We should also update the <code>base</code> profile</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1140">#1140</a> Refactor GroovyCompiler</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve <code>GroovyCompiler</code> for better compilation of Groovy scripts <a href="https://github.com/graceframework/grace-framework/issues/1139">#1139</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Only use Groovy Grape&#8217;s runtime dependencies to load <code>ArtefactHandler</code> <code>ClassInjector</code> <code>TraitInjector</code>, so the Shell no longer need <code>grace-plugin-controllers</code> <code>grace-plugin-gsp</code> <code>grace-plugin-url-mappings</code>, which greatly reduces the size of the final CLI installation package.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Introduce GrailsArtefactClassTransformation</p>
+</li>
+<li>
+<p>Remove some runtime dependencies of grace-shell</p>
+</li>
+<li>
+<p>Add support methods in TraitInjectionUtils</p>
+</li>
+<li>
+<p>Cleanup ExtendedGroovyClassLoader</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/issues/1136">#1136</a> Refactor the core API of the framework</p>
+</div>
+<div class="paragraph">
+<p>This is a very important code refactoring and update for the framework.</p>
+</div>
+<div class="paragraph">
+<p>Initially, I intended to run a Single-File Application Groovy script in the CLI, but after analyzing a lot of the framework&#8217;s underlying code, I found that these core API were very difficult to extend and test, so I began a painful code refactoring journey.</p>
+</div>
+<div class="paragraph">
+<p>After the refactoring, it has now become possible to successfully run a Single-File Application Groovy script in the CLI.</p>
+</div>
+<div class="paragraph">
+<p>Refactoring involves several important APIs of Grails. I believe that refactoring these classes is significant for the maintenance and updating of the framework, and it is also very helpful for third-party plugin developers, making plugins and libraries easy to extend and test.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ArtefactHandler</p>
+</li>
+<li>
+<p>ClassInjector</p>
+</li>
+<li>
+<p>TraitInjector</p>
+</li>
+<li>
+<p>GlobalGrailsClassInjectorTransformation</p>
+</li>
+<li>
+<p>GlobalGrailsPluginTransformation</p>
+</li>
+<li>
+<p>GrailsASTUtils</p>
+</li>
+<li>
+<p>GrailsGradlePlugin</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>ArtefactHandler</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate ArtefactHandlerAdapter to grace-core</p>
+</li>
+<li>
+<p>Support Grails and GORM Entity for DomainClassArtefactHandler.isArtefactClass</p>
+</li>
+<li>
+<p>Refactor <code>isDomainClass()</code> in DomainClassArtefactHandler</p>
+</li>
+<li>
+<p>Refactor ControllerArtefactHandler</p>
+</li>
+<li>
+<p>Refactor TagLibArtefactHandler</p>
+</li>
+<li>
+<p>Support taglib with annotation <code>@TagLib</code> for TagLibArtefactHandler</p>
+</li>
+<li>
+<p>Remove supports for <code>@TagLibrary</code> as artefact type, use <code>@TagLib</code> instead</p>
+</li>
+<li>
+<p>Adding Spock tests for ArtefactHandlers</p>
+</li>
+<li>
+<p>Adding <code>@Artefact()</code> annotation to Grails artefacts in the tests</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>ClassInjector</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor ClassInjector</p>
+</li>
+<li>
+<p>Add support for ClassInjector ordering</p>
+</li>
+<li>
+<p>Using GrailsFactoriesLoader to load ClassInjector</p>
+</li>
+<li>
+<p>Update BootInitializerClassInjector</p>
+</li>
+<li>
+<p>Refactor ApplicationClassInjector</p>
+</li>
+<li>
+<p>Refactor DefaultGrailsDomainClassInjector</p>
+</li>
+<li>
+<p>Refactor AbstractGrailsArtefactTransformer</p>
+</li>
+<li>
+<p>Refactor ArtefactTypeAstTransformation</p>
+</li>
+<li>
+<p>Refactor ControllerActionTransformer</p>
+</li>
+<li>
+<p>Refactor ControllerDomainTransformer</p>
+</li>
+<li>
+<p>Refactor LoggingTransformer</p>
+</li>
+<li>
+<p>Refactor ResourceTransform</p>
+</li>
+<li>
+<p>Refactor TagLibraryTransformer</p>
+</li>
+<li>
+<p>Deprecated SupportsClassNode</p>
+</li>
+<li>
+<p>Deprecated <code>ClassInjector.shouldInject(URL)</code>, in favor of <code>shouldInject(ClassNode)</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>TraitInjector</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Introduce TraitInjectorAdapter</p>
+</li>
+<li>
+<p>Using <code>boolean supports(ClassNode)</code> to check if the classNode need to be injected</p>
+</li>
+<li>
+<p>Add support for TraitInjector ordering</p>
+</li>
+<li>
+<p>Refactor TraitInjectionUtils</p>
+</li>
+<li>
+<p>Deprecated TraitInjectionSupport</p>
+</li>
+<li>
+<p>Deprecated GlobalClassInjector and GlobalClassInjectorAdapter</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>GrailsASTUtils</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Adding more methods to check whether the specified source is a Grails project source</p>
+</li>
+<li>
+<p>Adding method <code>getGrailsArtefactType()</code> to GrailsASTUtils</p>
+</li>
+<li>
+<p>Refactor <code>isDomainClass()</code> in GrailsASTUtils</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>GrailsGradlePlugin: configure Groovy AST Metadata for configurationScript of GroovyCompileOptions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GRAILS_APP_DIR</p>
+</li>
+<li>
+<p>PROJECT_DIR</p>
+</li>
+<li>
+<p>PROJECT_NAME</p>
+</li>
+<li>
+<p>PROJECT_TYPE</p>
+</li>
+<li>
+<p>PROJECT_VERSION</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>GlobalGrailsClassInjectorTransformation and GlobalGrailsPluginTransformation</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Refactor GlobalGrailsClassInjectorTransformation</p>
+</li>
+<li>
+<p>Refine GlobalGrailsPluginTransformation</p>
+</li>
+<li>
+<p>Update GlobalGrailsPluginTransformationSpec</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Grails with Spring Boot DevTools</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Initial integration of Grails with Spring Boot DevTools</p>
+</li>
+<li>
+<p>Add GrailsSourceCompiler</p>
+</li>
+<li>
+<p>Remove deprecated DirectoryWatcher related</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>RunCommand</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Initial support Grails Single File Application running in CLI</p>
+</li>
+<li>
+<p>Allow Grails load the specified primary sources</p>
+</li>
+<li>
+<p>Add GrailsGormCompilerAutoConfiguration</p>
+</li>
+<li>
+<p>Update GroovyCompiler</p>
+</li>
+<li>
+<p>Update GrailsApplicationCompilerAutoConfiguration</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to AspectJ 1.9.25.1 <a href="https://github.com/graceframework/grace-framework/issues/1261">#1261</a></p>
+</li>
+<li>
+<p>Upgrade to AspectJ 1.9.25 <a href="https://github.com/graceframework/grace-framework/issues/1233">#1233</a></p>
+</li>
+<li>
+<p>Upgrade to Eclipse Expressly 5.0.0 link:https://github.com/graceframework/grace-framework/issues/121
+[#121
+]* Upgrade to Geb 8.0.1 <a href="https://github.com/graceframework/grace-framework/issues/1268">#1268</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 7.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1289">#1289</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 7.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1115">#1115</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 7.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1116">#1116</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2024.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1118">#1118</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data Hibernate 2024.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1119">#1119</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2024.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1120">#1120</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Doc Engine 2.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1143">#1143</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 7.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1122">#1122</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14.3 <a href="https://github.com/graceframework/grace-framework/issues/1127">#1127</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Codenarc plugin 3.6.0 <a href="https://github.com/graceframework/grace-framework/issues/1222">#1222</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Checkstyle plugin 10.26.1 <a href="https://github.com/graceframework/grace-framework/issues/1221">#1221</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle JaCoCo plugin 0.8.13 <a href="https://github.com/graceframework/grace-framework/issues/1223">#1223</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Plugin Publish Plugin 2.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1284">#1284</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Tooling API 8.14.3 <a href="https://github.com/graceframework/grace-framework/issues/1128">#1128</a> <a href="https://github.com/graceframework/grace-framework/issues/1127">#1127</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.29 <a href="https://github.com/graceframework/grace-framework/issues/1227">#1227</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.28 <a href="https://github.com/graceframework/grace-framework/issues/1134">#1134</a></p>
+</li>
+<li>
+<p>Upgrade to Jackson Databind 2.18.5 <a href="https://github.com/graceframework/grace-framework/issues/1234">#1234</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Expression Language 5.0.1 <a href="https://github.com/graceframework/grace-framework/issues/1181">#1181</a></p>
+</li>
+<li>
+<p>Upgrade to Maven 3.9.12 <a href="https://github.com/graceframework/grace-framework/issues/1262">#1262</a></p>
+</li>
+<li>
+<p>Upgrade to Maven 3.9.11 <a href="https://github.com/graceframework/grace-framework/issues/1129">#1129</a></p>
+</li>
+<li>
+<p>Upgrade to Maven Resolver 1.9.25 <a href="https://github.com/graceframework/grace-framework/issues/1263">#1263</a></p>
+</li>
+<li>
+<p>Upgrade to Maven Resolver 1.9.24 <a href="https://github.com/graceframework/grace-framework/issues/1130">#1130</a></p>
+</li>
+<li>
+<p>Upgrade to RxJava 3.1.12 <a href="https://github.com/graceframework/grace-framework/issues/1228">#1228</a></p>
+</li>
+<li>
+<p>Upgrade to RxJava 3.1.11 <a href="https://github.com/graceframework/grace-framework/issues/1146">#1146</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.4.13 <a href="https://github.com/graceframework/grace-framework/issues/1265">#1265</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.4.12 <a href="https://github.com/graceframework/grace-framework/issues/1235">#1235</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.4.11 <a href="https://github.com/graceframework/grace-framework/issues/1224">#1224</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.4.10 <a href="https://github.com/graceframework/grace-framework/issues/1177">#1177</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.4.9 <a href="https://github.com/graceframework/grace-framework/issues/1158">#1158</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.4.8 <a href="https://github.com/graceframework/grace-framework/issues/1131">#1131</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.15 <a href="https://github.com/graceframework/grace-framework/issues/1266">#1266</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.14 <a href="https://github.com/graceframework/grace-framework/issues/1236">#1236</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.12 <a href="https://github.com/graceframework/grace-framework/issues/1225">#1225</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.11 <a href="https://github.com/graceframework/grace-framework/issues/1178">#1178</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.10 <a href="https://github.com/graceframework/grace-framework/issues/1159">#1159</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.9 <a href="https://github.com/graceframework/grace-framework/issues/1132">#1132</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.50 <a href="https://github.com/graceframework/grace-framework/issues/1267">#1267</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.49 <a href="https://github.com/graceframework/grace-framework/issues/1237">#1237</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.48 <a href="https://github.com/graceframework/grace-framework/issues/1226">#1226</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.46 <a href="https://github.com/graceframework/grace-framework/issues/1179">#1179</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.44 <a href="https://github.com/graceframework/grace-framework/issues/1160">#1160</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.43 <a href="https://github.com/graceframework/grace-framework/issues/1133">#1133</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>v2024.0.0-M2</p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_2024_0_0_m1">2024.0.0-M1</h3>
 <div class="paragraph">
@@ -275,7 +2523,7 @@ function addJsClass() {
 <div class="ulist">
 <ul>
 <li>
-<p>Release v2023.3.0-M1</p>
+<p>Release v2024.0.0-M1</p>
 </li>
 <li>
 <p>Update GitHub workflows - Switch to 2024.0.x</p>
@@ -291,7 +2539,7 @@ function addJsClass() {
 <h2 id="2023.x"><a class="anchor" href="#2023.x"></a>2.2 What's new in 2023.x</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2023.3.x/docs/src/docs/guide/releases/2023.x.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2024.0.x/docs/src/docs/guide/releases/2023.x.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -5285,7 +7533,7 @@ The next step will be to gradually upgrade other major projects, such as Grace G
 </table>
 
 <div id="footer">
-    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    Copyright &copy; 2022-2026 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
     
 </div>
 

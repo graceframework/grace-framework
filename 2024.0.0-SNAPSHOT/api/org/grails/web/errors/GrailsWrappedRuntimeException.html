@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -104,7 +104,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <pre>public class GrailsWrappedRuntimeException
 extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>GrailsException</a></pre>
 
-    <p> Wraps a Grails RuntimeException and attempts to extract more relevent diagnostic messages
+    <p> Wraps a Grails RuntimeException and attempts to extract more relevant diagnostic messages
  from the stack trace.
   <DL><DT><B>Authors:</B></DT><DD>Graeme Rocher</DD><DD>Michael Yan</DD></DL><DL><DT><B>Since:</B></DT><DD>0.1</DD></DL></p>
 
@@ -121,30 +121,6 @@ extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>Gr
         <!-- =========== ENUM CONSTANT SUMMARY =========== -->
         
         <!-- =========== FIELD SUMMARY =========== -->
-        
-            <ul class="blockList">
-                <li class="blockList"><a name="field_summary"><!--   --></a>
-                    <h3>Field Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Enum constants summary table">
-                        <caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Modifiers</th>
-                            <th class="colLast" scope="col">Name</th>
-                            <th class="colLast" scope="col">Description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>static&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#URL_PREFIX">URL_PREFIX</a></code></td>
-                            <td class="colLast"></td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-                </li>
-                
-            </ul>
         
 
         <!-- =========== PROPERTY SUMMARY =========== -->
@@ -193,38 +169,14 @@ extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>Gr
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getClassName()">getClassName</a></strong>()</code><br> <DL><DT><B>Returns:</B></DT><DD>Returns the className.</DD></DL></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[]</code></td>
-                            <td class="colLast"><code><strong><a href="#getCodeSnippet()">getCodeSnippet</a></strong>()</code><br> <DL><DT><B>Returns:</B></DT><DD>Returns the line.</DD></DL></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;int</code></td>
-                            <td class="colLast"><code><strong><a href="#getLineNumber()">getLineNumber</a></strong>()</code><br> <DL><DT><B>Returns:</B></DT><DD>Returns the lineNumber.</DD></DL></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getCause()">getCause</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
                             <td class="colLast"><code><strong><a href="#getMessage()">getMessage</a></strong>()</code><br></td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[]</code></td>
-                            <td class="colLast"><code><strong><a href="#getStackTraceLines()">getStackTraceLines</a></strong>()</code><br> <DL><DT><B>Returns:</B></DT><DD>Returns the stackTrace lines</DD></DL></td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getStackTraceText()">getStackTraceText</a></strong>()</code><br> <DL><DT><B>Returns:</B></DT><DD>Returns the stackTrace.</DD></DL></td>
                         </tr>
                         
                     </table>
@@ -242,24 +194,6 @@ extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>Gr
         <li class="blockList">
            
 
-            
-            <!-- =========== FIELD DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="field_detail">
-                    <!--   -->
-                </a>
-                    <h3>Field Detail</h3>
-                    
-                        <a name="URL_PREFIX"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>URL_PREFIX</strong></h4>
-                                <p></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
             
 
             
@@ -296,30 +230,11 @@ extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>Gr
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="getClassName()"><!-- --></a>
+                        <a name="getCause()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>getClassName</strong>()</h4>
-                                <p>
-      <DL><DT><B>Returns:</B></DT><DD>Returns the className.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getCodeSnippet()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[] <strong>getCodeSnippet</strong>()</h4>
-                                <p>
-      <DL><DT><B>Returns:</B></DT><DD>Returns the line.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getLineNumber()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;int <strong>getLineNumber</strong>()</h4>
-                                <p>
-      <DL><DT><B>Returns:</B></DT><DD>Returns the lineNumber.</DD></DL></p>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Throwable.html' title='Throwable'>Throwable</a> <strong>getCause</strong>()</h4>
+                                <p></p>
                             </li>
                         </ul>
                     
@@ -328,24 +243,6 @@ extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>Gr
                             <li class="blockList">
                                 <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>getMessage</strong>()</h4>
                                 <p></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getStackTraceLines()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a>[] <strong>getStackTraceLines</strong>()</h4>
-                                <p>
-      <DL><DT><B>Returns:</B></DT><DD>Returns the stackTrace lines</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="getStackTraceText()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/String.html' title='String'>String</a> <strong>getStackTraceText</strong>()</h4>
-                                <p>
-      <DL><DT><B>Returns:</B></DT><DD>Returns the stackTrace.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -383,11 +280,11 @@ extends <a href='../../../../org/grails/core/exceptions/GrailsException.html'>Gr
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     
