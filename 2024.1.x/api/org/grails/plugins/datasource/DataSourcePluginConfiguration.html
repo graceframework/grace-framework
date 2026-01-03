@@ -101,10 +101,10 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@<a href='https://docs.spring.io/spring-boot/3.4/api/java/org/springframework/boot/autoconfigure/AutoConfiguration.html' title='AutoConfiguration'>AutoConfiguration</a>(before = {
+<pre>@<a href='https://docs.spring.io/spring-boot/3.5/api/java/org/springframework/boot/autoconfigure/AutoConfiguration.html' title='AutoConfiguration'>AutoConfiguration</a>(before = {
         DataSourceAutoConfiguration.class, SqlInitializationAutoConfiguration.class
 })
-@<a href='https://docs.spring.io/spring-boot/3.4/api/java/org/springframework/boot/autoconfigure/AutoConfigureOrder.html' title='AutoConfigureOrder'>AutoConfigureOrder</a>(100)
+@<a href='https://docs.spring.io/spring-boot/3.5/api/java/org/springframework/boot/autoconfigure/AutoConfigureOrder.html' title='AutoConfigureOrder'>AutoConfigureOrder</a>(100)
 @<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Import.html' title='Import'>Import</a>(DataSourcePluginConfiguration.BeanPostProcessorsRegistrar.class)
 @<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Conditional.html' title='Conditional'>Conditional</a>(GrailsDataSourceCondition.class)
 public class DataSourcePluginConfiguration
@@ -245,7 +245,7 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="dataSource(ConnectionSources)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Bean.html' title='Bean'>Bean</a><br>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Primary.html' title='Primary'>Primary</a><br>@<a href='https://docs.spring.io/spring-boot/3.4/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html' title='ConditionalOnMissingBean'>ConditionalOnMissingBean</a><br>@<a href='https://docs.spring.io/spring-boot/3.4/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html' title='ConditionalOnProperty'>ConditionalOnProperty</a>(name = "dataSource.url")<br>public&nbsp;javax.sql.DataSource <strong>dataSource</strong>(ConnectionSources&lt;javax.sql.DataSource, DataSourceSettings&gt; dataSourceConnectionSources)</h4>
+                                <h4>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Bean.html' title='Bean'>Bean</a><br>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Primary.html' title='Primary'>Primary</a><br>@<a href='https://docs.spring.io/spring-boot/3.5/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html' title='ConditionalOnMissingBean'>ConditionalOnMissingBean</a><br>@<a href='https://docs.spring.io/spring-boot/3.5/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html' title='ConditionalOnProperty'>ConditionalOnProperty</a>(name = "dataSource.url")<br>public&nbsp;javax.sql.DataSource <strong>dataSource</strong>(ConnectionSources&lt;javax.sql.DataSource, DataSourceSettings&gt; dataSourceConnectionSources)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -253,7 +253,7 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="dataSourceConnectionSources(ObjectProvider)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Bean.html' title='Bean'>Bean</a><br>@<a href='https://docs.spring.io/spring-boot/3.4/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html' title='ConditionalOnMissingBean'>ConditionalOnMissingBean</a><br>public&nbsp;ConnectionSources&lt;javax.sql.DataSource, DataSourceSettings&gt; <strong>dataSourceConnectionSources</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/beans/factory/ObjectProvider.html' title='ObjectProvider'>ObjectProvider</a>&lt;GrailsApplication&gt; grailsApplication)</h4>
+                                <h4>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Bean.html' title='Bean'>Bean</a><br>@<a href='https://docs.spring.io/spring-boot/3.5/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html' title='ConditionalOnMissingBean'>ConditionalOnMissingBean</a><br>public&nbsp;ConnectionSources&lt;javax.sql.DataSource, DataSourceSettings&gt; <strong>dataSourceConnectionSources</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/beans/factory/ObjectProvider.html' title='ObjectProvider'>ObjectProvider</a>&lt;GrailsApplication&gt; grailsApplication)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -261,7 +261,7 @@ extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Ob
                         <a name="embeddedDatabaseShutdownHook()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Bean.html' title='Bean'>Bean</a><br>@<a href='https://docs.spring.io/spring-boot/3.4/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html' title='ConditionalOnMissingBean'>ConditionalOnMissingBean</a><br>public&nbsp;<a href='../../../../org/grails/plugins/datasource/EmbeddedDatabaseShutdownHook.html'>EmbeddedDatabaseShutdownHook</a> <strong>embeddedDatabaseShutdownHook</strong>()</h4>
+                                <h4>@<a href='https://docs.spring.io/spring-framework/docs/6.2.15/javadoc-api/org/springframework/context/annotation/Bean.html' title='Bean'>Bean</a><br>@<a href='https://docs.spring.io/spring-boot/3.5/api/java/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html' title='ConditionalOnMissingBean'>ConditionalOnMissingBean</a><br>public&nbsp;<a href='../../../../org/grails/plugins/datasource/EmbeddedDatabaseShutdownHook.html'>EmbeddedDatabaseShutdownHook</a> <strong>embeddedDatabaseShutdownHook</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
