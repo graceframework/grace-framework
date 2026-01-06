@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 the original author or authors.
+ * Copyright 2024-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,10 @@
  */
 package org.grails.plugins.events;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import grails.events.bus.EventBus;
@@ -28,6 +26,7 @@ import grails.events.bus.EventBus;
 import org.grails.events.bus.spring.EventBusFactoryBean;
 import org.grails.events.gorm.GormDispatcherRegistrar;
 import org.grails.events.spring.SpringEventTranslator;
+import org.grails.plugins.web.async.ControllersAsyncAutoConfiguration;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Events.
@@ -35,14 +34,14 @@ import org.grails.events.spring.SpringEventTranslator;
  * @author Michael Yan
  * @since 2023.1
  */
-@AutoConfiguration
+@AutoConfiguration(after = ControllersAsyncAutoConfiguration.class)
 public class EventsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventBus eventBus(ObjectProvider<ApplicationContext> applicationContext) throws Exception {
+    public EventBus eventBus() throws Exception {
         EventBusFactoryBean factoryBean = new EventBusFactoryBean();
-        applicationContext.ifAvailable(factoryBean::setApplicationContext);
+        factoryBean.afterPropertiesSet();
         return factoryBean.getObject();
     }
 

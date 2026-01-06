@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import grails.util.GrailsNameUtils
  * @since 3.0.8
  */
 @CompileStatic
-class SpringEventTranslator implements ApplicationListener,  ApplicationContextAware {
+class SpringEventTranslator implements ApplicationListener, ApplicationContextAware {
 
     public static final String GDM_EVENT_PACKAGE = 'org.grails.datastore'
     public static final String EVENT_SUFFIX = 'Event'
