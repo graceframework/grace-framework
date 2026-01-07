@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import groovy.lang.Closure;
 import groovy.lang.MissingMethodException;
@@ -1917,7 +1918,7 @@ public final class GrailsASTUtils {
         }
 
         String relativePath = filename.substring(grailsAppDir.length());
-        String[] paths = relativePath.split(File.separator);
+        String[] paths = relativePath.split(Pattern.quote(File.separator));
         if (paths.length < 2) {
             return null;
         }
