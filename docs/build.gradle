@@ -3,7 +3,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.graceframework:grace-gradle-plugin:2023.3.0"
+        classpath libs.groovy.toml
+        classpath "org.graceframework:grace-gradle-plugin:2024.0.0-M2"
     }
 }
 
@@ -12,9 +13,13 @@ apply plugin: 'java-library'
 apply plugin: 'org.graceframework.grace-doc'
 
 def DOCUMENTATION_GROUP = 'Documentation'
-def groovyVersion = libs.versions.groovy.get()
-def springFrameworkVersion = libs.versions.spring.framework.get()
-def springBootVersion = libs.versions.spring.boot.get()
+
+def toml = new groovy.toml.TomlSlurper()
+def versions = toml.parse(rootProject.file('gradle/libs.versions.toml')).versions
+def groovyVersion = versions['groovy']
+def graceDataVersion = versions['grace-data']
+def springFrameworkVersion = versions['spring-framework']
+def springBootVersion = versions['spring-boot']
 
 repositories {
     mavenCentral()
@@ -57,36 +62,58 @@ else {
     }
 }
 
-tasks.withType(Groovydoc) {
+tasks.register('groovyapidoc', DefaultTask) {
     group = DOCUMENTATION_GROUP
-    docTitle = "Grace Framework - ${project.version}"
-    windowTitle = "Grace Framework - ${project.version}"
-    footer = ""
-    destinationDir = project.file('build/docs/manual/api')
-    def files = []
-    project.rootProject.subprojects
-            .findAll { !it.name != 'docs' && !it.name.startsWith('grace-test-suite') }
-            .each { subproject ->
-                if(subproject.file('src/main/groovy').exists()) {
-                    files += subproject.files('src/main/groovy')
-                }
-                if(subproject.file('src/main/java').exists()) {
-                    files += subproject.files('src/main/java')
-                }
-            }
-    if (project.file('src/main/groovy').exists()) {
-        files += project.files('src/main/groovy')
-    }
-    source = files
-    classpath += configurations.documentation
+    description = 'Generate Groovydoc using Ant with custom config'
 
-    link("https://docs.oracle.com/en/java/javase/17/docs/api/", 'java.')
-    link("https://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/gapi/", 'groovy.', 'org.codehaus.groovy.', 'org.apache.groovy.')
-    link("https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api", 'org.springframework.core.', 'org.springframework.context.', 'org.springframework.beans.')
-    link("https://docs.spring.io/spring-boot/${springBootVersion[0..2]}/api/java", 'org.springframework.boot.', 'org.springframework.boot.actuate.info.')
+    ant.taskdef(name: 'groovydoc',
+        classname: 'org.codehaus.groovy.ant.Groovydoc',
+        classpath: (sourceSets.main.compileClasspath + configurations.documentation).asPath)
+
+    def docTitle = "Grace Framework - ${project.version}"
+    def outputDir = project.file('build/docs/manual/api')
+
+    doLast {
+        def files = []
+        project.rootProject.subprojects
+                .findAll { !it.name != 'docs' && !it.name.startsWith('grace-test-suite') }
+                .each { subproject ->
+                    if(subproject.file('src/main/groovy').exists()) {
+                        files += subproject.files('src/main/groovy')
+                    }
+                    if(subproject.file('src/main/java').exists()) {
+                        files += subproject.files('src/main/java')
+                    }
+                }
+
+        if (project.file('src/main/groovy').exists()) {
+            files += project.files('src/main/groovy')
+        }
+
+        ant.groovydoc(
+            doctitle: docTitle,
+            windowtitle: docTitle,
+            footer: '',
+            sourcepath: files.join(':'),
+            destdir: outputDir,
+            packagenames: '**.*',
+            javaVersion: 'JAVA_17') {
+                link(packages: 'java.', href: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/')
+                link(packages: 'jakarta.annotation.', href: 'https://jakarta.ee/specifications/annotations/2.1/apidocs/')
+                link(packages: 'jakarta.servlet.', href: 'https://jakarta.ee/specifications/servlet/6.0/apidocs/')
+                link(packages: 'groovy.,org.codehaus.groovy.,org.apache.groovy.', href: "https://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/gapi/")
+                link(packages: 'org.springframework.core.,org.springframework.context.,org.springframework.beans.', href: "https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api")
+                link(packages: 'org.springframework.boot.,org.springframework.boot.actuate.info.', href: "https://docs.spring.io/spring-boot/${springBootVersion[0..2]}/api/java")
+                link(packages: 'org.grails.datastore.,org.grails.datastore.mapping.model.', href: "https://graceframework.org/grace-data/${graceDataVersion}/api/")
+            }
+    }
 }
 
-docs {
-    dependsOn tasks.named('groovydoc')
+publishGuide {
+    dependsOn tasks.named('groovyapidoc')
     sourceDir = project.file('src/docs')
+}
+
+tasks.register('docs') {
+    dependsOn publishGuide
 }
