@@ -17,13 +17,8 @@ dependencies {
     api libs.jsoup
     api libs.slf4j.jcl
     api libs.snakeyaml
-    api libs.xhtmlrenderer, {
-        exclude group: 'bouncycastle', module:'bcprov-jdk14'
-        exclude group: 'bouncycastle', module:'bcmail-jdk14'
-    }
-
+    api libs.xhtmlrenderer
     runtimeOnly libs.slf4j.api
-    runtimeOnly libs.itext
 
     testImplementation libs.spock.core, { transitive = false }
 }
