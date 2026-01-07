@@ -1,6 +1,6 @@
 [versions]
 ant = "1.10.15"
-asciidoctorj = "2.5.13"
+asciidoctorj = "3.0.1"
 aspectj = "1.9.25.1"
 assertj = "3.26.3"
 bytebuddy = "1.15.11"
