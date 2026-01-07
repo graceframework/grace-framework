@@ -21,7 +21,7 @@ use(FileCategory) {
     // Set system properties in the build.gradle
     buildFile.insertAfter 'useJUnitPlatform()', '''
     systemProperty 'geb.env', System.getProperty('geb.env')
-    systemProperty 'geb.build.reportsDir', reporting.file('geb/integrationTest')'''
+    systemProperty 'geb.build.reportsDir', reporting.baseDirectory.file('geb/integrationTest')'''
 }
 
 
