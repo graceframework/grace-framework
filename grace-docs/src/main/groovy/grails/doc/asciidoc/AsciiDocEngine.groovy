@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ package grails.doc.asciidoc
 
 import groovy.transform.InheritConstructors
 import org.asciidoctor.Asciidoctor
+import org.asciidoctor.Attributes
+import org.asciidoctor.Options
 import org.asciidoctor.OptionsBuilder
 import org.asciidoctor.SafeMode
 import org.radeox.api.engine.context.RenderContext
@@ -43,15 +45,15 @@ class AsciiDocEngine extends DocEngine {
 
     @Override
     String render(String content, RenderContext context) {
-        def optionsBuilder = OptionsBuilder.options()
-                .headerFooter(false)
-                .attributes(attributes)
+        Attributes attrs = Attributes.builder().build()
+        attrs.setAttributes(attributes)
+        OptionsBuilder optionsBuilder = Options.builder()
+                .standalone(false)
+                .attributes(attrs)
         if (attributes.containsKey('safe')) {
             optionsBuilder.safe(SafeMode.valueOf(attributes.get('safe').toString()))
         }
-        asciidoctor.convert(content,
-                optionsBuilder.get()
-        )
+        asciidoctor.convert(content, optionsBuilder.build())
     }
 
 }
