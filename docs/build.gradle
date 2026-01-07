@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.graceframework:grace-gradle-plugin:2023.3.0"
+        classpath "org.graceframework:grace-gradle-plugin:2024.0.0-M2"
     }
 }
 
@@ -86,7 +86,11 @@ tasks.withType(Groovydoc) {
     link("https://docs.spring.io/spring-boot/${springBootVersion[0..2]}/api/java", 'org.springframework.boot.', 'org.springframework.boot.actuate.info.')
 }
 
-docs {
+publishGuide {
     dependsOn tasks.named('groovydoc')
     sourceDir = project.file('src/docs')
+}
+
+tasks.register('docs') {
+    dependsOn publishGuide
 }
