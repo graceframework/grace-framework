@@ -29,7 +29,6 @@ h2 = "2.3.232"
 hsqldb = "2.7.3"
 hibernate = "5.6.15.Final"
 hibernate-validator = "8.0.2.Final"
-itext = "2.0.8"
 jackson-databind = "2.18.5"
 jansi = "1.18"
 jakarta-annotation = "2.1.1"
@@ -69,7 +68,7 @@ spring-boot = "3.4.13"
 spring-dependency-management = "1.1.7"
 spring-framework = "6.2.15"
 tomcat = "10.1.50"
-xhtmlrenderer = "R8"
+xhtmlrenderer = "9.13.3"
 
 [libraries]
 ant = { module = "org.apache.ant:ant", version.ref = "ant" }
@@ -141,7 +140,6 @@ h2 = { module = "com.h2database:h2", version.ref = "h2" }
 hibernate-core = { module = "org.hibernate:hibernate-core-jakarta", version.ref = "hibernate" }
 hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
 hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }
-itext = { module = "com.lowagie:itext", version.ref = "itext" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
 jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
 jakarta-el = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }
@@ -230,7 +228,7 @@ tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", vers
 tomcat-embed-el = { module = "org.apache.tomcat.embed:tomcat-embed-el", version.ref = "tomcat" }
 tomcat-embed-jasper = { module = "org.apache.tomcat.embed:tomcat-embed-jasper", version.ref = "tomcat" }
 tomcat-embed-websocket = { module = "org.apache.tomcat.embed:tomcat-embed-websocket", version.ref = "tomcat" }
-xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }
+xhtmlrenderer = { module = "org.xhtmlrenderer:flying-saucer-pdf", version.ref = "xhtmlrenderer" }
 
 [bundles]
 boms = ["groovy-bom", "spring-framework-bom", "spring-boot-dependencies"]
