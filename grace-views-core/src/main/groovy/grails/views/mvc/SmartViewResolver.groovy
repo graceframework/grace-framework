@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@ import grails.views.resolve.TemplateResolverUtils
 import grails.web.http.HttpHeaders
 import grails.web.mapping.LinkGenerator
 import grails.web.mime.MimeType
+import grails.web.mime.MimeTypeUtils
+
+import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
  * Spring's default view resolving mechanism only accepts the view name and locale,
@@ -43,6 +46,7 @@ import grails.web.mime.MimeType
  * This aims to fix that whilst reducing complexity
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -148,7 +152,8 @@ class SmartViewResolver implements GrailsConfigurationAware {
     protected List buildQualifiers(HttpServletRequest request, HttpServletResponse response) {
         def qualifiers = []
         def version = request.getHeader(HttpHeaders.ACCEPT_VERSION)
-        MimeType mimeType = response.getMimeType()
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
+        MimeType mimeType = webRequest != null ? MimeTypeUtils.getMimeTypeForRequest(webRequest) : null
         if (mimeType != null && mimeType != MimeType.ALL) {
             qualifiers.add(mimeType.extension)
         }

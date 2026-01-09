@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import groovy.text.markup.BaseTemplate
 import groovy.transform.CompileStatic
 import org.springframework.beans.BeanUtils
 
+import grails.artefact.ArtefactTypes
 import grails.config.ConfigMap
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
@@ -29,12 +30,12 @@ import grails.util.Environment
 import grails.util.Metadata
 
 import org.grails.config.CodeGenConfig
-import org.grails.core.artefact.DomainClassArtefactHandler
 
 /**
  * Default configuration
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -110,7 +111,7 @@ trait GenericViewConfiguration implements ViewConfiguration, GrailsApplicationAw
     @Override
     void setGrailsApplication(GrailsApplication grailsApplication) {
         if (grailsApplication != null) {
-            def domainArtefacts = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
+            def domainArtefacts = grailsApplication.getArtefacts(ArtefactTypes.DOMAIN_CLASS)
             setPackageImports(
                     findUniquePackages(domainArtefacts)
             )

@@ -21,14 +21,15 @@ import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.view.AbstractUrlBasedView
 
 import grails.core.support.proxy.ProxyHandler
+import grails.rest.render.AbstractRenderer
 import grails.rest.render.RenderContext
 import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
+import grails.util.GrailsNameUtils
 import grails.views.mvc.SmartViewResolver
 import grails.views.resolve.TemplateResolverUtils
 import grails.web.mime.MimeType
 
-import org.grails.plugins.web.rest.render.html.DefaultHtmlRenderer
 import org.grails.web.rest.render.ServletRenderContext
 import org.grails.web.util.GrailsApplicationAttributes
 
@@ -36,11 +37,12 @@ import org.grails.web.util.GrailsApplicationAttributes
  * A renderer implementation that looks up a view from the ViewResolver
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @InheritConstructors
 @CompileStatic
-abstract class DefaultViewRenderer<T> extends DefaultHtmlRenderer<T> {
+abstract class DefaultViewRenderer<T> extends AbstractRenderer<T> {
 
     public static final String MODEL_OBJECT = 'object'
     final SmartViewResolver viewResolver
@@ -50,6 +52,8 @@ abstract class DefaultViewRenderer<T> extends DefaultHtmlRenderer<T> {
     final RendererRegistry rendererRegistry
 
     final Renderer defaultRenderer
+
+    String suffix = ''
 
     DefaultViewRenderer(Class<T> targetType, MimeType mimeType, SmartViewResolver viewResolver,
                         ProxyHandler proxyHandler, RendererRegistry rendererRegistry, Renderer defaultRenderer) {
@@ -136,6 +140,58 @@ abstract class DefaultViewRenderer<T> extends DefaultHtmlRenderer<T> {
         } else {
             defaultRenderer.render(object, context)
         }
+    }
+
+    protected String resolveModelVariableName(Object object) {
+        if (object != null) {
+            if (proxyHandler != null) {
+                object = proxyHandler.unwrapIfProxy(object)
+            }
+
+            Class<?> type = object.getClass()
+            if (type.isArray()) {
+                return GrailsNameUtils.getPropertyName(type.getComponentType()) + suffix + 'Array'
+            }
+
+            if (object instanceof Collection) {
+                Collection coll = (Collection) object
+                if (coll.isEmpty()) {
+                    return 'emptyCollection'
+                }
+
+                Object first = coll.iterator().next()
+                if (proxyHandler != null) {
+                    first = proxyHandler.unwrapIfProxy(first)
+                }
+                if (coll instanceof List) {
+                    return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + 'List'
+                }
+                if (coll instanceof Set) {
+                    return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + 'Set'
+                }
+                return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + 'Collection'
+            }
+
+            if (object instanceof Map) {
+                Map map = (Map) object
+
+                if (map.isEmpty()) {
+                    return 'emptyMap'
+                }
+
+                Object entry = map.values().iterator().next()
+                if (entry != null) {
+                    if (proxyHandler != null) {
+                        entry = proxyHandler.unwrapIfProxy(entry)
+                    }
+                    return GrailsNameUtils.getPropertyName(entry.getClass()) + suffix + 'Map'
+                }
+            }
+            else {
+                return GrailsNameUtils.getPropertyName(object.getClass()) + suffix
+            }
+        }
+        null
     }
 
     static String templateNameForClass(Class<?> cls) {
