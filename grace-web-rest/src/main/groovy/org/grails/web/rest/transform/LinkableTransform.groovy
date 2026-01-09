@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.rest.transform
+package org.grails.web.rest.transform
 
 import java.lang.reflect.Modifier
 

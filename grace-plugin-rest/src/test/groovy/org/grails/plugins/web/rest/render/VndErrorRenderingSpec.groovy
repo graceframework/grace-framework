@@ -16,6 +16,8 @@ import org.grails.support.MockApplicationContext
 import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.DefaultUrlMappingEvaluator
 import org.grails.web.mapping.DefaultUrlMappingsHolder
+import org.grails.web.rest.render.DefaultRendererRegistry;
+import org.grails.web.rest.render.ServletRenderContext
 import org.springframework.context.support.StaticMessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockServletContext

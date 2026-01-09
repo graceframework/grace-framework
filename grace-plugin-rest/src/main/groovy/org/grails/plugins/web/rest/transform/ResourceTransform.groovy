@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,6 +75,7 @@ import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
+import org.grails.web.rest.transform.LinkableTransform
 
 import static org.grails.compiler.injection.GrailsASTUtils.VOID_CLASS_NODE
 import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS

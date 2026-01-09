@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ import org.grails.gsp.GroovyPagesTemplateEngine
 import org.grails.gsp.jsp.TagLibraryResolverImpl
 import org.grails.plugins.codecs.CodecsGrailsPlugin
 import org.grails.plugins.codecs.DefaultCodecLookup
-import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 import org.grails.plugins.web.rest.render.DefaultRendererRegistryCustomizer
 import org.grails.testing.runtime.support.GroovyPageUnitTestResourceLoader
 import org.grails.testing.runtime.support.LazyTagLibraryLookup
@@ -51,6 +50,7 @@ import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings
+import org.grails.web.rest.render.DefaultRendererRegistry;
 import org.grails.web.servlet.view.CompositeViewResolver
 import org.grails.web.servlet.view.GroovyPageViewResolver
 import org.grails.web.util.GrailsApplicationAttributes

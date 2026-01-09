@@ -9,9 +9,9 @@ import org.grails.config.PropertySourcesConfig
 import org.grails.core.lifecycle.ShutdownOperations
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
 import org.grails.datastore.mapping.model.MappingContext
-import org.grails.plugins.web.rest.render.ServletRenderContext
 import org.grails.web.converters.configuration.ConvertersConfigurationHolder
 import org.grails.web.converters.configuration.ConvertersConfigurationInitializer
+import org.grails.web.rest.render.ServletRenderContext
 import org.springframework.context.ApplicationContext
 import spock.lang.Specification
 
