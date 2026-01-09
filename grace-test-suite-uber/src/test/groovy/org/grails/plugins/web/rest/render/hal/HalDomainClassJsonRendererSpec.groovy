@@ -17,12 +17,12 @@ import org.grails.config.PropertySourcesConfig
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.plugins.web.mime.MimeTypesFactoryBean
-import org.grails.plugins.web.rest.render.ServletRenderContext
 import org.grails.support.MockApplicationContext
 import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.DefaultUrlMappingEvaluator
 import org.grails.web.mapping.DefaultUrlMappingsHolder
 import org.grails.web.mime.DefaultMimeUtility
+import org.grails.web.rest.render.ServletRenderContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.springframework.context.support.StaticMessageSource
 import org.springframework.core.env.MapPropertySource

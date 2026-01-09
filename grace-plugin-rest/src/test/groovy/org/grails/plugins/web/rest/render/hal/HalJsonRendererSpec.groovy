@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,12 @@ import org.grails.datastore.mapping.model.AbstractPersistentProperty
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PropertyMapping
 import org.grails.plugins.web.mime.MimeTypesFactoryBean
-import org.grails.plugins.web.rest.render.ServletRenderContext
 import org.grails.support.MockApplicationContext
 import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.DefaultUrlMappingEvaluator
 import org.grails.web.mapping.DefaultUrlMappingsHolder
 import org.grails.web.mime.DefaultMimeUtility
+import org.grails.web.rest.render.ServletRenderContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.servlet.mvc.MockHibernateProxyHandler
 import org.springframework.context.support.StaticMessageSource
