@@ -1,9 +1,10 @@
 dependencies {
     api project(":grace-core")
+    compileOnly project(":grace-plugin-api")
     api project(":grace-views-core")
+
     api libs.jakarta.annotation.api
     compileOnly libs.jakarta.servlet
-
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
