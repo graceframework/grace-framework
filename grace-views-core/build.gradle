@@ -1,12 +1,15 @@
 dependencies {
-    api libs.groovy.core
+    api project(":grace-api")
     api project(":grace-core")
     api project(":grace-encoder")
     compileOnly project(":grace-plugin-api")
-    api project(":grace-plugin-rest")
+    api project(":grace-plugin-mimetypes")
     api project(":grace-web")
+    api project(":grace-web-rest")
     api project(":grace-web-url-mappings")
-    api libs.grace.datastore.gorm.support
+
     api libs.caffeine
+    api libs.grace.datastore.gorm.support
+    api libs.groovy.core
     compileOnly libs.jakarta.servlet
 }
