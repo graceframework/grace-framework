@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import grails.views.api.http.Response
 import grails.views.mvc.http.DelegatingParameters
 import grails.web.http.HttpHeaders
 import grails.web.mime.MimeType
+import grails.web.mime.MimeTypeUtils
 
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
@@ -40,6 +41,7 @@ import org.grails.web.util.GrailsApplicationAttributes
  * An implementation of the Spring AbstractUrlBaseView class for ResolvableGroovyTemplateEngine
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -66,7 +68,8 @@ class GenericGroovyTemplateView extends AbstractUrlBasedView {
         def locale = localeResolver?.resolveLocale(httpServletRequest) ?: Locale.ENGLISH
         def qualifiers = []
         def v = httpServletRequest.getHeader(HttpHeaders.ACCEPT_VERSION)
-        MimeType mimeType = GrailsWebRequest.lookup(httpServletRequest) != null ? httpServletResponse.mimeType : null
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup(httpServletRequest)
+        MimeType mimeType = webRequest != null ? MimeTypeUtils.getMimeTypeForRequest(webRequest) : null
         if (mimeType != null && mimeType != MimeType.ALL) {
             qualifiers.add(mimeType.extension)
         }

@@ -3,7 +3,6 @@ dependencies {
     api project(":grace-core")
     api project(":grace-encoder")
     compileOnly project(":grace-plugin-api")
-    api project(":grace-plugin-mimetypes")
     api project(":grace-web")
     api project(":grace-web-rest")
     api project(":grace-web-url-mappings")
