@@ -4,8 +4,8 @@ import grails.persistence.Entity
 import grails.validation.ValidationErrors
 import grails.web.mime.MimeType
 import org.grails.web.util.GrailsApplicationAttributes
+import org.grails.web.rest.render.ServletRenderContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.plugins.web.rest.render.ServletRenderContext
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.mock.web.MockServletContext

@@ -4,8 +4,8 @@ import grails.persistence.Entity
 import grails.rest.render.json.JsonRenderer
 import grails.testing.gorm.DataTest
 import grails.testing.web.GrailsWebUnitTest
-import org.grails.plugins.web.rest.render.ServletRenderContext
 import org.grails.web.converters.configuration.ConvertersConfigurationInitializer
+import org.grails.web.rest.render.ServletRenderContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import spock.lang.Issue
 import spock.lang.Specification
