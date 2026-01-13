@@ -1,6 +1,7 @@
 dependencies {
     compileOnly project(":grace-plugin-api")
     implementation project(":grace-plugin-controllers")
+    api project(":grace-web-async")
     api libs.grace.async.core
     api(libs.grace.datastore.gorm.support) {
         transitive = false

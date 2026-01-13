@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.async.web
+package grails.web.async
 
 import groovy.transform.CompileStatic
 import jakarta.servlet.AsyncContext
@@ -38,7 +38,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
  * @since 3.0
  */
 @CompileStatic
-class AsyncGrailsWebRequest extends GrailsWebRequest implements AsyncWebRequest, AsyncListener {
+class GrailsAsyncWebRequest extends GrailsWebRequest implements AsyncWebRequest, AsyncListener {
 
     static final String WEB_REQUEST = 'org.grails.ASYNC_WEB_REQUEST'
 
@@ -51,17 +51,17 @@ class AsyncGrailsWebRequest extends GrailsWebRequest implements AsyncWebRequest,
     List<Runnable> completionHandlers = []
     List<Consumer<Throwable>> exceptionHandlers = []
 
-    AsyncGrailsWebRequest(HttpServletRequest request, HttpServletResponse response, GrailsApplicationAttributes attributes) {
+    GrailsAsyncWebRequest(HttpServletRequest request, HttpServletResponse response, GrailsApplicationAttributes attributes) {
         super(request, response, attributes)
         request.setAttribute(WEB_REQUEST, this)
     }
 
-    AsyncGrailsWebRequest(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext) {
+    GrailsAsyncWebRequest(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext) {
         super(request, response, servletContext)
         request.setAttribute(WEB_REQUEST, this)
     }
 
-    AsyncGrailsWebRequest(HttpServletRequest request, HttpServletResponse response,
+    GrailsAsyncWebRequest(HttpServletRequest request, HttpServletResponse response,
                           ServletContext servletContext, ApplicationContext applicationContext) {
         super(request, response, servletContext, applicationContext)
         request.setAttribute(WEB_REQUEST, this)
@@ -72,8 +72,8 @@ class AsyncGrailsWebRequest extends GrailsWebRequest implements AsyncWebRequest,
      * @param request The current request
      * @return The GrailsWebRequest
      */
-    static AsyncGrailsWebRequest lookup(HttpServletRequest request) {
-        AsyncGrailsWebRequest webRequest = (AsyncGrailsWebRequest) request.getAttribute(WEB_REQUEST)
+    static GrailsAsyncWebRequest lookup(HttpServletRequest request) {
+        GrailsAsyncWebRequest webRequest = (GrailsAsyncWebRequest) request.getAttribute(WEB_REQUEST)
         return webRequest
     }
 

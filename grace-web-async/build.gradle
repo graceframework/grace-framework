@@ -1,0 +1,10 @@
+dependencies {
+    api project(":grace-web")
+    api project(":grace-web-gsp")
+
+    api libs.grace.async.core
+    api(libs.grace.datastore.gorm.support) {
+        transitive = false
+    }
+    compileOnly libs.jakarta.servlet
+}
