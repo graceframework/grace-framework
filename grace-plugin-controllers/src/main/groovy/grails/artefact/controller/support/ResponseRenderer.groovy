@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ import org.grails.web.sitemesh.GrailsLayoutView
 import org.grails.web.sitemesh.GroovyPageLayoutFinder
 import org.grails.web.util.GrailsApplicationAttributes
 
-import static org.grails.plugins.web.controllers.metaclass.RenderDynamicMethod.*
+import static org.grails.web.controller.RenderDynamicMethod.*
 
 /**
  *

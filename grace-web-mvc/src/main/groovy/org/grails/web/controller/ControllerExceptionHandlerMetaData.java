@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.servlet.mvc
-
-import groovy.transform.CompileStatic
-
-import org.grails.web.servlet.mvc.AbstractTokenResponseHandler
+package org.grails.web.controller;
 
 /**
- * Handles an invalid token response. See {@link org.grails.web.servlet.mvc.TokenResponseHandler}
+ * Represents meta data which describes an exception handling method
+ * in a controller
+ * @since 2.3
  *
- * @author Graeme Rocher
- * @since 3.0
  */
-@CompileStatic
-class InvalidResponseHandler extends AbstractTokenResponseHandler {
+public interface ControllerExceptionHandlerMetaData {
 
-    InvalidResponseHandler() {
-        super(false)
-    }
+    Class<? extends Exception> getExceptionType();
 
-    protected Object invalidTokenInternal(Closure callable) {
-        callable?.call()
-    }
+    String getMethodName();
 
 }

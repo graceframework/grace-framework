@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ import grails.web.api.WebAttributes
 import grails.web.databinding.DataBinder
 import grails.web.mapping.UrlMappingInfo
 
-import org.grails.plugins.web.controllers.metaclass.RenderDynamicMethod
 import org.grails.plugins.web.interceptors.GrailsInterceptorHandlerInterceptorAdapter
 import org.grails.plugins.web.interceptors.InterceptorArtefactHandler
 import org.grails.plugins.web.interceptors.UrlMappingMatcher
+import org.grails.web.controller.RenderDynamicMethod
 import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException
