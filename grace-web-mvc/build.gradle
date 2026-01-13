@@ -2,6 +2,7 @@ dependencies {
     api project(":grace-gsp")
     compileOnly project(":grace-plugin-api")
     api project(":grace-web")
+    api project(":grace-web-databinding")
 
     compileOnlyApi libs.jakarta.servlet
     compileOnly libs.spring.boot.autoconfigure

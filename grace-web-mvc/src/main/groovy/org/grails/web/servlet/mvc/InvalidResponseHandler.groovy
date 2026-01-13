@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.controllers
+package org.grails.web.servlet.mvc
 
-import groovy.transform.Immutable
+import groovy.transform.CompileStatic
 
 /**
- * Represents meta data which describes an exception handling method
- * in a controller
- * @since 2.3
+ * Handles an invalid token response. See {@link org.grails.web.servlet.mvc.TokenResponseHandler}
  *
+ * @author Graeme Rocher
+ * @since 3.0
  */
-@Immutable(knownImmutableClasses = [Class])
-class DefaultControllerExceptionHandlerMetaData implements ControllerExceptionHandlerMetaData {
+@CompileStatic
+class InvalidResponseHandler extends AbstractTokenResponseHandler {
 
-    String methodName
-    Class<? extends Exception> exceptionType
+    InvalidResponseHandler() {
+        super(false)
+    }
+
+    @Override
+    protected Object invalidTokenInternal(Closure callable) {
+        callable?.call()
+    }
 
 }

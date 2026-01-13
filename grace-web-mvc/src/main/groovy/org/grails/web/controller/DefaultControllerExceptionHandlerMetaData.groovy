@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.controllers;
+package org.grails.web.controller
+
+import groovy.transform.Immutable
 
 /**
  * Represents meta data which describes an exception handling method
@@ -21,10 +23,10 @@ package org.grails.plugins.web.controllers;
  * @since 2.3
  *
  */
-public interface ControllerExceptionHandlerMetaData {
+@Immutable(knownImmutableClasses = [Class])
+class DefaultControllerExceptionHandlerMetaData implements ControllerExceptionHandlerMetaData {
 
-    Class<? extends Exception> getExceptionType();
-
-    String getMethodName();
+    String methodName
+    Class<? extends Exception> exceptionType
 
 }

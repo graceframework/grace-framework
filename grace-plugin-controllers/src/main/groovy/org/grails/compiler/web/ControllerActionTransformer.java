@@ -92,7 +92,7 @@ import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.compiler.injection.TraitInjectionUtils;
 import org.grails.core.DefaultGrailsControllerClass;
 import org.grails.core.artefact.ControllerArtefactHandler;
-import org.grails.plugins.web.controllers.DefaultControllerExceptionHandlerMetaData;
+import org.grails.web.controller.DefaultControllerExceptionHandlerMetaData;
 import org.grails.web.databinding.DefaultASTDatabindingHelper;
 
 /**
