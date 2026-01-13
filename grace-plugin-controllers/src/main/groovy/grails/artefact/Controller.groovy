@@ -53,7 +53,7 @@ import org.grails.compiler.injection.GrailsASTUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.datastore.mapping.model.config.GormProperties
 import org.grails.plugins.web.api.MimeTypesApiSupport
-import org.grails.plugins.web.controllers.ControllerExceptionHandlerMetaData
+import org.grails.web.controller.ControllerExceptionHandlerMetaData
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.servlet.mvc.InvalidResponseHandler
 import org.grails.web.servlet.mvc.SynchronizerTokensHolder

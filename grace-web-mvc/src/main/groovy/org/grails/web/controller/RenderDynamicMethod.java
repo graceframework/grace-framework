@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.controllers.metaclass;
+package org.grails.web.controller;
 
 /**
  * Allows rendering of text, views, and templates to the response
