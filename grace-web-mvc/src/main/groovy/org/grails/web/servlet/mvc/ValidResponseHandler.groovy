@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.servlet.mvc
+package org.grails.web.servlet.mvc
 
 import groovy.transform.CompileStatic
 
-import org.grails.web.servlet.mvc.AbstractTokenResponseHandler
-
 /**
- * Handles an invalid token response. See {@link org.grails.web.servlet.mvc.TokenResponseHandler}
+ * Handles a valid token response. See {@link org.grails.web.servlet.mvc.TokenResponseHandler}
  *
  * @author Graeme Rocher
  * @since 3.0
  */
 @CompileStatic
-class InvalidResponseHandler extends AbstractTokenResponseHandler {
+class ValidResponseHandler extends AbstractTokenResponseHandler {
 
-    InvalidResponseHandler() {
-        super(false)
+    def model
+
+    ValidResponseHandler(model) {
+        super(true)
+        this.model = model
     }
 
+    @Override
     protected Object invalidTokenInternal(Closure callable) {
-        callable?.call()
+        model
     }
 
 }
