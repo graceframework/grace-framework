@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.springframework.web.context.request.async.WebAsyncManager
 import org.springframework.web.context.request.async.WebAsyncUtils
 
 import grails.async.decorator.PromiseDecorator
-import grails.async.web.AsyncGrailsWebRequest
+import grails.web.async.GrailsAsyncWebRequest
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.WebUtils
 
@@ -41,7 +41,7 @@ import org.grails.web.util.WebUtils
 class AsyncWebRequestPromiseDecorator implements PromiseDecorator {
 
     GrailsWebRequest webRequest
-    final AsyncGrailsWebRequest asyncRequest
+    final GrailsAsyncWebRequest asyncRequest
     final AsyncContext asyncContext
     volatile boolean timeoutReached = false
 
@@ -49,16 +49,16 @@ class AsyncWebRequestPromiseDecorator implements PromiseDecorator {
         this.webRequest = webRequest
         HttpServletRequest currentServletRequest = webRequest.currentRequest
         WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(currentServletRequest)
-        AsyncGrailsWebRequest newWebRequest
+        GrailsAsyncWebRequest newWebRequest
         if (asyncManager.isConcurrentHandlingStarted()) {
-            newWebRequest = AsyncGrailsWebRequest.lookup(currentServletRequest)
+            newWebRequest = GrailsAsyncWebRequest.lookup(currentServletRequest)
             this.asyncContext = newWebRequest.asyncContext
             if (newWebRequest == null || newWebRequest.isAsyncComplete()) {
                 throw new IllegalStateException('Cannot start a task once asynchronous request processing has completed')
             }
         }
         else {
-            newWebRequest = new AsyncGrailsWebRequest(currentServletRequest, webRequest.currentResponse,
+            newWebRequest = new GrailsAsyncWebRequest(currentServletRequest, webRequest.currentResponse,
                     webRequest.servletContext, webRequest.applicationContext)
             asyncManager.setAsyncWebRequest(newWebRequest)
             newWebRequest.startAsync()

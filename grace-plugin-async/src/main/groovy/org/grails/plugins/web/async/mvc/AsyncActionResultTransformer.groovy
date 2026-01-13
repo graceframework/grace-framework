@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ import org.springframework.web.servlet.ModelAndView
 
 import grails.async.Promise
 import grails.async.PromiseList
-import grails.async.web.AsyncGrailsWebRequest
+import grails.web.async.GrailsAsyncWebRequest
 
-import org.grails.plugins.web.async.GrailsAsyncContext
+import org.grails.web.async.GrailsAsyncContext
 import org.grails.web.errors.GrailsExceptionResolver
 import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.servlet.mvc.ActionResultTransformer
@@ -57,15 +57,15 @@ class AsyncActionResultTransformer implements ActionResultTransformer {
             WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request)
             HttpServletResponse response = webRequest.getResponse()
 
-            AsyncGrailsWebRequest asyncWebRequest
+            GrailsAsyncWebRequest asyncWebRequest
             if (asyncManager.isConcurrentHandlingStarted()) {
-                asyncWebRequest = AsyncGrailsWebRequest.lookup(request)
+                asyncWebRequest = GrailsAsyncWebRequest.lookup(request)
                 if (asyncWebRequest == null) {
                     throw new IllegalStateException('Concurrency handling already started by another process')
                 }
             }
             else {
-                asyncWebRequest = new AsyncGrailsWebRequest(request, response, webRequest.servletContext)
+                asyncWebRequest = new GrailsAsyncWebRequest(request, response, webRequest.servletContext)
                 asyncManager.setAsyncWebRequest(asyncWebRequest)
                 asyncWebRequest.startAsync()
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2025 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.async
+package org.grails.web.async
 
 import com.opensymphony.sitemesh.Content
 import com.opensymphony.sitemesh.Decorator
@@ -25,7 +25,7 @@ import jakarta.servlet.AsyncListener
 import com.opensymphony.sitemesh.webapp.SiteMeshWebAppContext
 import org.springframework.context.ApplicationContext
 
-import grails.async.web.AsyncGrailsWebRequest
+import grails.web.async.GrailsAsyncWebRequest
 import grails.persistence.support.PersistenceContextInterceptor
 
 import org.grails.web.servlet.mvc.GrailsWebRequest
@@ -46,9 +46,9 @@ class GrailsAsyncContext implements AsyncContext {
     final @Delegate AsyncContext delegate
     final GrailsWebRequest originalWebRequest
     final GroovyPageLayoutFinder groovyPageLayoutFinder
-    final AsyncGrailsWebRequest asyncGrailsWebRequest
+    final GrailsAsyncWebRequest asyncGrailsWebRequest
 
-    GrailsAsyncContext(AsyncContext delegate, GrailsWebRequest webRequest, AsyncGrailsWebRequest asyncGrailsWebRequest = null) {
+    GrailsAsyncContext(AsyncContext delegate, GrailsWebRequest webRequest, GrailsAsyncWebRequest asyncGrailsWebRequest = null) {
         this.delegate = delegate
         this.originalWebRequest = webRequest
         ApplicationContext applicationContext = webRequest.getApplicationContext()

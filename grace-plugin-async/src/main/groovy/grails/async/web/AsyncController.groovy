@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@ package grails.async.web
 import jakarta.servlet.AsyncContext
 import jakarta.servlet.http.HttpServletRequest
 
-import org.grails.plugins.web.async.GrailsAsyncContext
+import grails.web.async.GrailsAsyncWebRequest
+
+import org.grails.web.async.GrailsAsyncContext
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.web.context.request.RequestContextHolder
@@ -45,7 +47,7 @@ trait AsyncController {
         HttpServletRequest request = webRequest.currentRequest
         WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request)
 
-        AsyncWebRequest asyncWebRequest = new AsyncGrailsWebRequest(request, webRequest.currentResponse, webRequest.servletContext)
+        AsyncWebRequest asyncWebRequest = new GrailsAsyncWebRequest(request, webRequest.currentResponse, webRequest.servletContext)
         asyncManager.setAsyncWebRequest(asyncWebRequest)
 
         asyncWebRequest.startAsync()
