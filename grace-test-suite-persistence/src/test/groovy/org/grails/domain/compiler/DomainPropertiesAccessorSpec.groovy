@@ -1,7 +1,7 @@
 package org.grails.domain.compiler
 
 import grails.persistence.Entity
-import org.grails.plugins.web.controllers.api.ControllersDomainBindingApi
+import org.grails.web.controller.api.ControllersDomainBindingApi
 import spock.lang.Specification
 
 class DomainPropertiesAccessorSpec extends Specification {
