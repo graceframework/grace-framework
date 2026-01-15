@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ import org.eclipse.aether.resolution.DependencyRequest;
 import org.eclipse.aether.resolution.DependencyResult;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.DependencyFilterUtils;
+
+import grails.build.logging.GrailsConsole;
 
 /**
  * A {@link GrapeEngine} implementation that uses
@@ -93,13 +95,13 @@ public class MavenResolverGrapeEngine implements GrapeEngine {
         String progressReporter = (quiet ? "none"
                 : System.getProperty("org.grails.cli.compiler.grape.ProgressReporter"));
         if ("detail".equals(progressReporter) || Boolean.getBoolean("groovy.grape.report.downloads")) {
-            return new DetailedProgressReporter(session, System.out);
+            return new DetailedProgressReporter(session, GrailsConsole.getInstance().getOut());
         }
         if ("none".equals(progressReporter)) {
             return () -> {
             };
         }
-        return new SummaryProgressReporter(session, System.out);
+        return new SummaryProgressReporter(session, GrailsConsole.getInstance().getOut());
     }
 
     @Override
