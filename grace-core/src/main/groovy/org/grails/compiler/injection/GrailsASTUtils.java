@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,6 +101,7 @@ import grails.artefact.ArtefactTypes;
 import grails.artefact.Enhanced;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.GrailsNameUtils;
+import grails.util.GrailsStringUtils;
 
 import org.grails.datastore.mapping.model.config.GormProperties;
 
@@ -1820,11 +1821,12 @@ public final class GrailsASTUtils {
         if (filename == null || projectDir == null || grailsAppDir == null) {
             return false;
         }
-        if (artefactPath != null) {
+        if (GrailsStringUtils.isNotBlank(artefactPath)) {
             return filename.startsWith(grailsAppDir + File.separatorChar + artefactPath);
         }
         else {
-            return filename.startsWith(projectDir + File.separatorChar + "src") && filename.endsWith("GrailsPlugin.groovy");
+            return filename.startsWith(grailsAppDir) || (filename.startsWith(projectDir + File.separatorChar + "src")
+                    && (filename.endsWith("GrailsPlugin.groovy") || filename.endsWith("Application.groovy")));
         }
     }
 
