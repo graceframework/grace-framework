@@ -40,7 +40,7 @@ import org.grails.compiler.injection.TraitInjectionUtils;
  * then perform to inject {@link ClassInjector} and {@link TraitInjector}.
  *
  * @author Michael Yan
- * @since 3.0
+ * @since 2024.0.0
  */
 public class DomainClassAdditionalGormEntityTransformation implements AdditionalGormEntityTransformation {
 

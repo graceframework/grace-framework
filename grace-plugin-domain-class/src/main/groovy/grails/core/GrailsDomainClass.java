@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,7 @@ import grails.validation.Constrained;
  *
  * @author Graeme Rocher
  * @since Jul 5, 2005
- *
- * @deprecated Use {@link org.grails.datastore.mapping.model.PersistentEntity} instead
  */
-@Deprecated
 public interface GrailsDomainClass extends GrailsClass {
 
     /**
@@ -67,7 +64,7 @@ public interface GrailsDomainClass extends GrailsClass {
     Map<String, Constrained> getConstrainedProperties();
 
     /**
-     * Retreives the validator for this domain class
+     * Retrieves the validator for this domain class
      *
      * @return A validator instance or null if none exists
      */
