@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2025 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import org.grails.core.artefact.DomainClassArtefactHandler;
  *
  * @author Graeme Rocher
  * @author Michael Yan
- * @since 2.0
+ * @since 2024.0.0
  */
 @AstTransformer
 public class GormTransformer implements GrailsArtefactClassInjector {
