@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ class DefaultGrailsDomainClassInjectorSpec extends Specification {
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
         def domainClass = gcl.parseClass('''
 class Post {
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -66,15 +66,15 @@ class Post {
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
         def domainClass = gcl.parseClass('''
 class Post {
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -109,8 +109,8 @@ class Post {
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -119,7 +119,7 @@ class Post {
 @groovy.transform.ToString(includes = ["id"])
 class Post {
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -154,8 +154,8 @@ class Post {
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -166,7 +166,7 @@ class Post {
 class Comment {
     static belongsTo = [post : Post]
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         Class[] loadedClasses = gcl.getLoadedClasses()
         def postClass = loadedClasses.find { it.name == 'Post' }

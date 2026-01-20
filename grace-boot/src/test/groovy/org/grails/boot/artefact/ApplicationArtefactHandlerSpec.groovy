@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,10 +39,10 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'init', 'org', 'grails', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -62,10 +62,10 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grace', 'grace-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grace', 'grace-demo-project', 'app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grace/grace-demo-project/app/init/org/grace/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grace', 'grace-demo-project', 'app', 'init', 'org', 'grace', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -85,10 +85,10 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'grails', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -108,10 +108,10 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grace', 'grace-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grace', 'grace-demo-project', 'app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grace/grace-demo-project/app/boot/org/grace/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grace', 'grace-demo-project', 'app', 'boot', 'org', 'grace', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -131,10 +131,10 @@ class TestApp {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestApp.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'grails', 'demo', 'TestApp.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -155,10 +155,10 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'grails', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -167,7 +167,7 @@ class TestApplication {
         handler.isArtefact(classNode)
     }
 
-    void "Check TestApplication within 'src/main'"() {
+    void "Check TestApplication within 'src', 'main'"() {
         given:
         ArtefactHandler handler = new ApplicationArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
@@ -178,10 +178,10 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grace', 'grace-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grace', 'grace-demo-project', 'app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grace/grace-demo-project/src/main/groovy/org/grace/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grace', 'grace-demo-project', 'src', 'main', 'groovy', 'org', 'grace', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -202,10 +202,10 @@ abstract class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestApplication.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'grails', 'demo', 'TestApplication.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)

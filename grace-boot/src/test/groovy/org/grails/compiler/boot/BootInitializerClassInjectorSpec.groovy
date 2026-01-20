@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ class BootInitializerClassInjectorSpec extends Specification {
         def gcl = new GrailsAwareClassLoader()
         gcl.setDisabledGlobalASTTransformations(true)
         gcl.setMetaDataMap([
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ])
         Class applicationClass = gcl.parseClass('''
@@ -45,7 +45,7 @@ class Application {
         println "foo"
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'demo', 'Application.groovy'].join(File.separator))
 
         applicationClass.main()
 
@@ -62,8 +62,8 @@ class Application {
         gcl.setDisabledGlobalASTTransformations(true)
         gcl.setClassInjectors([transformer] as ClassInjector[])
         gcl.setMetaDataMap([
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ])
 
@@ -73,7 +73,7 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'demo', 'Application.groovy'].join(File.separator))
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:
@@ -87,8 +87,8 @@ class Application {
         gcl.setDisabledGlobalASTTransformations(true)
         gcl.setClassInjectors([transformer] as ClassInjector[])
         gcl.setMetaDataMap([
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ])
 
@@ -98,7 +98,7 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/src/main/groovy/org/demo/Application.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'src', 'main', 'groovy', 'org', 'demo', 'Application.groovy'].join(File.separator))
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:
@@ -112,8 +112,8 @@ class Application {
         gcl.setDisabledGlobalASTTransformations(true)
         gcl.setClassInjectors([transformer] as ClassInjector[])
         gcl.setMetaDataMap([
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ])
 
@@ -124,7 +124,7 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'demo', 'Application.groovy'].join(File.separator))
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:
@@ -138,8 +138,8 @@ class Application {
         gcl.setDisabledGlobalASTTransformations(true)
         gcl.setClassInjectors([transformer] as ClassInjector[])
         gcl.setMetaDataMap([
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'PLUGIN'
         ])
 
@@ -149,7 +149,7 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'demo', 'Application.groovy'].join(File.separator))
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:

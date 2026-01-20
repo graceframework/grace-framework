@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,8 +58,8 @@ class ControllerActionTransformerSpec extends Specification {
         gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
         gcl
@@ -75,7 +75,7 @@ class TestTransformedToController {
     }
 
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestTransformedToController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'TestTransformedToController.groovy'].join(File.separator))
 
         def classNode = gcl.getClassNode('TestTransformedToController')
         def controller = cls.newInstance()
@@ -99,7 +99,7 @@ class SomeController {
     @Deprecated
     def action2(String paramName){}
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/SomeController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'SomeController.groovy'].join(File.separator))
 
         when:
         def action1NoArgMethod = cls.getMethod('action1')
@@ -131,7 +131,7 @@ abstract class SomeController {
     def someAction() {}
     abstract someAbstractMethod()
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/SomeController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'SomeController.groovy'].join(File.separator))
 
         when:
         def method = controllerClass.getMethod('someAbstractMethod')
@@ -166,7 +166,7 @@ class SubController extends SuperController {
         [ paramValue: i ]
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/SuperController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'SuperController.groovy'].join(File.separator))
 
         def subControllerClass = gcl.loadClass('SubController')
         def superController = superControllerClass.newInstance()
@@ -227,7 +227,7 @@ trait ShowMethod {
     }
 
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestTraitActionToController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'TestTraitActionToController.groovy'].join(File.separator))
 
         def controller = cls.newInstance()
 
@@ -257,7 +257,7 @@ class TestMyCommandObjController {
 class MyCommand {
     String name
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestMyCommandObjController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'TestMyCommandObjController.groovy'].join(File.separator))
 
         def controller = cls.newInstance()
         def myCommand = controller.$test()
@@ -285,7 +285,7 @@ class TestMyCommandObjController {
 class MyCommand {
     String name
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestMyCommandObjController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'TestMyCommandObjController.groovy'].join(File.separator))
 
         def controller = cls.newInstance()
         def myCommand = controller.$test()

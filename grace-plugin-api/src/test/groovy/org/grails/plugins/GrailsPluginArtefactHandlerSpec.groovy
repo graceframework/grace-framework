@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,10 +39,10 @@ class FooGrailsPlugin {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/plugins/org/grails/demo/FooGrailsPlugin.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'plugins', 'org', 'grails', 'demo', 'FooGrailsPlugin.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -62,10 +62,10 @@ class FooGrailsPlugin {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/app/plugins/org/grails/demo/FooGrailsPlugin.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'plugins', 'org', 'grails', 'demo', 'FooGrailsPlugin.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -85,10 +85,10 @@ class FooGrailsPlugin {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/abc/org/grails/demo/FooGrailsPlugin.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'abc', 'org', 'grails', 'demo', 'FooGrailsPlugin.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -108,10 +108,10 @@ class TestPlugin {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/plugins/org/grails/demo/TestPlugin.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'plugins', 'org', 'grails', 'demo', 'FooPlugin.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -132,10 +132,10 @@ class FooGrailsPlugin {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/abc/org/grails/demo/FooGrailsPlugin.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'abc', 'org', 'grails', 'demo', 'FooGrailsPlugin.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -156,10 +156,10 @@ abstract class FooGrailsPlugin {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/plugins/org/grails/demo/FooGrailsPlugin.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'plugins', 'org', 'grails', 'demo', 'FooGrailsPlugin.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)

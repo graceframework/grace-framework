@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,10 +56,10 @@ class TestTagLib {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/taglib/org/grails/demo/TestTagLib.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -79,10 +79,10 @@ class TestTagLib {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/app/taglib/org/grails/demo/TestTagLib.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'taglib', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -102,10 +102,10 @@ class TestTagLib {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/tags/org/grails/demo/TestTagLib.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'tags', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -125,10 +125,10 @@ class TestTag {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/taglib/org/grails/demo/TestTag.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'grails', 'demo', 'TestTag.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -149,10 +149,10 @@ class TestTagLib {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/tags/org/grails/demo/TestTagLib.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'tags', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -173,10 +173,10 @@ abstract class TestTagLib {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/taglib/org/grails/demo/TestTagLib.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)

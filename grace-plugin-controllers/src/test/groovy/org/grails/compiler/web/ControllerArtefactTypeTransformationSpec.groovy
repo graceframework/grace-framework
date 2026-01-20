@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ class ControllerArtefactTypeTransformationSpec extends Specification {
         gcl.disabledGlobalASTTransformations = true
         gcl.disabledGrailsAwareInjectionOperation = true
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -45,7 +45,7 @@ class ControllerArtefactTypeTransformationSpec extends Specification {
 class FooController {
   def index() {}
 }
-''', '/Users/grails/grails-demo-project/grails-app/src/main/groovy/org/demo/FooController.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'src', 'main', 'groovy', 'org', 'demo', 'FooController.groovy'].join(File.separator))
 
         def classNode = gcl.getClassNode('FooController')
 

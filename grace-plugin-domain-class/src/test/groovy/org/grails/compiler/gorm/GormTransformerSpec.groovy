@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ class GormTransformerSpec extends Specification {
         gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grace/grace-demo-project/app',
-                'PROJECT_DIR': '/Users/grace/grace-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grace', 'grace-demo-project', 'app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grace', 'grace-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -47,7 +47,7 @@ class GormTransformerSpec extends Specification {
         def clazz = gcl.parseClass('''
 class Person {
 }
-''', '/Users/grace/grace-demo-project/app/domain/org/demo/Person.groovy')
+''', ['', 'Users', 'grace', 'grace-demo-project', 'app', 'domain', 'org', 'demo', 'Person.groovy'].join(File.separator))
 
         def classNode = gcl.getClassNode('Person')
 

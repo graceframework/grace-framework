@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021-2026 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.io.support
 
 import org.springframework.core.io.Resource
@@ -20,47 +35,47 @@ class GrailsResourceUtilsSpec extends Specification {
 
     void testGetArtifactDirectory() {
         expect:
-        "controllers" == GrailsResourceUtils.getArtefactDirectory(TEST_CONTROLLER_URL)
-        "domain" == GrailsResourceUtils.getArtefactDirectory(TEST_PACKAGE_URL)
+        GrailsResourceUtils.getArtefactDirectory(TEST_CONTROLLER_URL) == "controllers"
+        GrailsResourceUtils.getArtefactDirectory(TEST_PACKAGE_URL) == "domain"
     }
 
     void testJavaAndGroovySources() {
         expect:
-        "mycompany.Test" == GrailsResourceUtils.getClassName(TEST_PACKAGE_URL)
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/domain/mycompany/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blahblah/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah-blah/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah--blah/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah_blah/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blahblah/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah-blah/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah--blah/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah_blah/mycompany/Test.java").getPath())
+        GrailsResourceUtils.getClassName(TEST_PACKAGE_URL) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/domain/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blahblah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah-blah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah--blah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah_blah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blahblah/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah-blah/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah--blah/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/grails-app/blah_blah/mycompany/Test.java").getPath()) == "mycompany.Test"
 
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/groovy/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/groovy/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/java/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/java/mycompany/Test.java").getPath())
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/groovy/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/groovy/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/java/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/java/mycompany/Test.java").getPath()) == "mycompany.Test"
 
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/groovy/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/groovy/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/java/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/java/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/groovy/mycompany/Test.groovy").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/groovy/mycompany/Test.groovy").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/java/mycompany/Test.groovy").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/java/mycompany/Test.groovy").getPath())
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/groovy/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/groovy/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/java/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/java/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/groovy/mycompany/Test.groovy").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/groovy/mycompany/Test.groovy").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/main/java/mycompany/Test.groovy").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/app/src/test/java/mycompany/Test.groovy").getPath()) == "mycompany.Test"
 
-        "mycompany.Test" == GrailsResourceUtils.getClassName("file:///test/grails/myapp/app/domain/mycompany/Test.groovy")
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/domain/mycompany/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blahblah/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah-blah/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah--blah/Test.java").getPath())
-        "Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah_blah/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blahblah/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah-blah/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah--blah/mycompany/Test.java").getPath())
-        "mycompany.Test" == GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah_blah/mycompany/Test.java").getPath())
+        GrailsResourceUtils.getClassName("file:///test/grails/myapp/app/domain/mycompany/Test.groovy") == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/domain/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blahblah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah-blah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah--blah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah_blah/Test.java").getPath()) == "Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blahblah/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah-blah/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah--blah/mycompany/Test.java").getPath()) == "mycompany.Test"
+        GrailsResourceUtils.getClassName(new File("/test/grails/myapp/app/blah_blah/mycompany/Test.java").getPath()) == "mycompany.Test"
     }
 
     void testIsDomainClass() {
@@ -71,22 +86,22 @@ class GrailsResourceUtilsSpec extends Specification {
 
     void testGetPathFromRoot() {
         expect:
-        "mycompany/Test.groovy" == GrailsResourceUtils.getPathFromRoot(TEST_PACKAGE_URL)
-        "Test.groovy" == GrailsResourceUtils.getPathFromRoot(TEST_URL)
-        "mycompany/Test.groovy" == GrailsResourceUtils.getPathFromRoot("file:///test/grails/myapp/app/domain/mycompany/Test.groovy")
-        "Test.groovy" == GrailsResourceUtils.getPathFromRoot("file:///test/grails/myapp/app/domain/Test.groovy")
+        GrailsResourceUtils.getPathFromRoot(TEST_PACKAGE_URL) == "mycompany/Test.groovy"
+        GrailsResourceUtils.getPathFromRoot(TEST_URL) == "Test.groovy"
+        GrailsResourceUtils.getPathFromRoot("file:///test/grails/myapp/app/domain/mycompany/Test.groovy") == "mycompany/Test.groovy"
+        GrailsResourceUtils.getPathFromRoot("file:///test/grails/myapp/app/domain/Test.groovy") == "Test.groovy"
     }
 
     void testGetClassNameResource() {
         expect:
-        "Test" == GrailsResourceUtils.getClassName(new UrlResource(new URL("file:///test/grails/myapp/grails-app/domain/Test.groovy")))
-        "Test" == GrailsResourceUtils.getClassName(new UrlResource(new URL("file:///test/grails/myapp/app/domain/Test.groovy")))
+        GrailsResourceUtils.getClassName(new UrlResource(new URL("file:///test/grails/myapp/grails-app/domain/Test.groovy"))) == "Test"
+        GrailsResourceUtils.getClassName(new UrlResource(new URL("file:///test/grails/myapp/app/domain/Test.groovy"))) == "Test"
     }
 
     void testGetClassNameString() {
         expect:
-        "Test" == GrailsResourceUtils.getClassName("file:///test/grails/myapp/grails-app/domain/Test.groovy")
-        "Test" == GrailsResourceUtils.getClassName("file:///test/grails/myapp/app/domain/Test.groovy")
+        GrailsResourceUtils.getClassName("file:///test/grails/myapp/grails-app/domain/Test.groovy") == "Test"
+        GrailsResourceUtils.getClassName("file:///test/grails/myapp/app/domain/Test.groovy") == "Test"
     }
 
     void testIsGrailsPath() {
@@ -129,12 +144,12 @@ class GrailsResourceUtilsSpec extends Specification {
         Resource r = new UrlResource(new URL(UNIT_TESTS_URL))
 
         then:
-        "SomeTests" == GrailsResourceUtils.getClassName(r)
+        GrailsResourceUtils.getClassName(r) == "SomeTests"
     }
 
     void testGetTestNameString() {
         expect:
-        "SomeTests" == GrailsResourceUtils.getClassName(UNIT_TESTS_URL)
+        GrailsResourceUtils.getClassName(UNIT_TESTS_URL) == "SomeTests"
     }
 
     void testGetViewsDirForURL() {
@@ -142,10 +157,10 @@ class GrailsResourceUtilsSpec extends Specification {
         Resource viewsDir = GrailsResourceUtils.getViewsDir(new UrlResource(TEST_CONTROLLER_URL))
 
         then:
-        toFileUrl("/test/grails/app/grails-app/views") == viewsDir.getURL().toString()
+        viewsDir.getURL().toString().endsWith("/test/grails/app/grails-app/views")
 
         viewsDir == GrailsResourceUtils.getViewsDir(new UrlResource(TEST_URL))
-        toFileUrl("/test/grails/app/grails-app/views") == viewsDir.getURL().toString()
+        viewsDir.getURL().toString().endsWith("/test/grails/app/grails-app/views")
     }
 
     void testGetAppDir() {
@@ -153,9 +168,9 @@ class GrailsResourceUtilsSpec extends Specification {
         Resource appDir = GrailsResourceUtils.getAppDir(new UrlResource(TEST_CONTROLLER_URL))
 
         then:
-        toFileUrl("/test/grails/app/grails-app") == appDir.getURL().toString()
+        appDir.getURL().toString().endsWith("/test/grails/app/grails-app")
         appDir == GrailsResourceUtils.getAppDir(new UrlResource(TEST_URL))
-        toFileUrl("/test/grails/app/grails-app") == appDir.getURL().toString()
+        appDir.getURL().toString().endsWith("/test/grails/app/grails-app")
     }
 
     void testGetDirWithinWebInf() {
@@ -167,53 +182,40 @@ class GrailsResourceUtilsSpec extends Specification {
         Resource webInfPluginViews = GrailsResourceUtils.getViewsDir(new UrlResource(WEBINF_PLUGIN_CTRL))
 
         then:
-        toFileUrl("/test/grails/app/grails-app/views") == viewsDir.getURL().toString()
-        toFileUrl("/test/grails/app/plugins/myplugin/grails-app/views") == pluginViews.getURL().toString()
-        toFileUrl("/test/grails/app/WEB-INF/grails-app/views") == webInfViews.getURL().toString()
-        toFileUrl("/test/grails/app/WEB-INF/plugins/myplugin/grails-app/views") == webInfPluginViews.getURL().toString()
+        viewsDir.getURL().toString().endsWith("/test/grails/app/grails-app/views")
+        pluginViews.getURL().toString().endsWith("/test/grails/app/plugins/myplugin/grails-app/views")
+        webInfViews.getURL().toString().endsWith("/test/grails/app/WEB-INF/grails-app/views")
+        webInfPluginViews.getURL().toString().endsWith("/test/grails/app/WEB-INF/plugins/myplugin/grails-app/views")
 
-        "/WEB-INF/grails-app/views" == GrailsResourceUtils.getRelativeInsideWebInf(webInfViews)
-        "/WEB-INF/plugins/myplugin/grails-app/views" == GrailsResourceUtils.getRelativeInsideWebInf(webInfPluginViews)
+        GrailsResourceUtils.getRelativeInsideWebInf(webInfViews) == "/WEB-INF/grails-app/views"
+        GrailsResourceUtils.getRelativeInsideWebInf(webInfPluginViews) == "/WEB-INF/plugins/myplugin/grails-app/views"
 
-        "/WEB-INF/plugins/myplugin/grails-app/views" == GrailsResourceUtils.getRelativeInsideWebInf(pluginViews)
-        "/WEB-INF/grails-app/views" == GrailsResourceUtils.getRelativeInsideWebInf(viewsDir)
+        GrailsResourceUtils.getRelativeInsideWebInf(pluginViews) == "/WEB-INF/plugins/myplugin/grails-app/views"
+        GrailsResourceUtils.getRelativeInsideWebInf(viewsDir) == "/WEB-INF/grails-app/views"
     }
 
     void testGetPluginContextPath() {
-        given:
-
         expect:
-        "" == GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(TEST_CONTROLLER_URL), null)
-        "plugins/myplugin" == GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(TEST_PLUGIN_CTRL), null)
-        "" == GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(WEBINF_CONTROLLER), null)
-        "plugins/myplugin" == GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(WEBINF_PLUGIN_CTRL), null)
+        GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(TEST_CONTROLLER_URL), null) == ""
+        GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(TEST_PLUGIN_CTRL), null) == "plugins/myplugin"
+        GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(WEBINF_CONTROLLER), null) == ""
+        GrailsResourceUtils.getStaticResourcePathForResource(new UrlResource(WEBINF_PLUGIN_CTRL), null) == "plugins/myplugin"
     }
 
     void testAppendPiecesForUri() {
         expect:
-        "" == GrailsResourceUtils.appendPiecesForUri("")
-        "/alpha/beta/gamma" == GrailsResourceUtils.appendPiecesForUri("/alpha", "/beta", "/gamma")
-        "/alpha/beta/gamma" == GrailsResourceUtils.appendPiecesForUri("/alpha/", "/beta/", "/gamma")
-        "/alpha/beta/gamma/" == GrailsResourceUtils.appendPiecesForUri("/alpha/", "/beta/", "/gamma/")
-        "alpha/beta/gamma" == GrailsResourceUtils.appendPiecesForUri("alpha", "beta", "gamma")
+        GrailsResourceUtils.appendPiecesForUri("") == ""
+        GrailsResourceUtils.appendPiecesForUri("/alpha", "/beta", "/gamma") == "/alpha/beta/gamma"
+        GrailsResourceUtils.appendPiecesForUri("/alpha/", "/beta/", "/gamma") == "/alpha/beta/gamma"
+        GrailsResourceUtils.appendPiecesForUri("/alpha/", "/beta/", "/gamma/") == "/alpha/beta/gamma/"
+        GrailsResourceUtils.appendPiecesForUri("alpha", "beta", "gamma") == "alpha/beta/gamma"
     }
 
     void testGetPathFromBaseDir() {
         expect:
-        "grails-app/views/demo/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/grails-app/views/demo/index.gsp")
-        "src/main/demo/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/src/main/demo/index.gsp")
-        "/alpha/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("/alpha/index.gsp")
+        GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/grails-app/views/demo/index.gsp").endsWith(['grails-app', 'views', 'demo', 'index.gsp'].join(File.separator))
+        GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/src/main/demo/index.gsp").endsWith(['src', 'main', 'demo', 'index.gsp'].join(File.separator))
+        GrailsResourceUtils.getPathFromBaseDir("/alpha/index.gsp").endsWith(['alpha', 'index.gsp'].join(File.separator))
     }
 
-    private String toFileUrl(String path) {
-        if (path == null) return path
-        String url = null
-        try {
-            url = new File(path).toURI().toURL().toString()
-        }
-        catch (MalformedURLException e) {
-            url = path
-        }
-        return url
-    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,10 +198,10 @@ class GrailsASTUtilsSpec extends Specification {
         given:
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy'
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator)
 
         ClassNode classNode = Mock(ClassNode)
         classNode.getModule() >> moduleNode
@@ -219,7 +219,7 @@ class GrailsASTUtilsSpec extends Specification {
 @grails.artefact.Artefact("Domain")
 class Post {
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         def classNode = gcl.getClassNode('Post')
 
@@ -240,7 +240,7 @@ class PostController {
 @grails.artefact.Artefact("UrlMappings")
 class UrlMappings {
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/UrlMappings.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'UrlMappings.groovy'].join(File.separator))
 
         def postController = gcl.getClassNode('PostController')
         def urlMappings = gcl.getClassNode('UrlMappings')
@@ -259,7 +259,7 @@ class UrlMappings {
 @grails.artefact.Artefact("TagLib")
 class PostTagLib {
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/PostTagLib.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'demo', 'PostTagLib.groovy'].join(File.separator))
 
         def postTagLib = gcl.getClassNode('PostTagLib')
 
@@ -275,7 +275,7 @@ class PostTagLib {
         def clazz = gcl.parseClass('''
 class Post {
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         def classNode = gcl.getClassNode('Post')
 
