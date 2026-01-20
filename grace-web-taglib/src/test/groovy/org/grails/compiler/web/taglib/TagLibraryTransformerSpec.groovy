@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ class TagLibraryTransformerSpec extends Specification {
         gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -44,7 +44,7 @@ class StaticallyCompiledTagLib implements grails.artefact.TagLibrary {
     def closureTagWithOneArg = { attrs -> }
     def closureTagWithTwoArgs = { attrs, body -> }
 }
-''', '/Users/grails/grails-demo-project/grails-app/taglib/org/demo/StaticallyCompiledTagLib.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'demo', 'StaticallyCompiledTagLib.groovy'].join(File.separator))
     }
 
     void 'Test that a tag library injected method "$getTagLibNamespace", "tagOne"'() {
@@ -54,8 +54,8 @@ class StaticallyCompiledTagLib implements grails.artefact.TagLibrary {
         gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
         gcl.metaDataMap = [
-                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
-                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'GRAILS_APP_DIR': ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator),
+                'PROJECT_DIR': ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator),
                 'PROJECT_TYPE': 'WEB_APP'
         ]
 
@@ -64,7 +64,7 @@ class DemoTagLib {
     static namespace = 'demo'
     def tagOne = { attrs -> }
 }
-''', '/Users/grails/grails-demo-project/grails-app/taglib/org/demo/DemoTagLib.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'demo', 'DemoTagLib.groovy'].join(File.separator))
 
         def taglibMethodNames = taglibClass.getDeclaredMethods()*.name
 
