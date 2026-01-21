@@ -15,10 +15,10 @@
  */
 package grails.cli.commands
 
-import grails.cli.commands.io.FileSystemInteraction
-import grails.cli.commands.io.FileSystemInteractionImpl
-import grails.cli.commands.template.TemplateRenderer
-import grails.cli.commands.template.TemplateRendererImpl
+import grails.cli.core.io.FileSystemInteraction
+import grails.cli.core.io.FileSystemInteractionImpl
+import grails.cli.core.template.TemplateRenderer
+import grails.cli.core.template.TemplateRendererImpl
 import grails.codegen.model.ModelBuilder
 
 trait GrailsApplicationCommand implements ApplicationCommand, ModelBuilder {

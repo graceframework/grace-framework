@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.cli.commands.template
+package grails.cli.core.template
 
 import java.nio.charset.StandardCharsets
 
@@ -26,8 +26,8 @@ import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 
 import grails.build.logging.GrailsConsole
-import grails.cli.commands.io.FileSystemInteraction
-import grails.cli.commands.io.FileSystemInteractionImpl
+import grails.cli.core.io.FileSystemInteraction
+import grails.cli.core.io.FileSystemInteractionImpl
 import grails.codegen.model.Model
 
 /**

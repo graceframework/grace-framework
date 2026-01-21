@@ -21,10 +21,10 @@ import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.Resource
 
 import grails.build.logging.GrailsConsole
-import grails.cli.commands.io.FileSystemInteraction
-import grails.cli.commands.io.FileSystemInteractionImpl
-import grails.cli.commands.template.TemplateRenderer
-import grails.cli.commands.template.TemplateRendererImpl
+import grails.cli.core.io.FileSystemInteraction
+import grails.cli.core.io.FileSystemInteractionImpl
+import grails.cli.core.template.TemplateRenderer
+import grails.cli.core.template.TemplateRendererImpl
 import grails.io.IOUtils
 
 import org.grails.build.parsing.CommandLine

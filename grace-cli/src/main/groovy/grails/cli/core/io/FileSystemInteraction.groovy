@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.cli.commands.io
+package grails.cli.core.io
 
 import org.springframework.core.io.Resource
 
