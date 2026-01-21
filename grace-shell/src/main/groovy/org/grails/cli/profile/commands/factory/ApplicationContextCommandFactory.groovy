@@ -16,7 +16,7 @@
 package org.grails.cli.profile.commands.factory
 
 import grails.build.logging.GrailsConsole
-import grails.dev.commands.ApplicationCommand
+import grails.cli.commands.ApplicationCommand
 import grails.util.Named
 
 import org.grails.cli.gradle.commands.GradleTaskCommandAdapter

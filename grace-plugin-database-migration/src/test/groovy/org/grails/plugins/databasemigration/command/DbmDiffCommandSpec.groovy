@@ -15,7 +15,7 @@
  */
 package org.grails.plugins.databasemigration.command
 
-import grails.dev.commands.ApplicationCommand
+import grails.cli.commands.ApplicationCommand
 import groovy.sql.Sql
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 import org.h2.Driver

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@ import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.Resource
 
 import grails.build.logging.GrailsConsole
-import grails.dev.commands.io.FileSystemInteraction
-import grails.dev.commands.io.FileSystemInteractionImpl
-import grails.dev.commands.template.TemplateRenderer
-import grails.dev.commands.template.TemplateRendererImpl
+import grails.cli.commands.io.FileSystemInteraction
+import grails.cli.commands.io.FileSystemInteractionImpl
+import grails.cli.commands.template.TemplateRenderer
+import grails.cli.commands.template.TemplateRendererImpl
 import grails.io.IOUtils
 
 import org.grails.build.parsing.CommandLine

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.dev.commands.template
+package grails.cli.commands.template
 
 import java.nio.charset.StandardCharsets
 
@@ -26,9 +26,9 @@ import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 
 import grails.build.logging.GrailsConsole
+import grails.cli.commands.io.FileSystemInteraction
+import grails.cli.commands.io.FileSystemInteractionImpl
 import grails.codegen.model.Model
-import grails.dev.commands.io.FileSystemInteraction
-import grails.dev.commands.io.FileSystemInteractionImpl
 
 /**
  * API for locating and rendering templates in the code generation layer
