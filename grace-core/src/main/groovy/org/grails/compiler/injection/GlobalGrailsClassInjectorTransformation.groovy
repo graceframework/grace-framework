@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
     static final ClassNode ARTEFACT_CLASS_NODE = ClassHelper.make(Artefact)
     static final ClassNode CLASS_INJECTOR_CLASS = ClassHelper.make(ClassInjector)
     static final ClassNode TRAIT_INJECTOR_CLASS = ClassHelper.make(TraitInjector)
-    static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make('grails.dev.commands.ApplicationCommand')
+    static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make('grails.cli.commands.ApplicationCommand')
 
     CompilationUnit compilationUnit
 

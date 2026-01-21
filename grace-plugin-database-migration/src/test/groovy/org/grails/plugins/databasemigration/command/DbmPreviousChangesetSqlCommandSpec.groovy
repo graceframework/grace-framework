@@ -1,6 +1,6 @@
 package org.grails.plugins.databasemigration.command
 
-import grails.dev.commands.ApplicationCommand
+import grails.cli.commands.ApplicationCommand
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 import spock.lang.AutoCleanup
 

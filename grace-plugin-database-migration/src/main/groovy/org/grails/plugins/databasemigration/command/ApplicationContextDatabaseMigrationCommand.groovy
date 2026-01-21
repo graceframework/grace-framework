@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ import org.hibernate.engine.jdbc.spi.JdbcServices
 import org.hibernate.engine.spi.SessionFactoryImplementor
 import org.springframework.context.ConfigurableApplicationContext
 
+import grails.cli.commands.ExecutionContext
 import grails.config.ConfigMap
 import grails.core.GrailsApplication
-import grails.dev.commands.ExecutionContext
 import grails.util.Environment
 
 import org.grails.config.PropertySourcesConfig

@@ -1,4 +1,4 @@
-grails.dev.commands.ApplicationCommand=\
+grails.cli.commands.ApplicationCommand=\
 org.grails.plugins.databasemigration.command.DbmChangelogSyncCommand,\
 org.grails.plugins.databasemigration.command.DbmChangelogSyncSqlCommand,\
 org.grails.plugins.databasemigration.command.DbmClearChecksumsCommand,\

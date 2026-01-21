@@ -15,7 +15,7 @@
  */
 package org.grails.plugins.databasemigration.command
 
-import grails.dev.commands.ApplicationCommand
+import grails.cli.commands.ApplicationCommand
 import spock.lang.AutoCleanup
 
 class DbmStatusCommandSpec extends ApplicationContextDatabaseMigrationCommandSpec {

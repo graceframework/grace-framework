@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ import groovy.transform.CompileStatic
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.context.ConfigurableApplicationContext
 
+import grails.cli.commands.ApplicationCommand
+import grails.cli.commands.ApplicationContextCommandRegistry
+import grails.cli.commands.ExecutionContext
 import grails.config.Settings
-import grails.dev.commands.ApplicationCommand
-import grails.dev.commands.ApplicationContextCommandRegistry
-import grails.dev.commands.ExecutionContext
 import grails.ui.support.DevelopmentGrails
 
 import org.grails.build.parsing.CommandLine

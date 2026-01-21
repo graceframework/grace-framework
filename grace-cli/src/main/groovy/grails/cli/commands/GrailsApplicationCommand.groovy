@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.dev.commands
+package grails.cli.commands
 
+import grails.cli.core.io.FileSystemInteraction
+import grails.cli.core.io.FileSystemInteractionImpl
+import grails.cli.core.template.TemplateRenderer
+import grails.cli.core.template.TemplateRendererImpl
 import grails.codegen.model.ModelBuilder
-import grails.dev.commands.io.FileSystemInteraction
-import grails.dev.commands.io.FileSystemInteractionImpl
-import grails.dev.commands.template.TemplateRenderer
-import grails.dev.commands.template.TemplateRendererImpl
 
 trait GrailsApplicationCommand implements ApplicationCommand, ModelBuilder {
 

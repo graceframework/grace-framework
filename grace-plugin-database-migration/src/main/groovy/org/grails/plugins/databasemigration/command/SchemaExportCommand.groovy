@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import org.hibernate.engine.spi.SessionFactoryImplementor
 import org.hibernate.tool.hbm2ddl.SchemaExport as HibernateSchemaExport
 import org.hibernate.tool.schema.TargetType
 
-import grails.dev.commands.ApplicationCommand
-import grails.dev.commands.ExecutionContext
+import grails.cli.commands.ApplicationCommand
+import grails.cli.commands.ExecutionContext
 import grails.util.Environment
 
 import org.grails.build.parsing.CommandLine
