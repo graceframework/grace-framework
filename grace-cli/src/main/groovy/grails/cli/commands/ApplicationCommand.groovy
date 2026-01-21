@@ -17,17 +17,14 @@ package grails.cli.commands
 
 import org.springframework.context.ConfigurableApplicationContext
 
-import grails.util.Described
-import grails.util.GrailsNameUtils
-import grails.util.Named
-
 /**
  * Represents a command that is run against the {@link org.springframework.context.ApplicationContext}
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
-trait ApplicationCommand implements Named, Described {
+trait ApplicationCommand implements Command {
 
     private ConfigurableApplicationContext applicationContext
 
@@ -44,22 +41,15 @@ trait ApplicationCommand implements Named, Described {
         this.applicationContext
     }
 
-    @Override
-    String getName() {
-        GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(getClass().getName(), 'Command'))
-    }
-
-    @Override
-    String getDescription() {
-        getName()
-    }
-
     /**
      * Handles the command
      *
      * @param executionContext The execution context
      * @return True if the command was successful
      */
-    abstract boolean handle(ExecutionContext executionContext)
+    @Override
+    boolean handle(ExecutionContext executionContext) {
+        true
+    }
 
 }

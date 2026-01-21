@@ -248,8 +248,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
             String taskName = GrailsNameUtils.getLogicalPropertyName(ctxCommand.class.name, 'Command')
             String commandName = GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(ctxCommand.class.name, 'Command'))
             String commandDescription = ctxCommand.description
+            String commandGroup = ctxCommand?.group ?: 'Command'
             project.tasks.register(taskName, ApplicationContextCommandTask) { ApplicationContextCommandTask commandTask ->
-                commandTask.setGroup("Command")
+                commandTask.setGroup(commandGroup)
                 commandTask.setDescription(commandDescription)
                 commandTask.classpath = buildClasspath(project, runtimeClasspath, consoleClasspath, profileClasspath)
                 commandTask.command = commandName
