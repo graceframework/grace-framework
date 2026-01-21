@@ -1,11 +1,11 @@
 package org.grails.plugins.databasemigration.command
 
+import grails.cli.commands.ApplicationCommand
+import grails.cli.commands.ExecutionContext
 import grails.config.Config
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.core.support.GrailsApplicationAware
-import grails.dev.commands.ApplicationCommand
-import grails.dev.commands.ExecutionContext
 import grails.orm.bootstrap.HibernateDatastoreSpringInitializer
 import grails.persistence.Entity
 import grails.util.GrailsNameUtils
