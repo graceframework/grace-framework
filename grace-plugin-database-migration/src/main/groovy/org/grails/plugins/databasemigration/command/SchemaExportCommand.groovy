@@ -38,6 +38,7 @@ import org.grails.orm.hibernate.HibernateDatastore
 @CompileStatic
 class SchemaExportCommand implements ApplicationCommand {
 
+    final String group = 'Database'
     final String description = 'Creates a DDL file of the database schema'
     Boolean skipBootstrap = true
 

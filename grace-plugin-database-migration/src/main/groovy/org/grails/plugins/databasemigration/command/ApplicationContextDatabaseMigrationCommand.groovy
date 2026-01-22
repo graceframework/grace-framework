@@ -43,6 +43,7 @@ import static org.grails.plugins.databasemigration.PluginConstants.DEFAULT_DATAS
 @CompileStatic
 trait ApplicationContextDatabaseMigrationCommand implements DatabaseMigrationCommand {
 
+    final String group = 'Database'
     ConfigurableApplicationContext applicationContext
 
     Boolean skipBootstrap = true
