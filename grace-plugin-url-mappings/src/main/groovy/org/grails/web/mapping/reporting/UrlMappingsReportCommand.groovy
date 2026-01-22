@@ -35,6 +35,7 @@ import grails.web.mapping.reporting.UrlMappingsRenderer
 @Commons
 class UrlMappingsReportCommand implements ApplicationCommand {
 
+    final String group = 'Grace'
     final String description = "Prints out a report of the project's URL mappings"
 
     @Override

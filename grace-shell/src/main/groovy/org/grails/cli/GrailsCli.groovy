@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -618,7 +618,8 @@ class GrailsCli {
 
                 List<URL> urls = (List<URL>) dependencyMap.get('dependencies') + (List<URL>) dependencyMap.get('profiles')
                 List<URL> profiles = (List<URL>) dependencyMap.get('profiles')
-                URLClassLoader classLoader = new URLClassLoader(urls as URL[], Thread.currentThread().contextClassLoader)
+                List<URL> classesDir = [BuildSettings.CLASSES_DIR.toURI().toURL()]
+                URLClassLoader classLoader = new URLClassLoader((urls + classesDir) as URL[], Thread.currentThread().contextClassLoader)
                 this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])
                 Thread.currentThread().contextClassLoader = classLoader
             }
