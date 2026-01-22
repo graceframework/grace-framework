@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.profile.tasks;
+package org.grails.cli.ant.tasks;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.ExecTask;
-import org.apache.tools.ant.types.Commandline;
+import org.apache.tools.ant.taskdefs.Echo;
 
 /**
  * @author Michael Yan
  * @since 2023.0
  */
-public class Npm extends ExecTask {
+public class File extends Echo {
 
-    private String command;
-
-    public Npm() {
-        super.setExecutable("npm");
+    public File() {
     }
 
-    public void addText(String text) {
-        this.command = text;
-        String[] tmp = Commandline.translateCommandline(text);
-        if (tmp != null && tmp.length > 0) {
-            for (int i = 0; i < tmp.length; i++) {
-                createArg().setValue(tmp[i]);
-            }
-        }
+    public void setName(java.io.File name) {
+        setFile(name);
     }
 
     @Override
     public void execute() throws BuildException {
-        log(this.command);
+        log(file.getName());
         super.execute();
     }
-
 }
-

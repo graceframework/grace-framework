@@ -209,7 +209,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
             return false
         }
         consoleLogger.addStatus('Applying Template')
-        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.taskdef(resource: 'org/grails/cli/ant/tasks/antlib.xml')
         ant.setLoggerLevel(Project.MSG_INFO)
         ant.groovy {
             url url: template

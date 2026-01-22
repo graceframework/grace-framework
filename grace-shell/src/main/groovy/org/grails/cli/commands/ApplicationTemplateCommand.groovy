@@ -111,7 +111,7 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
         Project project = createAntProject(appName, targetDirectory, variables, args, console, verbose)
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(project)
 
-        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.taskdef(resource: 'org/grails/cli/ant/tasks/antlib.xml')
 
         if (!verbose) {
             ant.setLoggerLevel(Project.MSG_INFO)

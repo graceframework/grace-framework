@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.profile.tasks;
+package org.grails.cli.ant.tasks;
 
 import java.util.Hashtable;
 
@@ -25,10 +25,10 @@ import org.apache.tools.ant.taskdefs.ExecTask;
  * @author Michael Yan
  * @since 2023.0
  */
-public class Grace extends ExecTask {
+public class Git extends ExecTask {
 
-    public Grace() {
-        super.setExecutable("grace");
+    public Git() {
+        super.setExecutable("git");
     }
 
     public void maybeConfigure() throws BuildException {

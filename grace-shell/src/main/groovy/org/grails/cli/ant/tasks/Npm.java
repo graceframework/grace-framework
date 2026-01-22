@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.profile.tasks;
+package org.grails.cli.ant.tasks;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.ExecTask;
-import org.apache.tools.ant.taskdefs.condition.Os;
 import org.apache.tools.ant.types.Commandline;
 
 /**
  * @author Michael Yan
  * @since 2023.0
  */
-public class Gradle extends ExecTask {
+public class Npm extends ExecTask {
 
     private String command;
 
-    public Gradle() {
-        if (Os.isFamily("windows")) {
-            super.setExecutable("gradlew");
-        }
-        else {
-            super.setExecutable("./gradlew");
-        }
+    public Npm() {
+        super.setExecutable("npm");
     }
 
     public void addText(String text) {
@@ -49,8 +43,9 @@ public class Gradle extends ExecTask {
 
     @Override
     public void execute() throws BuildException {
-        log(command);
+        log(this.command);
         super.execute();
     }
 
 }
+

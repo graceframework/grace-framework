@@ -752,7 +752,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         // Define Ant tasks
-        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.taskdef(resource: 'org/grails/cli/ant/tasks/antlib.xml')
 
         File tempZipFile = null
         File tempDir = null
@@ -977,7 +977,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             console.println()
         }
 
-        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.taskdef(resource: 'org/grails/cli/ant/tasks/antlib.xml')
 
         if (!verbose && !quiet) {
             ant.setLoggerLevel(Project.MSG_INFO)
