@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ import grails.build.logging.GrailsConsole
 import grails.util.GrailsNameUtils
 
 import org.grails.build.parsing.CommandLine
+import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.commands.templates.SimpleTemplate
 import org.grails.cli.interactive.completers.ClassNameCompleter
 import org.grails.cli.profile.AbstractStep
-import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile
-import org.grails.cli.profile.commands.templates.SimpleTemplate
 import org.grails.cli.profile.support.ArtefactVariableResolver
 
 /**

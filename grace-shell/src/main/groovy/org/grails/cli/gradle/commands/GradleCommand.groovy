@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ import groovy.transform.CompileStatic
 import jline.console.completer.Completer
 import org.gradle.tooling.BuildLauncher
 
+import org.grails.cli.commands.CommandDescription
+import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.commands.ProjectCommand
+import org.grails.cli.commands.ProjectContext
+import org.grails.cli.commands.ProjectContextAware
 import org.grails.cli.gradle.GradleUtil
 import org.grails.cli.interactive.completers.ClosureCompleter
-import org.grails.cli.profile.CommandDescription
-import org.grails.cli.profile.ExecutionContext
-import org.grails.cli.profile.ProjectCommand
-import org.grails.cli.profile.ProjectContext
-import org.grails.cli.profile.ProjectContextAware
 
 /**
  * A command for invoking Gradle commands

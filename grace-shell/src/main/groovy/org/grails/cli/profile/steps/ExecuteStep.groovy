@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.grails.cli.profile.steps
 
+import org.grails.cli.commands.Command
+import org.grails.cli.commands.CommandException
+import org.grails.cli.commands.ExecutionContext
 import org.grails.cli.profile.AbstractStep
-import org.grails.cli.profile.Command
-import org.grails.cli.profile.CommandException
-import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.ProfileCommand
 
 /**

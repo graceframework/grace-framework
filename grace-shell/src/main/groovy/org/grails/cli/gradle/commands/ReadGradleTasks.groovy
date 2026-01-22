@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ import org.gradle.tooling.ProjectConnection
 
 import grails.io.support.SystemOutErrCapturer
 
+import org.grails.cli.commands.ProjectContext
 import org.grails.cli.gradle.FetchAllTaskSelectorsBuildAction
 import org.grails.cli.gradle.cache.ListReadingCachedGradleOperation
-import org.grails.cli.profile.ProjectContext
 
 /**
  * @author Graeme Rocher

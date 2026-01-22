@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ import java.util.logging.Level;
 
 import org.grails.cli.app.GrailsApplicationRunner;
 import org.grails.cli.app.GrailsApplicationRunnerConfiguration;
+import org.grails.cli.commands.Command;
+import org.grails.cli.commands.CommandDescription;
+import org.grails.cli.commands.ExecutionContext;
 import org.grails.cli.compiler.GroovyCompilerScope;
 import org.grails.cli.compiler.RepositoryConfigurationFactory;
 import org.grails.cli.compiler.grape.RepositoryConfiguration;
-import org.grails.cli.profile.Command;
-import org.grails.cli.profile.CommandDescription;
-import org.grails.cli.profile.ExecutionContext;
 
 /**
  * {@link Command} to 'run' a groovy script or scripts.
