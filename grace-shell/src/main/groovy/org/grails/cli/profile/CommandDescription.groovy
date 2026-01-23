@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,148 +16,19 @@
 package org.grails.cli.profile
 
 import groovy.transform.Canonical
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import jline.console.completer.Completer
+import groovy.transform.InheritConstructors
 
 /**
- * Describes a {@link Command}
+ * Describes a {@link org.grails.cli.command.Command}
  *
  * @author Graeme Rocher
  * @author Michael Yan
+ * @deprecated since 2024.0.0, in favor of {@link org.grails.cli.command.CommandDescription}
  * @since 3.0
  */
-@CompileStatic
 @Canonical
-class CommandDescription {
-
-    /**
-     * The name of the command
-     */
-    String name
-
-    /**
-     * The description of the command
-     */
-    String description
-
-    /**
-     * The usage instructions for the command
-     */
-    String usage
-
-    /**
-     * The example for the command
-     */
-    String examples
-
-    /**
-     * Any names that should also map to this command
-     */
-    Collection<String> synonyms = []
-
-    /**
-     * A completer for the command
-     */
-    Completer completer = null
-
-    private final Map<String, CommandArgument> arguments = new LinkedHashMap<>()
-    private final Map<String, CommandArgument> flags = new LinkedHashMap<>()
-
-    /**
-     * Returns an argument for the given name or null if it doesn't exist
-     * @param name The name
-     * @return The argument or null
-     */
-    CommandArgument getArgument(String name) {
-        arguments[name]
-    }
-
-    /**
-     * Returns a flag for the given name or null if it doesn't exist
-     * @param name The name
-     * @return The argument or null
-     */
-    CommandArgument getFlag(String name) {
-        flags[name]
-    }
-
-    /**
-     * Arguments to the command
-     */
-    Collection<CommandArgument> getArguments() {
-        arguments.values()
-    }
-
-    /**
-     * Flags to the command. These differ as they are optional and are prefixed with a hyphen (Example -debug)
-     */
-    Collection<CommandArgument> getFlags() {
-        flags.values()
-    }
-
-    /**
-     * Adds a synonyms for this command
-     *
-     * @param synonyms The synonyms
-     * @return This command description
-     */
-    CommandDescription synonyms(String...synonyms) {
-        this.synonyms.addAll(synonyms)
-        this
-    }
-
-    /**
-     * Sets the completer
-     *
-     * @param completer The class of the completer to set
-     * @return The description instance
-     */
-    CommandDescription completer(Class<Completer> completer) {
-        this.completer = completer.newInstance()
-        this
-    }
-
-    /**
-     * Sets the completer
-     *
-     * @param completer The completer to set
-     * @return The description instance
-     */
-    CommandDescription completer(Completer completer) {
-        this.completer = completer
-        this
-    }
-
-    /**
-     * Adds an argument for the given named arguments
-     *
-     * @param args The named arguments
-     */
-    @CompileDynamic
-    CommandDescription argument(Map args) {
-        def arg = new CommandArgument(args)
-        def name = arg.name
-        if (name) {
-            arguments[name] = arg
-        }
-        this
-    }
-
-    /**
-     * Adds a flag for the given named arguments
-     *
-     * @param args The named arguments
-     */
-    @CompileDynamic
-    CommandDescription flag(Map args) {
-        def arg = new CommandArgument(args)
-        def name = arg.name
-        if (name) {
-            arg.required = false
-            flags[name] = arg
-        }
-        this
-    }
+@InheritConstructors
+@Deprecated(since = '2024.0.0', forRemoval = true)
+class CommandDescription extends org.grails.cli.command.CommandDescription {
 
 }

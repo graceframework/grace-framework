@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.grails.cli.profile.commands.factory
 
 import groovy.transform.CompileStatic
 
-import org.grails.cli.profile.Command
+import org.grails.cli.command.Command
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 
@@ -25,18 +25,28 @@ import org.grails.cli.profile.ProfileCommand
  * Uses the service registry pattern to locate commands
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
-class ServiceCommandFactory implements CommandFactory {
+class ServiceCommandFactory implements ProfileCommandFactory {
+
+    Profile profile
+    boolean inherited
 
     @Override
-    Collection<Command> findCommands(Profile profile, boolean inherited) {
-        if (inherited) {
+    Collection<Command> findCommands() {
+        if (this.inherited) {
             return Collections.emptyList()
         }
         ServiceLoader.load(Command).findAll { Command cmd ->
-            cmd instanceof ProfileCommand
+            if (cmd instanceof ProfileCommand) {
+                ((ProfileCommand) cmd).profile = this.profile
+                true
+            }
+            else {
+                false
+            }
         }
     }
 

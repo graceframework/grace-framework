@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,19 +28,19 @@ import grails.util.GrailsNameUtils
 import org.grails.build.logging.GrailsConsoleAntBuilder
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.core.io.FileSystemInteraction
+import org.grails.cli.core.io.FileSystemInteractionImpl
+import org.grails.cli.core.io.ServerInteraction
+import org.grails.cli.core.template.TemplateRenderer
+import org.grails.cli.core.template.TemplateRendererImpl
 import org.grails.cli.gradle.GradleInvoker
-import org.grails.cli.profile.CommandDescription
-import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.commands.events.CommandEvents
-import org.grails.cli.profile.commands.io.FileSystemInteraction
-import org.grails.cli.profile.commands.io.FileSystemInteractionImpl
-import org.grails.cli.profile.commands.io.ServerInteraction
-import org.grails.cli.profile.commands.templates.TemplateRenderer
-import org.grails.cli.profile.commands.templates.TemplateRendererImpl
 
 /**
  * A base class for Groovy scripts that implement commands
@@ -209,7 +209,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
             return false
         }
         consoleLogger.addStatus('Applying Template')
-        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.taskdef(resource: 'org/grails/cli/ant/tasks/antlib.xml')
         ant.setLoggerLevel(Project.MSG_INFO)
         ant.groovy {
             url url: template
