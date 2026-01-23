@@ -19,8 +19,8 @@ import grails.build.logging.GrailsConsole
 import grails.cli.commands.ApplicationCommand
 import grails.util.Named
 
+import org.grails.cli.command.gradle.GradleTaskCommandAdapter
 import org.grails.cli.commands.Command
-import org.grails.cli.gradle.commands.GradleTaskCommandAdapter
 import org.grails.io.support.GrailsFactoriesLoader
 
 /**

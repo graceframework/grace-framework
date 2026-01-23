@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.gradle.commands
+package org.grails.cli.command.gradle
 
 import groovy.transform.CompileStatic
 import org.gradle.tooling.ProjectConnection
