@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.templates
+package org.grails.cli.core.template
 
 import groovy.transform.CompileStatic
 import groovy.transform.Immutable

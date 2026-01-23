@@ -30,11 +30,11 @@ import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
 import org.grails.cli.commands.CommandDescription
 import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.io.FileSystemInteraction
-import org.grails.cli.commands.io.FileSystemInteractionImpl
-import org.grails.cli.commands.io.ServerInteraction
-import org.grails.cli.commands.templates.TemplateRenderer
-import org.grails.cli.commands.templates.TemplateRendererImpl
+import org.grails.cli.core.io.FileSystemInteraction
+import org.grails.cli.core.io.FileSystemInteractionImpl
+import org.grails.cli.core.io.ServerInteraction
+import org.grails.cli.core.template.TemplateRenderer
+import org.grails.cli.core.template.TemplateRendererImpl
 import org.grails.cli.gradle.GradleInvoker
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
