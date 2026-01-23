@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,10 @@ import org.springframework.core.io.Resource
 
 import grails.util.BuildSettings
 
-import org.grails.cli.profile.Command
+import org.grails.cli.command.Command
+import org.grails.cli.command.factory.ClasspathCommandResourceResolver
+import org.grails.cli.command.factory.CommandFactory
+import org.grails.cli.command.factory.CommandResourceResolver
 import org.grails.cli.profile.Profile
 
 /**
@@ -34,17 +37,20 @@ import org.grails.cli.profile.Profile
  * @since 3.0
  */
 @CompileStatic
-abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
+abstract class ResourceResolvingCommandFactory<T> implements ProfileCommandFactory {
+
+    Profile profile
+    boolean inherited
 
     @Override
-    Collection<Command> findCommands(Profile profile, boolean inherited) {
-        Collection<Resource> resources = findCommandResources(profile, inherited)
+    Collection<Command> findCommands() {
+        Collection<Resource> resources = findCommandResources(this.profile, this.inherited)
         Collection<Command> commands = []
         for (Resource resource in resources) {
             String commandName = evaluateFileName(resource.filename)
             T data = readCommandFile(resource)
 
-            Command command = createCommand(profile, commandName, resource, data)
+            Command command = createCommand(this.profile, commandName, resource, data)
             if (command) {
                 commands << command
             }
@@ -58,38 +64,47 @@ abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
 
     protected Collection<Resource> findCommandResources(Profile profile, boolean inherited) {
         Collection<Resource> allResources = []
-        for (CommandResourceResolver resolver in getCommandResolvers(inherited)) {
-            allResources.addAll resolver.findCommandResources(profile)
+        for (CommandResourceResolver resolver in getCommandResolvers(profile, inherited)) {
+            allResources.addAll resolver.findCommandResources()
         }
         allResources
     }
 
-    protected Collection<CommandResourceResolver> getCommandResolvers(boolean inherited) {
-        def profileCommandsResolver = new FileSystemCommandResourceResolver(matchingFileExtensions)
+    protected Collection<CommandResourceResolver> getCommandResolvers(Profile profile, boolean inherited) {
         Collection<CommandResourceResolver> commandResolvers = []
+
+        FileSystemCommandResourceResolver profileCommandsResolver = new FileSystemCommandResourceResolver(matchingFileExtensions)
+        profileCommandsResolver.profile = profile
+
         if (inherited) {
             commandResolvers.add(profileCommandsResolver)
             return commandResolvers
         }
 
-        def localCommandsResolver1 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
+        FileSystemCommandResourceResolver localCommandsResolver1 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
 
             @Override
-            protected Resource getCommandsDirectory(Profile profile) {
+            protected Resource getCommandsDirectory() {
                 new FileSystemResource("${BuildSettings.BASE_DIR}/src/main/scripts/")
             }
 
         }
-        def localCommandsResolver2 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
+        localCommandsResolver1.profile = profile
+
+        FileSystemCommandResourceResolver localCommandsResolver2 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
 
             @Override
-            protected Resource getCommandsDirectory(Profile profile) {
+            protected Resource getCommandsDirectory() {
                 new FileSystemResource("${BuildSettings.BASE_DIR}/commands/")
             }
 
         }
-        commandResolvers.addAll([profileCommandsResolver, localCommandsResolver1, localCommandsResolver2,
-                                 new ClasspathCommandResourceResolver(matchingFileExtensions)])
+        localCommandsResolver2.profile = profile
+
+        commandResolvers.add(profileCommandsResolver)
+        commandResolvers.add(localCommandsResolver1)
+        commandResolvers.add(localCommandsResolver2)
+        commandResolvers.add(new ClasspathCommandResourceResolver(matchingFileExtensions))
         commandResolvers
     }
 

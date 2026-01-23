@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
-import org.grails.cli.profile.Command
+import org.grails.cli.command.Command
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
 
 /**
- * A {@link CommandFactory} that can discover commands defined in YAML or JSON
+ * A {@link org.grails.cli.command.factory.CommandFactory} that can discover commands defined in YAML or JSON
  *
  * @author Graeme Rocher
  * @author Michael Yan

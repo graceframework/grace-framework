@@ -1,0 +1,14 @@
+org.grails.cli.command.app.ApplicationTemplateCommand
+org.grails.cli.command.app.CreateAppCommand
+org.grails.cli.command.destroy.DestroyCommand
+org.grails.cli.command.generate.GenerateCommand
+org.grails.cli.command.gradle.GradleCommand
+org.grails.cli.command.help.HelpCommand
+org.grails.cli.command.open.OpenCommand
+org.grails.cli.command.plugin.CreatePluginCommand
+org.grails.cli.command.plugin.ListPluginsCommand
+org.grails.cli.command.plugin.PluginInfoCommand
+org.grails.cli.command.profile.CreateProfileCommand
+org.grails.cli.command.profile.ListProfilesCommand
+org.grails.cli.command.profile.ProfileInfoCommand
+org.grails.cli.command.run.RunCommand
