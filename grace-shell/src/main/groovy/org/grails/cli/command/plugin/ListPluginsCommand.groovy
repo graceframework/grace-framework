@@ -13,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command.plugin
 
 import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
+
+import org.grails.cli.commands.Command
+import org.grails.cli.commands.CommandDescription
+import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.commands.GlobalCommand
+import org.grails.cli.commands.ProjectCommand
 
 /**
  * Lists the available plugins from the Plugin Repository

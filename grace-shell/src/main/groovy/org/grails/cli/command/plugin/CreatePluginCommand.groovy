@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command.plugin
 
 import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
+
+import org.grails.cli.command.app.CreateAppCommand
 import org.grails.cli.profile.Profile
 
 import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
