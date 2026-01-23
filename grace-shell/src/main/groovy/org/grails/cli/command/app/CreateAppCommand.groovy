@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command.app
 
 import java.nio.file.FileVisitResult
 import java.nio.file.Files
@@ -55,6 +55,9 @@ import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
+import org.grails.cli.commands.ArgumentCompletingCommand
+import org.grails.cli.commands.CommandDescription
+import org.grails.cli.commands.ExecutionContext
 import org.grails.cli.core.io.GradleDependency
 import org.grails.cli.profile.Feature
 import org.grails.cli.profile.Profile
