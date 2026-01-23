@@ -18,7 +18,7 @@ package org.grails.plugins.databasemigration.command
 import grails.util.GrailsNameUtils
 import org.grails.build.parsing.CommandLineParser
 import org.grails.cli.GrailsCli
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 import org.grails.config.CodeGenConfig
 import org.h2.Driver
 

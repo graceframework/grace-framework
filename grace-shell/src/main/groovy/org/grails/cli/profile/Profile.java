@@ -23,9 +23,9 @@ import jline.console.completer.Completer;
 import org.eclipse.aether.graph.Dependency;
 import org.springframework.core.io.Resource;
 
-import org.grails.cli.commands.Command;
-import org.grails.cli.commands.ExecutionContext;
-import org.grails.cli.commands.ProjectContext;
+import org.grails.cli.command.Command;
+import org.grails.cli.command.ExecutionContext;
+import org.grails.cli.command.ProjectContext;
 import org.grails.config.NavigableMap;
 
 /**
@@ -141,22 +141,22 @@ public interface Profile {
 
     /**
      * The profile completers
-     * @param context The {@link org.grails.cli.commands.ProjectContext} instance
+     * @param context The {@link org.grails.cli.command.ProjectContext} instance
      * @return An {@link java.lang.Iterable} of {@link jline.console.completer.Completer} instances
      */
     Iterable<Completer> getCompleters(ProjectContext context);
 
     /**
-     * The profile {@link org.grails.cli.commands.Command} instances
+     * The profile {@link org.grails.cli.command.Command} instances
      *
      * @param context The {@link ProjectContext} instance
-     * @return An {@link java.lang.Iterable} of {@link org.grails.cli.commands.Command} instances
+     * @return An {@link java.lang.Iterable} of {@link org.grails.cli.command.Command} instances
      */
     Iterable<Command> getCommands(ProjectContext context);
 
     /**
      * Whether a command executes for the given context and name
-     * @param context The {@link org.grails.cli.commands.ProjectContext}
+     * @param context The {@link org.grails.cli.command.ProjectContext}
      * @param name The command name
      * @return True if the command does exist
      */

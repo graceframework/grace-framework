@@ -15,7 +15,7 @@
  */
 package org.grails.cli.profile
 
-import org.grails.cli.commands.Command
+import org.grails.cli.command.Command
 
 /**
  * A {@link Command} applicable only to a certain {@link Profile}

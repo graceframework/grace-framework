@@ -15,8 +15,8 @@
  */
 package org.grails.cli.profile
 
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.Command
+import org.grails.cli.command.ExecutionContext
 
 /**
  * Represents a step within a {@link Command}. Commands are made up of 1 or many steps.

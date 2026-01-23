@@ -15,8 +15,8 @@
  */
 package org.grails.cli.profile.commands.factory
 
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.factory.CommandFactory
+import org.grails.cli.command.Command
+import org.grails.cli.command.factory.CommandFactory
 import org.grails.cli.profile.Profile
 
 /**

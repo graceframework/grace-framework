@@ -19,7 +19,7 @@ import groovy.transform.CompileStatic
 import org.springframework.core.io.Resource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
-import org.grails.cli.commands.factory.CommandResourceResolver
+import org.grails.cli.command.factory.CommandResourceResolver
 import org.grails.cli.profile.Profile
 import org.grails.io.support.StaticResourceLoader
 

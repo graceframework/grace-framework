@@ -19,16 +19,16 @@ import groovy.transform.Canonical
 import groovy.transform.InheritConstructors
 
 /**
- * Describes a {@link org.grails.cli.commands.Command}
+ * Describes a {@link org.grails.cli.command.Command}
  *
  * @author Graeme Rocher
  * @author Michael Yan
- * @deprecated since 2024.0.0, in favor of {@link org.grails.cli.commands.CommandDescription}
+ * @deprecated since 2024.0.0, in favor of {@link org.grails.cli.command.CommandDescription}
  * @since 3.0
  */
 @Canonical
 @InheritConstructors
 @Deprecated(since = '2024.0.0', forRemoval = true)
-class CommandDescription extends org.grails.cli.commands.CommandDescription {
+class CommandDescription extends org.grails.cli.command.CommandDescription {
 
 }

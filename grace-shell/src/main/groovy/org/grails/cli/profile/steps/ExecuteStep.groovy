@@ -15,9 +15,9 @@
  */
 package org.grails.cli.profile.steps
 
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.CommandException
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.Command
+import org.grails.cli.command.CommandException
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.profile.AbstractStep
 import org.grails.cli.profile.ProfileCommand
 

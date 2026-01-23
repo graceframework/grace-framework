@@ -26,7 +26,7 @@ import grails.build.logging.GrailsConsole
 import grails.io.IOUtils
 import grails.util.BuildSettings
 
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.ResourceLocator
 

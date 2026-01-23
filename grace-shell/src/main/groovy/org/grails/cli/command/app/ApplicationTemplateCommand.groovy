@@ -33,11 +33,11 @@ import org.grails.build.logging.GrailsConsoleAntBuilder
 import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.ProjectCommand
-import org.grails.cli.commands.ProjectContext
-import org.grails.cli.commands.ProjectContextAware
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectCommand
+import org.grails.cli.command.ProjectContext
+import org.grails.cli.command.ProjectContextAware
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.repository.MavenProfileRepository

@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command
 
 /**
- * A marker interface for commands that are global, but apply only within the context of a project
+ * Interface for components that want to be made aware of the proxy context
  *
  * @author Graeme Rocher
  * @since 3.0
  */
-interface ProjectCommand extends Command {
+interface ProjectContextAware {
+
+    void setProjectContext(ProjectContext projectContext)
 
 }

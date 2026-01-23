@@ -15,7 +15,7 @@
  */
 package org.grails.cli.profile.commands.factory;
 
-import org.grails.cli.commands.factory.CommandResourceResolver;
+import org.grails.cli.command.factory.CommandResourceResolver;
 import org.grails.cli.profile.Profile;
 
 /**

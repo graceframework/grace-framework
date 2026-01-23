@@ -21,9 +21,9 @@ import java.util.logging.Level;
 
 import org.grails.cli.app.GrailsApplicationRunner;
 import org.grails.cli.app.GrailsApplicationRunnerConfiguration;
-import org.grails.cli.commands.Command;
-import org.grails.cli.commands.CommandDescription;
-import org.grails.cli.commands.ExecutionContext;
+import org.grails.cli.command.Command;
+import org.grails.cli.command.CommandDescription;
+import org.grails.cli.command.ExecutionContext;
 import org.grails.cli.compiler.GroovyCompilerScope;
 import org.grails.cli.compiler.RepositoryConfigurationFactory;
 import org.grails.cli.compiler.grape.RepositoryConfiguration;

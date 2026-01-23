@@ -55,9 +55,9 @@ import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
-import org.grails.cli.commands.ArgumentCompletingCommand
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ArgumentCompletingCommand
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.core.io.GradleDependency
 import org.grails.cli.profile.Feature
 import org.grails.cli.profile.Profile

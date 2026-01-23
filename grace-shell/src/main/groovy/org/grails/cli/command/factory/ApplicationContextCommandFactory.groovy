@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.command.factory
 
 import grails.build.logging.GrailsConsole
 import grails.cli.commands.ApplicationCommand
 import grails.util.Named
 
+import org.grails.cli.command.Command
 import org.grails.cli.command.gradle.GradleTaskCommandAdapter
-import org.grails.cli.commands.Command
 import org.grails.io.support.GrailsFactoriesLoader
 
 /**

@@ -22,9 +22,9 @@ import grails.util.Described
 import grails.util.GrailsNameUtils
 import grails.util.Named
 
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.ProjectCommand
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectCommand
 import org.grails.cli.gradle.GradleInvoker
 
 /**

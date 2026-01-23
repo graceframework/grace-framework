@@ -22,9 +22,9 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 
 import org.grails.cli.GrailsCli
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.ProjectContext
-import org.grails.cli.commands.ProjectContextAware
+import org.grails.cli.command.Command
+import org.grails.cli.command.ProjectContext
+import org.grails.cli.command.ProjectContextAware
 import org.grails.cli.profile.AbstractProfile
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository

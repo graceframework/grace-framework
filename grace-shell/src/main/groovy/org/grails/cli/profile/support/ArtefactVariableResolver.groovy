@@ -19,7 +19,7 @@ import groovy.transform.CompileStatic
 
 import grails.util.GrailsNameUtils
 
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.core.template.SimpleTemplate
 
 /**

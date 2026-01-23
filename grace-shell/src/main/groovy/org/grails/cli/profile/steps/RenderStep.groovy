@@ -23,7 +23,7 @@ import grails.build.logging.GrailsConsole
 import grails.util.GrailsNameUtils
 
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.core.template.SimpleTemplate
 import org.grails.cli.interactive.completers.ClassNameCompleter
 import org.grails.cli.profile.AbstractStep

@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.command.factory
 
-import org.grails.cli.commands.Command
+import org.springframework.core.io.Resource
 
 /**
- * Factory to find all {@link Command} instances
- *
  * @author Graeme Rocher
  * @author Michael Yan
  * @since 3.0
  */
-interface CommandFactory {
+interface CommandResourceResolver {
 
     /**
-     * Get the commands
+     * Finds {@link org.grails.cli.command.Command} resources
      *
-     * @return The commands found
+     * @return A collection of {@link Resource} instances
      */
-    Collection<Command> findCommands()
+    Collection<Resource> findCommandResources()
+
+    /**
+     * The pattern to match file names with
+     *
+     * @return A regex pattern
+     */
+    Collection<String> getMatchingFileExtensions()
 
 }

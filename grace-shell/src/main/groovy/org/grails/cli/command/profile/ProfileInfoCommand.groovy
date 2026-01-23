@@ -19,12 +19,12 @@ import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
 
-import org.grails.cli.commands.ArgumentCompletingCommand
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.GlobalCommand
-import org.grails.cli.commands.ProjectCommand
+import org.grails.cli.command.ArgumentCompletingCommand
+import org.grails.cli.command.Command
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.GlobalCommand
+import org.grails.cli.command.ProjectCommand
 import org.grails.cli.profile.Feature
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository

@@ -28,8 +28,8 @@ import grails.util.GrailsNameUtils
 import org.grails.build.logging.GrailsConsoleAntBuilder
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.core.io.FileSystemInteraction
 import org.grails.cli.core.io.FileSystemInteractionImpl
 import org.grails.cli.core.io.ServerInteraction

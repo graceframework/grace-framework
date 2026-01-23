@@ -27,7 +27,7 @@ import org.springframework.core.io.ResourceLoader
 
 import grails.codegen.model.Model
 
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.core.io.FileSystemInteraction
 import org.grails.cli.core.io.FileSystemInteractionImpl
 import org.grails.cli.interactive.completers.ClassNameCompleter

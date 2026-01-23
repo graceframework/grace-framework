@@ -23,10 +23,10 @@ import org.springframework.core.io.Resource
 
 import grails.util.BuildSettings
 
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.factory.ClasspathCommandResourceResolver
-import org.grails.cli.commands.factory.CommandFactory
-import org.grails.cli.commands.factory.CommandResourceResolver
+import org.grails.cli.command.Command
+import org.grails.cli.command.factory.ClasspathCommandResourceResolver
+import org.grails.cli.command.factory.CommandFactory
+import org.grails.cli.command.factory.CommandResourceResolver
 import org.grails.cli.profile.Profile
 
 /**

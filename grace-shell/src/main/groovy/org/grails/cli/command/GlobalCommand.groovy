@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2026 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command
+
+import groovy.transform.CompileStatic
 
 /**
- * Interface for components that want to be made aware of the proxy context
+ * A marker interface that indicates that this command could be used in or out a project
  *
- * @author Graeme Rocher
- * @since 3.0
+ * @author Michael Yan
+ * @since 2023.3.0
  */
-interface ProjectContextAware {
-
-    void setProjectContext(ProjectContext projectContext)
+@CompileStatic
+interface GlobalCommand extends Command {
 
 }

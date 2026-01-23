@@ -13,53 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command;
 
-import groovy.transform.CompileStatic
+import org.grails.build.parsing.CommandLine;
 
 /**
- * Represents argument to a command
+ * Context for the execution of {@link Command} instances within a {@link org.grails.cli.profile.Profile}
  *
+ * @author Lari Hotari
  * @author Graeme Rocher
- * @author Michael Yan
- * @since 4.0
  */
-@CompileStatic
-class CommandArgument {
+public interface ExecutionContext extends ProjectContext {
 
     /**
-     * The name of the argument
+     * @return The parsed command line arguments as an instance of {@link org.grails.build.parsing.CommandLine}
      */
-    String name
+    CommandLine getCommandLine();
 
     /**
-     * The type of the argument
+     * Allows cancelling of the running command
      */
-    String type
+    void cancel();
 
     /**
-     * The description of the argument
+     * Attaches a listener for cancellation events
+     *
+     * @param listener The {@link CommandCancellationListener}
      */
-    String description
-
-    /**
-     * The aliases of the argument
-     */
-    String aliases
-
-    /**
-     * The banner of the argument
-     */
-    String banner
-
-    /**
-     * Whether the argument is required or not
-     */
-    boolean required = true
-
-    /**
-     * The string argument this argument translates into
-     */
-    String target
+    void addCancelledListener(CommandCancellationListener listener);
 
 }

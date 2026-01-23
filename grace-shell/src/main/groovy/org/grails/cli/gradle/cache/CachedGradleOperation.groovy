@@ -24,7 +24,7 @@ import org.gradle.tooling.internal.consumer.DefaultGradleConnector
 
 import grails.util.BuildSettings
 
-import org.grails.cli.commands.ProjectContext
+import org.grails.cli.command.ProjectContext
 import org.grails.cli.gradle.GradleUtil
 
 /**

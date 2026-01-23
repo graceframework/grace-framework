@@ -20,9 +20,8 @@ import jline.console.completer.Completer
 
 import grails.build.logging.GrailsConsole
 
-import org.grails.cli.commands.CommandDescription
+import org.grails.cli.command.CommandDescription
 import org.grails.cli.profile.AbstractStep
-import org.grails.cli.profile.MultiStepCommand
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.Step
 import org.grails.cli.profile.steps.StepRegistry

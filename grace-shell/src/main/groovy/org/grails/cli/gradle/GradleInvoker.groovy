@@ -21,7 +21,7 @@ import org.gradle.tooling.BuildLauncher
 import grails.util.Environment
 
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 
 /**
  * Allow dynamic invocation of Gradle tasks

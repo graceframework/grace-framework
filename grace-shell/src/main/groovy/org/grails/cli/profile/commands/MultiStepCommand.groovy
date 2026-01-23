@@ -13,9 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.profile
+package org.grails.cli.profile.commands
 
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.profile.AbstractStep
+import org.grails.cli.profile.Profile
+import org.grails.cli.profile.ProfileCommand
+import org.grails.cli.profile.Step
 import org.grails.cli.profile.commands.events.CommandEvents
 
 /**

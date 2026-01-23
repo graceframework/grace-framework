@@ -20,8 +20,8 @@ import org.gradle.tooling.BuildException
 import org.gradle.tooling.BuildLauncher
 
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.CommandArgument
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.CommandArgument
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.gradle.GradleUtil
 import org.grails.cli.profile.AbstractStep
 import org.grails.cli.profile.ProfileCommand

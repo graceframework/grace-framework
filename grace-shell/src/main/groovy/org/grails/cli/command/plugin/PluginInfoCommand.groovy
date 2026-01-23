@@ -21,11 +21,11 @@ import groovy.xml.slurpersupport.GPathResult
 import grails.build.logging.GrailsConsole
 
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.GlobalCommand
-import org.grails.cli.commands.ProjectCommand
+import org.grails.cli.command.Command
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.GlobalCommand
+import org.grails.cli.command.ProjectCommand
 
 /**
  * Get the information about the given plugin

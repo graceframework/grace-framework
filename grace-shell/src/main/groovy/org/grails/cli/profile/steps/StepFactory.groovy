@@ -15,7 +15,7 @@
  */
 package org.grails.cli.profile.steps
 
-import org.grails.cli.commands.Command
+import org.grails.cli.command.Command
 import org.grails.cli.profile.Step
 
 /**

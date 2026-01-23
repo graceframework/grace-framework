@@ -15,8 +15,8 @@
  */
 package org.grails.cli.profile.commands
 
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 

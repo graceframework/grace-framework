@@ -17,7 +17,7 @@ package org.grails.cli.profile.commands.factory
 
 import groovy.transform.CompileStatic
 
-import org.grails.cli.commands.Command
+import org.grails.cli.command.Command
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 

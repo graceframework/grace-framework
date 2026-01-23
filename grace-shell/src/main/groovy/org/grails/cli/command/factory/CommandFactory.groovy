@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands;
+package org.grails.cli.command.factory
+
+import org.grails.cli.command.Command
 
 /**
- * A listener for listening for cancellation of {@link org.grails.cli.commands.Command} executions
+ * Factory to find all {@link Command} instances
  *
- * @author Lari Hotari
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 3.0
  */
-public interface CommandCancellationListener {
+interface CommandFactory {
 
     /**
-     * Fired when a {@link org.grails.cli.commands.Command} is cancelled
+     * Get the commands
+     *
+     * @return The commands found
      */
-    void commandCancelled();
+    Collection<Command> findCommands()
 
 }

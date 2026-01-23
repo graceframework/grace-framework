@@ -19,11 +19,11 @@ import groovy.transform.CompileStatic
 import jline.console.completer.Completer
 import org.gradle.tooling.BuildLauncher
 
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.ProjectCommand
-import org.grails.cli.commands.ProjectContext
-import org.grails.cli.commands.ProjectContextAware
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectCommand
+import org.grails.cli.command.ProjectContext
+import org.grails.cli.command.ProjectContextAware
 import org.grails.cli.gradle.GradleUtil
 import org.grails.cli.interactive.completers.ClosureCompleter
 

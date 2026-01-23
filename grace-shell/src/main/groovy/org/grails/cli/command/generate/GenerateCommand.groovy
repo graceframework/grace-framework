@@ -21,9 +21,9 @@ import grails.build.logging.GrailsConsole
 import grails.cli.generator.GenerationContext
 import grails.cli.generator.Generator
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.ProjectCommand
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectCommand
 
 /**
  * Generate command uses Groovy templates to create everything you need.

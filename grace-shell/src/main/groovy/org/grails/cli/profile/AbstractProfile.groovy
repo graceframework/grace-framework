@@ -36,13 +36,13 @@ import grails.util.BuildSettings
 import grails.util.CosineSimilarity
 
 import org.grails.build.parsing.CommandLine
-import org.grails.cli.commands.Command
-import org.grails.cli.commands.CommandArgument
-import org.grails.cli.commands.CommandDescription
-import org.grails.cli.commands.CommandRegistry
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.ProjectContext
-import org.grails.cli.commands.ProjectContextAware
+import org.grails.cli.command.Command
+import org.grails.cli.command.CommandArgument
+import org.grails.cli.command.CommandDescription
+import org.grails.cli.command.CommandRegistry
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectContext
+import org.grails.cli.command.ProjectContextAware
 import org.grails.cli.interactive.completers.StringsCompleter
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommand

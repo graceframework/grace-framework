@@ -23,7 +23,7 @@ import grails.config.ConfigMap
 import grails.util.Environment
 import grails.util.GrailsNameUtils
 
-import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.command.ExecutionContext
 import org.grails.config.CodeGenConfig
 import org.grails.plugins.databasemigration.EnvironmentAwareCodeGenConfig
 import org.grails.plugins.databasemigration.liquibase.GroovyChangeLogParser

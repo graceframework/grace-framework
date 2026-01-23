@@ -13,29 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.command
 
-import org.springframework.core.io.Resource
+import groovy.transform.InheritConstructors
 
 /**
  * @author Graeme Rocher
- * @author Michael Yan
  * @since 3.0
  */
-interface CommandResourceResolver {
-
-    /**
-     * Finds {@link org.grails.cli.commands.Command} resources
-     *
-     * @return A collection of {@link Resource} instances
-     */
-    Collection<Resource> findCommandResources()
-
-    /**
-     * The pattern to match file names with
-     *
-     * @return A regex pattern
-     */
-    Collection<String> getMatchingFileExtensions()
+@InheritConstructors
+class CommandException extends RuntimeException {
 
 }

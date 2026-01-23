@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.command.factory
 
 import groovy.transform.CompileStatic
 import org.springframework.core.io.Resource

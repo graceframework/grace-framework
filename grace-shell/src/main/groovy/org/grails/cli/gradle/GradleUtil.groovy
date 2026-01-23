@@ -33,8 +33,8 @@ import grails.io.support.SystemStreamsRedirector
 
 import org.grails.build.logging.GrailsConsoleErrorPrintStream
 import org.grails.build.logging.GrailsConsolePrintStream
-import org.grails.cli.commands.ExecutionContext
-import org.grails.cli.commands.ProjectContext
+import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectContext
 
 /**
  * Utility methods for interacting with Gradle
