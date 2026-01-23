@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.profile.commands.factory
 
 import groovy.transform.CompileStatic
 import org.springframework.core.io.Resource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
+import org.grails.cli.commands.factory.CommandResourceResolver
 import org.grails.cli.profile.Profile
 import org.grails.io.support.StaticResourceLoader
 
@@ -30,21 +31,22 @@ import org.grails.io.support.StaticResourceLoader
  * @since 3.0
  */
 @CompileStatic
-class FileSystemCommandResourceResolver implements CommandResourceResolver {
+class FileSystemCommandResourceResolver implements ProfileCommandResourceResolver {
 
-    final Collection<String> matchingFileExtensions
+    protected final Collection<String> matchingFileExtensions
+    protected Profile profile
 
     FileSystemCommandResourceResolver(Collection<String> matchingFileExtensions) {
         this.matchingFileExtensions = matchingFileExtensions
     }
 
     @Override
-    Collection<Resource> findCommandResources(Profile profile) {
-        Resource commandsDir = getCommandsDirectory(profile)
+    Collection<Resource> findCommandResources() {
+        Resource commandsDir = getCommandsDirectory()
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(new StaticResourceLoader(commandsDir))
         if (commandsDir.exists()) {
             Collection<Resource> commandFiles = []
-            for (ext in matchingFileExtensions) {
+            for (ext in this.matchingFileExtensions) {
                 commandFiles.addAll resolver.getResources("*.$ext")
             }
             commandFiles = commandFiles.sort(false) { Resource file -> file.filename }
@@ -53,8 +55,18 @@ class FileSystemCommandResourceResolver implements CommandResourceResolver {
         []
     }
 
-    protected Resource getCommandsDirectory(Profile profile) {
-        profile.profileDir.createRelative('commands/')
+    @Override
+    Collection<String> getMatchingFileExtensions() {
+        return this.matchingFileExtensions
+    }
+
+    protected Resource getCommandsDirectory() {
+        this.profile.profileDir.createRelative('commands/')
+    }
+
+    @Override
+    void setProfile(Profile profile) {
+        this.profile = profile
     }
 
 }

@@ -29,7 +29,6 @@ import grails.util.GrailsNameUtils
 
 import org.grails.cli.commands.Command
 import org.grails.cli.commands.factory.CommandFactory
-import org.grails.cli.commands.factory.ResourceResolvingCommandFactory
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommandTransform

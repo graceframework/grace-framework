@@ -23,12 +23,14 @@ import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
+import org.grails.cli.profile.commands.factory.ProfileCommandFactory
 import org.grails.config.CodeGenConfig
 
 /**
  * Registry of available commands
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -81,7 +83,16 @@ class CommandRegistry {
         Collection<Command> commands = []
 
         for (CommandFactory cf in REGISTERED_COMMAND_FACTORIES) {
-            Collection<Command> factoryCommands = cf.findCommands(profile, inherited)
+            Collection<Command> factoryCommands
+            if (cf instanceof ProfileCommandFactory) {
+                ProfileCommandFactory pcf = (ProfileCommandFactory) cf
+                pcf.profile = profile
+                pcf.inherited = inherited
+                factoryCommands = pcf.findCommands()
+            }
+            else {
+                factoryCommands = cf.findCommands()
+            }
             Closure<?> condition = { Command c -> c.name == 'events' }
             Collection<Command> eventCommands = factoryCommands.findAll(condition)
             for (ec in eventCommands) {

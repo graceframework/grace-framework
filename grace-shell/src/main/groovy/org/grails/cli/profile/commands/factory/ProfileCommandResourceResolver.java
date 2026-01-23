@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2026 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.profile.commands.factory;
 
-import org.springframework.core.io.Resource
+import org.grails.cli.commands.factory.CommandResourceResolver;
+import org.grails.cli.profile.Profile;
 
 /**
- * @author Graeme Rocher
+ * A {@link CommandResourceResolver} that resolves from the profile
+ *
  * @author Michael Yan
- * @since 3.0
+ * @since 2024.0.0
  */
-interface CommandResourceResolver {
+public interface ProfileCommandResourceResolver extends CommandResourceResolver {
 
-    /**
-     * Finds {@link org.grails.cli.commands.Command} resources
-     *
-     * @return A collection of {@link Resource} instances
-     */
-    Collection<Resource> findCommandResources()
-
-    /**
-     * The pattern to match file names with
-     *
-     * @return A regex pattern
-     */
-    Collection<String> getMatchingFileExtensions()
+    void setProfile(Profile profile);
 
 }

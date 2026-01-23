@@ -24,7 +24,6 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
 import org.grails.cli.commands.Command
-import org.grails.cli.commands.factory.ResourceResolvingCommandFactory
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
 

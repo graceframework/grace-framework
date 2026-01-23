@@ -59,7 +59,6 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                          ResourceLoader resourceLoader = new DefaultResourceLoader()) {
         this.executionContext = executionContext
         this.profileRepository = profileRepository
-        this.profile = profile
         this.fileSystemInteraction = new FileSystemInteractionImpl(executionContext, resourceLoader)
     }
 

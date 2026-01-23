@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2026 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands.factory
+package org.grails.cli.profile.commands.factory
 
-import org.springframework.core.io.Resource
+import org.grails.cli.commands.Command
+import org.grails.cli.commands.factory.CommandFactory
+import org.grails.cli.profile.Profile
 
 /**
- * @author Graeme Rocher
+ * Factory for getting all the {@link Command} instances provided by profile
+ *
  * @author Michael Yan
- * @since 3.0
+ * @since 2024.0.0
  */
-interface CommandResourceResolver {
+interface ProfileCommandFactory extends CommandFactory {
 
-    /**
-     * Finds {@link org.grails.cli.commands.Command} resources
-     *
-     * @return A collection of {@link Resource} instances
-     */
-    Collection<Resource> findCommandResources()
+    void setProfile(Profile profile)
 
-    /**
-     * The pattern to match file names with
-     *
-     * @return A regex pattern
-     */
-    Collection<String> getMatchingFileExtensions()
+    void setInherited(boolean inherited)
+
+    @Override
+    Collection<Command> findCommands()
 
 }

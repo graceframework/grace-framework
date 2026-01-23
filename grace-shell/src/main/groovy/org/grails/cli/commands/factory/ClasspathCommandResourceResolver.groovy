@@ -19,8 +19,6 @@ import groovy.transform.CompileStatic
 import org.springframework.core.io.Resource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
-import org.grails.cli.profile.Profile
-
 /**
  * A {@link CommandResourceResolver} that resolves commands from the classpath under the directory META-INF/commands
  *
@@ -41,19 +39,19 @@ class ClasspathCommandResourceResolver implements CommandResourceResolver {
     }
 
     @Override
-    Collection<Resource> findCommandResources(Profile profile) {
-        if (resources != null) {
-            return resources
+    Collection<Resource> findCommandResources() {
+        if (this.resources != null) {
+            return this.resources
         }
         ClassLoader classLoader = classLoader ?: Thread.currentThread().contextClassLoader
         PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver(classLoader)
 
         try {
-            resources = []
-            for (String ext in matchingFileExtensions) {
-                resources.addAll resourcePatternResolver.getResources("classpath*:META-INF/commands/*.$ext").toList()
+            this.resources = []
+            for (String ext in this.matchingFileExtensions) {
+                this.resources.addAll resourcePatternResolver.getResources("classpath*:META-INF/commands/*.$ext").toList()
             }
-            return resources
+            return this.resources
         }
         catch (Throwable ignored) {
             return []

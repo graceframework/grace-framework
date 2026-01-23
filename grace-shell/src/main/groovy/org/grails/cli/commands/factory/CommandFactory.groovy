@@ -16,24 +16,21 @@
 package org.grails.cli.commands.factory
 
 import org.grails.cli.commands.Command
-import org.grails.cli.profile.Profile
 
 /**
- * Factory for the creation of {@link Command} instances
+ * Factory to find all {@link Command} instances
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 interface CommandFactory {
 
     /**
-     * Creates a command for the given name
+     * Get the commands
      *
-     * @param name The name of the command
-     * @param profile The {@link Profile}
-     * @param inherited Whether the profile passed is inherited (ie a parent profile)
-     * @return A command or null if it wasn't possible to create one
+     * @return The commands found
      */
-    Collection<Command> findCommands(Profile profile, boolean inherited)
+    Collection<Command> findCommands()
 
 }

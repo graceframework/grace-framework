@@ -21,7 +21,6 @@ import grails.util.Named
 
 import org.grails.cli.commands.Command
 import org.grails.cli.gradle.commands.GradleTaskCommandAdapter
-import org.grails.cli.profile.Profile
 import org.grails.io.support.GrailsFactoriesLoader
 
 /**
@@ -34,11 +33,7 @@ import org.grails.io.support.GrailsFactoriesLoader
 class ApplicationContextCommandFactory implements CommandFactory {
 
     @Override
-    Collection<Command> findCommands(Profile profile, boolean inherited) {
-        if (inherited) {
-            return Collections.emptyList()
-        }
-
+    Collection<Command> findCommands() {
         try {
             ClassLoader classLoader = Thread.currentThread().contextClassLoader
             List<ApplicationCommand> registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand, classLoader)
