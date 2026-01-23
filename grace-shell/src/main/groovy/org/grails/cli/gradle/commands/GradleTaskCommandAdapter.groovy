@@ -24,9 +24,8 @@ import grails.util.Named
 
 import org.grails.cli.commands.CommandDescription
 import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.commands.ProjectCommand
 import org.grails.cli.gradle.GradleInvoker
-import org.grails.cli.profile.Profile
-import org.grails.cli.profile.ProfileCommand
 
 /**
  * Adapts a {@link Named} command into a Gradle task execution
@@ -36,13 +35,11 @@ import org.grails.cli.profile.ProfileCommand
  * @since 3.0
  */
 @CompileStatic
-class GradleTaskCommandAdapter implements ProfileCommand {
+class GradleTaskCommandAdapter implements ProjectCommand {
 
-    Profile profile
     final Named adapted
 
-    GradleTaskCommandAdapter(Profile profile, Named adapted) {
-        this.profile = profile
+    GradleTaskCommandAdapter(Named adapted) {
         this.adapted = adapted
     }
 

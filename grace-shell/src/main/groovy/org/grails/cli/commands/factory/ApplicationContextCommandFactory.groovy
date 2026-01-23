@@ -43,7 +43,7 @@ class ApplicationContextCommandFactory implements CommandFactory {
             ClassLoader classLoader = Thread.currentThread().contextClassLoader
             List<ApplicationCommand> registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand, classLoader)
 
-            return registeredCommands.collect { Named named -> new GradleTaskCommandAdapter(profile, named) }
+            return registeredCommands.collect { Named named -> new GradleTaskCommandAdapter(named) }
         }
         catch (Throwable e) {
             GrailsConsole.instance.error("Error occurred loading commands: $e.message", e)
