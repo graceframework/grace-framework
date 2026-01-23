@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command.help
 
 import jline.console.completer.Completer
 
@@ -21,6 +21,15 @@ import grails.build.logging.GrailsConsole
 
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
+import org.grails.cli.commands.Command
+import org.grails.cli.commands.CommandArgument
+import org.grails.cli.commands.CommandDescription
+import org.grails.cli.commands.CommandRegistry
+import org.grails.cli.commands.ExecutionContext
+import org.grails.cli.commands.GlobalCommand
+import org.grails.cli.commands.ProjectCommand
+import org.grails.cli.commands.ProjectContext
+import org.grails.cli.commands.ProjectContextAware
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
