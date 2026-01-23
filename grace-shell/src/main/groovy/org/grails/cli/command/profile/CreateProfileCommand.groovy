@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.commands
+package org.grails.cli.command.profile
+
+import org.grails.cli.command.app.CreateAppCommand
 
 import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
 import static org.grails.build.parsing.CommandLine.QUIET_ARGUMENT

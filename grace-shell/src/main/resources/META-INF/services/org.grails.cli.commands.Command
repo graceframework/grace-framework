@@ -6,9 +6,9 @@ org.grails.cli.command.gradle.GradleCommand
 org.grails.cli.command.plugin.CreatePluginCommand
 org.grails.cli.command.plugin.ListPluginsCommand
 org.grails.cli.command.plugin.PluginInfoCommand
+org.grails.cli.command.profile.CreateProfileCommand
+org.grails.cli.command.profile.ListProfilesCommand
+org.grails.cli.command.profile.ProfileInfoCommand
 org.grails.cli.command.run.RunCommand
-org.grails.cli.commands.CreateProfileCommand
 org.grails.cli.commands.OpenCommand
 org.grails.cli.commands.HelpCommand
-org.grails.cli.commands.ListProfilesCommand
-org.grails.cli.commands.ProfileInfoCommand
