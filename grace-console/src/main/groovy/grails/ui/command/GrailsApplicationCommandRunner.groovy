@@ -65,9 +65,11 @@ class GrailsApplicationCommandRunner extends DevelopmentGrails {
             try {
                 console.addStatus("Command :$command.name")
                 CommandLine commandLine = new CommandLineParser().parse(args)
+                ExecutionContext executionContext = new ExecutionContext(commandLine)
                 ctx.autowireCapableBeanFactory.autowireBeanProperties(command, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false)
                 command.applicationContext = ctx
-                boolean result = command.handle(new ExecutionContext(commandLine))
+                command.executionContext = executionContext
+                boolean result = command.handle(executionContext)
                 result ? console.addStatus('EXECUTE SUCCESSFUL') : console.error('EXECUTE FAILED', '')
             }
             catch (Throwable e) {

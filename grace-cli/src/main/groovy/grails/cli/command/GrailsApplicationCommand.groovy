@@ -15,31 +15,11 @@
  */
 package grails.cli.command
 
-import grails.cli.core.io.FileSystemInteraction
-import grails.cli.core.io.FileSystemInteractionImpl
-import grails.cli.core.template.TemplateRenderer
-import grails.cli.core.template.TemplateRendererImpl
-import grails.codegen.model.ModelBuilder
-
-trait GrailsApplicationCommand implements ApplicationCommand, ModelBuilder {
-
-    @Delegate
-    TemplateRenderer templateRenderer
-
-    @Delegate
-    FileSystemInteraction fileSystemInteraction
-
-    ExecutionContext executionContext
+trait GrailsApplicationCommand implements ApplicationCommand {
 
     boolean handle(ExecutionContext executionContext) {
-        this.executionContext = executionContext
-        this.templateRenderer = new TemplateRendererImpl(executionContext.baseDir)
-        this.fileSystemInteraction = new FileSystemInteractionImpl(executionContext.baseDir)
+        setExecutionContext(executionContext)
         handle()
-    }
-
-    List<String> getArgs() {
-        executionContext.commandLine.remainingArgs
     }
 
     abstract boolean handle()
