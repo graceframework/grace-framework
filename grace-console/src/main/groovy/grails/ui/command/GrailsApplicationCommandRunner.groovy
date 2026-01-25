@@ -20,9 +20,9 @@ import groovy.transform.CompileStatic
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.context.ConfigurableApplicationContext
 
-import grails.cli.commands.ApplicationCommand
-import grails.cli.commands.ApplicationContextCommandRegistry
-import grails.cli.commands.ExecutionContext
+import grails.cli.command.ApplicationCommand
+import grails.cli.command.ApplicationContextCommandRegistry
+import grails.cli.command.ExecutionContext
 import grails.config.Settings
 import grails.ui.support.DevelopmentGrails
 

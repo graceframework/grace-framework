@@ -16,7 +16,7 @@
 package org.grails.cli.command.factory
 
 import grails.build.logging.GrailsConsole
-import grails.cli.commands.ApplicationCommand
+import grails.cli.command.ApplicationCommand
 import grails.util.Named
 
 import org.grails.cli.command.Command

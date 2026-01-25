@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2026 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Commons
 
-import grails.cli.commands.ApplicationCommand
-import grails.cli.commands.ExecutionContext
+import grails.cli.command.ApplicationCommand
+import grails.cli.command.ExecutionContext
 import grails.web.mapping.UrlMappings
 import grails.web.mapping.reporting.UrlMappingsRenderer
 

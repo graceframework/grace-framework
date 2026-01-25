@@ -18,7 +18,7 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.database.Database
 
-import grails.cli.commands.ApplicationCommand
+import grails.cli.command.ApplicationCommand
 import grails.util.Environment
 
 import org.grails.plugins.databasemigration.DatabaseMigrationException

@@ -19,7 +19,7 @@ import groovy.transform.CompileStatic
 import liquibase.CatalogAndSchema
 import liquibase.Liquibase
 
-import grails.cli.commands.ApplicationCommand
+import grails.cli.command.ApplicationCommand
 
 @CompileStatic
 class DbmDropAllCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
