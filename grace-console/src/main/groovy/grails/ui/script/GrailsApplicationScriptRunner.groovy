@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,17 @@ package grails.ui.script
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
+import org.springframework.boot.ApplicationArguments
+import org.springframework.boot.ApplicationRunner
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ConfigurableApplicationContext
 
+import grails.boot.Grails
 import grails.build.logging.GrailsConsole
 import grails.config.Config
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
-import grails.ui.support.DevelopmentGrails
 import grails.util.BuildSettings
 
 /**
@@ -34,27 +38,59 @@ import grails.util.BuildSettings
  * @since 3.0
  */
 @CompileStatic
-class GrailsApplicationScriptRunner extends DevelopmentGrails {
+class GrailsApplicationScriptRunner implements ApplicationRunner, ApplicationContextAware {
 
     static GrailsConsole console = GrailsConsole.getInstance()
 
-    List<File> scripts
+    ConfigurableApplicationContext applicationContext
 
-    private GrailsApplicationScriptRunner(List<File> scripts, Class<?>... sources) {
-        super(sources)
-        this.scripts = scripts
+    @Override
+    void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = (ConfigurableApplicationContext) applicationContext
     }
 
     @Override
-    ConfigurableApplicationContext run(String... args) {
-        ConfigurableApplicationContext ctx = super.run(args)
+    void run(ApplicationArguments args) throws Exception {
+        String[] scriptNames = args.getSourceArgs()
+
+        List<File> scripts = []
+        scriptNames.each { String scriptName ->
+            File script
+            if (scriptName.endsWith('.groovy')) {
+                scriptName = scriptName - '.groovy'
+            }
+            if (scriptName.startsWith('/')) {
+                script = new File(BuildSettings.BASE_DIR, "${scriptName}.groovy")
+                if (script.exists()) {
+                    scripts.add(script)
+                }
+            }
+            else {
+                script = new File(BuildSettings.GRAILS_APP_DIR, "scripts/${scriptName}.groovy")
+                if (script.exists()) {
+                    scripts.add(script)
+                } else {
+                    script = new File(BuildSettings.BASE_DIR, "scripts/${scriptName}.groovy")
+                    if (script.exists()) {
+                        scripts.add(script)
+                    }
+                }
+            }
+        }
+
+        if (scripts.isEmpty()) {
+            console.error("Specified scripts [${scriptNames.join(',')}] not found")
+            this.applicationContext.close()
+            return
+        }
 
         Binding binding = new Binding()
-        binding.setVariable('ctx', ctx)
+        binding.setVariable('ctx', this.applicationContext)
 
-        Config config = ctx.getBean('grailsApplication', GrailsApplication).config
+        Config config = this.applicationContext.getBean('grailsApplication', GrailsApplication).config
         String defaultPackageKey = 'grails.codegen.defaultPackage'
         String defaultPackageName = config.getProperty(defaultPackageKey, String)
+
         GroovyShell sh
         CompilerConfiguration configuration = new CompilerConfiguration()
         if (defaultPackageName) {
@@ -64,7 +100,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
         }
         sh = new GroovyShell(binding, configuration)
 
-        Collection<PersistenceContextInterceptor> interceptors = ctx.getBeansOfType(PersistenceContextInterceptor).values()
+        Collection<PersistenceContextInterceptor> interceptors = this.applicationContext.getBeansOfType(PersistenceContextInterceptor).values()
 
         try {
             for (File script in scripts) {
@@ -73,7 +109,9 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
                     for (i in interceptors) {
                         i.init()
                     }
+
                     sh.evaluate(script)
+
                     for (i in interceptors) {
                         i.destroy()
                     }
@@ -89,13 +127,11 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
                 for (i in interceptors) {
                     i.destroy()
                 }
-                ctx?.close()
+                this.applicationContext?.close()
             }
             catch (Throwable ignored) {
             }
         }
-
-        ctx
     }
 
     /**
@@ -108,41 +144,13 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
             Class applicationClass
             try {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
+                Grails grails = new Grails(applicationClass, GrailsApplicationScriptRunner.class)
+                grails.run(args.init() as String[])
             }
             catch (Throwable ignored) {
                 console.error('Application class not found')
                 System.exit(0)
             }
-            String[] scriptNames = args.init() as String[]
-            List<File> scripts = []
-            scriptNames.each { String scriptName ->
-                File script
-                if (scriptName.endsWith('.groovy')) {
-                    scriptName = scriptName - '.groovy'
-                }
-                if (scriptName.startsWith('/')) {
-                    script = new File(BuildSettings.BASE_DIR, "${scriptName}.groovy")
-                    if (script.exists()) {
-                        scripts.add(script)
-                    }
-                }
-                else {
-                    script = new File(BuildSettings.GRAILS_APP_DIR, "scripts/${scriptName}.groovy")
-                    if (script.exists()) {
-                        scripts.add(script)
-                    } else {
-                        script = new File(BuildSettings.BASE_DIR, "scripts/${scriptName}.groovy")
-                        if (script.exists()) {
-                            scripts.add(script)
-                        } else {
-                            console.error("Specified script [${scriptName}] not found")
-                            System.exit(0)
-                        }
-                    }
-                }
-            }
-
-            new GrailsApplicationScriptRunner(scripts, applicationClass).run(args)
         }
         else {
             console.error('Missing application class name and script name arguments')
