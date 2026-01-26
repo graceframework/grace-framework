@@ -20,9 +20,9 @@ import groovy.transform.CompileStatic
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.context.ConfigurableApplicationContext
 
-import grails.cli.commands.ApplicationCommand
-import grails.cli.commands.ApplicationContextCommandRegistry
-import grails.cli.commands.ExecutionContext
+import grails.cli.command.ApplicationCommand
+import grails.cli.command.ApplicationContextCommandRegistry
+import grails.cli.command.ExecutionContext
 import grails.config.Settings
 import grails.ui.support.DevelopmentGrails
 
@@ -65,9 +65,11 @@ class GrailsApplicationCommandRunner extends DevelopmentGrails {
             try {
                 console.addStatus("Command :$command.name")
                 CommandLine commandLine = new CommandLineParser().parse(args)
+                ExecutionContext executionContext = new ExecutionContext(commandLine)
                 ctx.autowireCapableBeanFactory.autowireBeanProperties(command, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false)
                 command.applicationContext = ctx
-                boolean result = command.handle(new ExecutionContext(commandLine))
+                command.executionContext = executionContext
+                boolean result = command.handle(executionContext)
                 result ? console.addStatus('EXECUTE SUCCESSFUL') : console.error('EXECUTE FAILED', '')
             }
             catch (Throwable e) {

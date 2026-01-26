@@ -20,7 +20,7 @@ import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
 import liquibase.Liquibase
 
-import grails.cli.commands.ApplicationCommand
+import grails.cli.command.ApplicationCommand
 
 @CompileStatic
 class DbmListLocksCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {

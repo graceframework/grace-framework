@@ -20,8 +20,8 @@ import org.hibernate.engine.spi.SessionFactoryImplementor
 import org.hibernate.tool.hbm2ddl.SchemaExport as HibernateSchemaExport
 import org.hibernate.tool.schema.TargetType
 
-import grails.cli.commands.ApplicationCommand
-import grails.cli.commands.ExecutionContext
+import grails.cli.command.ApplicationCommand
+import grails.cli.command.ExecutionContext
 import grails.util.Environment
 
 import org.grails.build.parsing.CommandLine
