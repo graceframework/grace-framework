@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2026 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.databasemigration.command
+package grails.cli.command
 
-import groovy.transform.CompileStatic
-import liquibase.Liquibase
+trait GrailsApplicationCommand implements ApplicationCommand {
 
-import grails.cli.command.ApplicationCommand
-
-@CompileStatic
-class DbmChangelogSyncCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
-
-    final String description = 'Mark all changes as executed in the database'
-
-    void handle() {
-        withLiquibase { Liquibase liquibase ->
-            liquibase.changeLogSync(contexts)
-        }
+    boolean handle(ExecutionContext executionContext) {
+        setExecutionContext(executionContext)
+        handle()
     }
+
+    abstract boolean handle()
 
 }

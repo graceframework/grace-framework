@@ -19,7 +19,7 @@ import groovy.transform.CompileStatic
 import org.gradle.api.tasks.JavaExec
 
 /**
- * The task to run {@link grails.cli.commands.ApplicationCommand}
+ * The task to run {@link grails.cli.command.ApplicationCommand}
  *
  * @author Graeme Rocher
  * @author Michael Yan

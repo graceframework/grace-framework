@@ -1,5 +1,5 @@
 grails.core.ArtefactHandler=\
 org.grails.core.artefact.UrlMappingsArtefactHandler
 
-grails.cli.commands.ApplicationCommand=\
+grails.cli.command.ApplicationCommand=\
 org.grails.web.mapping.reporting.UrlMappingsReportCommand

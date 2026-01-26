@@ -50,7 +50,7 @@ import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.run.BootRun
 
-import grails.cli.commands.ApplicationCommand
+import grails.cli.command.ApplicationCommand
 import grails.util.Environment
 import grails.util.GrailsNameUtils
 import grails.util.Metadata

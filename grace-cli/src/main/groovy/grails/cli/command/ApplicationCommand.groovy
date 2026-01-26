@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.cli.commands
+package grails.cli.command
 
 import org.springframework.context.ConfigurableApplicationContext
+
+import grails.cli.core.io.FileSystemInteraction
+import grails.cli.core.io.FileSystemInteractionImpl
+import grails.cli.core.template.TemplateRenderer
+import grails.cli.core.template.TemplateRendererImpl
+import grails.codegen.model.ModelBuilder
 
 /**
  * Represents a command that is run against the {@link org.springframework.context.ApplicationContext}
@@ -24,9 +30,16 @@ import org.springframework.context.ConfigurableApplicationContext
  * @author Michael Yan
  * @since 3.0
  */
-trait ApplicationCommand implements Command {
+trait ApplicationCommand implements Command, ModelBuilder {
 
     private ConfigurableApplicationContext applicationContext
+    private ExecutionContext executionContext
+
+    @Delegate
+    TemplateRenderer templateRenderer
+
+    @Delegate
+    FileSystemInteraction fileSystemInteraction
 
     /**
      * Sets the application context of the command
@@ -39,6 +52,25 @@ trait ApplicationCommand implements Command {
 
     ConfigurableApplicationContext getApplicationContext() {
         this.applicationContext
+    }
+
+    /**
+     * Sets the execute context of the command
+     *
+     * @param executionContext The execute context
+     */
+    void setExecutionContext(ExecutionContext executionContext) {
+        this.executionContext = executionContext
+        this.templateRenderer = new TemplateRendererImpl(executionContext.baseDir)
+        this.fileSystemInteraction = new FileSystemInteractionImpl(executionContext.baseDir)
+    }
+
+    ExecutionContext getExecutionContext() {
+        this.executionContext
+    }
+
+    List<String> getArgs() {
+        getExecutionContext().commandLine.remainingArgs
     }
 
     /**

@@ -20,7 +20,7 @@ import java.text.ParseException
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.commands.ApplicationCommand
+import grails.cli.command.ApplicationCommand
 
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 

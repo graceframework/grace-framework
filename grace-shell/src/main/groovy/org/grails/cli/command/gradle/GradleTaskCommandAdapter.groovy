@@ -18,17 +18,17 @@ package org.grails.cli.command.gradle
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 
-import grails.util.Described
+import grails.cli.command.ApplicationCommand
 import grails.util.GrailsNameUtils
-import grails.util.Named
 
+import org.grails.build.parsing.CommandLine
 import org.grails.cli.command.CommandDescription
 import org.grails.cli.command.ExecutionContext
 import org.grails.cli.command.ProjectCommand
 import org.grails.cli.gradle.GradleInvoker
 
 /**
- * Adapts a {@link Named} command into a Gradle task execution
+ * Adapts a {@link ApplicationCommand} command into a Gradle task execution
  *
  * @author Graeme Rocher
  * @author Michael Yan
@@ -37,31 +37,24 @@ import org.grails.cli.gradle.GradleInvoker
 @CompileStatic
 class GradleTaskCommandAdapter implements ProjectCommand {
 
-    final Named adapted
+    final ApplicationCommand applicationCommand
 
-    GradleTaskCommandAdapter(Named adapted) {
-        this.adapted = adapted
+    GradleTaskCommandAdapter(ApplicationCommand command) {
+        this.applicationCommand = command
     }
 
     @Override
     CommandDescription getDescription() {
-        String description
-        if (adapted instanceof Described) {
-            description = ((Described) adapted).description
-        }
-        else {
-            description = ''
-        }
-        new CommandDescription(adapted.name, description)
+        new CommandDescription(this.applicationCommand.name, this.applicationCommand.description)
     }
 
     @Override
     @CompileDynamic
     boolean handle(ExecutionContext executionContext) {
         GradleInvoker invoker = new GradleInvoker(executionContext)
-        String method = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(adapted.name)
+        String method = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(this.applicationCommand.name)
 
-        def commandLine = executionContext.commandLine
+        CommandLine commandLine = executionContext.commandLine
         if (commandLine.remainingArgs || commandLine.undeclaredOptions) {
             invoker."${method}"("-Pargs=${commandLine.remainingArgsWithOptionsString}")
         }
@@ -74,7 +67,7 @@ class GradleTaskCommandAdapter implements ProjectCommand {
 
     @Override
     String getName() {
-        adapted.name
+        this.applicationCommand.name
     }
 
     @Override

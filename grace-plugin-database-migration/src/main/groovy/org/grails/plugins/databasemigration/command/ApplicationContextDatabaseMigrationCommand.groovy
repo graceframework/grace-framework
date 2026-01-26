@@ -26,7 +26,7 @@ import org.hibernate.engine.jdbc.spi.JdbcServices
 import org.hibernate.engine.spi.SessionFactoryImplementor
 import org.springframework.context.ConfigurableApplicationContext
 
-import grails.cli.commands.ExecutionContext
+import grails.cli.command.ExecutionContext
 import grails.config.ConfigMap
 import grails.core.GrailsApplication
 import grails.util.Environment
