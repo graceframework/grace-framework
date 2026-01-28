@@ -18,12 +18,10 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.database.Database
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmGenerateGormChangelogCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmGenerateGormChangelogCommand implements DatabaseMigrationCommand {
 
     final String description = 'Generates an initial changelog XML or Groovy DSL file from current GORM classes'
 

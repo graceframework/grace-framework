@@ -18,13 +18,12 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmChangelogSyncCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmChangelogSyncCommand implements DatabaseMigrationCommand {
 
     final String description = 'Mark all changes as executed in the database'
 
+    @Override
     void handle() {
         withLiquibase { Liquibase liquibase ->
             liquibase.changeLogSync(contexts)

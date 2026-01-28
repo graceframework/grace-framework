@@ -18,12 +18,10 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmRollbackCountSqlCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmRollbackCountSqlCommand implements DatabaseMigrationCommand {
 
     final String description = 'Writes the SQL to roll back the specified number of change sets to STDOUT or a file'
 

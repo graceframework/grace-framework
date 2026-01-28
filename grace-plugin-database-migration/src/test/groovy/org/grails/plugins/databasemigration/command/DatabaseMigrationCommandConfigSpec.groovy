@@ -91,4 +91,9 @@ class DatabaseMigrationCommandConfigSpec extends Specification implements Databa
 
     }
 
+    @Override
+    void handle() {
+
+    }
+
 }

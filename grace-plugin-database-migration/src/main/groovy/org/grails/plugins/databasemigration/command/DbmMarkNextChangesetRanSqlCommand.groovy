@@ -18,13 +18,12 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmMarkNextChangesetRanSqlCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmMarkNextChangesetRanSqlCommand implements DatabaseMigrationCommand {
 
     final String description = 'Writes SQL to mark the next change as executed in the database to STDOUT or a file'
 
+    @Override
     void handle() {
         def filename = args[0]
 
