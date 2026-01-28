@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.context.ApplicationContext
 
 import grails.config.ConfigMap
+import grails.io.IOUtils
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
@@ -49,7 +50,7 @@ class GroovyChangeLogParser extends AbstractChangeLogParser {
             changeLogText = inputStream?.text
         }
         finally {
-            SpringIOUtils.closeQuietly(inputStream)
+            IOUtils.closeQuietly(inputStream)
         }
 
         CompilerConfiguration compilerConfiguration = new CompilerConfiguration(CompilerConfiguration.DEFAULT)
