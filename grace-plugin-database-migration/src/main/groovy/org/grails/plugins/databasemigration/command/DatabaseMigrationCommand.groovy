@@ -37,7 +37,7 @@ import liquibase.changelog.filter.DbmsChangeSetFilter
 import liquibase.command.CommandScope
 import liquibase.command.core.DiffChangelogCommandStep
 import liquibase.command.core.GenerateChangelogCommandStep
-import liquibase.command.core.helpers.DbUrlConnectionCommandStep
+import liquibase.command.core.helpers.DbUrlConnectionArgumentsCommandStep
 import liquibase.command.core.helpers.DiffOutputControlCommandStep
 import liquibase.command.core.helpers.PreCompareCommandStep
 import liquibase.command.core.helpers.ReferenceDbUrlConnectionCommandStep
@@ -61,7 +61,7 @@ import liquibase.parser.ChangeLogParser
 import liquibase.parser.ChangeLogParserFactory
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.resource.CompositeResourceAccessor
-import liquibase.resource.FileSystemResourceAccessor
+import liquibase.resource.DirectoryResourceAccessor
 import liquibase.resource.ResourceAccessor
 import liquibase.statement.core.RawSqlStatement
 import liquibase.structure.core.Catalog
@@ -230,7 +230,7 @@ trait DatabaseMigrationCommand implements ApplicationCommand {
 
     ResourceAccessor createResourceAccessor() {
         new CompositeResourceAccessor(
-                new FileSystemResourceAccessor(changeLogLocation),
+                new DirectoryResourceAccessor(changeLogLocation),
                 new ClassLoaderResourceAccessor())
     }
 
@@ -285,7 +285,7 @@ trait DatabaseMigrationCommand implements ApplicationCommand {
         final CommandScope commandScope = new CommandScope('groovyGenerateChangeLog')
         commandScope.addArgumentValue(ReferenceDbUrlConnectionCommandStep.REFERENCE_DATABASE_ARG, originalDatabase)
         commandScope.addArgumentValue(DiffChangelogCommandStep.CHANGELOG_FILE_ARG, changeLogFilePath)
-        commandScope.addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, originalDatabase)
+        commandScope.addArgumentValue(DbUrlConnectionArgumentsCommandStep.DATABASE_ARG, originalDatabase)
         commandScope.addArgumentValue(PreCompareCommandStep.COMPARE_CONTROL_ARG, compareControl)
         commandScope.addArgumentValue(DiffOutputControlCommandStep.INCLUDE_CATALOG_ARG, true)
         commandScope.addArgumentValue(DiffOutputControlCommandStep.INCLUDE_SCHEMA_ARG, true)
@@ -300,7 +300,7 @@ trait DatabaseMigrationCommand implements ApplicationCommand {
         def compareControl = new CompareControl([] as CompareControl.SchemaComparison[], null as String)
         final CommandScope commandScope = new CommandScope('groovyDiffChangelog')
         commandScope.addArgumentValue(ReferenceDbUrlConnectionCommandStep.REFERENCE_DATABASE_ARG, referenceDatabase)
-        commandScope.addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, targetDatabase)
+        commandScope.addArgumentValue(DbUrlConnectionArgumentsCommandStep.DATABASE_ARG, targetDatabase)
         commandScope.addArgumentValue(DiffChangelogCommandStep.CHANGELOG_FILE_ARG, changeLogFilePath)
         commandScope.addArgumentValue(PreCompareCommandStep.COMPARE_CONTROL_ARG, compareControl)
         commandScope.addArgumentValue(DiffOutputControlCommandStep.INCLUDE_CATALOG_ARG, true)
