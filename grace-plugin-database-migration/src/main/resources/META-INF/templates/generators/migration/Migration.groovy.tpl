@@ -1,6 +1,6 @@
 databaseChangeLog = {
 
-    changeSet(author: "dbm", id: "$id-1") {
+    changeSet(author: "$author", id: "$id-1") {
 
     }
 

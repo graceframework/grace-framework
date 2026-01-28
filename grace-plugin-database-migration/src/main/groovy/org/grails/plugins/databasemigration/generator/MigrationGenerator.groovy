@@ -47,6 +47,7 @@ class MigrationGenerator extends AbstractGenerator {
         File changelogFile = new File(baseDir, 'db/migrations/changelog.groovy')
         Map<String, Object> model = new HashMap<>()
         model.put('id', System.currentTimeMillis().toString())
+        model.put('author', getAuthor())
 
         String migrationFile = 'db/migrations/' + migrationFileName
         createFile('Migration.groovy.tpl', migrationFile, model, overwrite)
@@ -58,6 +59,10 @@ class MigrationGenerator extends AbstractGenerator {
         }
 
         true
+    }
+
+    private String getAuthor() {
+        loadApplicationConfig().getProperty('dataSource.username') ?: System.getProperty('user.name')
     }
 
 }
