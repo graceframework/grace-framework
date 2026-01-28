@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ import liquibase.executor.ExecutorService
 import liquibase.executor.LoggingExecutor
 import liquibase.lockservice.LockService
 import liquibase.lockservice.LockServiceFactory
+import liquibase.parser.ChangeLogParser
 import liquibase.parser.ChangeLogParserFactory
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.resource.CompositeResourceAccessor
@@ -66,28 +67,46 @@ import liquibase.statement.core.RawSqlStatement
 import liquibase.structure.core.Catalog
 import liquibase.util.LiquibaseUtil
 import liquibase.util.StreamUtil
+import org.hibernate.dialect.Dialect
+import org.hibernate.engine.jdbc.spi.JdbcServices
+import org.hibernate.engine.spi.SessionFactoryImplementor
+import org.springframework.context.ConfigurableApplicationContext
 
+import grails.cli.command.ApplicationCommand
+import grails.cli.command.ExecutionContext
 import grails.config.ConfigMap
+import grails.core.GrailsApplication
+import grails.util.Environment
 
 import org.grails.build.parsing.CommandLine
+import org.grails.config.PropertySourcesConfig
 import org.grails.plugins.databasemigration.DatabaseMigrationException
+import org.grails.plugins.databasemigration.DatabaseMigrationTransactionManager
 import org.grails.plugins.databasemigration.NoopVisitor
+import org.grails.plugins.databasemigration.liquibase.GormDatabase
+import org.grails.plugins.databasemigration.liquibase.GroovyChangeLogParser
 
 import static org.grails.plugins.databasemigration.DatabaseMigrationGrailsPlugin.getDataSourceName
 import static org.grails.plugins.databasemigration.DatabaseMigrationGrailsPlugin.isDefaultDataSource
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 import static org.grails.plugins.databasemigration.PluginConstants.DEFAULT_CHANGE_LOG_LOCATION
+import static org.grails.plugins.databasemigration.PluginConstants.DEFAULT_DATASOURCE_NAME
 
 @CompileStatic
-trait DatabaseMigrationCommand {
+trait DatabaseMigrationCommand implements ApplicationCommand {
+
+    final String group = 'Database'
+
+    Boolean skipBootstrap = true
 
     CommandLine commandLine
-
     String defaultSchema
     String dataSource
     String contexts
 
-    abstract ConfigMap getConfig()
+    ConfigMap getConfig() {
+        applicationContext.getBean(GrailsApplication).config
+    }
 
     String optionValue(String name) {
         this.commandLine.optionValue(name)?.toString()
@@ -97,15 +116,31 @@ trait DatabaseMigrationCommand {
         this.commandLine.hasOption(name)
     }
 
-    String getContexts() {
-        if (contexts) {
-            return contexts
-        }
-        return config.getProperty("${configPrefix}.contexts".toString(), List)?.join(',')
+    @Override
+    void setExecutionContext(ExecutionContext executionContext) {
+        super.setExecutionContext(executionContext)
+        this.commandLine = executionContext.commandLine
+        this.contexts = optionValue('contexts')
+        this.defaultSchema = optionValue('defaultSchema')
+        this.dataSource = optionValue('dataSource') ?: DEFAULT_DATASOURCE_NAME
     }
 
-    List<String> getArgs() {
-        this.commandLine.remainingArgs
+    @Override
+    boolean handle(ExecutionContext executionContext) {
+        if (!getExecutionContext()) {
+            setExecutionContext(executionContext)
+        }
+        handle()
+        true
+    }
+
+    abstract void handle()
+
+    String getContexts() {
+        if (this.contexts) {
+            return this.contexts
+        }
+        return config.getProperty("${configPrefix}.contexts".toString(), List)?.join(',')
     }
 
     File getChangeLogLocation() {
@@ -188,7 +223,7 @@ trait DatabaseMigrationCommand {
 
         withDatabase { Database database ->
             Liquibase liquibase = new Liquibase(relativePath, resourceAccessor, database)
-            liquibase.changeLogParameters.set(DATA_SOURCE_NAME_KEY, getDataSourceName(dataSource))
+            liquibase.changeLogParameters.set(DATA_SOURCE_NAME_KEY, getDataSourceName(this.dataSource))
             closure.call(liquibase)
         }
     }
@@ -203,7 +238,7 @@ trait DatabaseMigrationCommand {
             @ClosureParams(value = SimpleType, options = 'liquibase.database.Database') Closure closure) {
         def database = null
         try {
-            database = createDatabase(defaultSchema, dataSource, dataSourceConfig ?: getDataSourceConfig())
+            database = createDatabase(this.defaultSchema, this.dataSource, dataSourceConfig ?: getDataSourceConfig())
             closure.call(database)
         }
         finally {
@@ -236,9 +271,9 @@ trait DatabaseMigrationCommand {
     }
 
     void configureDatabase(Database database) {
-        database.defaultSchemaName = defaultSchema
-        if (!database.supportsSchemas() && defaultSchema) {
-            database.defaultCatalogName = defaultSchema
+        database.defaultSchemaName = this.defaultSchema
+        if (!database.supportsSchemas() && this.defaultSchema) {
+            database.defaultCatalogName = this.defaultSchema
         }
         database.databaseChangeLogTableName = config.getProperty("${configPrefix}.databaseChangeLogTableName".toString(), String)
         database.databaseChangeLogLockTableName = config.getProperty("${configPrefix}.databaseChangeLogLockTableName".toString(), String)
@@ -339,24 +374,6 @@ trait DatabaseMigrationCommand {
         }
     }
 
-    private DiffOutputControl createDiffOutputControl() {
-        def diffOutputControl = new DiffOutputControl(false, false, false)
-
-        String excludeObjects = config.getProperty("${configPrefix}.excludeObjects".toString(), String)
-        String includeObjects = config.getProperty("${configPrefix}.includeObjects".toString(), String)
-        if (excludeObjects && includeObjects) {
-            throw new DatabaseMigrationException('Cannot specify both excludeObjects and includeObjects')
-        }
-        if (excludeObjects) {
-            diffOutputControl.objectChangeFilter = new StandardObjectChangeFilter(StandardObjectChangeFilter.FilterType.EXCLUDE, excludeObjects)
-        }
-        if (includeObjects) {
-            diffOutputControl.objectChangeFilter = new StandardObjectChangeFilter(StandardObjectChangeFilter.FilterType.INCLUDE, includeObjects)
-        }
-
-        diffOutputControl
-    }
-
     void appendToChangeLog(File srcChangeLogFile, File destChangeLogFile) {
         if (!srcChangeLogFile.exists() || srcChangeLogFile == destChangeLogFile) {
             return
@@ -390,8 +407,85 @@ trait DatabaseMigrationCommand {
     }
 
     String getConfigPrefix() {
-        return isDefaultDataSource(dataSource) ?
-                'grails.plugin.databasemigration' : "grails.plugin.databasemigration.${dataSource}"
+        return isDefaultDataSource(this.dataSource) ?
+                'grails.plugin.databasemigration' : "grails.plugin.databasemigration.${this.dataSource}"
+    }
+
+    void withGormDatabase(ConfigurableApplicationContext applicationContext, String dataSource,
+            @ClosureParams(value = SimpleType, options = 'liquibase.database.Database') Closure closure) {
+        def database = null
+        try {
+            database = createGormDatabase(applicationContext, dataSource)
+            closure.call(database)
+        }
+        finally {
+            database?.close()
+        }
+    }
+
+    ConfigMap getEnvironmentConfig(String environment) {
+        return (ConfigMap) environmentWith(environment) {
+            new PropertySourcesConfig(((PropertySourcesConfig) config).getPropertySources())
+        }
+    }
+
+    void withTransaction(Closure callable) {
+        new DatabaseMigrationTransactionManager(applicationContext, this.dataSource).withTransaction(callable)
+    }
+
+    void configureLiquibase() {
+        def groovyChangeLogParser = ChangeLogParserFactory.instance.parsers.find { ChangeLogParser changeLogParser ->
+            changeLogParser instanceof GroovyChangeLogParser
+        } as GroovyChangeLogParser
+
+        groovyChangeLogParser.applicationContext = applicationContext
+        groovyChangeLogParser.config = config
+    }
+
+    private DiffOutputControl createDiffOutputControl() {
+        def diffOutputControl = new DiffOutputControl(false, false, false)
+
+        String excludeObjects = config.getProperty("${configPrefix}.excludeObjects".toString(), String)
+        String includeObjects = config.getProperty("${configPrefix}.includeObjects".toString(), String)
+        if (excludeObjects && includeObjects) {
+            throw new DatabaseMigrationException('Cannot specify both excludeObjects and includeObjects')
+        }
+        if (excludeObjects) {
+            diffOutputControl.objectChangeFilter = new StandardObjectChangeFilter(StandardObjectChangeFilter.FilterType.EXCLUDE, excludeObjects)
+        }
+        if (includeObjects) {
+            diffOutputControl.objectChangeFilter = new StandardObjectChangeFilter(StandardObjectChangeFilter.FilterType.INCLUDE, includeObjects)
+        }
+
+        diffOutputControl
+    }
+
+    private Database createGormDatabase(ConfigurableApplicationContext applicationContext, String dataSource) {
+        String dataSourceName = getDataSourceName(dataSource)
+        String sessionFactoryName = 'sessionFactory'
+        if (!isDefaultDataSource(dataSource)) {
+            sessionFactoryName = sessionFactoryName + '_' + dataSourceName
+        }
+
+        def serviceRegistry = applicationContext.getBean(sessionFactoryName, SessionFactoryImplementor).serviceRegistry.parentServiceRegistry
+
+        Dialect dialect = serviceRegistry.getService(JdbcServices).dialect
+
+        Database database = new GormDatabase(dialect, serviceRegistry)
+        configureDatabase(database)
+
+        return database
+    }
+
+    private Object environmentWith(String environment, Closure closure) {
+        def originalEnvironment = Environment.current
+        System.setProperty(Environment.KEY, environment)
+        try {
+            return closure.call()
+        }
+        finally {
+            System.setProperty(Environment.KEY, originalEnvironment.name)
+        }
     }
 
     private String getExtension(String fileName) {

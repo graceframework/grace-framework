@@ -18,12 +18,10 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmRollbackSqlCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmRollbackSqlCommand implements DatabaseMigrationCommand {
 
     final String description = 'Writes SQL to roll back the database to the state it was in when the tag was applied to STDOUT or a file'
 

@@ -18,15 +18,14 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmTagCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmTagCommand implements DatabaseMigrationCommand {
 
     final String description = 'Adds a tag to mark the current database state'
 
+    @Override
     void handle() {
         def tagName = args[0]
         if (!tagName) {

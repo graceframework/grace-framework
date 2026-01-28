@@ -18,12 +18,10 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmUpdateCountSqlCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmUpdateCountSqlCommand implements DatabaseMigrationCommand {
 
     final String description = 'Writes the SQL that will partially update a database to STDOUT or a file'
 

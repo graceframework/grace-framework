@@ -18,10 +18,8 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmFutureRollbackSqlCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmFutureRollbackSqlCommand implements DatabaseMigrationCommand {
 
     final String description = 'Writes SQL to roll back the database to the current state after the changes in the changeslog have been applied'
 

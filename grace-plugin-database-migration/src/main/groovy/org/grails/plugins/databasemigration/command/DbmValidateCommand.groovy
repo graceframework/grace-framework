@@ -18,13 +18,12 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmValidateCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmValidateCommand implements DatabaseMigrationCommand {
 
     final String description = 'Checks the changelog for errors'
 
+    @Override
     void handle() {
         withLiquibase { Liquibase liquibase ->
             liquibase.validate()
