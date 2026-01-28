@@ -18,13 +18,12 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmReleaseLocksCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmReleaseLocksCommand implements DatabaseMigrationCommand {
 
     final String description = 'Releases all locks on the database changelog'
 
+    @Override
     void handle() {
         withLiquibase { Liquibase liquibase ->
             liquibase.forceReleaseLocks()

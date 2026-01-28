@@ -18,13 +18,12 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmStatusCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmStatusCommand implements DatabaseMigrationCommand {
 
     final String description = 'Outputs count or list of unrun change sets to STDOUT or a file'
 
+    @Override
     void handle() {
         def filename = args[0]
         def verbose = hasOption('verbose') ? Boolean.parseBoolean(optionValue('verbose')) as Boolean : true

@@ -19,13 +19,12 @@ import groovy.transform.CompileStatic
 import liquibase.CatalogAndSchema
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmDropAllCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmDropAllCommand implements DatabaseMigrationCommand {
 
     final String description = 'Drops all database objects owned by the user'
 
+    @Override
     void handle() {
         def schemaNames = args[0]
         def schemas = schemaNames?.split(',')?.collect { String schemaName ->

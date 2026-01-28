@@ -19,12 +19,10 @@ import groovy.transform.CompileStatic
 import liquibase.Liquibase
 import liquibase.database.Database
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmPreviousChangesetSqlCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmPreviousChangesetSqlCommand implements DatabaseMigrationCommand {
 
     final String description = 'Generates the SQL to apply the previous <value> change sets'
 

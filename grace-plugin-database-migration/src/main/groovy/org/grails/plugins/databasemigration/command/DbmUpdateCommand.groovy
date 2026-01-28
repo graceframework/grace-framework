@@ -18,10 +18,8 @@ package org.grails.plugins.databasemigration.command
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 @CompileStatic
-class DbmUpdateCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmUpdateCommand implements DatabaseMigrationCommand {
 
     final String description = 'Updates a database to the current version'
 

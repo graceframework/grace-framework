@@ -20,12 +20,10 @@ import java.text.ParseException
 import groovy.transform.CompileStatic
 import liquibase.Liquibase
 
-import grails.cli.command.ApplicationCommand
-
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 
 @CompileStatic
-class DbmRollbackToDateCommand implements ApplicationCommand, ApplicationContextDatabaseMigrationCommand {
+class DbmRollbackToDateCommand implements DatabaseMigrationCommand {
 
     final String description = 'Rolls back the database to the state it was in at the given date/time'
 
