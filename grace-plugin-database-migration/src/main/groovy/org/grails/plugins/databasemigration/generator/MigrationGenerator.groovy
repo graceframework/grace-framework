@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
+import grails.util.GrailsNameUtils
 
 /**
  * @author Michael Yan
@@ -41,7 +42,7 @@ class MigrationGenerator extends AbstractGenerator {
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of('UTC'))
         String migrationNumber = now.format(DateTimeFormatter.ofPattern('yyyyMMddHHmmss'))
-        String migrationName = args[1].uncapitalize()
+        String migrationName = GrailsNameUtils.getSnakeCaseName(GrailsNameUtils.getClassNameRepresentation(args[1]))
         String migrationFileName = [migrationNumber, migrationName].join('_') + '.groovy'
 
         File changelogFile = new File(baseDir, 'db/migrations/changelog.groovy')
