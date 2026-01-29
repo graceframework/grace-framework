@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,14 @@ package org.grails.plugins.databasemigration.generator
 import java.time.ZonedDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
+import grails.util.GrailsNameUtils
 
 /**
  * @author Michael Yan
@@ -30,23 +34,67 @@ import grails.cli.generator.AbstractGenerator
 @CompileStatic
 class MigrationGenerator extends AbstractGenerator {
 
+    private static final Pattern ADD = Pattern.compile("^(add)_.*_to_(.*)")
+    private static final Pattern CREATE = Pattern.compile("^(create)_(.+)")
+    private static final Pattern REMOVE = Pattern.compile("^(remove)_.*?_from_(.*)")
+    private static final Pattern JOIN = Pattern.compile(".*_(join)_table_(.*)")
+    private static final Map<String, String> DATA_TYPES = [
+            'string': 'varchar(50)',
+            'String': 'varchar(50)',
+            'int': 'int',
+            'integer': 'int',
+            'Integer': 'int',
+            'long': 'bigint',
+            'Long': 'bigint',
+            'date': 'datetime',
+            'boolean': 'boolean',
+            'Boolean': 'boolean'
+    ]
+
     @Override
     boolean generate() {
         String[] args = commandLine.remainingArgs.toArray(new String[0])
         if (args.size() < 2) {
-            return
+            console.error('Missing the name of migration file!')
+            return false
+        }
+
+        String filename = args[1]
+        if (!(filename ==~ /^[_a-z0-9]+$/)) {
+            console.error("Illegal name for migration file: $filename.")
+            return false
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of('UTC'))
         String migrationNumber = now.format(DateTimeFormatter.ofPattern('yyyyMMddHHmmss'))
-        String migrationName = args[1].uncapitalize()
+        String migrationName = GrailsNameUtils.getSnakeCaseName(GrailsNameUtils.getClassNameRepresentation(filename))
         String migrationFileName = [migrationNumber, migrationName].join('_') + '.groovy'
 
         File changelogFile = new File(baseDir, 'db/migrations/changelog.groovy')
         Map<String, Object> model = new HashMap<>()
         model.put('id', System.currentTimeMillis().toString())
+        model.put('author', getAuthor())
+        List matches = getTableAndActionName(migrationName)
+        if (matches) {
+            String tableName = matches[1]
+            String migrationAction = matches[0]
+            model.put('tableName', tableName)
+            model.put('migrationAction', migrationAction)
+            if (migrationAction == 'join') {
+                model.put('joinTables', args.size() > 3 ? args[2..-1] : tableName.toLowerCase().split('_'))
+            }
+            else {
+                Map<String, String> tableColumns = new LinkedHashMap<>()
+                String[] columns = (args.size() >= 3 ? args[2..-1] : []) as String[]
+                columns.each { String item ->
+                    String[] attr = (item.contains(':') ? item.split(':') : [item, 'string']) as String[]
+                    tableColumns[attr[0]] = attr[1]
+                }
+                model['tableColumns'] = tableColumns
+            }
+        }
 
         String migrationFile = 'db/migrations/' + migrationFileName
         createFile('Migration.groovy.tpl', migrationFile, model, overwrite)
@@ -58,6 +106,21 @@ class MigrationGenerator extends AbstractGenerator {
         }
 
         true
+    }
+
+    private String getAuthor() {
+        loadApplicationConfig().getProperty('dataSource.username') ?: System.getProperty('user.name')
+    }
+
+    @CompileDynamic
+    private List getTableAndActionName(String filename) {
+        for (Pattern it in [ADD, REMOVE, JOIN, CREATE]) {
+            Matcher matcher = it.matcher(filename)
+            if (matcher.matches()) {
+                return matcher[0][1..-1]
+            }
+        }
+        []
     }
 
 }
