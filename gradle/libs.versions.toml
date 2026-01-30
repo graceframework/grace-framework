@@ -67,7 +67,7 @@ spock = "2.3-groovy-4.0"
 spring-boot = "3.4.13"
 spring-dependency-management = "1.1.7"
 spring-framework = "6.2.15"
-tomcat = "10.1.50"
+tomcat = "10.1.52"
 xhtmlrenderer = "9.13.3"
 
 [libraries]
