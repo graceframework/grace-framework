@@ -25,7 +25,6 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import grails.util.GrailsNameUtils
 
 /**
  * @author Michael Yan
@@ -60,7 +59,7 @@ class MigrationGenerator extends AbstractGenerator {
         }
 
         String filename = args[1]
-        if (!(filename ==~ /^[_a-z0-9]+$/)) {
+        if (!(filename ==~ /^[-_a-zA-Z0-9]+$/)) {
             console.error("Illegal name for migration file: $filename.")
             return false
         }
@@ -69,19 +68,20 @@ class MigrationGenerator extends AbstractGenerator {
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of('UTC'))
         String migrationNumber = now.format(DateTimeFormatter.ofPattern('yyyyMMddHHmmss'))
-        String migrationName = GrailsNameUtils.getSnakeCaseName(GrailsNameUtils.getClassNameRepresentation(filename))
+        String migrationName = toSnakeCase(filename)
         String migrationFileName = [migrationNumber, migrationName].join('_') + '.groovy'
 
         File changelogFile = new File(baseDir, 'db/migrations/changelog.groovy')
         Map<String, Object> model = new HashMap<>()
         model.put('id', System.currentTimeMillis().toString())
         model.put('author', getAuthor())
+
+        String tableName = ''
+        String migrationAction = ''
         List matches = getTableAndActionName(migrationName)
         if (matches) {
-            String tableName = matches[1]
-            String migrationAction = matches[0]
-            model.put('tableName', tableName)
-            model.put('migrationAction', migrationAction)
+            tableName = matches[1]
+            migrationAction = matches[0]
             if (migrationAction == 'join') {
                 model.put('joinTables', args.size() > 3 ? args[2..-1] : tableName.toLowerCase().split('_'))
             }
@@ -95,6 +95,8 @@ class MigrationGenerator extends AbstractGenerator {
                 model['tableColumns'] = tableColumns
             }
         }
+        model.put('tableName', tableName)
+        model.put('migrationAction', migrationAction)
 
         String migrationFile = 'db/migrations/' + migrationFileName
         createFile('Migration.groovy.tpl', migrationFile, model, overwrite)
@@ -106,6 +108,29 @@ class MigrationGenerator extends AbstractGenerator {
         }
 
         true
+    }
+
+    private String toSnakeCase(String str) {
+        StringBuilder result = new StringBuilder()
+        char firstChar = str.charAt(0)
+        result.append(Character.toLowerCase(firstChar))
+
+        for (int i = 1; i < str.length(); i++) {
+            char ch = str.charAt(i)
+            if (ch == '-') {
+                result.append('_')
+            }
+            else if (Character.isUpperCase(ch)) {
+                if (str.charAt(i-1) != '_') {
+                    result.append('_')
+                }
+                result.append(Character.toLowerCase(ch))
+            }
+            else {
+                result.append(ch)
+            }
+        }
+        return result.toString()
     }
 
     private String getAuthor() {
