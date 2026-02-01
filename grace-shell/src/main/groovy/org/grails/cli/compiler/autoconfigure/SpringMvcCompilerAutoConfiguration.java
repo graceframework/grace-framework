@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.grails.cli.compiler.AstUtils;
 import org.grails.cli.compiler.CompilerAutoConfiguration;
 import org.grails.cli.compiler.DependencyCustomizer;
-import org.grails.cli.groovy.GroovyTemplate;
+import org.grails.cli.compiler.groovy.GroovyTemplate;
 
 /**
  * {@link CompilerAutoConfiguration} for Spring MVC.

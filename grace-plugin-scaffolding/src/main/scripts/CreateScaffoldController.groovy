@@ -1,6 +1,6 @@
 description("Creates a Scaffolded Controller") {
   	usage 'create-controller [controller name]'
-    completer org.grails.cli.interactive.completers.DomainClassCompleter
+    completer org.grails.cli.command.completers.DomainClassCompleter
     argument name:'Controller Name', description:"The name of Controller", required:true
     flag name:'force', description:"Whether to overwrite existing files"
  }
