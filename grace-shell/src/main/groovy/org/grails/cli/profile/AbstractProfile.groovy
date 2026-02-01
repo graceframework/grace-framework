@@ -43,7 +43,7 @@ import org.grails.cli.command.CommandRegistry
 import org.grails.cli.command.ExecutionContext
 import org.grails.cli.command.ProjectContext
 import org.grails.cli.command.ProjectContextAware
-import org.grails.cli.interactive.completers.StringsCompleter
+import org.grails.cli.command.completers.StringsCompleter
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.config.NavigableMap

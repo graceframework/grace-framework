@@ -17,7 +17,7 @@ package org.grails.cli.profile.commands
 
 import spock.lang.Specification
 
-import org.grails.cli.interactive.completers.DomainClassCompleter
+import org.grails.cli.command.completers.DomainClassCompleter
 import org.grails.cli.profile.commands.factory.GroovyScriptCommandFactory
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 
@@ -33,7 +33,7 @@ class CommandScriptTransformSpec extends Specification {
 
         when:"A script is parsed"
             def script = (GroovyScriptCommand)(gcl.parseClass('''
-import org.grails.cli.interactive.completers.DomainClassCompleter
+import org.grails.cli.command.completers.DomainClassCompleter
 
 description("example script") {
     usage "example usage"

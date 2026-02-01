@@ -1,4 +1,4 @@
-import org.grails.cli.interactive.completers.DomainClassCompleter
+import org.grails.cli.command.completers.DomainClassCompleter
 
 description("Generates a Controller that performs CRUD operations and the associated views") {
     usage "grace generate-all [DOMAIN CLASS]"

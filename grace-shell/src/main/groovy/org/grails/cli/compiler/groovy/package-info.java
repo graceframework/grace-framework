@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,4 +19,4 @@
  * this package can be loaded from compiled user code. Not under the cli package in case
  * we want to extract into a separate jar at a future date.
  */
-package org.grails.cli.groovy;
+package org.grails.cli.compiler.groovy;
