@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,35 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.interactive.completers
+package org.grails.cli.command.completers
 
 import groovy.transform.CompileStatic
-import jline.console.completer.Completer
+import org.springframework.core.io.Resource
+
+import grails.util.BuildSettings
 
 /**
+ * A completer that completes the names of the tests in the project
+ *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
-class ClosureCompleter implements Completer {
+class TestsCompleter extends ClassNameCompleter {
 
-    private final Closure<List<String>> closure
-    private Completer completer
-
-    ClosureCompleter(Closure<List<String>> closure) {
-        this.closure = closure
-    }
-
-    Completer getCompleter() {
-        if (completer == null) {
-            completer = new jline.console.completer.StringsCompleter(closure.call())
-        }
-        completer
+    TestsCompleter() {
+        super(new File(BuildSettings.BASE_DIR, 'src/test/groovy'),
+                new File(BuildSettings.BASE_DIR, 'src/integration-test/groovy'))
     }
 
     @Override
-    int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        getCompleter().complete(buffer, cursor, candidates)
+    boolean isValidResource(Resource resource) {
+        def fn = resource.filename
+        fn.endsWith('Spec.groovy') || fn.endsWith('Tests.groovy')
     }
 
 }

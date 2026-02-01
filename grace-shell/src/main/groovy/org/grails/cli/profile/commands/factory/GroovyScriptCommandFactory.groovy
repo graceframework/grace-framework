@@ -71,7 +71,7 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
         configuration.setScriptBaseClass(baseClassName)
 
         def importCustomizer = new ImportCustomizer()
-        importCustomizer.addStarImports('org.grails.cli.interactive.completers')
+        importCustomizer.addStarImports('org.grails.cli.command.completers')
         importCustomizer.addStarImports('grails.util')
         importCustomizer.addStarImports('grails.codegen.model')
         configuration.addCompilationCustomizers(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))

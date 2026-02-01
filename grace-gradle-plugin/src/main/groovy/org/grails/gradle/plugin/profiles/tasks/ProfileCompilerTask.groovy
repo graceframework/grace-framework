@@ -190,7 +190,7 @@ abstract class ProfileCompilerTask extends AbstractCompile {
             configuration.setTargetDirectory(this.destinationDirectory.getAsFile().getOrNull())
 
             ImportCustomizer importCustomizer = new ImportCustomizer()
-            importCustomizer.addStarImports('org.grails.cli.interactive.completers')
+            importCustomizer.addStarImports('org.grails.cli.command.completers')
             importCustomizer.addStarImports('grails.util')
             importCustomizer.addStarImports('grails.codegen.model')
             configuration.addCompilationCustomizers(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))

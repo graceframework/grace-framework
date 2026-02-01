@@ -1,4 +1,4 @@
-import org.grails.cli.interactive.completers.DomainClassCompleter
+import org.grails.cli.command.completers.DomainClassCompleter
 
 description( "Generates an asynchronous Controller that performs CRUD operations" ) {
   usage "grace generate-async-controller [DOMAIN CLASS]"

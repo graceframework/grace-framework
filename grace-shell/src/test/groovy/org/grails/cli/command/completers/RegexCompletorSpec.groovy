@@ -1,4 +1,4 @@
-package org.grails.cli.interactive.completers
+package org.grails.cli.command.completers
 
 import spock.lang.*
 

@@ -24,8 +24,8 @@ import org.grails.cli.command.ExecutionContext
 import org.grails.cli.command.ProjectCommand
 import org.grails.cli.command.ProjectContext
 import org.grails.cli.command.ProjectContextAware
+import org.grails.cli.command.completers.ClosureCompleter
 import org.grails.cli.gradle.GradleUtil
-import org.grails.cli.interactive.completers.ClosureCompleter
 
 /**
  * A command for invoking Gradle commands

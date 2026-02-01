@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.interactive.completers
+package org.grails.cli.command.completers
 
 import groovy.transform.CompileStatic
 import org.springframework.core.io.Resource
 
 import grails.util.BuildSettings
 
+import org.grails.io.support.GrailsResourceUtils
+
 /**
- * A completer that completes the names of the tests in the project
+ * A completer for domain classes
  *
  * @author Graeme Rocher
  * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
-class TestsCompleter extends ClassNameCompleter {
+class DomainClassCompleter extends ClassNameCompleter {
 
-    TestsCompleter() {
-        super(new File(BuildSettings.BASE_DIR, 'src/test/groovy'),
-                new File(BuildSettings.BASE_DIR, 'src/integration-test/groovy'))
+    DomainClassCompleter() {
+        super(new File(BuildSettings.GRAILS_APP_DIR, 'domain'))
     }
 
     @Override
     boolean isValidResource(Resource resource) {
-        def fn = resource.filename
-        fn.endsWith('Spec.groovy') || fn.endsWith('Tests.groovy')
+        GrailsResourceUtils.isDomainClass(resource.getURL())
     }
 
 }

@@ -1,4 +1,4 @@
-import org.grails.cli.interactive.completers.DomainClassCompleter
+import org.grails.cli.command.completers.DomainClassCompleter
 
 description( "Generates GSP views for the specified Domain Class" ) {
     usage "grace generate-views [DOMAIN CLASS]|*"
