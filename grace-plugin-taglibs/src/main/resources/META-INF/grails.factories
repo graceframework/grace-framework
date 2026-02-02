@@ -1,3 +1,6 @@
+grails.core.ArtefactHandler=\
+org.grails.core.artefact.gsp.TagLibArtefactHandler
+
 grails.compiler.traits.TraitInjector=\
 grails.compiler.traits.ControllerTagLibraryTraitInjector
 

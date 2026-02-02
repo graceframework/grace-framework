@@ -16,6 +16,7 @@ dependencies {
 
     testImplementation project(":grace-test")
     testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-taglibs")
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test

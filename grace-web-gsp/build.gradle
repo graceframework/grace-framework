@@ -1,4 +1,5 @@
 dependencies {
+    api project(":grace-api")
     api project(":grace-gsp")
     compileOnly project(":grace-plugin-api")
     api project(":grace-web")
