@@ -44,7 +44,7 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = ArtefactTypes.TAG_LIBRARY;
 
-    public static final String PATH = "taglib";
+    public static final String PATH = "taglibs";
 
     private Map<String, GrailsTagLibClass> tag2libMap = new HashMap<>();
 

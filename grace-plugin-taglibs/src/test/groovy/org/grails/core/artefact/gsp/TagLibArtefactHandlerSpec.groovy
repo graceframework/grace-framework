@@ -59,7 +59,7 @@ class TestTagLib {
         moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -82,7 +82,7 @@ class TestTagLib {
         moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'taglib', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'taglibs', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -128,7 +128,7 @@ class TestTag {
         moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'grails', 'demo', 'TestTag.groovy'].join(File.separator)
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'grails', 'demo', 'TestTag.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -176,7 +176,7 @@ abstract class TestTagLib {
         moduleNode.putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
+        sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
