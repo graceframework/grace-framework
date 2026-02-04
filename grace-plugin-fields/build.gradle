@@ -1,11 +1,11 @@
 dependencies {
     compileOnly project(":grace-plugin-api")
     api project(":grace-plugin-databinding")
+    implementation project(":grace-plugin-taglibs")
     api project(":grace-plugin-validation")
     api project(":grace-scaffolding-core")
     api project(":grace-web")
     api project(":grace-web-gsp")
-    api project(":grace-web-taglib")
     implementation libs.grace.datastore.core
     implementation libs.grace.datastore.gorm
     implementation libs.grace.datastore.gorm.support

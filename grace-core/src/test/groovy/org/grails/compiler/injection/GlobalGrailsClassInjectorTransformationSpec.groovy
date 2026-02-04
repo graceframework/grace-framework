@@ -216,7 +216,7 @@ class Post {
         def clazz = gcl.parseClass('''
 class PostTagLib {
 }
-''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'demo', 'PostTagLib.groovy'].join(File.separator))
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'demo', 'PostTagLib.groovy'].join(File.separator))
 
         def classNode = gcl.getClassNode('PostTagLib')
 

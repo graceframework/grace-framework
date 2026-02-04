@@ -11,7 +11,7 @@ import spock.lang.Specification
 class ControllerTagLibMethodDispatchSpec extends Specification implements ControllerUnitTest<TestController> {
 
     void setupSpec() {
-        mockTagLibs(MyTagLib, TwoTagLib)
+        mockTagLibs(MyTagLib, MyTwoTagLib)
     }
 
     void testControllerTagLibMethodDispatch() {
@@ -46,7 +46,7 @@ class MyTagLib {
 }
 
 @Artefact('TagLib')
-class TwoTagLib {
+class MyTwoTagLib {
     static namespace = "two"
 
     Closure test1 = { attrs, body ->

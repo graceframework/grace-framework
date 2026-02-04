@@ -1,5 +1,12 @@
+grails.core.ArtefactHandler=\
+org.grails.core.artefact.gsp.TagLibArtefactHandler
+
 grails.compiler.traits.TraitInjector=\
+grails.compiler.traits.TagLibraryTraitInjector,\
 grails.compiler.traits.ControllerTagLibraryTraitInjector
+
+grails.compiler.ast.ClassInjector=\
+org.grails.compiler.web.taglib.TagLibraryTransformer
 
 org.grails.taglib.TagInvocationContextCustomizer=\
 org.grails.plugins.web.taglib.ApplicationTagInvocationContextCustomizer,\

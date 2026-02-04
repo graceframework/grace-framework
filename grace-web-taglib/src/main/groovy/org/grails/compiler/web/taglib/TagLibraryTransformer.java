@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,12 +43,12 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
+import grails.artefact.ArtefactTypes;
 import grails.artefact.TagLibrary;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 
 import org.grails.compiler.injection.GrailsASTUtils;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 import org.grails.taglib.TagOutput;
 import org.grails.taglib.encoder.OutputContextLookupHelper;
 
@@ -104,7 +104,7 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector {
     }
 
     protected String getArtefactType() {
-        return TagLibArtefactHandler.TYPE;
+        return ArtefactTypes.TAG_LIBRARY;
     }
 
     @Override
