@@ -15,3 +15,12 @@ dependencies {
     testImplementation libs.spring.test
     testImplementation project(":grace-test-support")
 }
+
+configure([compileGroovy, compileTestGroovy]) {
+    groovyOptions.encoding = "UTF-8"
+    options.encoding = "UTF-8"
+    options.compilerArgs << '-parameters'
+    options.forkOptions.memoryInitialSize = '128M'
+    options.forkOptions.memoryMaximumSize = '1G'
+    classpath += project.files("src/main/resources")
+}
