@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,12 @@ import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.core.gsp.GrailsTagLibClass;
 import grails.core.support.GrailsApplicationAware;
 
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.io.support.GrailsFactoriesLoader;
 import org.grails.taglib.encoder.WithCodecHelper;
@@ -117,7 +117,7 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
     }
 
     protected void registerTagLibraries() {
-        GrailsClass[] taglibs = this.grailsApplication.getArtefacts(TagLibArtefactHandler.TYPE);
+        GrailsClass[] taglibs = this.grailsApplication.getArtefacts(ArtefactTypes.TAG_LIBRARY);
         for (GrailsClass grailsClass : taglibs) {
             registerTagLib((GrailsTagLibClass) grailsClass, true);
         }

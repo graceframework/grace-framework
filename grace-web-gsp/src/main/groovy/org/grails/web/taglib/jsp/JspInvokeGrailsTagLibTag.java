@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,12 +40,12 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.context.ApplicationContext;
 
+import grails.artefact.ArtefactTypes;
 import grails.core.GrailsApplication;
 import grails.core.gsp.GrailsTagLibClass;
 import grails.util.Holders;
 
 import org.grails.buffer.FastStringPrintWriter;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 import org.grails.gsp.GroovyPage;
 import org.grails.taglib.GrailsTagException;
 
@@ -147,7 +147,7 @@ public class JspInvokeGrailsTagLibTag extends BodyTagSupport implements DynamicA
             this.pageContext.setAttribute(TAG_LIBS_ATTRIBUTE, tagLibs);
         }
         GrailsTagLibClass tagLibClass = (GrailsTagLibClass) this.application.getArtefactForFeature(
-                TagLibArtefactHandler.TYPE, GroovyPage.DEFAULT_NAMESPACE + ':' + name);
+                ArtefactTypes.TAG_LIBRARY, GroovyPage.DEFAULT_NAMESPACE + ':' + name);
 
         GroovyObject tagLib;
         if (tagLibs.containsKey(tagLibClass.getFullName())) {

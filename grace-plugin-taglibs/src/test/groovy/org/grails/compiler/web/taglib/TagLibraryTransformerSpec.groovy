@@ -44,7 +44,7 @@ class StaticallyCompiledTagLib implements grails.artefact.TagLibrary {
     def closureTagWithOneArg = { attrs -> }
     def closureTagWithTwoArgs = { attrs, body -> }
 }
-''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'demo', 'StaticallyCompiledTagLib.groovy'].join(File.separator))
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'demo', 'StaticallyCompiledTagLib.groovy'].join(File.separator))
     }
 
     void 'Test that a tag library injected method "$getTagLibNamespace", "tagOne"'() {
@@ -64,7 +64,7 @@ class DemoTagLib {
     static namespace = 'demo'
     def tagOne = { attrs -> }
 }
-''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglib', 'org', 'demo', 'DemoTagLib.groovy'].join(File.separator))
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'demo', 'DemoTagLib.groovy'].join(File.separator))
 
         def taglibMethodNames = taglibClass.getDeclaredMethods()*.name
 

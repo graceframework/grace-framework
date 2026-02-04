@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
+import grails.artefact.ArtefactTypes;
 import grails.gsp.TagLib;
 
 import org.grails.compiler.injection.ArtefactTypeAstTransformation;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 
 /**
  * A transformation that makes an Artefact on a {@link grails.gsp.TagLib}
@@ -37,7 +37,7 @@ public class TagLibArtefactTypeAstTransformation extends ArtefactTypeAstTransfor
 
     @Override
     protected String resolveArtefactType(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode) {
-        return TagLibArtefactHandler.TYPE;
+        return ArtefactTypes.TAG_LIBRARY;
     }
 
     @Override

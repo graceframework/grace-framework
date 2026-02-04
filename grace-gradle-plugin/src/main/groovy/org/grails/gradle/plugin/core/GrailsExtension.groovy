@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ class GrailsExtension {
 
     /**
      * The default app source directories,
-     * eg. 'boot', 'commands', 'controllers', 'domain', 'services', 'taglib', 'util'.
+     * eg. 'boot', 'commands', 'controllers', 'domain', 'services', 'taglibs', 'util'.
      */
-    String[] appSourceDirs = ['boot', 'commands', 'controllers', 'domain', 'services', 'taglib', 'util']
+    String[] appSourceDirs = ['boot', 'commands', 'controllers', 'domain', 'services', 'taglibs', 'util']
 
     /**
      * The default app resource directories,
