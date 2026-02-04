@@ -3,8 +3,8 @@ dependencies {
     api project(":grace-cache-core")
     api project(":grace-core")
     compileOnly project(":grace-plugin-api")
+    implementation project(":grace-plugin-taglibs")
     implementation project(":grace-web-gsp")
-    implementation project(":grace-web-taglib")
 
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
