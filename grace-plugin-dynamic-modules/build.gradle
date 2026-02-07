@@ -2,4 +2,7 @@ dependencies {
     api project(":grace-api")
     api project(":grace-bootstrap")
     compileOnly project(":grace-plugin-api")
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
 }

@@ -15,25 +15,21 @@
  */
 package org.grails.plugins.modules
 
+import groovy.transform.CompileStatic
+
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 /**
  * @since 2022.1.0
  */
+@CompileStatic
 class DynamicModulesGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def title = 'Grails Dynamic Modules Plugin'
-    def author = 'Michael Yan'
-    def authorEmail = 'rain@rainboyan.com'
+    def title = 'Grace Dynamic Modules Plugin'
     def description = '''\
-Grails Dynamic Modules Plugin offer new ways of creating modular and maintainable Grails applications.
+Grace Dynamic Modules Plugin offer new ways of creating modular and maintainable Grace applications.
 '''
-
-    Closure doWithSpring() {
-        { ->
-        }
-    }
 
 }
