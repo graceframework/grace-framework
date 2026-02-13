@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.grails.gradle.plugin.web.views
+
+import org.grails.config.CodeGenConfig
 
 import javax.inject.Inject
 
@@ -32,12 +34,11 @@ import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.gradle.work.InputChanges
 
-import org.grails.gradle.plugin.web.views.util.SourceSets
-
 /**
  * Abstract Gradle task for compiling templates, using GenericGroovyTemplateCompiler
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
@@ -49,12 +50,11 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
     @Optional
     String packageName
 
-    @Input
-    @Optional
-    String appDir
-
     @InputDirectory
     File srcDir
+
+    @InputDirectory
+    File configDir
 
     @Nested
     ViewCompileOptions compileOptions = getObjectFactory().newInstance(ViewCompileOptions)
@@ -72,14 +72,13 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
     @Override
     void setSource(Object source) {
         try {
-            appDir = SourceSets.resolveGrailsAppDir(project)
-            srcDir = project.file(source)
-            if (srcDir.exists() && !srcDir.isDirectory()) {
-                throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
+            this.srcDir = project.file(source)
+            if (this.srcDir.exists() && !this.srcDir.isDirectory()) {
+                throw new IllegalArgumentException("The source for Views compilation must be a single directory, but was $source")
             }
             super.setSource(source)
         } catch (ignore) {
-            throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
+            throw new IllegalArgumentException("The source for Views compilation must be a single directory, but was $source")
         }
     }
 
@@ -89,13 +88,8 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
     }
 
     protected void compile() {
-        def projectPackageNames = getProjectPackageNames(project.projectDir)
-
-        if (packageName == null) {
-            packageName = project.name
-            if (!packageName) {
-                packageName = project.projectDir.canonicalFile.name
-            }
+        if (this.packageName == null) {
+            this.packageName = project.name
         }
 
         ExecResult result = this.execOperations.javaexec(
@@ -114,14 +108,14 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
                         javaExecSpec.setMaxHeapSize(compileOptions.forkOptions.memoryMaximumSize)
                         javaExecSpec.setMinHeapSize(compileOptions.forkOptions.memoryInitialSize)
 
-                        String packageImports = projectPackageNames.join(',') ?: packageName
+                        String packageImports = getDefaultPackageName() ?: packageName
                         def arguments = [
                                 srcDir.canonicalPath,
                                 destinationDirectory.getAsFile().get()?.canonicalPath,
                                 targetCompatibility,
                                 packageImports,
                                 packageName,
-                                project.file("$appDir/conf/application.yml").canonicalPath,
+                                new File(configDir, 'application.yml').canonicalPath,
                                 compileOptions.encoding
                         ]
 
@@ -144,29 +138,19 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
     }
 
     @Input
+    protected String getDefaultPackageName() {
+        CodeGenConfig config = new CodeGenConfig()
+        File applicationYml = new File(this.configDir, 'application.yml')
+        if (applicationYml.exists()) {
+            config.loadYml(applicationYml)
+        }
+        return config.getProperty('grails.codegen.defaultPackage', String.class)
+    }
+
+    @Input
     abstract String getFileExtension()
 
     @Input
     abstract String getScriptBaseName()
-
-    Iterable<String> getProjectPackageNames(File baseDir) {
-        File rootDir = baseDir ? new File(baseDir, "${appDir}${File.separator}domain") : null
-        Set<String> packageNames = []
-        if (rootDir?.exists()) {
-            populatePackages(rootDir, packageNames, '')
-        }
-        return packageNames
-    }
-
-    protected populatePackages(File rootDir, Collection<String> packageNames, String prefix) {
-        rootDir.eachDir { File dir ->
-            def dirName = dir.name
-            if (!dir.hidden && !dirName.startsWith('.')) {
-                packageNames << "${prefix}${dirName}".toString()
-
-                populatePackages(dir, packageNames, "${prefix}${dirName}.")
-            }
-        }
-    }
 
 }
