@@ -2,7 +2,7 @@
 ant = "1.10.15"
 asciidoctorj = "3.0.1"
 aspectj = "1.9.25.1"
-assertj = "3.27.6"
+assertj = "3.27.7"
 bytebuddy = "1.17.8"
 caffeine = "3.2.3"
 cglib = "3.3.0"
