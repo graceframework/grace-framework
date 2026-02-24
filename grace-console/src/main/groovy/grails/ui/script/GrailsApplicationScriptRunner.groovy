@@ -35,6 +35,7 @@ import grails.util.BuildSettings
  * Used to run Grails scripts within the context of a Grails application
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -56,25 +57,15 @@ class GrailsApplicationScriptRunner implements ApplicationRunner, ApplicationCon
         List<File> scripts = []
         scriptNames.each { String scriptName ->
             File script
+            if (scriptName.startsWith('/')) {
+                scriptName = scriptName.substring(1)
+            }
             if (scriptName.endsWith('.groovy')) {
                 scriptName = scriptName - '.groovy'
             }
-            if (scriptName.startsWith('/')) {
-                script = new File(BuildSettings.BASE_DIR, "${scriptName}.groovy")
-                if (script.exists()) {
-                    scripts.add(script)
-                }
-            }
-            else {
-                script = new File(BuildSettings.GRAILS_APP_DIR, "scripts/${scriptName}.groovy")
-                if (script.exists()) {
-                    scripts.add(script)
-                } else {
-                    script = new File(BuildSettings.BASE_DIR, "scripts/${scriptName}.groovy")
-                    if (script.exists()) {
-                        scripts.add(script)
-                    }
-                }
+            script = new File(BuildSettings.BASE_DIR, "${scriptName}.groovy")
+            if (script.exists()) {
+                scripts.add(script)
             }
         }
 
@@ -103,9 +94,12 @@ class GrailsApplicationScriptRunner implements ApplicationRunner, ApplicationCon
         Collection<PersistenceContextInterceptor> interceptors = this.applicationContext.getBeansOfType(PersistenceContextInterceptor).values()
 
         try {
+            String basePath = BuildSettings.BASE_DIR.canonicalPath
             for (File script in scripts) {
                 try {
-                    console.addStatus("Script :$script.name")
+                    String relativePath = (script.canonicalPath - basePath).substring(1)
+                    console.addStatus("Script :$relativePath")
+
                     for (i in interceptors) {
                         i.init()
                     }
