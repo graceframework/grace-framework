@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 package org.grails.web.filters;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,15 +37,15 @@ import org.springframework.web.util.WebUtils;
  * @see org.springframework.web.filter.HiddenHttpMethodFilter
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.2
  */
 public class HiddenHttpMethodFilter extends OncePerRequestFilter {
 
     private static final List<String> ALLOWED_METHODS =
-            Collections.unmodifiableList(Arrays.asList(HttpMethod.PUT.name(),
-                    HttpMethod.DELETE.name(), HttpMethod.PATCH.name()));
+            List.of(HttpMethod.PUT.name(), HttpMethod.DELETE.name(), HttpMethod.PATCH.name());
 
-    /** Default method parameter: <code>_method</code> */
+    /** Default method parameter: {@code _method}. */
     public static final String DEFAULT_METHOD_PARAM = "_method";
 
     private String methodParam = DEFAULT_METHOD_PARAM;
@@ -72,7 +70,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
         if ("POST".equalsIgnoreCase(request.getMethod()) && request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == null) {
             String paramValue = getHttpMethodOverride(request);
             if (StringUtils.hasLength(paramValue)) {
-                String method = paramValue.toUpperCase(Locale.ENGLISH);
+                String method = paramValue.toUpperCase(Locale.ROOT);
                 if (ALLOWED_METHODS.contains(method)) {
                     requestToUse = new HttpMethodRequestWrapper(request, method);
                 }
@@ -95,7 +93,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
      * Simple {@link HttpServletRequest} wrapper that returns the supplied method for
      * {@link HttpServletRequest#getMethod()}.
      */
-    protected static class HttpMethodRequestWrapper extends HttpServletRequestWrapper {
+    private static class HttpMethodRequestWrapper extends HttpServletRequestWrapper {
 
         private final String method;
 
