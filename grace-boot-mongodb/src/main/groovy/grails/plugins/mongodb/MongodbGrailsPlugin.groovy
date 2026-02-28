@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package grails.plugins.mongodb
 import groovy.transform.CompileStatic
 
 import grails.plugins.Plugin
+import grails.util.GrailsUtil
 
 /**
  * Plugin that integrates Hibernate into a Grails application
@@ -30,19 +31,13 @@ import grails.plugins.Plugin
 @CompileStatic
 class MongodbGrailsPlugin extends Plugin {
 
+    def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = '2023.0.0 > *'
 
-    def author = 'Grace Framework'
     def title = 'Grace Data MongoDB'
     def description = 'Provides integration between Grace and MongoDB document datastore through GORM API'
-    def documentation = 'https://github.com/graceframework/grace-data-mongodb'
 
     def observe = ['domainClass']
     def loadAfter = ['domainClass']
-
-    def license = 'APACHE'
-    def organization = [name: 'Grace Framework', url: 'https://graceframework.org']
-    def issueManagement = [system: 'Github', url: 'https://github.com/graceframework/grace-data-mongodb/issues']
-    def scm = [url: 'https://github.com/graceframework/grace-data-mongodb']
 
 }
