@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 the original author or authors.
+ * Copyright 2024-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,12 @@
 package grails.plugin.hibernate;
 
 import java.beans.Introspector;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -51,14 +54,17 @@ import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.core.support.proxy.ProxyHandler;
 
+import org.grails.compiler.gorm.GormEntityTraitProvider;
 import org.grails.datastore.gorm.events.ConfigurableApplicationContextEventPublisher;
 import org.grails.datastore.gorm.proxy.ProxyHandlerAdapter;
 import org.grails.datastore.mapping.config.Settings;
 import org.grails.datastore.mapping.core.connections.AbstractConnectionSources;
 import org.grails.datastore.mapping.core.connections.ConnectionSource;
-import org.grails.datastore.mapping.model.MappingContext;
+import org.grails.datastore.mapping.model.config.GormProperties;
+import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
 import org.grails.datastore.mapping.services.Service;
 import org.grails.orm.hibernate.HibernateDatastore;
+import org.grails.orm.hibernate.cfg.HibernateMappingContext;
 import org.grails.orm.hibernate.proxy.HibernateProxyHandler;
 import org.grails.orm.hibernate.support.HibernateDatastoreConnectionSourcesRegistrar;
 import org.grails.plugin.hibernate.support.AggregatePersistenceContextInterceptor;
@@ -76,6 +82,8 @@ import org.grails.transaction.ChainedTransactionManagerPostProcessor;
         before = { HibernateJpaAutoConfiguration.class, TransactionAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class })
 @ConditionalOnClass(HibernateDatastore.class)
 public class HibernateGormAutoConfiguration {
+
+    public static final String DATASTORE_TYPE = "hibernate";
 
     private static final String TRANSACTION_MANAGER_WHITE_LIST_PATTERN = "grails.transaction.chainedTransactionManager.whitelistPattern";
     private static final String TRANSACTION_MANAGER_BLACK_LIST_PATTERN = "grails.transaction.chainedTransactionManager.blacklistPattern";
@@ -112,20 +120,34 @@ public class HibernateGormAutoConfiguration {
 
         domainClasses.addAll(entityClasses);
 
+        Set<Class<?>> hibernateEntityClasses = new HashSet<>();
+        List<GormEntityTraitProvider> entityTraitProviders = getEntityTraitProviders();
+        if (entityTraitProviders.size() > 1) {
+            for (Class<?> domainClass : domainClasses) {
+                String mapWith = ClassPropertyFetcher.getStaticPropertyValue(domainClass, GormProperties.MAPPING_STRATEGY, String.class);
+                if (mapWith == null || mapWith.equals(DATASTORE_TYPE)) {
+                    hibernateEntityClasses.add(domainClass);
+                }
+            }
+        }
+        else {
+            hibernateEntityClasses.addAll(domainClasses);
+        }
+
         HibernateDatastore datastore;
         if (dataSource.getIfAvailable() != null) {
             datastore = new HibernateDatastore(
                     dataSource.getObject(),
                     this.applicationContext.getEnvironment(),
                     new ConfigurableApplicationContextEventPublisher(this.applicationContext),
-                    domainClasses.toArray(new Class[0])
+                    hibernateEntityClasses.toArray(new Class[0])
             );
         }
         else {
             datastore = new HibernateDatastore(
                     this.applicationContext.getEnvironment(),
                     new ConfigurableApplicationContextEventPublisher(this.applicationContext),
-                    domainClasses.toArray(new Class[0])
+                    hibernateEntityClasses.toArray(new Class[0])
             );
         }
 
@@ -159,7 +181,7 @@ public class HibernateGormAutoConfiguration {
     @Bean
     @Primary
     @ConditionalOnMissingBean
-    public MappingContext grailsDomainClassMappingContext(HibernateDatastore hibernateDatastore) {
+    public HibernateMappingContext grailsDomainClassMappingContext(HibernateDatastore hibernateDatastore) {
         return hibernateDatastore.getMappingContext();
     }
 
@@ -213,6 +235,17 @@ public class HibernateGormAutoConfiguration {
             ObjectProvider<GrailsApplication> grailsApplication) {
         Iterable<String> dataSourceNames = getConfigureDataSources(grailsApplication.getObject().getConfig());
         return new HibernateDatastoreConnectionSourcesRegistrar(dataSourceNames);
+    }
+
+    private static List<GormEntityTraitProvider> getEntityTraitProviders() {
+        ServiceLoader<GormEntityTraitProvider> serviceProviders = ServiceLoader.load(GormEntityTraitProvider.class, Thread.currentThread().getContextClassLoader());
+        List<GormEntityTraitProvider> entityTraitProviders = new ArrayList<>();
+        for (GormEntityTraitProvider provider : serviceProviders) {
+            if (provider.isAvailable()) {
+                entityTraitProviders.add(provider);
+            }
+        }
+        return entityTraitProviders;
     }
 
     private static Set<String> getConfigureDataSources(Config config) {
