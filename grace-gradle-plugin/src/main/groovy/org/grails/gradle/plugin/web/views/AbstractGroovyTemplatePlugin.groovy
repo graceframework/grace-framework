@@ -46,10 +46,17 @@ import org.grails.gradle.plugin.util.SourceSets
 abstract class AbstractGroovyTemplatePlugin implements Plugin<Project> {
 
     final Class<? extends AbstractGroovyTemplateCompileTask> taskClass
+    final String taskName
     final String fileExtension
 
     AbstractGroovyTemplatePlugin(Class<? extends AbstractGroovyTemplateCompileTask> taskClass, String fileExtension) {
         this.taskClass = taskClass
+        this.fileExtension = fileExtension
+    }
+
+    AbstractGroovyTemplatePlugin(Class<? extends AbstractGroovyTemplateCompileTask> taskClass, String taskName, String fileExtension) {
+        this.taskClass = taskClass
+        this.taskName = taskName
         this.fileExtension = fileExtension
     }
 
@@ -68,8 +75,9 @@ abstract class AbstractGroovyTemplatePlugin implements Plugin<Project> {
 
         TaskContainer tasks = project.tasks
         String upperCaseName = GrailsNameUtils.getClassName(this.fileExtension)
+        String viewsTaskName = this.taskName ?: "compile${upperCaseName}Views".toString()
 
-        tasks.register("compile${upperCaseName}Views".toString(), (Class<AbstractGroovyTemplateCompileTask>) taskClass) { AbstractGroovyTemplateCompileTask templateCompileTask ->
+        tasks.register(viewsTaskName, (Class<AbstractGroovyTemplateCompileTask>) taskClass) { AbstractGroovyTemplateCompileTask templateCompileTask ->
             templateCompileTask.group = 'Grace'
             templateCompileTask.destinationDirectory.set(destDir)
             templateCompileTask.classpath = allClasspath
