@@ -2,7 +2,7 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 
 plugins {
-    id "com.gorylenko.gradle-git-properties" version libs.versions.gradle.git.properties
+    alias libs.plugins.gradle.git.properties
 }
 
 dependencies {
