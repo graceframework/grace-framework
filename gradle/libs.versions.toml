@@ -22,7 +22,7 @@ grace-data-hibernate = "2024.0.0-SNAPSHOT"
 grace-data-mongodb = "2024.0.0-SNAPSHOT"
 grace-doc-engine = "2.0.0"
 gradle = "8.14.4"
-gradle-git-properties = "2.4.2"
+gradle-git-properties = "2.5.7"
 groovy = "4.0.30"
 gson = "2.13.2"
 h2 = "2.3.232"
@@ -245,3 +245,6 @@ spring-boot-bundle = ["spring-boot-dependencies"]
 spring-framework-bundle = ["spring-framework-bom"]
 snakeyaml-bundle = ["snakeyaml"]
 tomcat-bundle = ["tomcat-annotations-api", "tomcat-jdbc", "tomcat-jsp-api", "tomcat-embed-core", "tomcat-embed-el", "tomcat-embed-jasper", "tomcat-embed-websocket"]
+
+[plugins]
+gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gradle-git-properties" }
