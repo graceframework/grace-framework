@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ class DatabaseChangeLogBuilder extends BuilderSupport {
     }
 
     protected void processGrailsChangeProperty(String methodName, Object args) {
-        def name = methodName.toLowerCase()
+        def name = methodName.toLowerCase(Locale.ROOT)
         def arg = InvokerHelper.asList(args)[0]
         if (name == 'init' && arg instanceof Closure) {
             currentNode.addChild(null, 'init', arg)
@@ -124,7 +124,7 @@ class DatabaseChangeLogBuilder extends BuilderSupport {
     }
 
     protected boolean processGrailsPreconditionProperty(String methodName, args) {
-        def name = methodName.toLowerCase()
+        def name = methodName.toLowerCase(Locale.ROOT)
         def arg = InvokerHelper.asList(args)[0]
         if (name == 'check' && arg instanceof Closure) {
             currentNode.addChild(null, 'check', arg)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -161,8 +161,8 @@ abstract class HibernateSpec extends Specification {
     private boolean canLoadFileExtension(PropertySourceLoader loader, String name) {
         return Arrays
                 .stream(loader.fileExtensions)
-                .map { String extension -> extension.toLowerCase() }
-                .anyMatch { String extension -> name.toLowerCase().endsWith(extension) }
+                .map { String extension -> extension.toLowerCase(Locale.ROOT) }
+                .anyMatch { String extension -> name.toLowerCase(Locale.ROOT).endsWith(extension) }
     }
 
 }

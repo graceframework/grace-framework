@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class CosineSimilarity {
     }
 
     private static double stringSimilarity(String s1, String s2, int degree = 2) {
-        similarity s1.toLowerCase().toCharArray(), s2.toLowerCase().toCharArray(), degree
+        similarity s1.toLowerCase(Locale.ROOT).toCharArray(), s2.toLowerCase(Locale.ROOT).toCharArray(), degree
     }
 
     private static double similarity(char[] sequence1, char[] sequence2, int degree = 2) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class GroovyGenerateChangeLogCommandStep extends GenerateChangelogCommandStep {
         CommandScope commandScope = resultsBuilder.getCommandScope()
 
         String changeLogFile = StringUtil.trimToNull(commandScope.getArgumentValue(CHANGELOG_FILE_ARG))
-        if (changeLogFile != null && changeLogFile.toLowerCase().endsWith('.sql')) {
+        if (changeLogFile != null && changeLogFile.toLowerCase(Locale.ROOT).endsWith('.sql')) {
             Scope.getCurrentScope().getUI().sendMessage('\n' + INFO_MESSAGE + '\n')
             Scope.getCurrentScope().getLog(getClass()).info('\n' + INFO_MESSAGE + '\n')
         }

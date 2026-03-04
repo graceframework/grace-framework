@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -243,7 +244,7 @@ public abstract class NavigableMapConfig implements Config {
         if (resolvedName != null) {
             return resolvedName;
         }
-        String uppercasedName = name.toUpperCase();
+        String uppercasedName = name.toUpperCase(Locale.ROOT);
         if (!name.equals(uppercasedName)) {
             resolvedName = checkPropertyName(uppercasedName);
             if (resolvedName != null) {
@@ -373,7 +374,7 @@ public abstract class NavigableMapConfig implements Config {
 
     @SuppressWarnings("unchecked")
     private Object toEnumValue(Class targetType, String stringValue) {
-        return Enum.valueOf(targetType, stringValue.toUpperCase());
+        return Enum.valueOf(targetType, stringValue.toUpperCase(Locale.ROOT));
     }
 
     @Override

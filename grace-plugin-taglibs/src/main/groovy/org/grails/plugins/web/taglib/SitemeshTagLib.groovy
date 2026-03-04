@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -162,7 +162,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
                 smpage.setBodyBuffer(wrapContentInBuffer(content))
                 if (attrs) {
                     attrs.each { k, v ->
-                        smpage.addProperty("body.${k?.toString()?.toLowerCase()}", v?.toString())
+                        smpage.addProperty("body.${k?.toString()?.toLowerCase(Locale.ROOT)}", v?.toString())
                     }
                 }
             }
@@ -191,11 +191,11 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
         if (attrs && smpage && val != null) {
             if (attrs.name) {
                 smpage.addProperty("meta.${attrs.name}", val)
-                smpage.addProperty("meta.${attrs.name.toString().toLowerCase()}", val)
+                smpage.addProperty("meta.${attrs.name.toString().toLowerCase(Locale.ROOT)}", val)
             }
             else if (attrs['http-equiv']) {
                 String httpEquiv = attrs['http-equiv'] as String
-                def httpEquivFormats = [httpEquiv, httpEquiv.toLowerCase()]
+                def httpEquivFormats = [httpEquiv, httpEquiv.toLowerCase(Locale.ROOT)]
                 if (httpEquiv.equalsIgnoreCase('content-type')) {
                     httpEquivFormats << 'Content-Type'
                 }

@@ -48,7 +48,7 @@ class MapToSelectInputRendererSpec extends ClosureCaptureSpecification {
 
         @Override
         String getOptionKey(String o) {
-            o.toLowerCase()
+            o.toLowerCase(Locale.ROOT)
         }
 
         @Override

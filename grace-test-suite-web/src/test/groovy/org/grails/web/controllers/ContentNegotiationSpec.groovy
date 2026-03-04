@@ -71,7 +71,7 @@ class ContentNegotiationSpec extends Specification implements ControllerUnitTest
             "application/json" || 'json'         || "application/json" || /{"title":"This controller title"}/
             "application/xml"  || 'xml'          || "application/xml"  || '''<?xml version="1.0" encoding="UTF-8"?><map><entry key="title">This controller title</entry></map>'''
 
-            converter = responseFormat.toUpperCase()
+            converter = responseFormat.toUpperCase(Locale.ROOT)
     }
 }
 

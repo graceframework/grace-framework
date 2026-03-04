@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -813,7 +813,7 @@ class FormFieldsTagLib {
     protected String getDefaultNumberType(Map model) {
         Class modelType = (Class) model.type
 
-        String typeName = modelType.simpleName.toLowerCase()
+        String typeName = modelType.simpleName.toLowerCase(Locale.ROOT)
         if (typeName in DECIMAL_TYPES) {
             return 'number decimal'
         }

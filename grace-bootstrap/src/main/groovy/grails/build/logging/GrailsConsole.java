@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2024 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 import jline.Terminal;
@@ -344,7 +345,7 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public boolean isWindows() {
-        return System.getProperty("os.name").toLowerCase().contains("windows");
+        return System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows");
     }
 
     public static synchronized GrailsConsole getInstance() {

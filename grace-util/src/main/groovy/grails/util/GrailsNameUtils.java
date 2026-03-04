@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2023 the original author or authors.
+ * Copyright 2008-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ public final class GrailsNameUtils {
             throw new IllegalArgumentException("Argument [logicalName] cannot be null or blank");
         }
 
-        String className = logicalName.substring(0, 1).toUpperCase(Locale.ENGLISH) + logicalName.substring(1);
+        String className = logicalName.substring(0, 1).toUpperCase(Locale.ROOT) + logicalName.substring(1);
         if (trailingName != null) {
             className = className + trailingName;
         }
@@ -140,7 +140,7 @@ public final class GrailsNameUtils {
             String token = token1.trim();
             int length = token.length();
             if (length > 0) {
-                buf.append(token.substring(0, 1).toUpperCase(Locale.ENGLISH));
+                buf.append(token.substring(0, 1).toUpperCase(Locale.ROOT));
                 if (length > 1) {
                     buf.append(token.substring(1));
                 }
@@ -163,7 +163,7 @@ public final class GrailsNameUtils {
         }
 
         if (!name.contains("-")) {
-            return name.substring(0, 1).toUpperCase() + name.substring(1);
+            return name.substring(0, 1).toUpperCase(Locale.ROOT) + name.substring(1);
         }
 
         StringBuilder buf = new StringBuilder();
@@ -172,7 +172,7 @@ public final class GrailsNameUtils {
             if (token == null || token.length() == 0) {
                 continue;
             }
-            buf.append(token.substring(0, 1).toUpperCase())
+            buf.append(token.substring(0, 1).toUpperCase(Locale.ROOT))
                     .append(token.substring(1));
         }
         return buf.toString();
@@ -216,7 +216,7 @@ public final class GrailsNameUtils {
     public static String getLogicalPropertyName(String className, String trailingName) {
         if (!isBlank(className) && !isBlank(trailingName)) {
             if (className.length() == trailingName.length() + 1 && className.endsWith(trailingName)) {
-                return className.substring(0, 1).toLowerCase();
+                return className.substring(0, 1).toLowerCase(Locale.ROOT);
             }
         }
         return getLogicalName(getPropertyName(className), trailingName);
@@ -273,7 +273,7 @@ public final class GrailsNameUtils {
             return name;
         }
 
-        String propertyName = name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);
+        String propertyName = name.substring(0, 1).toLowerCase(Locale.ROOT) + name.substring(1);
         if (propertyName.contains(" ")) {
             propertyName = propertyName.replaceAll("\\s", "");
         }
@@ -358,7 +358,7 @@ public final class GrailsNameUtils {
         if (name.endsWith(".groovy")) {
             name = name.substring(0, name.length() - 7);
         }
-        return getNaturalName(name).replaceAll("\\s", "-").toLowerCase();
+        return getNaturalName(name).replaceAll("\\s", "-").toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -387,7 +387,7 @@ public final class GrailsNameUtils {
         if (name.endsWith(".groovy")) {
             name = name.substring(0, name.length() - 7);
         }
-        return getNaturalName(name).replaceAll("\\s", "_").toLowerCase();
+        return getNaturalName(name).replaceAll("\\s", "_").toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -664,7 +664,7 @@ public final class GrailsNameUtils {
         }
 
         if (suffix.length() == 1) {
-            return Character.isUpperCase(suffix.charAt(0)) ? suffix.toLowerCase() : null;
+            return Character.isUpperCase(suffix.charAt(0)) ? suffix.toLowerCase(Locale.ROOT) : null;
         }
         if (Character.isUpperCase(suffix.charAt(1))) {
             // "aProperty", "AProperty"

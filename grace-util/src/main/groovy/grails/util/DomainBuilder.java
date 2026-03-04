@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package grails.util;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Locale;
 
 import groovy.util.ObjectGraphBuilder;
 import org.codehaus.groovy.runtime.InvokerHelper;
@@ -47,7 +48,7 @@ public class DomainBuilder extends ObjectGraphBuilder {
 
         public void setChild(Object parent, Object child, String parentName, String propertyName) {
             if (isCollection(parent, child, parentName, propertyName)) {
-                String propName = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+                String propName = propertyName.substring(0, 1).toUpperCase(Locale.ROOT) + propertyName.substring(1);
                 String methodName = "addTo" + propName;
                 InvokerHelper.invokeMethod(parent, methodName, child);
             }

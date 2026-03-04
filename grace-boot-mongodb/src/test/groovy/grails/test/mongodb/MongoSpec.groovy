@@ -143,7 +143,7 @@ abstract class MongoSpec extends Specification {
     private boolean canLoadFileExtension(PropertySourceLoader loader, String name) {
         return Arrays
             .stream(loader.fileExtensions)
-            .map { String extension -> extension.toLowerCase() }
-            .anyMatch { String extension -> name.toLowerCase().endsWith(extension) }
+            .map { String extension -> extension.toLowerCase(Locale.ROOT) }
+            .anyMatch { String extension -> name.toLowerCase(Locale.ROOT).endsWith(extension) }
     }
 }

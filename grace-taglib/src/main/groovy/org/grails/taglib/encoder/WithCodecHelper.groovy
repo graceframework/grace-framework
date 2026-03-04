@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,7 @@ class WithCodecHelper {
             String allFallback = null
             String nameFallback = null
             ((Map) codecInfo).each { k, v ->
-                String codecWriterName = k.toString().toLowerCase() - 'codec'
+                String codecWriterName = k.toString().toLowerCase(Locale.ROOT) - 'codec'
                 if (codecWriterName == OutputEncodingSettings.INHERIT_SETTING_NAME
                         || codecWriterName == OutputEncodingSettings.REPLACE_ONLY_SETTING_NAME) {
                     codecInfoMap.put(codecWriterName, convertToBoolean(v))

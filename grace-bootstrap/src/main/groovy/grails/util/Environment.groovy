@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -304,7 +304,7 @@ enum Environment {
         Environment env = getEnvironment(envName)
         if (env == null) {
             try {
-                env = valueOf(envName.toUpperCase())
+                env = valueOf(envName.toUpperCase(Locale.ROOT))
             }
             catch (IllegalArgumentException ignored) {
             }
@@ -437,10 +437,10 @@ enum Environment {
     static Environment getEnvironment(String shortName) {
         String envName = ENV_NAME_MAPPINGS.get(shortName)
         if (envName != null) {
-            return valueOf(envName.toUpperCase())
+            return valueOf(envName.toUpperCase(Locale.ROOT))
         }
         try {
-            return valueOf(shortName.toUpperCase())
+            return valueOf(shortName.toUpperCase(Locale.ROOT))
         }
         catch (IllegalArgumentException ise) {
             return null
