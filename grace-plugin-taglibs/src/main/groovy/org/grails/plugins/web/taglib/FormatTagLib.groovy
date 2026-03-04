@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -161,18 +161,18 @@ class FormatTagLib implements TagLibrary {
         String timeStyle = null
         String dateStyle = null
         if (attrs.style != null) {
-            String style = attrs.style.toString().toUpperCase()
+            String style = attrs.style.toString().toUpperCase(Locale.ROOT)
             timeStyle = style
             dateStyle = style
         }
 
         if (attrs.dateStyle != null) {
-            dateStyle = attrs.dateStyle.toString().toUpperCase()
+            dateStyle = attrs.dateStyle.toString().toUpperCase(Locale.ROOT)
         }
         if (attrs.timeStyle != null) {
-            timeStyle = attrs.timeStyle.toString().toUpperCase()
+            timeStyle = attrs.timeStyle.toString().toUpperCase(Locale.ROOT)
         }
-        String type = attrs.type?.toString()?.toUpperCase()
+        String type = attrs.type?.toString()?.toUpperCase(Locale.ROOT)
         def formatName = attrs.formatName
         String format = attrs.format
         def timeZone = grailsTagDateHelper.getTimeZone(attrs.timeZone)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -431,7 +431,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             method = LinkGenerator.REST_RESOURCE_ACTION_TO_HTTP_METHOD_MAP.get(linkAttrs[LinkGenerator.ATTRIBUTE_ACTION].toString())
         }
         else {
-            method = linkAttrs[LinkGenerator.ATTRIBUTE_METHOD]?.toUpperCase() ?: 'POST'
+            method = linkAttrs[LinkGenerator.ATTRIBUTE_METHOD]?.toUpperCase(Locale.ROOT) ?: 'POST'
         }
         def httpMethod = method != null ? HttpMethod.valueOf(method) : HttpMethod.POST
         boolean notGet = httpMethod != HttpMethod.GET

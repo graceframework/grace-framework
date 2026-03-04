@@ -83,7 +83,7 @@ class MigrationGenerator extends AbstractGenerator {
             tableName = matches[1]
             migrationAction = matches[0]
             if (migrationAction == 'join') {
-                model.put('joinTables', args.size() > 3 ? args[2..-1] : tableName.toLowerCase().split('_'))
+                model.put('joinTables', args.size() > 3 ? args[2..-1] : tableName.toLowerCase(Locale.ROOT).split('_'))
             }
             else {
                 Map<String, String> tableColumns = new LinkedHashMap<>()

@@ -82,7 +82,7 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
     @Override
     protected String evaluateFileName(String fileName) {
         String fn = super.evaluateFileName(fileName)
-        fn.contains('-') ? fn.toLowerCase() : GrailsNameUtils.getScriptName(fn)
+        fn.contains('-') ? fn.toLowerCase(Locale.ROOT) : GrailsNameUtils.getScriptName(fn)
     }
 
     @Override

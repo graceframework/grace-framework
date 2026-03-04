@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.web.mapping;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -354,7 +355,7 @@ public class UrlCreatorCache {
                 String pluginName, String httpMethod, Map<Object, Object> params, String encoding,
                 String fragment, int urlType) {
             super(controller, action, namespace, pluginName, httpMethod, params);
-            this.encoding = (encoding != null) ? encoding.toLowerCase() : null;
+            this.encoding = (encoding != null) ? encoding.toLowerCase(Locale.ROOT) : null;
             this.fragment = fragment;
             this.urlType = urlType;
         }

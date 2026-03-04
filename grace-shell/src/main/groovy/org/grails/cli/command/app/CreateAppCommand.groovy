@@ -332,7 +332,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (parts.size() == 1) {
                 appName = parts[0]
                 defaultPackageName = appName.split(/[-]+/).collect { String token ->
-                    (token.toLowerCase().toCharArray().findAll { char ch ->
+                    (token.toLowerCase(Locale.ROOT).toCharArray().findAll { char ch ->
                         Character.isJavaIdentifierPart(ch)
                     } as char[]) as String
                 }.join('.')

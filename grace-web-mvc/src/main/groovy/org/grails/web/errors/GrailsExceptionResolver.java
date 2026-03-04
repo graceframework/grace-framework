@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.web.errors;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import grails.config.Settings;
 import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
 import grails.util.Environment;
+
 import org.grails.exceptions.ExceptionUtils;
 import org.grails.exceptions.reporting.StackTraceFilterer;
 import org.grails.web.servlet.mvc.exceptions.GrailsMVCException;
@@ -161,7 +163,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         }
 
         sb.append(LINE_SEPARATOR);
-        sb.append("Method: ").append(request.getMethod().toUpperCase()).append(LINE_SEPARATOR);
+        sb.append("Method: ").append(request.getMethod().toUpperCase(Locale.ROOT)).append(LINE_SEPARATOR);
 
         if (message != null) {
             sb.append("Message: ").append(message).append(LINE_SEPARATOR);

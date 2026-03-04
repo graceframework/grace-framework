@@ -422,7 +422,7 @@ enum Title implements MessageSourceResolvable {
 
     String getDefaultMessage() {
         use(WordUtils) {
-            name().toLowerCase().replaceAll(/_+/, " ").capitalizeFully()
+            name().toLowerCase(Locale.ROOT).replaceAll(/_+/, " ").capitalizeFully()
         }
     }
 }

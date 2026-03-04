@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2024 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -401,7 +401,7 @@ class ValidationTagLib implements TagLibrary {
             throwTagError("Tag [validate] is missing required attribute [form]")
         }
 
-        def againstClass = attrs.against ?: form.substring(0, 1).toUpperCase() + form.substring(1)
+        def againstClass = attrs.against ?: form.substring(0, 1).toUpperCase(Locale.ROOT) + form.substring(1)
         def dc = grailsAttributes.grailsApplication.getDomainClass(againstClass)
         if (!dc) {
             throwTagError("Tag [validate] could not find a domain class to validate against for name [${againstClass}]")
@@ -437,7 +437,7 @@ class ValidationTagLib implements TagLibrary {
 
                 for (vt in validateTypes) {
                     // import required script
-                    def scriptName = "org/apache/commons/validator/javascript/validate" + vt.substring(0, 1).toUpperCase() + vt.substring(1) + ".js"
+                    def scriptName = "org/apache/commons/validator/javascript/validate" + vt.substring(0, 1).toUpperCase(Locale.ROOT) + vt.substring(1) + ".js"
                     def inStream = getClass().classLoader.getResourceAsStream(scriptName)
                     if (inStream) {
                         out << inStream.getText('UTF-8')
@@ -473,7 +473,7 @@ class ValidationTagLib implements TagLibrary {
         }
         out << 'function validateForm(form) {\n'
         fieldValidations.each { k, v ->
-            def validateType = k.substring(0, 1).toUpperCase() + k.substring(1)
+            def validateType = k.substring(0, 1).toUpperCase(Locale.ROOT) + k.substring(1)
             out << "if (!validate${validateType}(form)) return false;\n"
         }
         out << 'return true;\n'

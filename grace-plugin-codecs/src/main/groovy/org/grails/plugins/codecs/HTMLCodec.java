@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.grails.plugins.codecs;
+
+import java.util.Locale;
 
 import org.springframework.beans.factory.InitializingBean;
 
@@ -89,7 +91,7 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
             return;
         }
 
-        String htmlCodecSettingStr = htmlCodecSetting.toLowerCase();
+        String htmlCodecSettingStr = htmlCodecSetting.toLowerCase(Locale.ROOT);
         if (htmlCodecSettingStr.startsWith("xml") || "xhtml".equalsIgnoreCase(htmlCodecSettingStr)) {
             setUseLegacyEncoder(false);
         }

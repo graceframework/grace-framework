@@ -380,7 +380,7 @@ trait DatabaseMigrationCommand implements ApplicationCommand {
         }
 
         def relativePath = changeLogLocation.toPath().relativize(destChangeLogFile.toPath()).toString()
-        def extension = getExtension(srcChangeLogFile.name)?.toLowerCase()
+        def extension = getExtension(srcChangeLogFile.name)?.toLowerCase(Locale.ROOT)
 
         switch (extension) {
             case ['yaml', 'yml']:

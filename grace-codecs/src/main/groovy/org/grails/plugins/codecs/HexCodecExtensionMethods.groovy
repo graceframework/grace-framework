@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class HexCodecExtensionMethods {
 
         List output = []
 
-        String str = theTarget.toString().toLowerCase()
+        String str = theTarget.toString().toLowerCase(Locale.ROOT)
         if (str.size() % 2) {
             throw new UnsupportedOperationException('Decode of hex strings requires strings of even length')
         }

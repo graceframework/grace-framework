@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.web.sitemesh;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Locale;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;
@@ -40,6 +41,7 @@ import org.grails.web.util.WebUtils;
 
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0.4
  */
 public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
@@ -199,10 +201,10 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
      */
     @Override
     public void setHeader(String name, String value) {
-        if (name.toLowerCase().equals("content-type")) { // ensure ContentType is always set through setContentType()
+        if (name.toLowerCase(Locale.ROOT).equals("content-type")) { // ensure ContentType is always set through setContentType()
             setContentType(value);
         }
-        else if (!this.parseablePage || !name.toLowerCase().equals("content-length")) {
+        else if (!this.parseablePage || !name.toLowerCase(Locale.ROOT).equals("content-length")) {
             super.setHeader(name, value);
         }
     }
@@ -212,10 +214,10 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
      */
     @Override
     public void addHeader(String name, String value) {
-        if (name.toLowerCase().equals("content-type")) { // ensure ContentType is always set through setContentType()
+        if (name.toLowerCase(Locale.ROOT).equals("content-type")) { // ensure ContentType is always set through setContentType()
             setContentType(value);
         }
-        else if (!this.parseablePage || !name.toLowerCase().equals("content-length")) {
+        else if (!this.parseablePage || !name.toLowerCase(Locale.ROOT).equals("content-length")) {
             super.addHeader(name, value);
         }
     }

@@ -64,7 +64,7 @@ class ForwardMethodSpec extends Specification {
     def 'Test forward request with controller and action params and url converter'() {
         setup:
             Map params = [controller : 'foo', action : 'fooBar', model : [param1 : 1, param2 : 2]]
-            urlConverter.toUrlElement(_) >> { it[0]?.toLowerCase() }
+            urlConverter.toUrlElement(_) >> { it[0]?.toLowerCase(Locale.ROOT) }
             forwardMethod.urlConverter = urlConverter
         when:
             def forwardUri = forwardMethod.forward(params)
@@ -75,7 +75,7 @@ class ForwardMethodSpec extends Specification {
     def 'Test forward request with controller and action params and url converter in app context'() {
         setup:
             Map params = [controller : 'foo', action : 'fooBar', model : [param1 : 1, param2 : 2]]
-            urlConverter.toUrlElement(_) >> { it[0]?.toLowerCase() }
+            urlConverter.toUrlElement(_) >> { it[0]?.toLowerCase(Locale.ROOT) }
             forwardMethod.urlConverter = urlConverter
         when:
             def forwardUri = forwardMethod.forward(params)

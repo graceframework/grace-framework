@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -149,8 +150,8 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
     protected Collection<String> createNameVariations(String name, CodecIdentifierProvider target) {
         Set<String> nameVariations = new LinkedHashSet<>();
         nameVariations.add(name);
-        nameVariations.add(name.toLowerCase());
-        nameVariations.add(name.toUpperCase());
+        nameVariations.add(name.toLowerCase(Locale.ROOT));
+        nameVariations.add(name.toUpperCase(Locale.ROOT));
         nameVariations.add(GrailsNameUtils.getPropertyNameRepresentation(name));
         return nameVariations;
     }

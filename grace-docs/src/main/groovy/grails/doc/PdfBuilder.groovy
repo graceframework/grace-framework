@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ class PdfBuilder {
         File fontsDir = new File(urlBase.parentFile, "fonts")
         if (fontsDir.exists() && fontsDir.isDirectory()) {
             fontsDir.eachFile { File file ->
-                String font = file.name.toLowerCase()
+                String font = file.name.toLowerCase(Locale.ROOT)
                 if (font.endsWith(".otf") || font.endsWith(".ttf")) {
                     fontResolver.addFont(file.absolutePath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED)
                 }
