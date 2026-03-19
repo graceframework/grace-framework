@@ -19,7 +19,7 @@ jobs:
     env:
       WORKSPACE: ${{ github.workspace }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout repository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup JDK
