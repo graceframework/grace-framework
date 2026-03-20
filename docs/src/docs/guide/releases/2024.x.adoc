@@ -1,3 +1,37 @@
+=== 2024.1.0-M2
+
+This release is based on Spring Boot 3.5.12 and Spring Framework to 6.2.17.
+
+* Upgrade to Groovy 4.0.30, Gradle 8.14.4, Tomcat 10.1.52
+* Upgrade to Maven 3.9.14, Maven Resolver 1.9.27
+
+For a complete list of changes made in this release see link:https://github.com/orgs/graceframework/projects/12[v2024.0.0-RC1 on GitHub] and link:https://github.com/orgs/graceframework/projects/15[v2024.1.0-M2 on GitHub].
+
+link:{github}/releases/tag/v2024.1.0-M2[release notes]
+
+🛠 Improvements
+
+* Update README - Update badge versions of Spring Boot
+
+🚀 Dependency Upgrades
+
+* Upgrade to AssertJ 3.27.7 link:{github}/issues/1378[#1378]
+* Upgrade to Caffeine 3.2.3 link:{github}/issues/1311[#1311]
+* Upgrade to Mockito 5.17.0 link:{github}/issues/1313[#1313]
+* Upgrade to Gson 2.13.2 link:{github}/issues/1312[#1312]
+* Upgrade to Spring Boot 3.5.10 link:{github}/issues/1361[#1361]
+* Upgrade to Spring Boot 3.5.11 link:{github}/issues/1379[#1379]
+* Upgrade to Spring Boot 3.5.12 link:{github}/issues/1405[#1405]
+* Upgrade to Spring Framework 6.2.16 link:{github}/issues/1377[#1377]
+* Upgrade to Spring Framework 6.2.17 link:{github}/issues/1391[#1391]
+
+⚙️ Tasks
+
+* Release v2024.1.0-M2
+* Upgrade to gradle/actions/setup-gradle@v5.0.2
+* Upgrade to actions/setup-java@v5
+* Upgrade to actions/checkout@v6
+
 === 2024.1.0-M1
 
 link:{github}/releases/tag/v2024.1.0-M1[release notes]
