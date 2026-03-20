@@ -120,7 +120,7 @@ function addJsClass(el) {
 <p>Spring is the foundation for Grace, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace has rewritten <code>Plugin.doWithSpring()</code> using Spring Boot&#8217;s <a href="https://docs.spring.io/spring-boot/3.3/reference/using/auto-configuration.html">Auto-configuration</a>, which also reduces redundant configurations and provides significant performance improvements. Grace has also provided <a href="https://docs.spring.io/spring-boot/3.3/specification/configuration-metadata/index.html">Configuration Metadata</a> files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.</p>
 </div>
 <div class="paragraph">
-<p>It is worth mentioning that Grace supports all current versions of Spring Boot, including <a href="https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9">2.7</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3">3.0</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0">3.1</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0">3.2</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.3</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.4</a>, and  <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.5</a>. This makes the upgrade path easier and more manageable.</p>
+<p>It is worth mentioning that Grace supports all current versions of Spring Boot, including <a href="https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9">2.7</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3">3.0</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0">3.1</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0">3.2</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.3</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0-RC1">3.4</a>, and <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M2">3.5</a>. This makes the upgrade path easier and more manageable.</p>
 </div>
 <div class="paragraph">
 <p>Grace has been actively developing, bringing numerous improvements and new features, including Plugins, GSP, Console, Shell, and <a href="https://github.com/grace-profiles">Profiles</a>. Of course, it has also fixed a large number of legacy defects left in Grails 5, this makes developers happy.</p>
@@ -175,6 +175,10 @@ function addJsClass(el) {
 <td class="tableblock halign-left valign-top"><p class="tableblock">Spring Boot Version</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/graceframework/grace-framework/tree/2024.1.x">2024.1.x</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-boot/3.5/index.html">3.5.x</a></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/graceframework/grace-framework/tree/2024.0.x">2024.0.x</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-boot/3.4/index.html">3.4.x</a></p></td>
 </tr>
@@ -219,6 +223,91 @@ function addJsClass(el) {
 </div>
 
 
+<div class="sect2">
+<h3 id="_2024_1_0_m2">2024.1.0-M2</h3>
+<div class="paragraph">
+<p>This release is based on Spring Boot 3.5.12 and Spring Framework to 6.2.17.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Groovy 4.0.30, Gradle 8.14.4, Tomcat 10.1.52</p>
+</li>
+<li>
+<p>Upgrade to Maven 3.9.14, Maven Resolver 1.9.27</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete list of changes made in this release see <a href="https://github.com/orgs/graceframework/projects/12">v2024.0.0-RC1 on GitHub</a> and <a href="https://github.com/orgs/graceframework/projects/15">v2024.1.0-M2 on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M2">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update README - Update badge versions of Spring Boot</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to AssertJ 3.27.7 <a href="https://github.com/graceframework/grace-framework/issues/1378">#1378</a></p>
+</li>
+<li>
+<p>Upgrade to Caffeine 3.2.3 <a href="https://github.com/graceframework/grace-framework/issues/1311">#1311</a></p>
+</li>
+<li>
+<p>Upgrade to Mockito 5.17.0 <a href="https://github.com/graceframework/grace-framework/issues/1313">#1313</a></p>
+</li>
+<li>
+<p>Upgrade to Gson 2.13.2 <a href="https://github.com/graceframework/grace-framework/issues/1312">#1312</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.5.10 <a href="https://github.com/graceframework/grace-framework/issues/1361">#1361</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.5.11 <a href="https://github.com/graceframework/grace-framework/issues/1379">#1379</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.5.12 <a href="https://github.com/graceframework/grace-framework/issues/1405">#1405</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.16 <a href="https://github.com/graceframework/grace-framework/issues/1377">#1377</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.17 <a href="https://github.com/graceframework/grace-framework/issues/1391">#1391</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.1.0-M2</p>
+</li>
+<li>
+<p>Upgrade to gradle/actions/setup-gradle@v5.0.2</p>
+</li>
+<li>
+<p>Upgrade to actions/setup-java@v5</p>
+</li>
+<li>
+<p>Upgrade to actions/checkout@v6</p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_2024_1_0_m1">2024.1.0-M1</h3>
 <div class="paragraph">
