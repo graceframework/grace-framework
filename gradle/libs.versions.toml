@@ -60,7 +60,7 @@ rxjava2 = "2.2.21"
 rxjava3 = "3.1.12"
 selenium = "4.31.0"
 selenium-htmlunit = "4.30.0"
-sitemesh = "2.6.0"
+sitemesh = "2.6.2"
 slf4j = "2.0.17"
 snakeyaml = "2.4"
 spock = "2.3-groovy-4.0"
@@ -183,7 +183,7 @@ selenium-api = { module = "org.seleniumhq.selenium:selenium-api", version.ref = 
 selenium-support = { module = "org.seleniumhq.selenium:selenium-support", version.ref = "selenium" }
 selenium-chromeDriver = { module = "org.seleniumhq.selenium:selenium-chrome-driver", version.ref = "selenium" }
 selenium-firefoxDriver = { module = "org.seleniumhq.selenium:selenium-firefox-driver", version.ref = "selenium" }
-sitemesh = { module = "opensymphony:sitemesh", version.ref = "sitemesh" }
+sitemesh = { module = "org.graceframework.opensymphony:sitemesh", version.ref = "sitemesh" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-jcl = { module = "org.slf4j:jcl-over-slf4j", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
