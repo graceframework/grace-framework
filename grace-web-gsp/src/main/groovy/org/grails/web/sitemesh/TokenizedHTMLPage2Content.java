@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,11 +42,6 @@ final class TokenizedHTMLPage2Content implements Content {
     @Override
     public void writeBody(Writer out) throws IOException {
         this.page.writeBody(out);
-    }
-
-    @Override
-    public int originalLength() {
-        return this.page.getContentLength();
     }
 
     @Override

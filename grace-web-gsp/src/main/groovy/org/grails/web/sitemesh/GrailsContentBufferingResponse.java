@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.io.IOException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
+import com.opensymphony.module.sitemesh.DefaultSitemeshBuffer;
 import com.opensymphony.module.sitemesh.PageParser;
 import com.opensymphony.module.sitemesh.PageParserSelector;
 import com.opensymphony.sitemesh.Content;
@@ -93,7 +94,7 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
 
         char[] data = this.pageResponseWrapper.getContents();
         if (data != null && this.webAppContext.getContentType() != null) {
-            return this.contentProcessor.build(data, this.webAppContext);
+            return this.contentProcessor.build(new DefaultSitemeshBuffer(data), this.webAppContext);
         }
 
         return null;

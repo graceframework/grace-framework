@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.opensymphony.module.sitemesh.DefaultSitemeshBuffer;
 import com.opensymphony.module.sitemesh.HTMLPage;
 import com.opensymphony.module.sitemesh.parser.AbstractHTMLPage;
 import com.opensymphony.sitemesh.Content;
@@ -58,6 +59,7 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     }
 
     public GSPSitemeshPage(boolean renderingLayout) {
+        super(new DefaultSitemeshBuffer(new char[0]));
         reset();
         this.renderingLayout = renderingLayout;
     }
@@ -146,10 +148,6 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
             return this.pageBuffer.toString();
         }
         return null;
-    }
-
-    public int originalLength() {
-        return this.pageBuffer.size();
     }
 
     public void writeOriginal(Writer writer) throws IOException {

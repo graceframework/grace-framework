@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.opensymphony.module.sitemesh.SitemeshBuffer;
 import com.opensymphony.sitemesh.Content;
 import com.opensymphony.sitemesh.ContentProcessor;
 import com.opensymphony.sitemesh.SiteMeshContext;
@@ -42,8 +43,8 @@ public class GrailsViewBufferingResponse extends GrailsContentBufferingResponse 
     private static class SimpleHtmlOnlyContentProcessor implements ContentProcessor {
 
         @Override
-        public Content build(final char[] data, SiteMeshContext context) throws IOException {
-            return new GrailsHTMLPageParser().parseContent(data);
+        public Content build(SitemeshBuffer buffer, SiteMeshContext context) throws IOException {
+            return new GrailsHTMLPageParser().parseContent(buffer);
         }
 
         @Override
