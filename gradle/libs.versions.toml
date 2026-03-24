@@ -23,6 +23,7 @@ grace-data-mongodb = "2024.0.0-RC1"
 grace-doc-engine = "2.0.0"
 gradle = "8.14.4"
 gradle-git-properties = "2.5.7"
+gradle-plugin-publish = "2.1.1"
 groovy = "4.0.30"
 gson = "2.13.2"
 h2 = "2.3.232"
@@ -248,3 +249,4 @@ tomcat-bundle = ["tomcat-annotations-api", "tomcat-jdbc", "tomcat-jsp-api", "tom
 
 [plugins]
 gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gradle-git-properties" }
+gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }

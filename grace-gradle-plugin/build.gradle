@@ -1,10 +1,7 @@
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("com.gradle.plugin-publish:com.gradle.plugin-publish.gradle.plugin:2.0.0")
-    }
+plugins {
+    id('java-gradle-plugin')
+    id('maven-publish')
+    alias libs.plugins.gradle.plugin.publish
 }
 
 ext.isSnapshot = version.endsWith("-SNAPSHOT")
@@ -12,10 +9,6 @@ ext.isReleaseVersion = !ext.isSnapshot
 ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
 ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
-
-apply plugin: 'com.gradle.plugin-publish'
-apply plugin: 'java-gradle-plugin'
-apply plugin: 'maven-publish'
 
 java {
     withJavadocJar()
