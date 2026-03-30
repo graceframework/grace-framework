@@ -1,7 +1,8 @@
 package $packageName
 
-import grails.testing.web.taglib.TagLibUnitTest
 import spock.lang.Specification
+
+import grails.testing.web.taglib.TagLibUnitTest
 
 class ${className}TagLibSpec extends Specification implements TagLibUnitTest<${className}TagLib> {
 
@@ -11,8 +12,8 @@ class ${className}TagLibSpec extends Specification implements TagLibUnitTest<${c
     def cleanup() {
     }
 <% tags.each { tag -> %>
-    void "test ${tag}"() {
-        expect:"fix me"
+    void 'test ${tag}'() {
+        expect: 'fix me'
             true == false
     }
 <% } %>

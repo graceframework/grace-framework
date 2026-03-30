@@ -1,7 +1,8 @@
 package $packageName
 
-import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
+
+import grails.testing.web.controllers.ControllerUnitTest
 
 class ${className}ControllerSpec extends Specification implements ControllerUnitTest<${className}Controller> {
 
@@ -10,10 +11,9 @@ class ${className}ControllerSpec extends Specification implements ControllerUnit
 
     def cleanup() {
     }
-
 <% actions.each { action -> %>
-    void "test ${action}"() {
-        expect: "fix me"
+    void 'test ${action}'() {
+        expect: 'fix me'
             true == false
     }
 <% } %>

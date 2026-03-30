@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import grails.cli.generator.AbstractGenerator
  * Scaffold generator
  *
  * @author Michael Yan
- * @since 6.2.0
+ * @since 2024.0.0
  */
 class ScaffoldGenerator extends AbstractGenerator {
 
@@ -72,7 +72,7 @@ class ScaffoldGenerator extends AbstractGenerator {
         String controllerFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Controller.groovy'
         String controllerSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ControllerSpec.groovy'
         String serviceFile = 'app/services/' + defaultPackagePath + '/' + className + 'Service.groovy'
-        String serviceSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
+        String serviceSpecFile = 'src/integration-test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
         String createGspFile = 'app/views/' + propertyName + '/' + 'create.gsp'
         String editGspFile = 'app/views/' + propertyName + '/' + 'edit.gsp'
         String indexGspFile = 'app/views/' + propertyName + '/' + 'index.gsp'
@@ -107,7 +107,7 @@ class ScaffoldGenerator extends AbstractGenerator {
         String controllerFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Controller.groovy'
         String controllerSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ControllerSpec.groovy'
         String serviceFile = 'app/services/' + defaultPackagePath + '/' + className + 'Service.groovy'
-        String serviceSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
+        String serviceSpecFile = 'src/integration-test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
         String createGspFile = 'app/views/' + propertyName + '/' + 'create.gsp'
         String editGspFile = 'app/views/' + propertyName + '/' + 'edit.gsp'
         String indexGspFile = 'app/views/' + propertyName + '/' + 'index.gsp'

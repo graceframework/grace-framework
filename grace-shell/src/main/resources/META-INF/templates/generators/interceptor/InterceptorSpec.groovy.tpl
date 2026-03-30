@@ -11,11 +11,11 @@ class ${className}InterceptorSpec extends Specification implements InterceptorUn
     def cleanup() {
     }
 
-    void "Test ${propertyName} interceptor matching"() {
-        when: "A request matches the interceptor"
-            withRequest(controller: "${propertyName}")
+    void 'Test ${propertyName} interceptor matching'() {
+        when: 'A request matches the interceptor'
+            withRequest(controller: '${propertyName}')
 
-        then: "The interceptor does match"
+        then: 'The interceptor does match'
             interceptor.doesMatch()
     }
 

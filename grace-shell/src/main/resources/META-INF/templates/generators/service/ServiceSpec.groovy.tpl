@@ -1,7 +1,8 @@
 package $packageName
 
-import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
+
+import grails.testing.services.ServiceUnitTest
 
 class ${className}ServiceSpec extends Specification implements ServiceUnitTest<${className}Service> {
 
@@ -11,8 +12,8 @@ class ${className}ServiceSpec extends Specification implements ServiceUnitTest<$
     def cleanup() {
     }
 <% methods.each { method -> %>
-    void "test ${method}"() {
-        expect: "fix me"
+    void 'test ${method}'() {
+        expect: 'fix me'
             true == false
     }
 <% } %>
