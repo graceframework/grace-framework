@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 Rob Fletcher
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-description "Installs scaffolding templates that use f:all to render properties", "grace install-templates"
+description 'Installs scaffolding templates that use f:all to render properties', 'grace install-templates'
 
-updateStatus "Copying scaffolding templates"
-mkdir "src/main/templates/scaffolding"
+updateStatus 'Copying scaffolding templates'
+
+mkdir 'src/main/templates/scaffolding'
+
 copy {
-	from templates("scaffolding/*.gsp")
-	into "src/main/templates/scaffolding"
+	from templates('scaffolding/*.gsp')
+	into 'src/main/templates/scaffolding'
 }
+
 copy {
-	from templates("scaffolding/*.groovy")
-	into "src/main/templates/scaffolding"
+	from templates('scaffolding/*.groovy')
+	into 'src/main/templates/scaffolding'
 }
-addStatus "Template installation complete"
+
+addStatus 'Template installation complete'
