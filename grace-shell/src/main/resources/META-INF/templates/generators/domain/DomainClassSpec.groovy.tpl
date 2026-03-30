@@ -11,8 +11,9 @@ class ${className}Spec extends Specification implements DomainUnitTest<${classNa
     def cleanup() {
     }
 
-    void "test something"() {
-        expect:"fix me"
+    void 'test something'() {
+        expect: 'fix me'
             true == false
     }
+
 }
