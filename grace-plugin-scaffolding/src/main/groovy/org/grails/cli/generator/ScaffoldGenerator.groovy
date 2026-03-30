@@ -107,7 +107,7 @@ class ScaffoldGenerator extends AbstractGenerator {
         String controllerFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Controller.groovy'
         String controllerSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ControllerSpec.groovy'
         String serviceFile = 'app/services/' + defaultPackagePath + '/' + className + 'Service.groovy'
-        String serviceSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
+        String serviceSpecFile = 'src/integration-test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
         String createGspFile = 'app/views/' + propertyName + '/' + 'create.gsp'
         String editGspFile = 'app/views/' + propertyName + '/' + 'edit.gsp'
         String indexGspFile = 'app/views/' + propertyName + '/' + 'index.gsp'
