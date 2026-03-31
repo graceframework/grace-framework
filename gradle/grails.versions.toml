@@ -1,5 +1,5 @@
 [plugins]
-asset-pipeline = "7.0.0-RC1"
+asset-pipeline = "7.0.0"
 
 [profiles]
 base = "2024.0.0-RC1"
