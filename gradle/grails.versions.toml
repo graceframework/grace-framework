@@ -2,10 +2,10 @@
 asset-pipeline = "7.0.0"
 
 [profiles]
-base = "2024.0.0-RC1"
-plugin = "2024.0.0-RC1"
-profile = "2024.0.0-RC1"
-rest-api = "2024.0.0-RC1"
-starter = "2024.0.0-RC1"
-web = "2024.0.0-RC1"
-web-plugin = "2024.0.0-RC1"
+base = "2024.0.0"
+plugin = "2024.0.0"
+profile = "2024.0.0"
+rest-api = "2024.0.0"
+starter = "2024.0.0"
+web = "2024.0.0"
+web-plugin = "2024.0.0"
