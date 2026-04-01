@@ -14,7 +14,7 @@
 [![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.4.13-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.4.13)
 
 
-[Grace](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
+[Grace framework](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
 
 ## Why Grace?
 
@@ -22,9 +22,9 @@ Grace inherits the excellent concepts and designs of Grails, and based on this, 
 
 Spring is the foundation for Grace, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace has rewritten `Plugin.doWithSpring()` using Spring Boot's [Auto-configuration](https://docs.spring.io/spring-boot/reference/using/auto-configuration.html), which also reduces redundant configurations and provides significant performance improvements. Grace has also provided [Configuration Metadata](https://docs.spring.io/spring-boot/specification/configuration-metadata/index.html) files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.
 
-It is worth mentioning that Grace supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0-RC1), and the latest [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M1). This makes the upgrade path easier and more manageable.
+It is worth mentioning that Grace supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0), and [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M2). This makes the upgrade path easier and more manageable.
 
-Grace has been actively developing, bringing numerous improvements and new features, including [Plugins](/grace-plugin-api/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5, this makes developers happy.
+Grace has been actively developing, bringing numerous improvements and new features, including [Plugins](/grace-plugin-api/README.md), [Dynamic Modules](/grace-plugin-dynamic-modules/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), [Views](/grace-views-core/README.md), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5, this makes developers happy.
 
 You can learn more on the page [What's New in Grace Framework](https://github.com/graceframework/grace-framework/wiki/What's-New-in-Grace-Framework).
 
@@ -40,6 +40,9 @@ Grace has better support Groovy than Spring Boot. Grace fully embraces Groovy to
 
 Grace provides a powerful [CLI](/grace-shell/README.md) that allows you to quickly create new projects of many different types using [Application Profiles](https://github.com/grace-profiles) and [Templates](https://github.com/grace-templates) and get started easily. These are all extensible and easy to customize, you can create your own Profiles, Templates, and Commands to meet any of your needs. The learning curve for Grace is moderate and more straightforward than Spring Boot due to its emphasis on convention and simplicity.
 
+[Spring Boot 4 has refactored its codebase into a more modular structure](https://spring.io/blog/2025/10/28/modularizing-spring-boot), this is the right direction for the future.
+Grace framework 2024 & 2025 will also start doing this. Grace's plugins will be independent, more focused, and at the same time, they will integrate better with Spring Boot's modules.
+
 You can learn more on the page [Grace vs Spring Boot](https://github.com/graceframework/grace-framework/wiki/Grace-vs-Spring-Boot).
 
 ## Getting Started
@@ -51,6 +54,7 @@ To install Grace, visit https://github.com/graceframework/grace-framework/releas
 ```bash
 $ grace create-app com.example.blog
 $ cd blog
+$ grace generate scaffold Post title:string
 $ grace run-app
 ```
 
@@ -82,16 +86,17 @@ Grace is first and foremost a web application framework, but it is also a platfo
 
 [Grace Framework](https://github.com/graceframework/) repository contains core plugins and most commonly used plugins, which are provided by default when creating a project.
 
-* [Grace Async and Events](https://github.com/graceframework/grace-async) provides asynchronous, parallel programming, Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
-* [Grace Cache](https://github.com/graceframework/grace-cache) provides powerful and easy to use caching functionality to Grace applications and plugins.
+* [Grace Async](/grace-plugin-async/README.md) provides asynchronous, parallel programming, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
+* [Grace Cache](/grace-plugin-cache/README.md) provides powerful and easy to use caching functionality to Grace applications and plugins.
 * [Grace Data](https://github.com/graceframework/grace-data) formerly known as `GORM` is the data access toolkit to provides a rich set of APIs for accessing relational and non-relational data including implementations for Hibernate (SQL), MongoDB, etc.
 * [Grace Data Hibernate](https://github.com/graceframework/grace-data-hibernate) provides a GORM implementation for Hibernate ORM.
 * [Grace Data MongoDB](https://github.com/graceframework/grace-data-mongodb) provides a GORM implementation for the MongodB Document Database.
-* [Grace Database Migration](https://github.com/graceframework/grace-database-migration) helps you manage database changes uses the Liquibase library.
-* [Grace Fields](https://github.com/graceframework/grace-fields) is a plugin allows you to customize the rendering of input fields for properties of domain objects, command beans and POGOs based on their type, name, etc.
-* [Grace Geb](https://github.com/graceframework/grace-geb) provides the Geb dependencies and a `create-functional-test` command for generating Geb tests.
-* [Grace Scaffolding](https://github.com/graceframework/grace-scaffolding) is a plugin to generate scaffolded controllers and views for your Grace application.
-* [Grace Views](https://github.com/graceframework/grace-views) includes JSON views powered by Groovy's JsonBuilder, also provides the basis for implementation other view types.
+* [Grace Database Migration](/grace-plugin-database-migration/README.md) helps you manage database changes uses the Liquibase library.
+* [Grace Events](/grace-plugin-events/README.md) provides Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
+* [Grace Fields](/grace-plugin-fields/README.md) is a plugin allows you to customize the rendering of input fields for properties of domain objects, command beans and POGOs based on their type, name, etc.
+* [Grace Geb](/grace-plugin-geb/README.md) provides the Geb dependencies and a `create-functional-test` command for generating Geb tests.
+* [Grace Scaffolding](/grace-plugin-scaffolding/README.md) is a plugin to generate scaffolded controllers and views for your Grace application.
+* [Grace Views](/grace-views-core/README.md) includes JSON views powered by Groovy's JsonBuilder, also provides the basis for implementation other view types.
 
 [Grace Plugins](https://github.com/grace-plugins/) repository contains several plugins to develop applications more easier and productive.
 
@@ -111,13 +116,13 @@ Grace profile is a simple directory that contains a `profile.yml` file and direc
 
 Grace provides several profiles in the [Grace Profiles](https://github.com/grace-profiles) repository, 
 
-* `base` - a profile for other profiles to extend from
-* `plugin` - a profie to create a plugin
-* `profile` - a profie to create a custom profile
-* `rest-api` - a profie for REST API applications
+* `base` - A profile for other profiles to extend from
+* `plugin` - A profie to create a plugin
+* `profile` - A profie to create a custom profile
+* `rest-api` - A profie for REST API applications
 * `starter` - A profile for getting start to create anything you like
-* `web` - default profile to creae a web app
-* `web-plugin` - a profile for Web plugin that contains web resources `css` `js` `images`
+* `web` - The default profile to creae a web app
+* `web-plugin` - A profile for Web plugin that contains web resources `css` `js` `images`
 
 ## Guides
 
