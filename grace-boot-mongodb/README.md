@@ -1,3 +1,14 @@
 ## grace-boot-mongodb
 
-Grace Boot MongoDB
+[Grace Data MongoDB](https://github.com/graceframework/grace-data-mongodb) provides a GORM implementation for the [MongodB](https://www.mongodb.com) Document Database.
+
+MongoDB bridges the gap between key-value stores (which are fast and highly scalable) and traditional RDBMS systems (which provide rich queries and deep functionality).
+
+MongoDB (from "humongous") is a scalable, high-performance, open source, document-oriented database.
+
+This project aims to provide an object-mapping layer on top of Mongo to ease common activities such as:
+
+* Marshalling from Mongo to Groovy/Java types and back again
+* Support for GORM dynamic finders, criteria and named queries
+* Session-managed transactions
+* Validating domain instances backed by the Mongo datastore

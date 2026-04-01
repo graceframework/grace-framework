@@ -1,6 +1,6 @@
-# Grace Scaffolding
+# Grace Plugin Scaffolding
 
-Grace Scaffolding and [Fields](https://github.com/graceframework/grace-fields) plugin work together will make you more productive.
+Grace Scaffolding and [Fields](/grace-plugin-fields/README.md) plugins work together will make you more productive.
 
 Grace Scaffolding lets you generate some basic CRUD interfaces for a domain class, including:
 

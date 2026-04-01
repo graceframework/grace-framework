@@ -1,3 +1,3 @@
-# grace-plugin-cache
+## Grace Plugin Cache
 
-Cache plugin provides powerful and easy to use caching functionality to Grace applications and plugins.
+Grace Cache provides powerful and easy to use caching functionality to Grace applications and plugins.
