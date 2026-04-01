@@ -158,3 +158,15 @@ div.title {
     margin-bottom: 1em;
     page-break-inside: avoid;
 }
+
+.paragraph, table, h2, h3, h4, h5, h6, li, pre, code {
+    width: 595px;
+}
+
+.literalblock pre,.listingblock pre:not(.highlight),.listingblock pre[class="highlight"],.listingblock pre[class^="highlight "],.listingblock pre.CodeRay,.listingblock pre.prettyprint{
+    background:#f7f7f8
+}
+
+.listingblock:hover code[data-lang]:before {
+    display:none;
+}
