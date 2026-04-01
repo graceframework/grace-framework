@@ -120,7 +120,7 @@ function addJsClass(el) {
 <p>Spring is the foundation for Grace, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace has rewritten <code>Plugin.doWithSpring()</code> using Spring Boot&#8217;s <a href="https://docs.spring.io/spring-boot/3.3/reference/using/auto-configuration.html">Auto-configuration</a>, which also reduces redundant configurations and provides significant performance improvements. Grace has also provided <a href="https://docs.spring.io/spring-boot/3.3/specification/configuration-metadata/index.html">Configuration Metadata</a> files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.</p>
 </div>
 <div class="paragraph">
-<p>It is worth mentioning that Grace supports all current versions of Spring Boot, including <a href="https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9">2.7</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3">3.0</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0">3.1</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0">3.2</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.3</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0-RC1">3.4</a>, and <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M2">3.5</a>. This makes the upgrade path easier and more manageable.</p>
+<p>It is worth mentioning that Grace supports all current versions of Spring Boot, including <a href="https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9">2.7</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3">3.0</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0">3.1</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0">3.2</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.3</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0">3.4</a>, and  <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M2">3.5</a>. This makes the upgrade path easier and more manageable.</p>
 </div>
 <div class="paragraph">
 <p>Grace has been actively developing, bringing numerous improvements and new features, including Plugins, GSP, Console, Shell, and <a href="https://github.com/grace-profiles">Profiles</a>. Of course, it has also fixed a large number of legacy defects left in Grails 5, this makes developers happy.</p>
@@ -402,6 +402,143 @@ function addJsClass(el) {
 </li>
 <li>
 <p>Next development version: 2024.1.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2024_0_0">2024.0.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allow the <code>BuildSettings.APP_DIR</code> directory to not exist <a href="https://github.com/graceframework/grace-framework/issues/1417">#1417</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2024.0.0</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Update guides for installation and introduction</p>
+</li>
+<li>
+<p>Add more <code>documentation</code> dependencies to refine javadoc links <a href="https://github.com/graceframework/grace-framework/issues/1419">#1419</a></p>
+</li>
+<li>
+<p>Clean up non-existent <code>grace-datastore-gorm-mongodb-ext</code> in Gradle versions catalog <a href="https://github.com/graceframework/grace-framework/issues/1418">#1418</a></p>
+</li>
+<li>
+<p>Keep the templates consistent between <code>script</code> commands and <code>generators</code> in scaffolding plugin <a href="https://github.com/graceframework/grace-framework/issues/1416">#1416</a></p>
+</li>
+<li>
+<p>Code formatting for scripts in the scaffolding plugin <a href="https://github.com/graceframework/grace-framework/issues/1415">#1415</a></p>
+</li>
+<li>
+<p>Keep the templates consistent with profiles <code>base</code> and <code>web</code> <a href="https://github.com/graceframework/grace-framework/issues/1414">#1414</a> See links:https://github.com/grace-profiles/base/issues/110[grace-profiles/base#110] and links:https://github.com/grace-profiles/web/issues/66[grace-profiles/web#66]</p>
+</li>
+<li>
+<p>Remove unused <code>grace-sitemesh</code> module <a href="https://github.com/graceframework/grace-framework/issues/1409">#1409</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The generated ServiceSpec.groovy should be in <code>integration-test</code> #1416</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 7.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1392">#1392</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 7.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1393">#1393</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 7.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1394">#1394</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1395">#1395</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data Hibernate 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1396">#1396</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1397">#1397</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Base 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1398">#1398</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Plugin 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1399">#1399</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Profile 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1400">#1400</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Rest API 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1401">#1401</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Starter 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1402">#1402</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Web 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1403">#1403</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Web Plugin 2024.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1404">#1404</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Plugin Publish Plugin 2.1.1 <a href="https://github.com/graceframework/grace-framework/issues/1410">#1410</a></p>
+</li>
+<li>
+<p>Upgrade to SiteMesh 2.6.2 <a href="https://github.com/graceframework/grace-framework/issues/1407">#1407</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.17 <a href="https://github.com/graceframework/grace-framework/issues/1391">#1391</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.53 <a href="https://github.com/graceframework/grace-framework/issues/1411">#1411</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.0.0</p>
+</li>
+<li>
+<p>Upgrade to actions/checkout@v6</p>
+</li>
+<li>
+<p>Upgrade to actions/setup-java@v5</p>
+</li>
+<li>
+<p>Upgrade to gradle/actions/setup-gradle@v5.0.2</p>
 </li>
 </ul>
 </div>
@@ -8403,15 +8540,15 @@ existing Groovy installation is ignored).</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="console">------------------------------------------------------------
-Grace {version}
+Grace 2024.1.0-SNAPSHOT
 ------------------------------------------------------------
 
-Build time:   2025-06-22 13:30:19 UTC
-Revision:     ba9b75634a9c2e79e0612d93df9c9fc81d05dd74
+Build time:   2026-04-01 13:30:19 UTC
+Revision:     b5a5f6d1d0932a269c9fbcbbffa2ead6f6347318
 
-Spring Boot:  3.3.13
-Gradle:       8.14.2
-Groovy:       4.0.27
+Spring Boot:  3.4.13
+Gradle:       8.14.4
+Groovy:       4.0.30
 JVM:          17.0.15 (BellSoft 17.0.15+10-LTS)
 OS:           Mac OS X 12.7.6 aarch64</code></pre>
 </div>
@@ -8447,7 +8584,7 @@ $ grace create-app com.examples.bookstore</code></pre>
      Name:          bookstore
      Package:       com.example
      Profile:       web
-     Features:      asset-pipeline, async, bootstrap, cache, database-migration, events, fields, geb, gsp, hibernate, jquery, scaffolding
+     Features:      asset-pipeline, async, bootstrap, cache, database-migration, events, fields, gsp, hibernate, jquery, scaffolding
      Database:      h2
      Project root:  /Users/grace/bookstore
 
@@ -8459,13 +8596,13 @@ $ grace create-app com.examples.bookstore</code></pre>
 <pre class="CodeRay highlight"><code data-lang="console">.
 ├── app
 │   ├── assets
+│   ├── boot
 │   ├── conf
 │   ├── controllers
 │   ├── domain
 │   ├── i18n
-│   ├── init
 │   ├── services
-│   ├── taglib
+│   ├── taglibs
 │   └── views
 ├── buildSrc
 │   └── build.gradle
