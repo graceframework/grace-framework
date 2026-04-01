@@ -568,7 +568,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             configScript.projectDir.set(project.projectDir.absolutePath)
             configScript.projectType.set(getGrailsProjectType().toString())
             configScript.projectVersion.set(project.getVersion().toString())
-            configScript.grailsAppDir.set(project.file(SourceSets.resolveGrailsAppPath(project)).absolutePath)
+            configScript.grailsAppDir.set(SourceSets.resolveGrailsAppPath(project) ? project.file(SourceSets.resolveGrailsAppPath(project)).absolutePath : null)
         }
         project.tasks.named('compileGroovy', GroovyCompile).configure {
             it.dependsOn(configScriptTask)

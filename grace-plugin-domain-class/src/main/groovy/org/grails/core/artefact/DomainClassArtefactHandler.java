@@ -15,14 +15,19 @@
  */
 package org.grails.core.artefact;
 
+import java.io.File;
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
+import org.codehaus.groovy.ast.ModuleNode;
+import org.codehaus.groovy.control.SourceUnit;
 import org.springframework.core.Ordered;
 
 import grails.artefact.ArtefactTypes;
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsClass;
 import grails.core.GrailsDomainClass;
+import grails.util.GrailsStringUtils;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.DefaultGrailsDomainClass;
@@ -69,7 +74,30 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     @Override
     public boolean isArtefactClass(ClassNode classNode) {
-        return !GrailsASTUtils.isJpaEntityClass(classNode) && super.isArtefactClass(classNode);
+        if (classNode == null) {
+            return false;
+        }
+
+        if (hasArtefactAnnotation(classNode, TYPE)) {
+            return true;
+        }
+        if (classNode.getModule() == null || classNode.getModule().getContext() == null) {
+            return false;
+        }
+
+        SourceUnit source = classNode.getModule().getContext();
+        String filename = source.getName();
+        ModuleNode ast = source.getAST();
+        String projectDir = ast.getNodeMetaData(GrailsASTUtils.META_DATA_KEY_PROJECT_DIR);
+        String grailsAppDir = ast.getNodeMetaData(GrailsASTUtils.META_DATA_KEY_GRAILS_APP_DIR);
+
+        if (filename == null || projectDir == null) {
+            return false;
+        }
+        boolean inGrailsAppDir = GrailsStringUtils.isNotBlank(grailsAppDir)
+                && filename.startsWith(grailsAppDir + File.separatorChar + PATH) && filename.endsWith(".groovy");
+
+        return !GrailsASTUtils.isJpaEntityClass(classNode) && inGrailsAppDir;
     }
 
     @Override

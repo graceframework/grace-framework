@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
@@ -53,6 +54,7 @@ abstract class GenerateConfigScript extends DefaultTask {
     abstract Property<String> getProjectDir()
 
     @Input
+    @Optional
     abstract Property<String> getGrailsAppDir()
 
     @OutputFile
@@ -70,10 +72,10 @@ abstract class GenerateConfigScript extends DefaultTask {
     void generateConfigScript() throws IOException {
         File configFile = getConfigFile().getAsFile().get()
         String projectDir = getProjectDir().get()
-        String grailsAppDir = getGrailsAppDir().get()
+        String grailsAppDir = getGrailsAppDir().getOrNull()
         if (System.getProperty('os.name').startsWith('Windows')) {
-            projectDir = projectDir.replace('\\', '\\\\')
-            grailsAppDir = grailsAppDir.replace('\\', '\\\\')
+            projectDir = projectDir?.replace('\\', '\\\\')
+            grailsAppDir = grailsAppDir?.replace('\\', '\\\\')
         }
 
         // Default node metadata used for Groovy compiler
@@ -81,9 +83,12 @@ abstract class GenerateConfigScript extends DefaultTask {
                 'PROJECT_NAME': getProjectName().get(),
                 'PROJECT_TYPE': getProjectType().get(),
                 'PROJECT_VERSION': getProjectVersion().get(),
-                'PROJECT_DIR': projectDir,
-                'GRAILS_APP_DIR': grailsAppDir
+                'PROJECT_DIR': projectDir
         ] as HashMap<String, String>
+
+        if (grailsAppDir) {
+            properties.put('GRAILS_APP_DIR', grailsAppDir)
+        }
 
         // Add the user defined node metadata
         properties.putAll(getMetaDataMap().get())

@@ -1818,16 +1818,14 @@ public final class GrailsASTUtils {
         String filename = source.getName();
         String projectDir = ast.getNodeMetaData(META_DATA_KEY_PROJECT_DIR);
         String grailsAppDir = ast.getNodeMetaData(META_DATA_KEY_GRAILS_APP_DIR);
-        if (filename == null || projectDir == null || grailsAppDir == null) {
+        if (filename == null || projectDir == null) {
             return false;
         }
-        if (GrailsStringUtils.isNotBlank(artefactPath)) {
-            return filename.startsWith(grailsAppDir + File.separatorChar + artefactPath);
-        }
-        else {
-            return filename.startsWith(grailsAppDir) || (filename.startsWith(projectDir + File.separatorChar + "src")
-                    && (filename.endsWith("GrailsPlugin.groovy") || filename.endsWith("Application.groovy")));
-        }
+        boolean inGrailsAppDir = GrailsStringUtils.isNotBlank(grailsAppDir)
+                && filename.startsWith(grailsAppDir + File.separatorChar + artefactPath);
+        boolean inProjectDir = filename.startsWith(projectDir + File.separatorChar + "src")
+                    && (filename.endsWith("GrailsPlugin.groovy") || filename.endsWith("Application.groovy"));
+        return inProjectDir || inGrailsAppDir;
     }
 
     /**
