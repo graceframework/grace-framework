@@ -15,7 +15,7 @@ you will see the new project has been created,
      Name:          bookstore
      Package:       com.example
      Profile:       web
-     Features:      asset-pipeline, async, bootstrap, cache, database-migration, events, fields, geb, gsp, hibernate, jquery, scaffolding
+     Features:      asset-pipeline, async, bootstrap, cache, database-migration, events, fields, gsp, hibernate, jquery, scaffolding
      Database:      h2
      Project root:  /Users/grace/bookstore
 
@@ -27,13 +27,13 @@ you will see the new project has been created,
 .
 ├── app
 │   ├── assets
+│   ├── boot
 │   ├── conf
 │   ├── controllers
 │   ├── domain
 │   ├── i18n
-│   ├── init
 │   ├── services
-│   ├── taglib
+│   ├── taglibs
 │   └── views
 ├── buildSrc
 │   └── build.gradle
