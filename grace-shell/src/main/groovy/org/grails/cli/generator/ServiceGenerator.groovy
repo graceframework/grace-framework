@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class ServiceGenerator extends AbstractGenerator {
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
-        String[] methodNames = (args.size() >= 3 ? args[2..-1] : ['serviceMethod']) as String[]
+        String[] methodNames = (args.size() >= 3 ? args[2..-1] : ["create${className}"]) as String[]
 
         Map<String, Object> model = new HashMap<>()
         model['packageName'] = defaultPackageName

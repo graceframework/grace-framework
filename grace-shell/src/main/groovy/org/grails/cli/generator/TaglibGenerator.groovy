@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class TaglibGenerator extends AbstractGenerator {
         model['propertyName'] = propertyName
         model['tags'] = tagNames
 
-        String taglibClassFile = 'app/taglib/' + defaultPackagePath + '/' + className + 'TagLib.groovy'
+        String taglibClassFile = 'app/taglibs/' + defaultPackagePath + '/' + className + 'TagLib.groovy'
         String taglibClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'TagLibSpec.groovy'
         createFile('TagLib.groovy.tpl', taglibClassFile, model, overwrite)
         createFile('TagLibSpec.groovy.tpl', taglibClassSpecFile, model, overwrite)
@@ -60,7 +60,7 @@ class TaglibGenerator extends AbstractGenerator {
 
         String className = args[1].capitalize()
 
-        String taglibClassFile = 'app/taglib/' + defaultPackagePath + '/' + className + 'TagLib.groovy'
+        String taglibClassFile = 'app/taglibs/' + defaultPackagePath + '/' + className + 'TagLib.groovy'
         String taglibClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'TagLibSpec.groovy'
         removeFile(taglibClassFile)
         removeFile(taglibClassSpecFile)

@@ -11,7 +11,6 @@ class ${className}Interceptor {
     }
 
     void afterView() {
-        // no-op
     }
 
 }

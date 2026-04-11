@@ -12,7 +12,7 @@ class ${className}ControllerSpec extends Specification implements ControllerUnit
         assert params != null
 
         // TODO: Populate valid properties like...
-        //params['name'] = 'someValidName'
+        // params['name'] = 'someValidName'
         assert false, 'TODO: Provide a populateValidParams() implementation for this generated test suite'
     }
 

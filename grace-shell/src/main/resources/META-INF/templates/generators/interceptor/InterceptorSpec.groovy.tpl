@@ -1,7 +1,8 @@
 package $packageName
 
-import grails.testing.web.interceptor.InterceptorUnitTest
 import spock.lang.Specification
+
+import grails.testing.web.interceptor.InterceptorUnitTest
 
 class ${className}InterceptorSpec extends Specification implements InterceptorUnitTest<${className}Interceptor> {
 
@@ -13,10 +14,10 @@ class ${className}InterceptorSpec extends Specification implements InterceptorUn
 
     void 'Test ${propertyName} interceptor matching'() {
         when: 'A request matches the interceptor'
-            withRequest(controller: '${propertyName}')
+        withRequest(controller: '${propertyName}')
 
         then: 'The interceptor does match'
-            interceptor.doesMatch()
+        interceptor.doesMatch()
     }
 
 }

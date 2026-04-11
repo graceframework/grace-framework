@@ -15,13 +15,13 @@ class ${className}ServiceSpec extends Specification {
 
     private Long setupData() {
         // TODO: Populate valid domain instances and return a valid ID
-        //new ${className}(...).save(flush: true, failOnError: true)
-        //new ${className}(...).save(flush: true, failOnError: true)
-        //${className} ${propertyName} = new ${className}(...).save(flush: true, failOnError: true)
-        //new ${className}(...).save(flush: true, failOnError: true)
-        //new ${className}(...).save(flush: true, failOnError: true)
+        // new ${className}(...).save(flush: true, failOnError: true)
+        // new ${className}(...).save(flush: true, failOnError: true)
+        // ${className} ${propertyName} = new ${className}(...).save(flush: true, failOnError: true)
+        // new ${className}(...).save(flush: true, failOnError: true)
+        // new ${className}(...).save(flush: true, failOnError: true)
         assert false, 'TODO: Provide a setupData() implementation for this generated test suite'
-        //${propertyName}.id
+        // ${propertyName}.id
     }
 
     void 'test get'() {

@@ -14,7 +14,7 @@ class ${className}ServiceSpec extends Specification implements ServiceUnitTest<$
 <% methods.each { method -> %>
     void 'test ${method}'() {
         expect: 'fix me'
-            true == false
+        true == false
     }
 <% } %>
 }

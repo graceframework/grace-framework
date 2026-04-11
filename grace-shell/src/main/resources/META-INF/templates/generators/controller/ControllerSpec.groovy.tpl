@@ -14,7 +14,7 @@ class ${className}ControllerSpec extends Specification implements ControllerUnit
 <% actions.each { action -> %>
     void 'test ${action}'() {
         expect: 'fix me'
-            true == false
+        true == false
     }
 <% } %>
 }

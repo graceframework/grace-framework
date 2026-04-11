@@ -6,7 +6,7 @@
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
-        <h1>${className}#${action}</h1>
+        <h1>${className}Controller#${action}</h1>
         <p>Find me in ${path}</p>
     </body>
 </html>

@@ -14,7 +14,7 @@ class ${className}TagLibSpec extends Specification implements TagLibUnitTest<${c
 <% tags.each { tag -> %>
     void 'test ${tag}'() {
         expect: 'fix me'
-            true == false
+        true == false
     }
 <% } %>
 }
