@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,13 +67,13 @@ class FooGrailsPlugin extends grails.plugins.Plugin {
     def authorEmail = "rain@rainboyan.com"
     def description = 'Grails Foo plugin'
 }
-''', '/Users/grails/grails-demo-project/grails-app/src/main/groovy/org/demo/FooGrailsPlugin.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'src', 'main', 'groovy', 'org', 'demo', 'FooGrailsPlugin.groovy'].join(File.separator))
 
         Class postClass = gcl.parseClass('''
 class Post {
   String title
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'domain', 'org', 'demo', 'Post.groovy'].join(File.separator))
 
         GrailsPlugin grailsPluginAnno = postClass.getAnnotation(GrailsPlugin)
         def pluginXmlFile = new File(targetDir, 'META-INF/grails-plugin.xml')
@@ -124,9 +124,9 @@ class TestPluginGroovyClassLoader extends GroovyClassLoader {
             void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
                 sourceUnit.getAST().putNodeMetaData('PROJECT_NAME', 'grails-demo-project')
                 sourceUnit.getAST().putNodeMetaData('PROJECT_VERSION', '1.0.0')
-                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', ['', 'Users', 'grails', 'grails-demo-project'].join(File.separator))
                 sourceUnit.getAST().putNodeMetaData('PROJECT_TYPE', 'PLUGIN')
-                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', ['', 'Users', 'grails', 'grails-demo-project', 'grails-app'].join(File.separator))
             }
 
         }, Phases.CANONICALIZATION)
