@@ -4,7 +4,7 @@ buildscript {
     }
     dependencies {
         classpath libs.groovy.toml
-        classpath "org.graceframework:grace-gradle-plugin:2024.0.0-RC1"
+        classpath "org.graceframework:grace-gradle-plugin:2024.0.0"
     }
 }
 
