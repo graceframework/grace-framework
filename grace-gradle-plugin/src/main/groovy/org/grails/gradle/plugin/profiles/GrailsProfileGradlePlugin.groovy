@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,6 +115,7 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             task.source = commandsDir
             task.profileConfig.set(profileYml)
             task.profileFile.set(classesDir.get().file('META-INF/grails-profile/profile.yml'))
+            task.featuresDir.set(featuresDir)
             task.templatesDir.set(templatesDir)
             task.classpath = profileConfiguration + project.files(IOUtils.findJarFile(GroovyScriptCommand))
             task.setGroup(PROFILE_GROUP)

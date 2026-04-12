@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,6 +68,10 @@ abstract class ProfileCompilerTask extends AbstractCompile {
     @Optional
     @InputFile
     abstract RegularFileProperty getProfileConfig()
+
+    @Optional
+    @InputFiles
+    abstract DirectoryProperty getFeaturesDir()
 
     @Optional
     @InputFiles
@@ -146,7 +150,8 @@ abstract class ProfileCompilerTask extends AbstractCompile {
 
         if (profileYmlExists) {
             File parentDir = this.profileConfig.getAsFile().get().parentFile.canonicalFile
-            File[] featureDirs = new File(parentDir, 'features').listFiles({ File f ->
+            File featuresDir = this.featuresDir.getOrNull()?.asFile ?: new File(parentDir, 'features')
+            File[] featureDirs = featuresDir.listFiles({ File f ->
                 f.isDirectory() && !f.name.startsWith('.') } as FileFilter)
 
             if (featureDirs) {
