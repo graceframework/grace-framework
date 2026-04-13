@@ -180,7 +180,7 @@ grace [environment]* [target] [arguments]*'
         }
         else {
             commands = CommandRegistry.findCommands(profileRepository).findAll { Command cmd ->
-                (cmd instanceof GlobalCommand) || !(cmd instanceof ProjectCommand)
+                projectContext == null ? (cmd instanceof GlobalCommand || cmd !instanceof ProjectCommand) : (cmd instanceof ProjectCommand)
             }
         }
         if (showAll) {

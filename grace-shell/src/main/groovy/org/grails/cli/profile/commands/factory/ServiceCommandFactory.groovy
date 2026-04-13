@@ -18,6 +18,8 @@ package org.grails.cli.profile.commands.factory
 import groovy.transform.CompileStatic
 
 import org.grails.cli.command.Command
+import org.grails.cli.command.GlobalCommand
+import org.grails.cli.command.ProjectCommand
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 
@@ -40,12 +42,17 @@ class ServiceCommandFactory implements ProfileCommandFactory {
             return Collections.emptyList()
         }
         ServiceLoader.load(Command).findAll { Command cmd ->
-            if (cmd instanceof ProfileCommand) {
-                ((ProfileCommand) cmd).profile = this.profile
-                true
+            if (this.profile) {
+                if (cmd instanceof ProfileCommand) {
+                    ((ProfileCommand) cmd).profile = this.profile
+                    true
+                }
+                else {
+                    false
+                }
             }
             else {
-                false
+                (cmd instanceof GlobalCommand || cmd !instanceof ProjectCommand)
             }
         }
     }

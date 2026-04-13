@@ -56,6 +56,8 @@ import org.grails.cli.command.CommandCompleter
 import org.grails.cli.command.CommandRegistry
 import org.grails.cli.command.ExecutionContext
 import org.grails.cli.command.ProjectContext
+import org.grails.cli.command.ProjectContextAware
+import org.grails.cli.command.CommandDescription
 import org.grails.cli.command.completers.EscapingFileNameCompletor
 import org.grails.cli.command.completers.RegexCompletor
 import org.grails.cli.command.completers.SortedAggregateCompleter
@@ -414,7 +416,25 @@ class GrailsCli {
                     System.setProperty('grails.verbose', 'false')
                     System.setProperty('grails.full.stacktrace', 'false')
                 }
-                if (profile.handleCommand(context)) {
+                boolean result = false
+                if (profile) {
+                    result = profile.handleCommand(context)
+                }
+                else {
+                    Command command = CommandRegistry.findCommands(profileRepository).find {
+                        it.name == mainCommandLine.commandName || it?.description?.synonyms?.contains(mainCommandLine.commandName)
+                    }
+                    if (command instanceof ProjectContextAware) {
+                        command.setProjectContext(projectContext)
+                    }
+                    if (command) {
+                        result = command.handle(context)
+                    }
+                    else {
+                        console.error("Command not found [$mainCommandLine.commandName]")
+                    }
+                }
+                if (result) {
                     if (triggerAppLoad) {
                         console.updateStatus('Initializing application. Please wait...')
                         try {
@@ -458,9 +478,58 @@ class GrailsCli {
                 new RegexCompletor('!\\w+'), new EscapingFileNameCompletor())
         )
 
-        completers.addAll((profile.getCompleters(projectContext) ?: []) as Collection<Completer>)
+        if (profile) {
+            completers.addAll((profile.getCompleters(projectContext) ?: []) as Collection<Completer>)
+        }
+        else {
+            completers.addAll(getCompleters(projectContext))
+        }
         consoleReader.addCompleter(aggregateCompleter)
         console
+    }
+
+    Collection<Completer> getCompleters(ProjectContext context) {
+        Iterable<Command> commands = CommandRegistry.findCommands(profileRepository).each {
+            if (it instanceof ProjectContextAware) {
+                ((ProjectContextAware) it).setProjectContext(context)
+            }
+        }
+
+        Collection<Completer> completers = []
+
+        for (Command cmd in commands) {
+            CommandDescription description = cmd.description
+            StringsCompleter commandNameCompleter = new StringsCompleter(cmd.name)
+
+            if (cmd instanceof Completer) {
+                completers << new ArgumentCompleter(commandNameCompleter, (Completer) cmd)
+            }
+            else {
+                if (description.completer) {
+                    if (description.flags) {
+                        completers << new ArgumentCompleter(
+                                commandNameCompleter,
+                                description.completer,
+                                new StringsCompleter(description.flags.collect { CommandArgument arg -> "-$arg.name".toString() }))
+                    }
+                    else {
+                        completers << new ArgumentCompleter(commandNameCompleter, description.completer)
+                    }
+                }
+                else {
+                    if (description.flags) {
+                        completers << new ArgumentCompleter(
+                                commandNameCompleter,
+                                new StringsCompleter(description.flags.collect { CommandArgument arg -> "-$arg.name".toString() }))
+                    }
+                    else {
+                        completers << commandNameCompleter
+                    }
+                }
+            }
+        }
+
+        completers
     }
 
     protected void startInteractiveMode(GrailsConsole console) {
@@ -562,10 +631,6 @@ class GrailsCli {
 
         String profileName = applicationConfig.get(BuildSettings.PROFILE) ?: getSetting(BuildSettings.PROFILE, String, DEFAULT_PROFILE_NAME)
         this.profile = profileRepository.getProfile(profileName)
-
-        if (profile == null) {
-            throw new IllegalStateException("No profile found for name [$profileName].")
-        }
     }
 
     protected void populateContextLoader() {
@@ -593,7 +658,10 @@ class GrailsCli {
                         BuildActionExecuter buildActionExecuter = connection.action(new ClasspathBuildAction())
                         buildActionExecuter.standardOutput = System.out
                         buildActionExecuter.standardError = System.err
-                        buildActionExecuter.withArguments("-Dgrails.profile=${config.navigate('grails', 'profile')}")
+                        if (config?.hasProperty('grails.profile')) {
+                            String currentProfile = config?.getProperty('grails.profile', String)
+                            buildActionExecuter.withArguments("-Dgrails.profile=${currentProfile}")
+                        }
                         buildActionExecuter.addProgressListener(new ProgressListener() {
 
                             @Override
@@ -616,8 +684,8 @@ class GrailsCli {
 
                 }.call()
 
-                List<URL> urls = (List<URL>) dependencyMap.get('dependencies') + (List<URL>) dependencyMap.get('profiles')
-                List<URL> profiles = (List<URL>) dependencyMap.get('profiles')
+                List<URL> urls = dependencyMap.get('dependencies') + (dependencyMap.get('profiles') ?: [])
+                List<URL> profiles = dependencyMap.get('profiles')
                 List<URL> classesDir = [BuildSettings.CLASSES_DIR.toURI().toURL()]
                 URLClassLoader classLoader = new URLClassLoader((urls + classesDir) as URL[], Thread.currentThread().contextClassLoader)
                 this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])

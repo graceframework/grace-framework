@@ -44,7 +44,7 @@ class FileSystemCommandResourceResolver implements ProfileCommandResourceResolve
     Collection<Resource> findCommandResources() {
         Resource commandsDir = getCommandsDirectory()
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(new StaticResourceLoader(commandsDir))
-        if (commandsDir.exists()) {
+        if (commandsDir?.exists()) {
             Collection<Resource> commandFiles = []
             for (ext in this.matchingFileExtensions) {
                 commandFiles.addAll resolver.getResources("*.$ext")
@@ -61,7 +61,7 @@ class FileSystemCommandResourceResolver implements ProfileCommandResourceResolve
     }
 
     protected Resource getCommandsDirectory() {
-        this.profile.profileDir.createRelative('commands/')
+        this.profile?.profileDir?.createRelative('commands/')
     }
 
     @Override

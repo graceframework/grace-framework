@@ -131,13 +131,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     protected void configureProfile(Project project) {
         if (project.configurations.findByName(PROFILE_CONFIGURATION_NAME) == null) {
-            Configuration profileConfiguration = project.configurations.create(PROFILE_CONFIGURATION_NAME)
-            profileConfiguration.incoming.beforeResolve {
-                if (!profileConfiguration.allDependencies) {
-                    String profileDependency = "org.graceframework.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:"
-                    project.dependencies.add(PROFILE_CONFIGURATION_NAME, profileDependency)
-                }
-            }
+            project.configurations.register(PROFILE_CONFIGURATION_NAME)
         }
     }
 
@@ -171,10 +165,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         dme.generatedPomCustomization {
             enabled = false
         }
-    }
-
-    protected String getDefaultProfile() {
-        'web'
     }
 
     protected void createBuildPropertiesTask(Project project) {
