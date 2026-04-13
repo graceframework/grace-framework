@@ -469,7 +469,7 @@ abstract class AbstractProfile implements Profile {
                 }
             }
 
-            CommandRegistry.findCommands(this).each(registerCommand)
+            CommandRegistry.findCommands(this, false).each(registerCommand)
 
             Iterable<Profile> parents = getExtends()
             if (parents) {

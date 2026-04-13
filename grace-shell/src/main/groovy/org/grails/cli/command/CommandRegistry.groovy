@@ -79,7 +79,7 @@ class CommandRegistry {
         }
     }
 
-    static Collection<Command> findCommands(Profile profile, boolean inherited = false) {
+    static Collection<Command> findCommands(Profile profile, boolean inherited) {
         Collection<Command> commands = []
 
         for (CommandFactory cf in REGISTERED_COMMAND_FACTORIES) {
