@@ -67,6 +67,7 @@ import org.grails.cli.gradle.ClasspathBuildAction
 import org.grails.cli.gradle.GradleAsyncInvoker
 import org.grails.cli.gradle.cache.MapReadingCachedGradleOperation
 import org.grails.cli.profile.Profile
+import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.repository.GrailsRepositoryConfiguration
 import org.grails.cli.profile.repository.MavenProfileRepository
@@ -342,7 +343,6 @@ class GrailsCli {
         }
         File baseDir = new File('.').canonicalFile
         projectContext = new ProjectContextImpl(console, baseDir, applicationConfig)
-        initializeProfile()
     }
 
     protected MavenProfileRepository createMavenProfileRepository() {
@@ -416,29 +416,38 @@ class GrailsCli {
                     System.setProperty('grails.verbose', 'false')
                     System.setProperty('grails.full.stacktrace', 'false')
                 }
+
                 boolean result = false
-                if (profile) {
-                    result = profile.handleCommand(context)
+                this.profileRepository = createMavenProfileRepository()
+                Command command = CommandRegistry.findCommands(this.profileRepository).find {
+                    it.fullName == mainCommandLine.commandName || it?.description?.synonyms?.contains(mainCommandLine.commandName)
                 }
-                else {
-                    Command command = CommandRegistry.findCommands(profileRepository).find {
-                        it.name == mainCommandLine.commandName || it?.description?.synonyms?.contains(mainCommandLine.commandName)
+                if (command) {
+                    if (command instanceof ProfileCommand) {
+                        initializeProfile()
+                        command.setProfile(this.profile)
                     }
                     if (command instanceof ProjectContextAware) {
-                        command.setProjectContext(projectContext)
+                        command.setProjectContext(this.projectContext)
                     }
-                    if (command) {
-                        result = command.handle(context)
+                    result = command.handle(context)
+                }
+                else {
+                    initializeProfile()
+                    if (this.profile && this.profile.hasCommand(this.projectContext, mainCommandLine.commandName)) {
+                        result = this.profile.handleCommand(context)
                     }
                     else {
                         console.error("Command not found [$mainCommandLine.commandName]")
                     }
                 }
+
                 if (result) {
                     if (triggerAppLoad) {
                         console.updateStatus('Initializing application. Please wait...')
                         try {
                             initializeApplication(context.commandLine)
+                            initializeProfile()
                             setupCompleters()
                         }
                         finally {
@@ -629,8 +638,8 @@ class GrailsCli {
             populateContextLoader()
         }
 
-        String profileName = applicationConfig.get(BuildSettings.PROFILE) ?: getSetting(BuildSettings.PROFILE, String, DEFAULT_PROFILE_NAME)
-        this.profile = profileRepository.getProfile(profileName)
+        String profileName = this.applicationConfig.get(BuildSettings.PROFILE) ?: getSetting(BuildSettings.PROFILE, String, DEFAULT_PROFILE_NAME)
+        this.profile = this.profileRepository.getProfile(profileName)
     }
 
     protected void populateContextLoader() {
