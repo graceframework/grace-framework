@@ -28,7 +28,9 @@ import org.apache.tools.ant.types.resources.URLResource
 import grails.build.logging.GrailsConsole
 import grails.util.BuildSettings
 import grails.util.GrailsNameUtils
+import grails.util.GrailsStringUtils
 import grails.util.GrailsVersion
+
 import org.grails.build.logging.GrailsConsoleAntBuilder
 import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
@@ -43,6 +45,7 @@ import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.repository.MavenProfileRepository
 import org.grails.config.CodeGenConfig
 
+import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
 import static org.grails.build.parsing.CommandLine.STACKTRACE_ARGUMENT
 import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
 
@@ -62,9 +65,16 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
 
     public static final String NAME = 'template'
     public static final String LOCATION_FLAG = 'location'
+    static final String USAGE = 'grace app:template --location=http://example.com/template.groovy'
+    static final String EXAMPLES = '''
+    # Apply templates
+        $ grace app:template --location=http://example.com/template.groovy
+        $ grace app:template --location=https://github.com/grace-templates/helloworld.git
+        $ grace app:template --location=/Users/grace/templates/my-template
+'''
     CommandDescription description = new CommandDescription(NAME,
             'Apply a template to an exist application',
-            'grace app:template --location=http://example.com/template.groovy')
+            USAGE, EXAMPLES)
 
     String namespace = 'app'
     ProfileRepository profileRepository
@@ -75,9 +85,10 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
     }
 
     protected void populateDescription() {
-        description.flag(name: LOCATION_FLAG, description: 'The application template to apply', required: false)
-        description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
-        description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
+        description.flag(name: LOCATION_FLAG, type: 'string', description: 'The application template to apply', banner: 'LOCATION', required: true)
+        description.flag(name: HELP_ARGUMENT, aliases: '-h', type: 'boolean', description: "Print the options and usage", required: false)
+        description.flag(name: STACKTRACE_ARGUMENT, type: 'boolean', description: 'Show full stacktrace', required: false)
+        description.flag(name: VERBOSE_ARGUMENT, type: 'boolean', description: 'Show verbose output', required: false)
     }
 
     @Override
@@ -92,6 +103,16 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
         Map<String, String> args = getCommandArguments(commandLine)
         String template = commandLine.optionValue(LOCATION_FLAG)
         boolean verbose = commandLine.hasOption(VERBOSE_ARGUMENT)
+
+        if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
+            printCommandHelp(console)
+            return true
+        }
+
+        if (GrailsStringUtils.isBlank(template)) {
+            console.error("Template `${LOCATION_FLAG}` is required!\n")
+            return false
+        }
 
         applyApplicationTemplate(console, template, args, verbose)
 
@@ -264,6 +285,35 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
             commandArguments.put(VERBOSE_ARGUMENT, 'false')
         }
         commandArguments
+    }
+
+    void printCommandHelp(GrailsConsole console) {
+        console.out.println('Usage:')
+        console.out.println('  ' + USAGE)
+        console.out.println()
+
+        if (!this.description.getFlags().isEmpty()) {
+            console.out.println('General options:')
+        }
+        this.description.getFlags().each {f ->
+            def flag = new StringBuilder()
+            flag << '  ' << (f.aliases ? "$f.aliases, " : '    ')
+            if (f.type == 'boolean') {
+                flag << "[--${f.name}]".padRight(30)
+            }
+            else {
+                flag << "[--${f.name}=${f.banner}]".padRight(30)
+            }
+            flag << '# ' + f.description
+            console.out.println(flag)
+        }
+        if (!this.description.getFlags().isEmpty()) {
+            console.out.println()
+        }
+
+        console.out.println()
+        console.out.println('Examples:')
+        console.out.println(this.description.examples)
     }
 
 }
