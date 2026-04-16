@@ -262,18 +262,18 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
         if (!f?.exists()) {
             if (file('profile.yml').exists()) {
                 f = resource(file("templates/$location"))
-                if (f.exists()) {
+                if (f?.exists()) {
                     return f
                 }
             }
             if (profile) {
                 def path = location.toString()
                 f = profile.getTemplate(path)
-                if (!f.exists()) {
-                    def allProfiles = profileRepository.getProfileAndDependencies(profile)
+                if (!f?.exists()) {
+                    def allProfiles = profileRepository?.getProfileAndDependencies(profile)
                     for (parent in allProfiles) {
                         f = parent.getTemplate(path)
-                        if (f.exists()) {
+                        if (f?.exists()) {
                             break
                         }
                     }

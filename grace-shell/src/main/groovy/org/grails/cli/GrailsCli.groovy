@@ -66,6 +66,7 @@ import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManageme
 import org.grails.cli.gradle.ClasspathBuildAction
 import org.grails.cli.gradle.GradleAsyncInvoker
 import org.grails.cli.gradle.cache.MapReadingCachedGradleOperation
+import org.grails.cli.profile.DefaultProfile
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
@@ -91,7 +92,6 @@ import org.grails.gradle.plugin.model.GrailsClasspath
 class GrailsCli {
 
     static final String ARG_SPLIT_PATTERN = /(?<!\\)\s+/
-    public static final String DEFAULT_PROFILE_NAME = ProfileRepository.DEFAULT_PROFILE_NAME
     private static final int KEYPRESS_CTRL_C = 3
     private static final int KEYPRESS_ESC = 27
     private static final String USAGE_MESSAGE = 'create-app [NAME] --profile=web'
@@ -638,8 +638,8 @@ class GrailsCli {
             populateContextLoader()
         }
 
-        String profileName = this.applicationConfig.get(BuildSettings.PROFILE) ?: getSetting(BuildSettings.PROFILE, String, DEFAULT_PROFILE_NAME)
-        this.profile = this.profileRepository.getProfile(profileName)
+        String profileName = this.applicationConfig.get(BuildSettings.PROFILE) ?: getSetting(BuildSettings.PROFILE, String)
+        this.profile = profileName ? this.profileRepository.getProfile(profileName) : new DefaultProfile()
     }
 
     protected void populateContextLoader() {
