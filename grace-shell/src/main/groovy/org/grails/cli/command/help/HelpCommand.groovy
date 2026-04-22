@@ -45,10 +45,18 @@ import org.grails.cli.profile.ProfileRepositoryAware
 class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, ProfileRepositoryAware {
 
     public static final String NAME = 'help'
+    static final String USAGE = 'grace help [COMMAND NAME]'
+    static final String EXAMPLES = '''
+    # Show all the commands
+        $ grace help -all
+
+    # Prints help information for create-app command
+        $ grace help create-app
+'''
 
     CommandDescription description = new CommandDescription(NAME,
             'Prints help information for a specific command',
-            'help [COMMAND NAME]')
+            USAGE, EXAMPLES)
 
     Profile profile
     ProfileRepository profileRepository
@@ -57,7 +65,7 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
     private CommandLineParser cliParser = new CommandLineParser()
 
     HelpCommand() {
-        this.description.flag(name: 'all', description: 'Show all commands', required: false)
+        this.description.flag(name: 'all', type: 'boolean', description: 'Show all commands, default: false', required: false)
     }
 
     @Override
@@ -69,6 +77,11 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
     boolean handle(ExecutionContext executionContext) {
         GrailsConsole console = executionContext.console
         CommandLine commandLine = executionContext.commandLine
+        if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
+            printCommandHelp(console)
+            return true
+        }
+
         Collection<Command> allCommands
         String remainingArgs = commandLine.getRemainingArgsString()
         if (remainingArgs?.trim()) {
@@ -118,6 +131,7 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
                             console.println(flag)
                         }
                     }
+
                     if (command.description.examples) {
                         console.println()
                         console.addStatus('Examples:')
@@ -202,6 +216,36 @@ grace [environment]* [target] [arguments]*'
             }
             result.append(message)
         }
+    }
+
+    void printCommandHelp(GrailsConsole console) {
+        console.out.println('Usage:')
+        console.out.println('  ' + description.usage)
+        console.out.println()
+
+        if (!description.getFlags().isEmpty()) {
+            console.out.println('Options:')
+        }
+        description.getFlags().each {f ->
+            def flag = new StringBuilder()
+            flag << '  ' << (f.aliases ? "$f.aliases, " : '    ')
+            if (f.type == 'boolean') {
+                flag << "[--${f.name}]".padRight(30)
+            }
+            else {
+                flag << "[--${f.name}=${f.banner}]".padRight(30)
+            }
+            flag << '# ' + f.description
+            console.out.println(flag)
+        }
+        console.out.println()
+
+        console.out.println('Description:')
+        console.out.println('    ' + description.description)
+        console.out.println()
+
+        console.out.println('Examples:')
+        console.out.println(description.examples)
     }
 
 }

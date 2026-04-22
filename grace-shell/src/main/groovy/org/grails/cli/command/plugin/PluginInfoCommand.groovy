@@ -27,6 +27,8 @@ import org.grails.cli.command.ExecutionContext
 import org.grails.cli.command.GlobalCommand
 import org.grails.cli.command.ProjectCommand
 
+import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
+
 /**
  * Get the information about the given plugin
  *
@@ -37,21 +39,32 @@ class PluginInfoCommand implements Command, GlobalCommand, ProjectCommand {
 
     public static final String PLUGIN_REPO_URL = 'https://repo1.maven.org/maven2/org/graceframework/plugins'
     public static final String NAME = 'plugin-info'
+    static final String USAGE = 'grace plugin-info [PLUGIN NAME]'
+    static final String EXAMPLES = '''
+    # Display information about a given plugin
+        $ grace plugin-info admin
+'''
 
     final String name = NAME
     final CommandDescription description = new CommandDescription(name,
             'Display information about the given plugin',
-            'grace plugin-info [PLUGIN NAME]'
+            USAGE, EXAMPLES
     )
 
     PluginInfoCommand() {
-        description.argument(name: 'Plugin Name', description: 'The name of the plugin', required: false)
+        description.argument(name: 'Plugin Name', description: 'The name of the plugin', required: true)
+        description.flag(name: HELP_ARGUMENT, aliases: '-h', type: 'boolean', description: "Print the options and usage", required: false)
     }
 
     @Override
     boolean handle(ExecutionContext executionContext) {
         GrailsConsole console = executionContext.console
         CommandLine commandLine = executionContext.commandLine
+        if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
+            printCommandHelp(console)
+            return true
+        }
+
         String pluginName = commandLine.remainingArgs[0]
 
         if (!pluginName) {
@@ -120,6 +133,36 @@ dependencies {
         }
 
         true
+    }
+
+    void printCommandHelp(GrailsConsole console) {
+        console.out.println('Usage:')
+        console.out.println('  ' + description.usage)
+        console.out.println()
+
+        if (!description.getFlags().isEmpty()) {
+            console.out.println('Options:')
+        }
+        description.getFlags().each {f ->
+            def flag = new StringBuilder()
+            flag << '  ' << (f.aliases ? "$f.aliases, " : '    ')
+            if (f.type == 'boolean') {
+                flag << "[--${f.name}]".padRight(30)
+            }
+            else {
+                flag << "[--${f.name}=${f.banner}]".padRight(30)
+            }
+            flag << '# ' + f.description
+            console.out.println(flag)
+        }
+        console.out.println()
+
+        console.out.println('Description:')
+        console.out.println('    ' + description.description)
+        console.out.println()
+
+        console.out.println('Examples:')
+        console.out.println(description.examples)
     }
 
 }

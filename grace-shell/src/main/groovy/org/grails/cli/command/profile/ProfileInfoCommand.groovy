@@ -19,6 +19,7 @@ import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
 
+import org.grails.build.parsing.CommandLine
 import org.grails.cli.command.ArgumentCompletingCommand
 import org.grails.cli.command.Command
 import org.grails.cli.command.CommandDescription
@@ -29,6 +30,8 @@ import org.grails.cli.profile.Feature
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
+
+import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
 
 /**
  * A command to find out information about the given profile
@@ -41,17 +44,24 @@ import org.grails.cli.profile.ProfileRepositoryAware
 class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalCommand, ProjectCommand, ProfileRepositoryAware {
 
     public static final String NAME = 'profile-info'
+    static final String USAGE = 'grace profile-info'
+    static final String EXAMPLES = '''
+    # Display information about a given profile
+        $ grace profile-info web
+'''
 
     final String name = NAME
-    final CommandDescription description = new CommandDescription(name, 'Display information about a given profile')
+    final CommandDescription description = new CommandDescription(name, 'Display information about a given profile', USAGE, EXAMPLES)
 
     ProfileRepository profileRepository
 
     ProfileInfoCommand() {
         description.argument(name: 'Profile Name', description: 'The name or coordinates of the profile', required: true)
         description.flag(name: 'only', type: 'boolean', description: "Only show the commands and features of this profile", required: false)
+        description.flag(name: HELP_ARGUMENT, aliases: '-h', type: 'boolean', description: "Print the options and usage", required: false)
     }
 
+    @Override
     void setProfileRepository(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository
     }
@@ -59,6 +69,11 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
     @Override
     boolean handle(ExecutionContext executionContext) {
         GrailsConsole console = executionContext.console
+        CommandLine commandLine = executionContext.commandLine
+        if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
+            printCommandHelp(console)
+            return true
+        }
         if (profileRepository == null) {
             console.error('No profile repository provided')
             return false
@@ -165,6 +180,36 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             }
         }
         defaultFeatures
+    }
+
+    void printCommandHelp(GrailsConsole console) {
+        console.out.println('Usage:')
+        console.out.println('  ' + description.usage)
+        console.out.println()
+
+        if (!description.getFlags().isEmpty()) {
+            console.out.println('Options:')
+        }
+        description.getFlags().each {f ->
+            def flag = new StringBuilder()
+            flag << '  ' << (f.aliases ? "$f.aliases, " : '    ')
+            if (f.type == 'boolean') {
+                flag << "[--${f.name}]".padRight(30)
+            }
+            else {
+                flag << "[--${f.name}=${f.banner}]".padRight(30)
+            }
+            flag << '# ' + f.description
+            console.out.println(flag)
+        }
+        console.out.println()
+
+        console.out.println('Description:')
+        console.out.println('    ' + description.description)
+        console.out.println()
+
+        console.out.println('Examples:')
+        console.out.println(description.examples)
     }
 
 }

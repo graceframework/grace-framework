@@ -125,6 +125,11 @@ class DestroyCommand implements ProjectCommand {
             println '  ' + generator.name
         }
         console.out.println()
+
+        console.out.println('Description:')
+        console.out.println('    ' + description.description)
+        console.out.println()
+
         console.out.println('Examples:')
         console.out.println(this.description.examples)
     }
