@@ -5,6 +5,7 @@ org.grails.cli.command.destroy.DestroyCommand
 org.grails.cli.command.generate.GenerateCommand
 org.grails.cli.command.gradle.AssembleCommand
 org.grails.cli.command.gradle.CleanCommand
+org.grails.cli.command.gradle.CompileCommand
 org.grails.cli.command.gradle.GradleCommand
 org.grails.cli.command.help.HelpCommand
 org.grails.cli.command.open.OpenCommand
