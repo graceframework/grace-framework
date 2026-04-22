@@ -19,3 +19,4 @@ org.grails.cli.command.profile.CreateProfileCommand
 org.grails.cli.command.profile.ListProfilesCommand
 org.grails.cli.command.profile.ProfileInfoCommand
 org.grails.cli.command.run.RunCommand
+org.grails.cli.command.shell.ShellCommand
