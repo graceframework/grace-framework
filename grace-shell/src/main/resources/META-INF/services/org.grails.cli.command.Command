@@ -1,6 +1,7 @@
 org.grails.cli.command.about.AboutCommand
 org.grails.cli.command.app.ApplicationTemplateCommand
 org.grails.cli.command.app.CreateAppCommand
+org.grails.cli.command.app.RunAppCommand
 org.grails.cli.command.destroy.DestroyCommand
 org.grails.cli.command.generate.GenerateCommand
 org.grails.cli.command.gradle.AssembleCommand
