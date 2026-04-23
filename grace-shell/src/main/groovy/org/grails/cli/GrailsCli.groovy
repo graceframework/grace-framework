@@ -377,7 +377,7 @@ class GrailsCli {
 
     protected void outputMissingArgumentsMessage(Command cmd) {
         GrailsConsole console = GrailsConsole.instance
-        console.error("Command $cmd.name is missing required arguments:")
+        console.error("Command ${cmd.fullName} is missing required arguments:")
         for (CommandArgument arg in cmd.description.arguments.findAll { CommandArgument ca -> ca.required }) {
             console.log("* $arg.name - $arg.description")
         }
@@ -508,7 +508,7 @@ class GrailsCli {
 
         for (Command cmd in commands) {
             CommandDescription description = cmd.description
-            StringsCompleter commandNameCompleter = new StringsCompleter(cmd.name)
+            StringsCompleter commandNameCompleter = new StringsCompleter(cmd.fullName)
 
             if (cmd instanceof Completer) {
                 completers << new ArgumentCompleter(commandNameCompleter, (Completer) cmd)
