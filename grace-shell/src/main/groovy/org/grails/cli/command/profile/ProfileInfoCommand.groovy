@@ -74,13 +74,19 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             printCommandHelp(console)
             return true
         }
+
+        boolean showAll = !commandLine.hasOption('only')
+        String profileName = commandLine.remainingArgs[0]
+
+        if (!profileName) {
+            console.error 'Missing the name of the profile!'
+            return false
+        }
+
         if (profileRepository == null) {
             console.error('No profile repository provided')
             return false
         }
-
-        boolean showAll = !executionContext.commandLine.hasOption('only')
-        def profileName = executionContext.commandLine.remainingArgs[0]
 
         Profile profile = profileRepository.getProfile(profileName)
         if (profile == null) {
