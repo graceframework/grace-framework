@@ -114,6 +114,12 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                                                 }
 
                                                 break
+                                            case 'examples':
+                                                if (methodCallArgs instanceof ArgumentListExpression) {
+                                                    constructorArgs.addExpression(((ArgumentListExpression) methodCallArgs).getExpression(0))
+                                                }
+
+                                                break
                                             default:
                                                 constructDescription = new MethodCallExpression(constructDescription,
                                                         mce.methodAsString, methodCallArgs)
