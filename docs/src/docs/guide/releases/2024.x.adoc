@@ -66,6 +66,31 @@ link:{github}/releases/tag/v2024.1.0-M1[release notes]
 * Switch to '2024.1.x' Update github workflows
 * Next development version: 2024.1.0-SNAPSHOT
 
+=== 2024.0.1
+
+link:{github}/releases/tag/v2024.0.1[release notes]
+
+🛠 Improvements
+
+* Add release notes for 2024.0.1
+
+🐞 Bug Fixes
+
+* GlobalGrailsPluginTransformationSpec run failed on Windows link:{github}/issues/1437[#1437]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Ant 1.10.17 link:{github}/issues/1445[#1445]
+* Upgrade to Grace Gradle Plugin 2024.0.0 link:{github}/issues/1436[#1436]
+* Upgrade to Maven 3.9.15 link:{github}/issues/1447[#1447]
+* Upgrade to Spring Framework 6.2.18 link:{github}/issues/1465[#1465]
+* Upgrade to Tomcat 10.1.54 link:{github}/issues/1464[#1464]
+
+⚙️ Tasks
+
+* Release v2024.0.1
+* Next development version: 2024.0.1-SNAPSHOT
+
 === 2024.0.0
 
 link:{github}/releases/tag/v2024.0.0[release notes]
