@@ -28,6 +28,15 @@ dependencies {
     testImplementation libs.h2
 }
 
+tasks.register("syncScripts", Sync) {
+    from("src/main/scripts")
+    into("build/resources/main/META-INF/commands")
+}
+
+processResources {
+    dependsOn = ["syncScripts"]
+}
+
 test {
     enabled = false
 }
