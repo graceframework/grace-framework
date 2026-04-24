@@ -18,3 +18,12 @@ dependencies {
     testImplementation libs.spring.boot.test
     testImplementation libs.spring.test
 }
+
+tasks.register("syncScripts", Sync) {
+    from("src/main/scripts")
+    into("build/resources/main/META-INF/commands")
+}
+
+processResources {
+    dependsOn = ["syncScripts"]
+}
