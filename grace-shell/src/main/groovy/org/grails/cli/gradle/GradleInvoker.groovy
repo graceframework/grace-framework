@@ -22,11 +22,13 @@ import grails.util.Environment
 
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.command.ExecutionContext
+import org.grails.io.support.DevNullPrintStream
 
 /**
  * Allow dynamic invocation of Gradle tasks
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -55,7 +57,13 @@ class GradleInvoker {
 
             arguments.addAll(argArray*.toString() as String[])
             buildLauncher.withArguments(arguments as String[])
+
+            if (System.getProperty('grails.run.ignore-errors')?.equalsIgnoreCase('true')) {
+                buildLauncher.standardError = new DevNullPrintStream()
+            }
         }
+
+        return Boolean.TRUE
     }
 
     GradleAsyncInvoker getAsync() {

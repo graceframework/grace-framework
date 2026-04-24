@@ -103,6 +103,8 @@ class RunAppCommand implements ProjectCommand {
 
             console.updateStatus 'Running application...'
 
+            System.setProperty('grails.run.ignore-errors', 'true')
+
             if (!GrailsCli.isInteractiveModeActive()) {
                 if (flag(commandLine, 'debug-jvm')) {
                     gradle.'bootRun --debug-jvm'(*arguments)
