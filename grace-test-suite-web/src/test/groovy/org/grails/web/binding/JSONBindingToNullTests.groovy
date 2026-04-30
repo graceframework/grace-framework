@@ -1,12 +1,13 @@
 package org.grails.web.binding
 
+import groovy.json.StreamingJsonBuilder
+
 import grails.artefact.Artefact
 import grails.converters.JSON
 import grails.converters.XML
 import grails.persistence.Entity
 import grails.testing.gorm.DomainUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
-import grails.web.JSONBuilder
 import spock.lang.Specification
 
 class JSONBindingToNullTests extends Specification implements ControllerUnitTest<UserController>, DomainUnitTest<User> {
@@ -30,11 +31,14 @@ class JSONBindingToNullTests extends Specification implements ControllerUnitTest
 
     void testJsonBindingToNull() {
         when:
-        def pebbles = new User(username:"pebbles", password:"letmein", firstName:"Pebbles", lastName:"Flintstone", middleName:"T", phone:"555-555-5555", email:'pebbles@flintstone.com', activationDate:new Date(), logonFailureCount:0, deactivationDate:null).save(flush:true)
+        def map = [username:"pebbles", password:"letmein", firstName:"Pebbles", lastName:"Flintstone", middleName:"T", phone:"555-555-5555", email:'pebbles@flintstone.com', activationDate:new Date(), logonFailureCount:0, deactivationDate:null]
+        def pebbles = new User(map).save(flush:true)
 
-        def builder = new JSONBuilder()
+        StringWriter json = new StringWriter()
+        def builder = new StreamingJsonBuilder(json)
+        builder map
         request.method = 'PUT'
-        request.json = builder.build { user = pebbles }
+        request.json = json.toString()
         response.format = "json"
         params.id = pebbles.id
 

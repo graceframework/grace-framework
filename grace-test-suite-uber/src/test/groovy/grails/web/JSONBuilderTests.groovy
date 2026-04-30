@@ -1,5 +1,7 @@
 package grails.web
 
+import groovy.json.StreamingJsonBuilder
+
 import grails.core.DefaultGrailsApplication
 import org.grails.web.converters.configuration.ConvertersConfigurationInitializer
 import org.junit.jupiter.api.BeforeEach
@@ -9,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.2
  */
 class JSONBuilderTests {
@@ -21,150 +24,126 @@ class JSONBuilderTests {
 
     @Test
     void testSimple() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def result = builder.build {
-            rootprop ="something"
-        }
+        builder { rootprop "something" }
 
-        assertEquals '{"rootprop":"something"}', result.toString()
+        assertEquals '{"rootprop":"something"}', writer.toString()
     }
 
     @Test
     void testArrays() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def result = builder.build {
-            categories = ['a', 'b', 'c']
-            rootprop ="something"
+        builder {
+            categories 'a', 'b', 'c'
+            rootprop "something"
         }
 
-        assertEquals '{"categories":["a","b","c"],"rootprop":"something"}', result.toString()
+        assertEquals '{"categories":["a","b","c"],"rootprop":"something"}', writer.toString()
     }
 
     @Test
     void testSubObjects() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def result = builder.build {
-            categories = ['a', 'b', 'c']
-            rootprop ="something"
+        builder {
+            categories 'a', 'b', 'c'
+            rootprop "something"
             test {
-                subprop = 10
+                subprop 10
             }
         }
 
-        assertEquals '{"categories":["a","b","c"],"rootprop":"something","test":{"subprop":10}}', result.toString()
+        assertEquals '{"categories":["a","b","c"],"rootprop":"something","test":{"subprop":10}}', writer.toString()
     }
 
     @Test
     void testAssignedObjects() {
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def builder = new JSONBuilder()
-
-        def result = builder.build {
-            categories = ['a', 'b', 'c']
-            rootprop ="something"
-            test = {
-                subprop = 10
+        builder {
+            categories 'a', 'b', 'c'
+            rootprop "something"
+            test {
+                subprop 10
             }
         }
 
-        assertEquals '{"categories":["a","b","c"],"rootprop":"something","test":{"subprop":10}}', result.toString()
+        assertEquals '{"categories":["a","b","c"],"rootprop":"something","test":{"subprop":10}}', writer.toString()
     }
 
     @Test
     void testNamedArgumentHandling() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def result = builder.build {
-            categories = ['a', 'b', 'c']
-            rootprop ="something"
-            test subprop:10, three:[1,2,3]
+        builder {
+            categories 'a', 'b', 'c'
+            rootprop  "something"
+            test {
+                subprop 10
+                three 1, 2, 3
+            }
         }
 
-        assertEquals '{"categories":["a","b","c"],"rootprop":"something","test":{"subprop":10,"three":[1,2,3]}}', result.toString()
+        assertEquals '{"categories":["a","b","c"],"rootprop":"something","test":{"subprop":10,"three":[1,2,3]}}', writer.toString()
     }
 
     @Test
     void testArrayOfClosures() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def result = builder.build {
-            foo = [ { bar = "hello" } ]
+        def arrayOfMap = [[bar: "hello"]]
+        builder {
+            foo arrayOfMap
         }
 
-        assertEquals '{"foo":[{"bar":"hello"}]}', result.toString()
+        assertEquals '{"foo":[{"bar":"hello"}]}', writer.toString()
     }
 
     @Test
     void testRootElementList() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
         def results = ['one', 'two', 'three']
 
-        def result = builder.build {
-            for (b in results) {
-                element b
-            }
-        }
+        builder results
 
-        assertEquals '["one","two","three"]', result.toString()
-
-        result = builder.build {
-            results
-        }
-
-        assertEquals '["one","two","three"]', result.toString()
+        assertEquals '["one","two","three"]', writer.toString()
     }
 
     @Test
     void testExampleFromReferenceGuide() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def results = ['one', 'two', 'three']
+        def list = [[title: 'one'], [title: 'two'], [title: 'three']]
 
-        def result = builder.build {
-            for (b in results) {
-                element title:b
-            }
-        }
+        builder list
 
-        assertEquals '[{"title":"one"},{"title":"two"},{"title":"three"}]', result.toString()
-
-        result = builder.build {
-            books = results.collect {
-                [title:it]
-            }
-        }
-
-        assertEquals '{"books":[{"title":"one"},{"title":"two"},{"title":"three"}]}', result.toString()
-
-        result = builder.build {
-            books = array {
-                for (b in results) {
-                    book title:b
-                }
-            }
-        }
-
-        assertEquals '{"books":[{"title":"one"},{"title":"two"},{"title":"three"}]}', result.toString()
+        assertEquals '[{"title":"one"},{"title":"two"},{"title":"three"}]', writer.toString()
     }
 
     @Test
     void testAppendToArray() {
-        def builder = new JSONBuilder()
+        def writer = new StringWriter()
+        def builder = new StreamingJsonBuilder(writer)
 
-        def results = ['one', 'two', 'three']
+        def list = ['one', 'two', 'three']
 
-        def result = builder.build {
-            books = array { list ->
-                for (b in results) {
-                    list << [title:b]
-                }
+        builder {
+            books list, { String item ->
+                title item
             }
         }
 
-        assertEquals '{"books":[{"title":"one"},{"title":"two"},{"title":"three"}]}', result.toString()
+        assertEquals '{"books":[{"title":"one"},{"title":"two"},{"title":"three"}]}', writer.toString()
     }
 }
