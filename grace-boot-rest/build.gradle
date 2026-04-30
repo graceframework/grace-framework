@@ -5,6 +5,7 @@ dependencies {
     api project(":grace-plugin-databinding")
     api project(":grace-plugin-interceptors")
     api project(":grace-plugin-mimetypes")
+    api project(":grace-plugin-rest")
     api project(":grace-plugin-url-mappings")
     api project(":grace-views-json")
     api project(":grace-views-markup")
