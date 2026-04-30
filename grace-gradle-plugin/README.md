@@ -1,10 +1,10 @@
 ## Grace Gradle Plugin
 
-This A Gradle plugin for Grace which provides a bunch of useful plugins
+This is a Gradle plugin for Grace which provides a bunch of useful plugins.
 
 The Grace Gradle Plugin provides Grace support in [Gradle](https://gradle.org).
-It allows you to package Grace plugins or profiles, run Grace applications, and use the dependency management provided by `spring-boot-dependencies`.
-Spring Boot's Gradle plugin requires Gradle 7.x (7.6.4 or later) or 8.x (8.4 or later) and can be used with Gradle's [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html).
+It allows you to package Grace plugins or profiles, run Grace applications, and use the dependency management provided by `grace-bom`.
+Grace's Gradle plugin requires Gradle 7.x (7.6.4 or later) or 8.x (8.4 or later) and can be used with Gradle's [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html).
 
 
 | Plugin ID                          | Description |

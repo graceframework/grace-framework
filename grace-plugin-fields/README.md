@@ -13,3 +13,17 @@ This plugin aims to:
 * Support inputs for property paths of arbitrary depth and with indexing.
 * Enable other plugins to provide field rendering for special property types that gets picked up automatically (e.g. the Joda Time plugin can provide templates for the various date/time types).
 * Support embedded properties of GORM domain classes.
+
+Add `fields` plugin to your `build.gradle`,
+
+```
+dependencies {
+    implementation "org.graceframework:grace-plugin-fields"
+}
+```
+
+Use the `install` command to copy templates to `app/views`,
+
+```
+grace fields:install
+```
