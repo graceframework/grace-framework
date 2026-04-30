@@ -32,7 +32,7 @@ import grails.util.GrailsUtil
 class MongodbGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def grailsVersion = '2023.0.0 > *'
+    def grailsVersion = '2024.0.0 > *'
 
     def title = 'Grace Data MongoDB'
     def description = 'Provides integration between Grace and MongoDB document datastore through GORM API'

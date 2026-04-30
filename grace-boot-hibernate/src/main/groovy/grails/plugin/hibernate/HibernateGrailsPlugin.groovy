@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2024 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.grails.config.PropertySourcesConfig
 class HibernateGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def grailsVersion = '2023.0.0 > *'
+    def grailsVersion = '2024.0.0 > *'
 
     def title = 'Grace Data Hibernate'
     def description = 'Provides integration between Grace and Hibernate through GORM'

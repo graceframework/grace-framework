@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2025 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import grails.util.GrailsUtil
 class ControllersAsyncGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def grailsVersion = '2023.0.0 > *'
+    def grailsVersion = '2024.0.0 > *'
     def loadAfter = ['controllers']
     def title = 'Grace Async Plugin'
     def description = 'Grace Async Plugin'
