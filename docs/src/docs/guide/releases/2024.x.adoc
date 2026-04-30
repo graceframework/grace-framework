@@ -1,3 +1,97 @@
+=== 2024.1.0-M3
+
+This release is based on Spring Boot 3.5.14 and Spring Framework to 6.2.18. link:{github}/releases/tag/v2024.1.0-M3[release notes]
+
+* Upgrade to Ant 1.10.17, Maven 3.9.15
+* Upgrade to Jackson Databind 2.21.2, Groovy 4.0.31, SiteMesh 2.7.0, Tomcat 10.1.54
+
+For a complete list of changes made in this release see link:https://github.com/orgs/graceframework/projects/18[v2024.1.0-M3 on GitHub].
+
+⭐️ New Features
+
+* Allow the `BuildSettings.APP_DIR` directory to not exist link:{github}/issues/1417[#1417]
+* Allow some non-Profile commands to be run without initializing the project first link:{github}/issues/1442[#1442]
+* Add support `examples` to set the description of script command link:{github}/issues/1463[#1463]
+* Make profiles optional for Grace Shell link:{github}/issues/1440[#1440]
+* Provide a built-in database 'migrate' feature which delegate Gradle's `dbmUpdate` task link:{github}/issues/1467[#1467]
+* Provide a built-in 'seeds' feature to add initial data to the database link:{github}/issues/1466[#1466]
+* Support loading and running GroovyScriptCommand without adding a profile in the application link:{github}/issues/1444[#1444]
+* Supports configuring the features directory Currently, only can configure custom `commands` and `templates` directories link:{github}/issues/1439[#1439]
+* Grace Shell: Implements About command to show the information of current application link:{github}/issues/1449[#1449]
+* Grace Shell: Implements Assemble command to create a JAR or WAR archive for production deployment link:{github}/issues/1450[#1450]
+* Grace Shell: Implements Clean command link:{github}/issues/1451[#1451]
+* Grace Shell: Implements `compile` command link:{github}/issues/1452[#1452]
+* Grace Shell: Implements `run-app` command link:{github}/issues/1453[#1453]
+* Grace Shell: Implements `stop-app` command link:{github}/issues/1454[#1454]
+* Grace Shell: Implements `console` command link:{github}/issues/1455[#1455]
+* Grace Shell: Implements `shell` command link:{github}/issues/1456[#1456]
+* Grace Shell: Implements `stats` command link:{github}/issues/1457[#1457]
+* Grace Shell: Improves the help description of commands link:{github}/issues/1458[#1458]
+
+🛠 Improvements
+
+* Add release notes for 2024.1.0-M3
+* Update README - Update the badge version
+* Update README in plugins - Add instructions on how to use the plugin
+* Update guides for installation and introduction
+* Add grace-plugin-dynamic-modules dependency for grace-boot-plugin link:{github}/issues/1474[#1474]
+* Remove deprecated JSONBuilder link:{github}/issues/1352[#1352]
+* Remove MarkupViewGrailsPlugin link:{github}/issues/1473[#1473]
+* Remove JsonViewGrailsPlugin link:{github}/issues/1472[#1472]
+* Update the grailsVersion of plugins to `2024.0.0 > *` link:{github}/issues/1471[#1471]
+* Allow Gradle build errors be ignored when running tasks link:{github}/issues/1469[#1469]
+* Enhance `ApplicationTemplateCommand` link:{github}/issues/1443[#1443]
+* Don't make `inherited` as a default parameter for `CommandRegistry.findCommands(Profile, boolean inherited)` link:{github}/issues/1441[#1441]
+* Keep the templates consistent between `generator` and `commands` with profiles link:{github}/issues/1438[#1438]
+* Keep the templates consistent between `script` commands and `generators` in scaffolding plugin link:{github}/issues/1416[#1416]
+* Code formatting for scripts in the scaffolding plugin link:{github}/issues/1415[#1415]
+* Keep the templates consistent with profiles `base` and `web` link:{github}/issues/1414[#1414]
+* Remove unused `grace-sitemesh` module link:{github}/issues/1409[#1409]
+
+🐞 Bug Fixes
+
+* The generated ServiceSpec.groovy should be in `integration-test` link:{github}/issues/1416[#1416]
+* Clean up non-existent `grace-datastore-gorm-mongodb-ext` in Gradle versions catalog link:{github}/issues/1418[#1418]
+* Add more `documentation` dependencies to refine javadoc links link:{github}/issues/1419[#1419]
+* GlobalGrailsPluginTransformationSpec run failed on Windows link:{github}/issues/1437[#1437]
+* Display full name of the commands when TAB for completion link:{github}/issues/1460[#1460]
+* Check the required profile name before executing the command `profile-info` link:{github}/issues/1459[#1459]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Ant 1.10.17 link:{github}/issues/1446[#1446]
+* Upgrade to Grace Asset Pipeline Plugin 7.1.0-M1 link:{github}/issues/1422[#1422]
+* Upgrade to Grace Async 7.1.0-M1 link:{github}/issues/1423[#1423]
+* Upgrade to Grace Events 7.1.0-M1 link:{github}/issues/1424[#1424]
+* Upgrade to Grace Data 2024.1.0-M1 link:{github}/issues/1425[#1425]
+* Upgrade to Grace Data Hibernate 2024.1.0-M1 link:{github}/issues/1426[#1426]
+* Upgrade to Grace Data MongoDB 2024.1.0-M1 link:{github}/issues/1427[#1427]
+* Upgrade to Grace Gradle Plugin 2024.0.0 link:{github}/issues/1436[#1436]
+* Upgrade to Grace Profile: Base 2024.1.0-M1 link:{github}/issues/1428[#1428]
+* Upgrade to Grace Profile: Plugin 2024.1.0-M1 link:{github}/issues/1429[#1429]
+* Upgrade to Grace Profile: Profile 2024.1.0-M1 link:{github}/issues/1430[#1430]
+* Upgrade to Grace Profile: Rest API 2024.1.0-M1 link:{github}/issues/1431[#1431]
+* Upgrade to Grace Profile: Starter 2024.1.0-M1 link:{github}/issues/1432[#1432]
+* Upgrade to Grace Profile: Web 2024.1.0-M1 link:{github}/issues/1433[#1433]
+* Upgrade to Grace Profile: Web Plugin 2024.1.0-M1 link:{github}/issues/1434[#1434]
+* Upgrade to Gradle Plugin Publish Plugin 2.1.1 link:{github}/issues/1410[#1410]
+* Upgrade to Groovy 4.0.31 link:{github}/issues/1421[#1421]
+* Upgrade to Jackson Databind 2.21.2 link:{github}/issues/1413[#1413]
+* Upgrade to Maven 3.9.15 link:{github}/issues/1448[#1448]
+* Upgrade to SiteMesh 2.7.0 link:{github}/issues/1408[#1408]
+* Upgrade to Spring Boot 3.5.13 link:{github}/issues/1412[#1412]
+* Upgrade to Spring Boot 3.5.14 link:{github}/issues/1462[#1462]
+* Upgrade to Spring Framework 6.2.18 link:{github}/issues/1461[#1461]
+* Upgrade to Tomcat 10.1.53 link:{github}/issues/1411[#1411]
+* Upgrade to Tomcat 10.1.54 link:{github}/issues/1435[#1435]
+
+⚙️ Tasks
+
+* Release v2024.1.0-M3
+* Add .sdkmanrc with latest java version 17.0.19-tem link:{github}/issues/1477[#1477]
+* Upgrade Release Drafter Gradle Action to v7 link:{github}/issues/1475[#1475]
+* Upgrade GitHub workflows: migrate java distribution from `adopt` to `temurin` link:{github}/issues/1476[#1476]
+
 === 2024.1.0-M2
 
 This release is based on Spring Boot 3.5.12 and Spring Framework to 6.2.17.
