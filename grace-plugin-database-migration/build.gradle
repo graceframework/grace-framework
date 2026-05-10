@@ -1,9 +1,6 @@
 dependencies {
     api libs.groovy.sql
-    api libs.liquibase.core, {
-        exclude group: 'javax.xml.bind', module: 'jaxb-api'
-        exclude group: 'com.opencsv', module: 'opencsv'
-    }
+    api libs.liquibase.core
     api libs.liquibase.hibernate, {
         exclude group: 'org.hibernate', module: 'hibernate-core'
         exclude group: 'org.hibernate', module: 'hibernate-entitymanager'
