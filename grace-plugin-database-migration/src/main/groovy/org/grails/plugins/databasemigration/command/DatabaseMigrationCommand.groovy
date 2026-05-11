@@ -67,10 +67,6 @@ import liquibase.statement.core.RawSqlStatement
 import liquibase.structure.core.Catalog
 import liquibase.util.LiquibaseUtil
 import liquibase.util.StreamUtil
-import org.hibernate.dialect.Dialect
-import org.hibernate.engine.jdbc.spi.JdbcServices
-import org.hibernate.engine.spi.SessionFactoryImplementor
-import org.springframework.context.ConfigurableApplicationContext
 
 import grails.cli.command.ApplicationCommand
 import grails.cli.command.ExecutionContext
@@ -83,7 +79,6 @@ import org.grails.config.PropertySourcesConfig
 import org.grails.plugins.databasemigration.DatabaseMigrationException
 import org.grails.plugins.databasemigration.DatabaseMigrationTransactionManager
 import org.grails.plugins.databasemigration.NoopVisitor
-import org.grails.plugins.databasemigration.liquibase.GormDatabase
 import org.grails.plugins.databasemigration.liquibase.GroovyChangeLogParser
 
 import static org.grails.plugins.databasemigration.DatabaseMigrationGrailsPlugin.getDataSourceName
@@ -411,18 +406,6 @@ trait DatabaseMigrationCommand implements ApplicationCommand {
                 'grails.plugin.databasemigration' : "grails.plugin.databasemigration.${this.dataSource}"
     }
 
-    void withGormDatabase(ConfigurableApplicationContext applicationContext, String dataSource,
-            @ClosureParams(value = SimpleType, options = 'liquibase.database.Database') Closure closure) {
-        def database = null
-        try {
-            database = createGormDatabase(applicationContext, dataSource)
-            closure.call(database)
-        }
-        finally {
-            database?.close()
-        }
-    }
-
     ConfigMap getEnvironmentConfig(String environment) {
         return (ConfigMap) environmentWith(environment) {
             new PropertySourcesConfig(((PropertySourcesConfig) config).getPropertySources())
@@ -458,23 +441,6 @@ trait DatabaseMigrationCommand implements ApplicationCommand {
         }
 
         diffOutputControl
-    }
-
-    private Database createGormDatabase(ConfigurableApplicationContext applicationContext, String dataSource) {
-        String dataSourceName = getDataSourceName(dataSource)
-        String sessionFactoryName = 'sessionFactory'
-        if (!isDefaultDataSource(dataSource)) {
-            sessionFactoryName = sessionFactoryName + '_' + dataSourceName
-        }
-
-        def serviceRegistry = applicationContext.getBean(sessionFactoryName, SessionFactoryImplementor).serviceRegistry.parentServiceRegistry
-
-        Dialect dialect = serviceRegistry.getService(JdbcServices).dialect
-
-        Database database = new GormDatabase(dialect, serviceRegistry)
-        configureDatabase(database)
-
-        return database
     }
 
     private Object environmentWith(String environment, Closure closure) {

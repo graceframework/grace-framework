@@ -21,7 +21,6 @@ import grails.config.Config
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.core.support.GrailsApplicationAware
-import grails.orm.bootstrap.HibernateDatastoreSpringInitializer
 import grails.persistence.Entity
 import grails.util.GrailsNameUtils
 import liquibase.parser.ChangeLogParser
@@ -64,9 +63,6 @@ abstract class ApplicationContextDatabaseMigrationCommandSpec extends DatabaseMi
         ]))
         config = new PropertySourcesConfig(mutablePropertySources)
 
-        def datastoreInitializer = new HibernateDatastoreSpringInitializer(config, domainClasses)
-        datastoreInitializer.configureForBeanDefinitionRegistry(applicationContext)
-
         applicationContext.refresh()
 
         def grailsApplication = applicationContext.getBean(GrailsApplication)
@@ -106,7 +102,6 @@ abstract class ApplicationContextDatabaseMigrationCommandSpec extends DatabaseMi
     void cleanup() {
 
     }
-
 
 }
 

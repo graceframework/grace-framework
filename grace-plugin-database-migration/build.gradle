@@ -1,25 +1,15 @@
 dependencies {
     api libs.groovy.sql
     api libs.liquibase.core
-    api libs.liquibase.hibernate, {
-        exclude group: 'org.hibernate', module: 'hibernate-core'
-        exclude group: 'org.hibernate', module: 'hibernate-entitymanager'
-        exclude group: 'org.hibernate', module: 'hibernate-envers'
-        exclude group: 'org.liquibase', module: 'liquibase-core'
-        exclude group: 'org.liquibase', module: 'liquibase-commercial'
-        exclude group: 'org.liquibase', module: 'liquibase-test-harness'
-        exclude group: 'com.h2database', module: 'h2'
-    }
+    api libs.spring.jdbc
+    api libs.spring.tx
     implementation project(":grace-bootstrap")
     implementation project(":grace-cli")
     implementation project(":grace-core")
     compileOnly project(":grace-plugin-api")
     compileOnly project(":grace-shell")
     implementation libs.grace.datastore.gorm
-    implementation libs.grace.datastore.gorm.support
-    implementation project(":grace-boot-hibernate")
 
-    testImplementation project(":grace-boot-hibernate")
     testImplementation project(":grace-shell")
     testImplementation project(":grace-test-support")
     testImplementation libs.h2

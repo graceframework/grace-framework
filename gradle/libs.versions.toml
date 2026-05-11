@@ -165,7 +165,6 @@ junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", v
 junit-platform-runner = { module = "org.junit.platform:junit-platform-runner", version.ref = "junit-platform" }
 liquibase-cdi = { module = "org.liquibase:liquibase-cdi", version.ref = "liquibase" }
 liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
-liquibase-hibernate = { module = "org.liquibase.ext:liquibase-hibernate5", version.ref = "liquibase" }
 maven-model = { module = "org.apache.maven:maven-model", version.ref = "maven" }
 maven-resolver-connectorBasic = { module = "org.apache.maven.resolver:maven-resolver-connector-basic", version.ref = "maven-resolver" }
 maven-resolver-provider = { module = "org.apache.maven:maven-resolver-provider", version.ref = "maven" }
@@ -239,7 +238,7 @@ grace-data-bundle = ["grace-datastore-core", "grace-datastore-gorm", "grace-data
 groovy-bundle = ["groovy-bom"]
 h2-bundle = ["h2"]
 jakarta-bundle = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]
-liquibase-bundle = ["liquibase-cdi", "liquibase-core", "liquibase-hibernate"]
+liquibase-bundle = ["liquibase-cdi", "liquibase-core"]
 spock-bundle = ["spock-core", "spock-spring"]
 spring-boot-bundle = ["spring-boot-dependencies"]
 spring-framework-bundle = ["spring-framework-bom"]

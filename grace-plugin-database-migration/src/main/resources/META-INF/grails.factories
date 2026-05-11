@@ -8,8 +8,6 @@ org.grails.plugins.databasemigration.command.DbmDropAllCommand,\
 org.grails.plugins.databasemigration.command.DbmFutureRollbackCountSqlCommand,\
 org.grails.plugins.databasemigration.command.DbmFutureRollbackSqlCommand,\
 org.grails.plugins.databasemigration.command.DbmGenerateChangelogCommand,\
-org.grails.plugins.databasemigration.command.DbmGenerateGormChangelogCommand,\
-org.grails.plugins.databasemigration.command.DbmGormDiffCommand,\
 org.grails.plugins.databasemigration.command.DbmListLocksCommand,\
 org.grails.plugins.databasemigration.command.DbmMarkNextChangesetRanCommand,\
 org.grails.plugins.databasemigration.command.DbmMarkNextChangesetRanSqlCommand,\
@@ -27,5 +25,4 @@ org.grails.plugins.databasemigration.command.DbmUpdateCommand,\
 org.grails.plugins.databasemigration.command.DbmUpdateCountCommand,\
 org.grails.plugins.databasemigration.command.DbmUpdateCountSqlCommand,\
 org.grails.plugins.databasemigration.command.DbmUpdateSqlCommand,\
-org.grails.plugins.databasemigration.command.DbmValidateCommand,\
-org.grails.plugins.databasemigration.command.SchemaExportCommand
+org.grails.plugins.databasemigration.command.DbmValidateCommand
