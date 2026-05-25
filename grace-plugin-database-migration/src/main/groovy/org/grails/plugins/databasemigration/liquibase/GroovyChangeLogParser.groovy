@@ -21,12 +21,13 @@ import liquibase.changelog.ChangeLogParameters
 import liquibase.exception.ChangeLogParseException
 import liquibase.parser.core.ParsedNode
 import liquibase.parser.core.xml.AbstractChangeLogParser
+import liquibase.resource.Resource
 import liquibase.resource.ResourceAccessor
+import liquibase.util.FileUtil
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.context.ApplicationContext
 
 import grails.config.ConfigMap
-import grails.io.IOUtils
 
 import static org.grails.plugins.databasemigration.PluginConstants.DATA_SOURCE_NAME_KEY
 
@@ -43,38 +44,35 @@ class GroovyChangeLogParser extends AbstractChangeLogParser {
     @CompileDynamic
     protected ParsedNode parseToNode(String physicalChangeLogLocation, ChangeLogParameters changeLogParameters,
             ResourceAccessor resourceAccessor) throws ChangeLogParseException {
-        def inputStream = null
-        def changeLogText = null
         try {
-            inputStream = resourceAccessor.openStreams(null, physicalChangeLogLocation)?.first()
-            changeLogText = inputStream?.text
-        }
-        finally {
-            IOUtils.closeQuietly(inputStream)
-        }
+            Resource resource = resourceAccessor.get(physicalChangeLogLocation)
+            if (resource.exists()) {
+                CompilerConfiguration compilerConfiguration = new CompilerConfiguration(CompilerConfiguration.DEFAULT)
+                if (compilerConfiguration.metaClass.respondsTo(compilerConfiguration, 'setDisabledGlobalASTTransformations')) {
+                    Set disabled = compilerConfiguration.disabledGlobalASTTransformations ?: []
+                    disabled << 'org.grails.datastore.gorm.query.transform.GlobalDetachedCriteriaASTTransformation'
+                    compilerConfiguration.disabledGlobalASTTransformations = disabled
+                }
 
-        CompilerConfiguration compilerConfiguration = new CompilerConfiguration(CompilerConfiguration.DEFAULT)
-        if (compilerConfiguration.metaClass.respondsTo(compilerConfiguration, 'setDisabledGlobalASTTransformations')) {
-            Set disabled = compilerConfiguration.disabledGlobalASTTransformations ?: []
-            disabled << 'org.grails.datastore.gorm.query.transform.GlobalDetachedCriteriaASTTransformation'
-            compilerConfiguration.disabledGlobalASTTransformations = disabled
-        }
+                def changeLogProperties = config.getProperty('changelogProperties', Map) ?: [:]
 
-        def changeLogProperties = config.getProperty('changelogProperties', Map) ?: [:]
+                String changeLogText = resource.openInputStream().text
+                GroovyClassLoader classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, compilerConfiguration, false)
+                Script script = new GroovyShell(classLoader, new Binding(changeLogProperties), compilerConfiguration).parse(changeLogText as String)
+                script.run()
 
-        try {
-            GroovyClassLoader classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, compilerConfiguration, false)
-            Script script = new GroovyShell(classLoader, new Binding(changeLogProperties), compilerConfiguration).parse(changeLogText as String)
-            script.run()
+                setChangeLogProperties(changeLogProperties, changeLogParameters)
 
-            setChangeLogProperties(changeLogProperties, changeLogParameters)
+                Closure databaseChangeLogBlock = script.getProperty('databaseChangeLog') as Closure
 
-            Closure databaseChangeLogBlock = script.getProperty('databaseChangeLog') as Closure
-
-            DatabaseChangeLogBuilder builder = new DatabaseChangeLogBuilder()
-            builder.dataSourceName = changeLogParameters.getValue(DATA_SOURCE_NAME_KEY, null)
-            builder.applicationContext = applicationContext
-            builder.databaseChangeLog(databaseChangeLogBlock) as ParsedNode
+                DatabaseChangeLogBuilder builder = new DatabaseChangeLogBuilder()
+                builder.dataSourceName = changeLogParameters.getValue(DATA_SOURCE_NAME_KEY, null)
+                builder.applicationContext = applicationContext
+                builder.databaseChangeLog(databaseChangeLogBlock) as ParsedNode
+            }
+            else {
+                throw new ChangeLogParseException(FileUtil.getFileNotFoundMessage(physicalChangeLogLocation))
+            }
         }
         catch (Exception e) {
             throw new ChangeLogParseException(e)

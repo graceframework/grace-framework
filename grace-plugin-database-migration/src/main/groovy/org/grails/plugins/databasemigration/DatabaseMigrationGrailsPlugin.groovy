@@ -15,21 +15,17 @@
  */
 package org.grails.plugins.databasemigration
 
-import javax.sql.DataSource
-
+import groovy.transform.CompileStatic
 import liquibase.parser.ChangeLogParser
 import liquibase.parser.ChangeLogParserFactory
-import org.springframework.context.ApplicationContext
 
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
-import org.grails.plugins.databasemigration.liquibase.GrailsLiquibase
 import org.grails.plugins.databasemigration.liquibase.GroovyChangeLogParser
 
+@CompileStatic
 class DatabaseMigrationGrailsPlugin extends Plugin {
-
-    static final String CONFIG_MAIN_PREFIX = 'grails.plugin.databasemigration'
 
     def version = GrailsUtil.getGrailsVersion()
     def grailsVersion = '2024.0.0 > *'
@@ -41,74 +37,11 @@ class DatabaseMigrationGrailsPlugin extends Plugin {
         return { -> }
     }
 
-    @Override
-    void doWithApplicationContext() {
-        def mainClassName = deduceApplicationMainClassName()
-
-        def updateAllOnStart = config.getProperty("${CONFIG_MAIN_PREFIX}.updateAllOnStart", Boolean, false)
-
-        dataSourceNames.each { String dataSourceName ->
-            String configPrefix = isDefaultDataSource(dataSourceName) ? CONFIG_MAIN_PREFIX : "${CONFIG_MAIN_PREFIX}.${dataSourceName}"
-            def skipMainClasses = config.getProperty("${configPrefix}.skipUpdateOnStartMainClasses", List,
-                    ['grails.ui.command.GrailsApplicationContextCommandRunner'])
-            if (skipMainClasses.contains(mainClassName)) {
-                return
-            }
-
-            if (!updateAllOnStart) {
-                def updateOnStart = config.getProperty("${configPrefix}.updateOnStart", Boolean, false)
-                if (!updateOnStart) {
-                    return
-                }
-            }
-            else {
-                configPrefix = CONFIG_MAIN_PREFIX
-            }
-
-            new DatabaseMigrationTransactionManager(applicationContext, dataSourceName).withTransaction {
-                GrailsLiquibase gl = new GrailsLiquibase(applicationContext)
-                gl.dataSource = getDataSourceBean(applicationContext, dataSourceName)
-                gl.dropFirst = config.getProperty("${configPrefix}.dropOnStart", Boolean, false)
-                gl.changeLog = config.getProperty("${configPrefix}.updateOnStartFileName", String,
-                        isDefaultDataSource(dataSourceName) ? 'changelog.groovy' : "changelog-${dataSourceName}.groovy")
-                gl.contexts = config.getProperty("${configPrefix}.updateOnStartContexts", List, []).join(',')
-                gl.labels = config.getProperty("${configPrefix}.updateOnStartLabels", List, []).join(',')
-                gl.defaultSchema = config.getProperty("${configPrefix}.updateOnStartDefaultSchema", String)
-                gl.databaseChangeLogTableName = config.getProperty("${configPrefix}.databaseChangeLogTableName", String)
-                gl.databaseChangeLogLockTableName = config.getProperty("${configPrefix}.databaseChangeLogLockTableName", String)
-                gl.dataSourceName = getDataSourceName(dataSourceName)
-                gl.afterPropertiesSet()
-            }
-        }
-    }
-
-    private DataSource getDataSourceBean(ApplicationContext applicationContext, String dataSourceName) {
-        applicationContext.getBean(getDataSourceName(dataSourceName), DataSource)
-    }
-
     private void configureLiquibase() {
         def groovyChangeLogParser = ChangeLogParserFactory.instance.parsers.find { ChangeLogParser changeLogParser ->
             changeLogParser instanceof GroovyChangeLogParser } as GroovyChangeLogParser
         groovyChangeLogParser.applicationContext = applicationContext
         groovyChangeLogParser.config = config
-    }
-
-    private Set<String> getDataSourceNames() {
-        def dataSources = config.getProperty('dataSources', Map, [:])
-        if (!dataSources) {
-            return ['dataSource']
-        }
-        Set<String> dataSourceNames = dataSources.keySet()
-        if (!dataSourceNames.contains('dataSource')) {
-            dataSourceNames = ['dataSource'] + dataSourceNames
-        }
-        dataSourceNames
-    }
-
-    private String deduceApplicationMainClassName() {
-        new RuntimeException().stackTrace.find { StackTraceElement stackTraceElement ->
-            'main' == stackTraceElement.methodName
-        }?.className
     }
 
     static String getDataSourceName(String dataSourceName) {

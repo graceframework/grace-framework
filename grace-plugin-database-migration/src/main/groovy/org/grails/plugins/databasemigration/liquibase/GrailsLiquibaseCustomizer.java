@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.databasemigration
+package org.grails.plugins.databasemigration.liquibase;
 
-class PluginConstants {
+/**
+ * @author Michael Yan
+ * @since 2024.1.0
+ */
+@FunctionalInterface
+public interface GrailsLiquibaseCustomizer {
 
-    static final String DATA_SOURCE_NAME_KEY = 'dataSourceName'
-    static final String DEFAULT_DATASOURCE_NAME = 'dataSource'
-    static final String DEFAULT_CHANGE_LOG_LOCATION = 'db/migrations'
+    /**
+     * Customize the given {@link GrailsLiquibase} instance.
+     * @param grailsLiquibase the instance to configure
+     */
+    void customize(GrailsLiquibase grailsLiquibase);
 
 }
