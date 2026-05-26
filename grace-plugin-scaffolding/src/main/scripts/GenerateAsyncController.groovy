@@ -41,7 +41,7 @@ if (args) {
                     model: model,
                     overwrite: overwrite
 
-            render template: template('scaffolding/AsyncSpec.groovy'), 
+            render template: template('scaffolding/AsyncControllerSpec.groovy'), 
                     destination: file("src/test/groovy/${model.packagePath}/${model.convention('ControllerSpec')}.groovy"),
                     model: model,
                     overwrite: overwrite
