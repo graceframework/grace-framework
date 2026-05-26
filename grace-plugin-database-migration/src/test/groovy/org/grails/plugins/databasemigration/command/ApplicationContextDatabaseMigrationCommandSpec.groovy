@@ -22,6 +22,7 @@ import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.core.support.GrailsApplicationAware
 import grails.persistence.Entity
+import grails.util.Environment
 import grails.util.GrailsNameUtils
 import liquibase.parser.ChangeLogParser
 import liquibase.parser.ChangeLogParserFactory
@@ -46,9 +47,11 @@ abstract class ApplicationContextDatabaseMigrationCommandSpec extends DatabaseMi
     Config config
 
     def setup() {
+        System.setProperty('grails.env', 'test')
         applicationContext = new GenericApplicationContext()
 
         applicationContext.beanFactory.registerSingleton('dataSource', dataSource)
+        applicationContext.beanFactory.registerSingleton('transactionManager', transactionManager)
         applicationContext.beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, new DefaultGrailsApplication())
 
         def mutablePropertySources = new MutablePropertySources()
@@ -100,7 +103,7 @@ abstract class ApplicationContextDatabaseMigrationCommandSpec extends DatabaseMi
     }
 
     void cleanup() {
-
+        System.setProperty('grails.env', '')
     }
 
 }

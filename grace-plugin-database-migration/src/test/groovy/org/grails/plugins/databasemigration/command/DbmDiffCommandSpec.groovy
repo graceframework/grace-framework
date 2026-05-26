@@ -61,7 +61,7 @@ CREATE TABLE author (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL,
 databaseChangeLog = \\{
 
     changeSet\\(author: ".+?", id: ".+?"\\) \\{
-        createTable\\(tableName: "AUTHOR"\\) \\{
+        createTable\\(catalogName: ".+?", schemaName: ".+?", tableName: "AUTHOR"\\) \\{
             column\\(autoIncrement: "true", name: "ID", type: "INT"\\) \\{
                 constraints\\(nullable:"false", primaryKey: "true", primaryKeyName: "PK_AUTHOR"\\)
             \\}
@@ -73,8 +73,8 @@ databaseChangeLog = \\{
     \\}
 
     changeSet\\(author: ".+?", id: ".+?"\\) \\{
-        addColumn\\(tableName: "BOOK"\\) \\{
-            column\\(name: "PRICE", type: "INTEGER"\\) \\{
+        addColumn\\(catalogName: ".+?", schemaName: ".+?", tableName: "BOOK"\\) \\{
+            column\\(name: "PRICE", type: "INT"\\) \\{
                 constraints\\(nullable: "false"\\)
             \\}
         \\}
@@ -95,7 +95,7 @@ databaseChangeLog = \\{
 databaseChangeLog = \\{
 
     changeSet\\(author: ".+?", id: ".+?"\\) \\{
-        createTable\\(tableName: "AUTHOR"\\) \\{
+        createTable\\(catalogName: ".+?", schemaName: ".+?", tableName: "AUTHOR"\\) \\{
             column\\(autoIncrement: "true", name: "ID", type: "INT"\\) \\{
                 constraints\\(nullable:"false", primaryKey: "true", primaryKeyName: "PK_AUTHOR"\\)
             \\}
@@ -107,8 +107,8 @@ databaseChangeLog = \\{
     \\}
 
     changeSet\\(author: ".+?", id: ".+?"\\) \\{
-        addColumn\\(tableName: "BOOK"\\) \\{
-            column\\(name: "PRICE", type: "INTEGER"\\) \\{
+        addColumn\\(catalogName: ".+?", schemaName: ".+?", tableName: "BOOK"\\) \\{
+            column\\(name: "PRICE", type: "INT"\\) \\{
                 constraints\\(nullable: "false"\\)
             \\}
         \\}

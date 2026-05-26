@@ -16,6 +16,8 @@
 package org.grails.plugins.databasemigration.command
 
 import groovy.sql.Sql
+import org.springframework.jdbc.datasource.DataSourceTransactionManager
+
 import org.grails.plugins.databasemigration.testing.annotation.OutputCapture
 import org.h2.Driver
 import org.springframework.jdbc.datasource.DriverManagerDataSource
@@ -30,6 +32,7 @@ abstract class DatabaseMigrationCommandSpec extends Specification {
     @OutputCapture Object output
 
     DataSource dataSource
+    DataSourceTransactionManager transactionManager
 
     @AutoCleanup
     Connection connection
@@ -43,6 +46,7 @@ abstract class DatabaseMigrationCommandSpec extends Specification {
     def setup() {
         dataSource = new DriverManagerDataSource('jdbc:h2:mem:testDb', 'sa', '')
         dataSource.driverClassName = Driver.name
+        transactionManager = new DataSourceTransactionManager(dataSource)
         connection = dataSource.connection
         sql = new Sql(connection)
 

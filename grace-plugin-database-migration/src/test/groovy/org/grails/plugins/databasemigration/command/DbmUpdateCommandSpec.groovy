@@ -32,7 +32,7 @@ class DbmUpdateCommandSpec extends ApplicationContextDatabaseMigrationCommandSpe
             command.handle(getExecutionContext())
 
         then:
-            def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'TABLE\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
+            def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' and table_schema = \'PUBLIC\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
             tables as Set == ['book', 'author', 'databasechangeloglock', 'databasechangelog'] as Set
 
         and:
@@ -48,7 +48,7 @@ class DbmUpdateCommandSpec extends ApplicationContextDatabaseMigrationCommandSpe
             command.handle(getExecutionContext('--contexts=test'))
 
         then:
-            def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'TABLE\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
+            def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' and table_schema = \'PUBLIC\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
             tables as Set == ['book', 'author', 'databasechangeloglock', 'databasechangelog'] as Set
 
         and:

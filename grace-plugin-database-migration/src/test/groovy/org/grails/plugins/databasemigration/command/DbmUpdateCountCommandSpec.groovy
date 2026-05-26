@@ -33,7 +33,7 @@ class DbmUpdateCountCommandSpec extends ApplicationContextDatabaseMigrationComma
             command.handle(getExecutionContext('1'))
 
         then:
-            def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'TABLE\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
+            def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' and table_schema = \'PUBLIC\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
             tables as Set == ['author', 'databasechangeloglock', 'databasechangelog'] as Set
     }
 

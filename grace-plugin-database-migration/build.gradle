@@ -27,7 +27,3 @@ tasks.register("syncScripts", Sync) {
 processResources {
     dependsOn = ["syncScripts"]
 }
-
-test {
-    enabled = false
-}

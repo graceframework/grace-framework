@@ -1,7 +1,8 @@
 package org.grails.plugins.databasemigration.liquibase
 
+import liquibase.exception.CommandExecutionException
+
 import grails.core.GrailsApplication
-import liquibase.exception.ValidationFailedException
 import org.grails.plugins.databasemigration.command.ApplicationContextDatabaseMigrationCommandSpec
 import org.grails.plugins.databasemigration.command.DbmChangelogSyncCommand
 import org.grails.plugins.databasemigration.command.DbmRollbackCommand
@@ -92,7 +93,7 @@ databaseChangeLog = {
         command.handle(getExecutionContext(DbmUpdateCommand))
 
         then:
-        def e = thrown(ValidationFailedException)
+        def e = thrown(CommandExecutionException)
 
         e.message.contains('1 changes have validation failures')
         e.message.contains('error message, changelog.groovy::1::John Smith')
@@ -184,7 +185,7 @@ databaseChangeLog = {
         command.handle(getExecutionContext(DbmRollbackCommand, 'test tag'))
 
         then:
-        calledBlocks == ['init', 'rollback']
+        calledBlocks == ['init', 'change', 'rollback', 'rollback']
     }
 
 
@@ -217,6 +218,6 @@ databaseChangeLog = {
         command.handle(getExecutionContext(DbmRollbackCommand, 'test tag'))
 
         then:
-        calledBlocks == ['rollback']
+        calledBlocks == ['rollback', 'rollback']
     }
 }

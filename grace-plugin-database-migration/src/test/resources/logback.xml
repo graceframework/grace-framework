@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <logger name="liquibase" level="debug" />
+    <logger name="org.grails.datastore.gorm.GormEnhancer" level="info" />
+
+</configuration>

@@ -35,7 +35,7 @@ class DbmRollbackToDateSqlCommandSpec extends ApplicationContextDatabaseMigratio
         new DbmUpdateCommand(applicationContext: applicationContext).handle(getExecutionContext())
         sql.executeUpdate('UPDATE PUBLIC.DATABASECHANGELOG SET DATEEXECUTED = \'2015-01-02 12:00:00\' WHERE ID = \'1\'')
 
-        def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'TABLE\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
+        def tables = sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' and table_schema = \'PUBLIC\'').collect { it.table_name.toLowerCase(Locale.ROOT) }
         assert tables as Set == ['book', 'author', 'databasechangeloglock', 'databasechangelog'] as Set
     }
 

@@ -27,12 +27,12 @@ class DbmDropAllCommandSpec extends ApplicationContextDatabaseMigrationCommandSp
     def "drops all database objects"() {
         given:
             sql.executeUpdate 'CREATE TABLE book (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, CONSTRAINT PK_BOOK PRIMARY KEY (id))'
-            assert sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'TABLE\'')
+            assert sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' and table_schema = \'PUBLIC\'')
 
         when:
             command.handle(getExecutionContext())
 
         then:
-            !sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'TABLE\'')
+            !sql.rows('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' and table_schema = \'PUBLIC\'')
     }
 }
