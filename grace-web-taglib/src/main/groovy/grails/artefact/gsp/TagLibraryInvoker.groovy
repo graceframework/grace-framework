@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package grails.artefact.gsp
 
 import groovy.transform.CompileStatic
+import groovy.transform.Generated
 import org.springframework.beans.factory.annotation.Autowired
 
 import grails.util.Environment
@@ -32,6 +33,7 @@ import org.grails.taglib.encoder.WithCodecHelper
  * A trait that adds the ability invoke tags to any class
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -41,10 +43,12 @@ trait TagLibraryInvoker extends WebAttributes {
     private final boolean developmentMode = Environment.isDevelopmentMode()
 
     @Autowired(required = false)
+    @Generated
     void setTagLibraryLookup(TagLibraryLookup tagLibraryLookup) {
         this.tagLibraryLookup = tagLibraryLookup
     }
 
+    @Generated
     TagLibraryLookup getTagLibraryLookup() {
         def lookup = this.tagLibraryLookup
         if (lookup == null) {
@@ -57,6 +61,7 @@ trait TagLibraryInvoker extends WebAttributes {
         return lookup
     }
 
+    @Generated
     String getTaglibNamespace() {
         TagOutput.DEFAULT_NAMESPACE
     }
@@ -69,6 +74,7 @@ trait TagLibraryInvoker extends WebAttributes {
      * @param argsObject The arguments
      * @return The result
      */
+    @Generated
     Object methodMissing(String methodName, Object argsObject) {
         Object[] args = argsObject instanceof Object[] ? (Object[]) argsObject : [argsObject] as Object[]
         if (shouldHandleMethodMissing(methodName, args)) {
@@ -108,6 +114,7 @@ trait TagLibraryInvoker extends WebAttributes {
      * @param propertyName The property name
      * @return The namespace or a MissingPropertyException
      */
+    @Generated
     Object propertyMissing(String propertyName) {
         TagLibraryLookup lookup = getTagLibraryLookup()
         NamespacedTagDispatcher namespacedTagDispatcher = lookup?.lookupNamespaceDispatcher(propertyName)
@@ -124,6 +131,7 @@ trait TagLibraryInvoker extends WebAttributes {
     /**
      * @see {@link WithCodecHelper#withCodec(grails.core.GrailsApplication, java.lang.Object, groovy.lang.Closure)}
      */
+    @Generated
     def <T> T withCodec(Object codecInfo, Closure<T> body) {
         return WithCodecHelper.withCodec(getGrailsApplication(), codecInfo, body)
     }
