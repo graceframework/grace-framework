@@ -16,7 +16,6 @@
 package org.grails.compiler.injection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,14 +64,12 @@ public final class TraitInjectionUtils {
             CompilationUnit compilationUnit) {
         List<TraitInjector> injectorsToUse = new ArrayList<>();
         for (TraitInjector injector : traitInjectors) {
-            List<String> artefactTypes = Arrays.asList(injector.getArtefactTypes());
-
-            if (artefactTypes.contains(artefactType) && injector.supports(cNode)) {
+            if (injector.supports(cNode)) {
                 injectorsToUse.add(injector);
             }
         }
         try {
-            if (injectorsToUse.size() > 0) {
+            if (!injectorsToUse.isEmpty()) {
                 OrderComparator.sort(injectorsToUse);
                 doInjectionInternal(compilationUnit, sourceUnit, cNode, injectorsToUse);
             }
