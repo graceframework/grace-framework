@@ -17,10 +17,16 @@
 import org.grails.cli.command.completers.DomainClassCompleter
 
 description('Generates GSP views for the specified Domain Class') {
-    usage 'grace generate-views [DOMAIN CLASS]|*'
+    usage 'grace generate-views [DOMAIN CLASS]'
     argument name: 'Domain Class', description: "The name of the Domain Class, or '*' for all", required:true
     completer DomainClassCompleter
     flag name: 'force', description: 'Whether to overwrite existing files'
+    examples '''
+    # Generate views for specific domain class
+    grace generate-views Post
+    # Generate views for all the domain classes
+    grace generate-views *
+'''
 }
 
 if (args) {
