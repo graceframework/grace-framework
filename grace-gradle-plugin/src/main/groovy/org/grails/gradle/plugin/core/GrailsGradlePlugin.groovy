@@ -593,8 +593,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     private void verifyGradleVersion() {
         GradleVersion currentVersion = GradleVersion.current()
         if (currentVersion < GradleVersion.version('7.6.4') ||
-                (currentVersion >= GradleVersion.version('8.0') && currentVersion < GradleVersion.version('8.3'))) {
-            throw new GradleException('Grace plugin requires Gradle 7.x (7.6.4 or later) or 8.x (8.3 or later). '
+                (currentVersion >= GradleVersion.version('8.0') && currentVersion < GradleVersion.version('8.4'))) {
+            throw new GradleException('Grace plugin requires Gradle 7.x (7.6.4 or later) or 8.x (8.4 or later). '
                     + 'The current version is ' + currentVersion)
         }
     }
