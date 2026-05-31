@@ -628,83 +628,85 @@ class GrailsCli {
         false
     }
 
-    private initializeProfile() {
-        BuildSettings.TARGET_DIR?.mkdirs()
-
+    private void initializeProfile() {
         if (new File(BuildSettings.BASE_DIR, 'profile.yml').exists()) {
             this.profileRepository = createMavenProfileRepository()
         }
+        else if (new File(BuildSettings.BASE_DIR, 'build.gradle').exists()) {
+            BuildSettings.TARGET_DIR?.mkdirs()
+            // In a webapp or plugin project
+            Map<String, List<URL>> dependencyMap = buildClasspathDependencies()
+            List<URL> urls = dependencyMap.get('dependencies') + (dependencyMap.get('profiles') ?: [])
+            List<URL> profiles = dependencyMap.get('profiles')
+            List<URL> classesDir = [BuildSettings.CLASSES_DIR.toURI().toURL()]
+            URLClassLoader classLoader = new URLClassLoader((urls + classesDir) as URL[], Thread.currentThread().contextClassLoader)
+            this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])
+            Thread.currentThread().contextClassLoader = classLoader
+        }
         else {
-            populateContextLoader()
+            this.profileRepository = createMavenProfileRepository()
         }
 
         String profileName = this.applicationConfig.get(BuildSettings.PROFILE) ?: getSetting(BuildSettings.PROFILE, String)
         this.profile = profileName ? this.profileRepository.getProfile(profileName) : new DefaultProfile()
     }
 
-    protected void populateContextLoader() {
+    protected Map<String, List<URL>> buildClasspathDependencies() {
         try {
-            if (new File(BuildSettings.BASE_DIR, 'build.gradle').exists()) {
-                Map<String, List<URL>> dependencyMap = new MapReadingCachedGradleOperation<List<URL>>(projectContext, '.dependencies') {
+            Map<String, List<URL>> dependencyMap = new MapReadingCachedGradleOperation<List<URL>>(projectContext, '.dependencies') {
 
-                    @Override
-                    void updateStatusMessage() {
-                        GrailsConsole.instance.updateStatus('Resolving Dependencies. Please wait...')
+                @Override
+                void updateStatusMessage() {
+                    GrailsConsole.instance.updateStatus('Resolving Dependencies. Please wait...')
+                }
+
+                @Override
+                List<URL> createMapValue(Object value) {
+                    if (value !instanceof List) {
+                        return []
                     }
+                    ((List) value).collect { new URL(it.toString()) } as List<URL>
+                }
 
-                    @Override
-                    List<URL> createMapValue(Object value) {
-                        if (value !instanceof List) {
-                            return []
-                        }
-                        ((List) value).collect { new URL(it.toString()) } as List<URL>
+                @Override
+                Map<String, List<URL>> readFromGradle(ProjectConnection connection) {
+                    CodeGenConfig config = applicationConfig
+
+                    BuildActionExecuter buildActionExecuter = connection.action(new ClasspathBuildAction())
+                    buildActionExecuter.standardOutput = System.out
+                    buildActionExecuter.standardError = System.err
+                    if (config?.hasProperty('grails.profile')) {
+                        String currentProfile = config?.getProperty('grails.profile', String)
+                        buildActionExecuter.withArguments("-Dgrails.profile=${currentProfile}")
                     }
+                    buildActionExecuter.addProgressListener(new ProgressListener() {
 
-                    @Override
-                    Map<String, List<URL>> readFromGradle(ProjectConnection connection) {
-                        CodeGenConfig config = applicationConfig
-
-                        BuildActionExecuter buildActionExecuter = connection.action(new ClasspathBuildAction())
-                        buildActionExecuter.standardOutput = System.out
-                        buildActionExecuter.standardError = System.err
-                        if (config?.hasProperty('grails.profile')) {
-                            String currentProfile = config?.getProperty('grails.profile', String)
-                            buildActionExecuter.withArguments("-Dgrails.profile=${currentProfile}")
+                        @Override
+                        void statusChanged(ProgressEvent event) {
+                            GrailsConsole.instance.updateStatus(event.description)
                         }
-                        buildActionExecuter.addProgressListener(new ProgressListener() {
 
-                            @Override
-                            void statusChanged(ProgressEvent event) {
-                                GrailsConsole.instance.updateStatus(event.description)
-                            }
+                    })
 
-                        })
-
-                        GrailsClasspath grailsClasspath = buildActionExecuter.run()
-                        if (grailsClasspath.error) {
-                            GrailsConsole.instance.error("${grailsClasspath.error} Type 'gradle dependencies' for more information")
-                            exit 1
-                        }
-                        [
-                                dependencies: grailsClasspath.dependencies,
-                                profiles: grailsClasspath.profileDependencies
-                        ]
+                    GrailsClasspath grailsClasspath = buildActionExecuter.run()
+                    if (grailsClasspath.error) {
+                        GrailsConsole.instance.error("${grailsClasspath.error} Type 'gradle dependencies' for more information")
+                        exit 1
                     }
+                    [
+                            dependencies: grailsClasspath.dependencies,
+                            profiles: grailsClasspath.profileDependencies
+                    ]
+                }
 
-                }.call()
+            }.call()
 
-                List<URL> urls = dependencyMap.get('dependencies') + (dependencyMap.get('profiles') ?: [])
-                List<URL> profiles = dependencyMap.get('profiles')
-                List<URL> classesDir = [BuildSettings.CLASSES_DIR.toURI().toURL()]
-                URLClassLoader classLoader = new URLClassLoader((urls + classesDir) as URL[], Thread.currentThread().contextClassLoader)
-                this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])
-                Thread.currentThread().contextClassLoader = classLoader
-            }
+            return dependencyMap
         }
         catch (Throwable e) {
             e = ExceptionUtils.getRootCause(e)
             GrailsConsole.instance.error("Error initializing classpath: $e.message", e)
-            exit(1)
+            return Collections.emptyMap()
         }
     }
 
