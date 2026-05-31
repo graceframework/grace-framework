@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,7 @@
  */
 package org.grails.plugins.databinding
 
-import grails.config.Settings
 import grails.plugins.Plugin
-import grails.web.databinding.DataBindingUtils
-import grails.web.databinding.GrailsWebDataBinder
-
-import org.grails.databinding.converters.CurrencyValueConverter
-import org.grails.databinding.converters.DateConversionHelper
-import org.grails.databinding.converters.Jsr310ConvertersConfiguration
-import org.grails.databinding.converters.TimeZoneConverter
-import org.grails.databinding.converters.UUIDConverter
-import org.grails.databinding.converters.web.LocaleAwareBigDecimalConverter
-import org.grails.databinding.converters.web.LocaleAwareNumberConverter
-import org.grails.web.databinding.bindingsource.DataBindingSourceRegistry
-import org.grails.web.databinding.bindingsource.DefaultDataBindingSourceRegistry
-import org.grails.web.databinding.bindingsource.HalJsonDataBindingSourceCreator
-import org.grails.web.databinding.bindingsource.HalXmlDataBindingSourceCreator
-import org.grails.web.databinding.bindingsource.JsonApiDataBindingSourceCreator
-import org.grails.web.databinding.bindingsource.JsonDataBindingSourceCreator
-import org.grails.web.databinding.bindingsource.XmlDataBindingSourceCreator
 
 /**
  * Plugin for configuring the data binding features of Grails
@@ -60,66 +42,5 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
             DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT,
             DEFAULT_JSR310_LOCAL_DATE_FORMAT,
             DEFAULT_JSR310_LOCAL_TIME_FORMAT]
-
-    @Override
-    Closure doWithSpring() {
-        { ->
-            def application = grailsApplication
-            def config = application.config
-            boolean trimStringsSetting = config.getProperty(Settings.TRIM_STRINGS, Boolean, true)
-            boolean convertEmptyStringsToNullSetting = config.getProperty(Settings.CONVERT_EMPTY_STRINGS_TO_NULL, Boolean, true)
-            boolean dateParsingLenientSetting = config.getProperty(Settings.DATE_LENIENT_PARSING, Boolean, false)
-            Integer autoGrowCollectionLimitSetting = config.getProperty(Settings.AUTO_GROW_COLLECTION_LIMIT, Integer, 256)
-            List dateFormats = config.getProperty(Settings.DATE_FORMATS, List, DEFAULT_DATE_FORMATS)
-
-            "${DataBindingUtils.DATA_BINDER_BEAN_NAME}"(GrailsWebDataBinder, grailsApplication) {
-                // trimStrings defaults to TRUE
-                trimStrings = trimStringsSetting
-                // convertEmptyStringsToNull defaults to TRUE
-                convertEmptyStringsToNull = convertEmptyStringsToNullSetting
-                // autoGrowCollectionLimit defaults to 256
-                autoGrowCollectionLimit = autoGrowCollectionLimitSetting
-            }
-
-            dataBindingConfigurationProperties(DataBindingConfigurationProperties)
-            timeZoneConverter(TimeZoneConverter)
-            uuidConverter(UUIDConverter)
-
-            defaultDateConverter(DateConversionHelper) {
-                formatStrings = dateFormats
-                // dateParsingLenient defaults to false
-                dateParsingLenient = dateParsingLenientSetting
-            }
-            [Short, Short.TYPE,
-             Integer, Integer.TYPE,
-             Float, Float.TYPE,
-             Long, Long.TYPE,
-             Double, Double.TYPE].each { numberType ->
-                "defaultGrails${numberType.simpleName}Converter"(LocaleAwareNumberConverter) {
-                    targetType = numberType
-                }
-            }
-            defaultGrailsBigDecimalConverter(LocaleAwareBigDecimalConverter) {
-                targetType = BigDecimal
-            }
-            defaultGrailsBigIntegerConverter(LocaleAwareBigDecimalConverter) {
-                targetType = BigInteger
-            }
-
-            jsr310DataBinding(Jsr310ConvertersConfiguration) {
-                formatStrings = dateFormats
-            }
-
-            "${DataBindingSourceRegistry.BEAN_NAME}"(DefaultDataBindingSourceRegistry)
-
-            xmlDataBindingSourceCreator(XmlDataBindingSourceCreator)
-            jsonDataBindingSourceCreator(JsonDataBindingSourceCreator)
-            halJsonDataBindingSourceCreator(HalJsonDataBindingSourceCreator)
-            halXmlDataBindingSourceCreator(HalXmlDataBindingSourceCreator)
-            jsonApiDataBindingSourceCreator(JsonApiDataBindingSourceCreator)
-
-            defaultCurrencyConverter CurrencyValueConverter
-        }
-    }
 
 }

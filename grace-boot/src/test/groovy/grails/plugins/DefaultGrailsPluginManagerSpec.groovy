@@ -28,8 +28,10 @@ class DefaultGrailsPluginManagerSpec extends Specification {
         pluginList[2].order == 50
         pluginList[3].name == 'converters'
         pluginList[3].order == 60
-        pluginList[4].name == 'urlMappings'
-        pluginList[4].order == 70
+        pluginList[4].name == 'dataBinding'
+        pluginList[4].order == 65
+        pluginList[5].name == 'urlMappings'
+        pluginList[5].order == 70
 
         cleanup:
         System.setProperty(Environment.KEY, Environment.TEST.getName())
