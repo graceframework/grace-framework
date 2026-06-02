@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2025 the original author or authors.
+ * Copyright 2017-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ return TestService
         when:
         def instance = testService.newInstance()
         instance.@'org_grails_cache_GrailsCacheManagerAware__grailsCacheManager' = cacheManager
-        instance.@'org_grails_cache_GrailsCacheManagerAware__customCacheKeyGenerator' = keyGenerator
+        instance.@'org_grails_cache_GrailsCacheManagerAware__grailsCacheKeyGenerator' = keyGenerator
         instance.evict('a')
 
         then:
@@ -81,7 +81,7 @@ return TestService
         when:
         def instance = testService.newInstance()
         instance.@'org_grails_cache_GrailsCacheManagerAware__grailsCacheManager' = cacheManager
-        instance.@'org_grails_cache_GrailsCacheManagerAware__customCacheKeyGenerator' = keyGenerator
+        instance.@'org_grails_cache_GrailsCacheManagerAware__grailsCacheKeyGenerator' = keyGenerator
         instance.evict('a')
 
         then:

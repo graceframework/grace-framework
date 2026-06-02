@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 the original author or authors.
+ * Copyright 2024-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext;
 import org.springframework.mock.web.MockServletContext;
 
-import grails.cache.CustomCacheKeyGenerator;
+import grails.cache.GrailsCacheKeyGenerator;
 import grails.core.DefaultGrailsApplication;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +50,7 @@ public class CacheAutoConfigurationTests {
     @Test
     void defaultConfiguration() {
         registerAndRefreshContext();
-        assertThat(this.context.getBean(CustomCacheKeyGenerator.class)).isNotNull();
+        assertThat(this.context.getBean(GrailsCacheKeyGenerator.class)).isNotNull();
         assertThat(this.context.getBean(GrailsCacheManager.class)).isNotNull();
     }
 

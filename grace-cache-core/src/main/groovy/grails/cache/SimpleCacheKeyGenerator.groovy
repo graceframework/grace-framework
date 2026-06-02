@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,15 +28,15 @@ import org.springframework.cache.interceptor.SimpleKeyGenerator
  * @since 2024.0.0
  */
 @CompileStatic
-class CustomCacheKeyGenerator implements KeyGenerator, GrailsCacheKeyGenerator {
+class SimpleCacheKeyGenerator implements KeyGenerator, GrailsCacheKeyGenerator {
 
     private final KeyGenerator innerKeyGenerator
 
-    CustomCacheKeyGenerator(KeyGenerator innerKeyGenerator) {
+    SimpleCacheKeyGenerator(KeyGenerator innerKeyGenerator) {
         this.innerKeyGenerator = innerKeyGenerator
     }
 
-    CustomCacheKeyGenerator() {
+    SimpleCacheKeyGenerator() {
         this.innerKeyGenerator = new SimpleKeyGenerator()
     }
 

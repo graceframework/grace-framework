@@ -26,7 +26,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
-import grails.cache.CustomCacheKeyGenerator;
+import grails.cache.GrailsCacheKeyGenerator;
+import grails.cache.SimpleCacheKeyGenerator;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Cache.
@@ -47,8 +48,8 @@ public class CacheAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CustomCacheKeyGenerator customCacheKeyGenerator() {
-        return new CustomCacheKeyGenerator();
+    public GrailsCacheKeyGenerator grailsCacheKeyGenerator() {
+        return new SimpleCacheKeyGenerator();
     }
 
     @Bean
@@ -66,10 +67,10 @@ public class CacheAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GrailsCacheAdminService grailsCacheAdminService(@Qualifier("grailsCacheManager") GrailsCacheManager grailsCacheManager,
-            CustomCacheKeyGenerator customCacheKeyGenerator) {
+            GrailsCacheKeyGenerator grailsCacheKeyGenerator) {
         GrailsCacheAdminService grailsCacheAdminService = new GrailsCacheAdminService();
         grailsCacheAdminService.setGrailsCacheManager(grailsCacheManager);
-        grailsCacheAdminService.setCustomCacheKeyGenerator(customCacheKeyGenerator);
+        grailsCacheAdminService.setGrailsCacheKeyGenerator(grailsCacheKeyGenerator);
         return grailsCacheAdminService;
     }
 

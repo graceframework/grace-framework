@@ -17,8 +17,8 @@ package org.grails.cache
 
 import groovy.transform.CompileStatic
 
-import grails.cache.CustomCacheKeyGenerator
 import grails.cache.GrailsCacheKeyGenerator
+import grails.cache.SimpleCacheKeyGenerator
 
 /**
  * A trait for classes that are cache aware
@@ -30,7 +30,7 @@ import grails.cache.GrailsCacheKeyGenerator
 @CompileStatic
 trait GrailsCacheManagerAware {
 
-    private GrailsCacheKeyGenerator customCacheKeyGenerator = new CustomCacheKeyGenerator()
+    private GrailsCacheKeyGenerator grailsCacheKeyGenerator = new SimpleCacheKeyGenerator()
 
     private GrailsCacheManager grailsCacheManager
 
@@ -45,15 +45,15 @@ trait GrailsCacheManagerAware {
         return this.grailsCacheManager
     }
 
-    void setCustomCacheKeyGenerator(GrailsCacheKeyGenerator customCacheKeyGenerator) {
-        this.customCacheKeyGenerator = customCacheKeyGenerator
+    void setGrailsCacheKeyGenerator(GrailsCacheKeyGenerator grailsCacheKeyGenerator) {
+        this.grailsCacheKeyGenerator = grailsCacheKeyGenerator
     }
 
     /**
      * @return The custom key generator, or null if it isn't present
      */
-    GrailsCacheKeyGenerator getCustomCacheKeyGenerator() {
-        return this.customCacheKeyGenerator
+    GrailsCacheKeyGenerator getGrailsCacheKeyGenerator() {
+        return this.grailsCacheKeyGenerator
     }
 
 }

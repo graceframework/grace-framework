@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ abstract class AbstractCacheTransformation extends AbstractMethodDecoratingTrans
     public static final String CACHE_KEY_LOCAL_VARIABLE_NAME = '$_cache_cacheKey'
     public static final String METHOD_PARAMETER_MAP_LOCAL_VARIABLE_NAME = '$_method_parameter_map'
     public static final String CACHE_VARIABLE_LOCAL_VARIABLE_NAME = '$_cache_cacheVariable'
-    public static final String GRAILS_CACHE_KEY_GENERATOR_PROPERTY_NAME = 'customCacheKeyGenerator'
+    public static final String GRAILS_CACHE_KEY_GENERATOR_PROPERTY_NAME = 'grailsCacheKeyGenerator'
 
     private static final Object APPLIED_MARKER = new Object()
     public static final String METHOD_PREFIX = '$_cache_'
@@ -211,7 +211,7 @@ abstract class AbstractCacheTransformation extends AbstractMethodDecoratingTrans
             createKeyArgs.addExpression(varX(METHOD_PARAMETER_MAP_LOCAL_VARIABLE_NAME))
         }
 
-        // customCacheKeyGenerator.generate(className, methodName, hashCode, map)
+        // grailsCacheKeyGenerator.generate(className, methodName, hashCode, map)
         MethodCallExpression cacheKeyExpression = callX(varX(GRAILS_CACHE_KEY_GENERATOR_PROPERTY_NAME), generateMethod.name, createKeyArgs)
         cacheKeyExpression.methodTarget = generateMethod
 

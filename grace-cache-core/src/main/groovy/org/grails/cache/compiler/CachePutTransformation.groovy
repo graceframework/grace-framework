@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class CachePutTransformation extends AbstractCacheTransformation {
         // def $_method_parameter_map = [name:value]
         declareAndInitializeParameterValueMap(annotationNode, methodNode, cachingBlock)
 
-        // def $_cache_cacheKey = customCacheKeyGenerator.generate(className, methodName, hashCode, $_method_parameter_map)
+        // def $_cache_cacheKey = grailsCacheKeyGenerator.generate(className, methodName, hashCode, $_method_parameter_map)
         VariableExpression cacheKeyDeclaration = declareCacheKey(sourceUnit, annotationNode, classNode, methodNode, cachingBlock)
 
         VariableExpression originalValueExpr = varX(CACHE_ORIGINAL_METHOD_RETURN_VALUE_LOCAL_VARIABLE_NAME)
