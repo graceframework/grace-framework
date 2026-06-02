@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import org.grails.web.mapping.ResponseCodeUrlMapping
  * Renders URL mappings to the console
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
@@ -68,6 +69,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
             else {
                 targetStream.println(header('Controller', controller.toString()))
             }
+            targetStream.println()
             List<UrlMapping> controllerUrlMappings = mappingsByController.get(controller)
             for (UrlMapping urlMapping in controllerUrlMappings) {
                 String urlPattern = establishUrlPattern(urlMapping, isAnsiEnabled, longestMapping)
@@ -87,9 +89,6 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     String bold(String text) {
-        if (isAnsiEnabled) {
-            return Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).a(text).a(Ansi.Attribute.INTENSITY_BOLD_OFF)
-        }
         text
     }
 
@@ -165,40 +164,32 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     String error(String errorCode) {
-        Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.RED).a(errorCode).a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT)
+        if (isAnsiEnabled) {
+            return Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.RED).a(errorCode).a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT)
+        }
+        errorCode
     }
 
     String variable(String name, boolean withAnsi = isAnsiEnabled) {
-        Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.CYAN).a(name).a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT).reset()
+        if (withAnsi) {
+            return Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.CYAN).a(name).a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT).reset()
+        }
+        name
     }
 
     String header(String text) {
-        if (isAnsiEnabled) {
-            Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.GREEN).a(text).a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT)
-        }
         text
     }
 
     String header(String text, String description) {
-        if (isAnsiEnabled) {
-            Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.GREEN).a("$text: ".toString())
-                    .fg(Color.DEFAULT).a(description).a(Ansi.Attribute.INTENSITY_BOLD_OFF)
-        }
-
         "$text: $description"
     }
 
     String yellowBar() {
-        if (isAnsiEnabled) {
-            return Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.YELLOW).a(' | ').a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT)
-        }
-        ' | '
+        '| '
     }
 
     String endBar() {
-        if (isAnsiEnabled) {
-            return Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.YELLOW).a(' |').a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(Color.DEFAULT)
-        }
         ' |'
     }
 
