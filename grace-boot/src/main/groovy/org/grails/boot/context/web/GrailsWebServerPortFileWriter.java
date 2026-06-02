@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.springframework.boot.web.context.WebServerPortFileWriter;
 import org.springframework.context.ApplicationListener;
 
 import grails.util.BuildSettings;
+import grails.util.Environment;
 
 /**
  * An {@link ApplicationListener} that saves embedded server port and management port into file.
@@ -34,7 +35,7 @@ public class GrailsWebServerPortFileWriter extends WebServerPortFileWriter {
     private static final String DEFAULT_FILE_NAME = "grails.port";
 
     public GrailsWebServerPortFileWriter() {
-        super(new File(BuildSettings.TARGET_DIR, DEFAULT_FILE_NAME));
+        super(new File(Environment.isDevelopmentMode() ? BuildSettings.TARGET_DIR : BuildSettings.BASE_DIR, DEFAULT_FILE_NAME));
     }
 
 }
