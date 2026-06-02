@@ -11,6 +11,7 @@ commons-lang = "2.6"
 commons-lang3 = "3.17.0"
 commons-text = "1.13.1"
 commons-validator = "1.9.0"
+hikaricp = "6.3.3"
 geb = "8.0.1"
 glassfish-expressly = "5.0.0"
 glassfish-web-jsp-jstl = "3.0.1"
@@ -86,6 +87,7 @@ commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-la
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
 commons-validator = { module = "commons-validator:commons-validator", version.ref = "commons-validator" }
+hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
 geb-core = { module = "org.apache.groovy.geb:geb-core", version.ref = "geb" }
 geb-spock = { module = "org.apache.groovy.geb:geb-spock", version.ref = "geb" }
 glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
