@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2025 the original author or authors.
+ * Copyright 2017-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 package org.grails.cache
 
 import groovy.transform.CompileStatic
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.cache.CacheManager
 
 import grails.cache.CustomCacheKeyGenerator
 import grails.cache.GrailsCacheKeyGenerator
@@ -26,29 +24,36 @@ import grails.cache.GrailsCacheKeyGenerator
  * A trait for classes that are cache aware
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @CompileStatic
 trait GrailsCacheManagerAware {
 
-    @Autowired(required = false)
     private GrailsCacheKeyGenerator customCacheKeyGenerator = new CustomCacheKeyGenerator()
 
-    @Autowired(required = false)
-    private CacheManager grailsCacheManager
+    private GrailsCacheManager grailsCacheManager
+
+    void setGrailsCacheManager(GrailsCacheManager grailsCacheManager) {
+        this.grailsCacheManager = grailsCacheManager
+    }
 
     /**
      * @return The Grails cache manager or null if it isn't present
      */
-    CacheManager getGrailsCacheManager() {
-        return grailsCacheManager
+    GrailsCacheManager getGrailsCacheManager() {
+        return this.grailsCacheManager
+    }
+
+    void setCustomCacheKeyGenerator(GrailsCacheKeyGenerator customCacheKeyGenerator) {
+        this.customCacheKeyGenerator = customCacheKeyGenerator
     }
 
     /**
      * @return The custom key generator, or null if it isn't present
      */
     GrailsCacheKeyGenerator getCustomCacheKeyGenerator() {
-        return customCacheKeyGenerator
+        return this.customCacheKeyGenerator
     }
 
 }
