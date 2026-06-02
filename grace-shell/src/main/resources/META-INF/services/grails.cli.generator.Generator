@@ -5,3 +5,4 @@ org.grails.cli.generator.I18nGenerator
 org.grails.cli.generator.PluginGenerator
 org.grails.cli.generator.ServiceGenerator
 org.grails.cli.generator.TaglibGenerator
+org.grails.cli.generator.ViewsGenerator

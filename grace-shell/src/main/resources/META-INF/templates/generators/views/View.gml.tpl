@@ -1,0 +1,3 @@
+<view>
+  ${path}
+</view>
