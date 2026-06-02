@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2025 the original author or authors.
+ * Copyright 2021-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -45,6 +46,7 @@ import org.grails.plugins.web.controllers.ControllersPluginConfiguration;
 import org.grails.web.mapping.CachingLinkGenerator;
 import org.grails.web.mapping.DefaultLinkGenerator;
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean;
+import org.grails.web.mapping.actuate.endpoint.UrlMappingsEndpoint;
 import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping;
 import org.grails.web.mapping.mvc.UrlMappingsInfoHandlerAdapter;
 import org.grails.web.mapping.servlet.UrlMappingsErrorPageCustomizer;
@@ -148,6 +150,13 @@ public class UrlMappingsPluginConfiguration {
     @ConditionalOnProperty(prefix = "grails.cors", name = "filter.enabled", havingValue = "true", matchIfMissing = true)
     public GrailsCorsFilter grailsCorsFilter(GrailsCorsConfiguration grailsCorsConfiguration) {
         return new GrailsCorsFilter(grailsCorsConfiguration);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnClass(name = "org.springframework.boot.actuate.endpoint.InvocationContext")
+    public UrlMappingsEndpoint urlMappingsEndpoint(ObjectProvider<UrlMappingsHolder> grailsUrlMappingsHolder) {
+        return new UrlMappingsEndpoint(grailsUrlMappingsHolder.getIfAvailable());
     }
 
 }

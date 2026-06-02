@@ -12,6 +12,7 @@ dependencies {
     compileOnly libs.jansi
     compileOnly libs.jline
 
+    compileOnly libs.spring.boot.actuator
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor

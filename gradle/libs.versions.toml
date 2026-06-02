@@ -194,6 +194,7 @@ spring-aop = { module = "org.springframework:spring-aop", version.ref = "spring-
 spring-aspects = { module = "org.springframework:spring-aspects", version.ref = "spring-framework" }
 spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-framework" }
 spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-actuator", version.ref = "spring-boot" }
 spring-boot-actuator-autoconfigure = { module = "org.springframework.boot:spring-boot-actuator-autoconfigure", version.ref = "spring-boot" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
 spring-boot-autoconfigureProcessor = { module = "org.springframework.boot:spring-boot-autoconfigure-processor", version.ref = "spring-boot" }
