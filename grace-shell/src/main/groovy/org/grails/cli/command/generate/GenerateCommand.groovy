@@ -23,7 +23,8 @@ import grails.cli.generator.Generator
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.command.CommandDescription
 import org.grails.cli.command.ExecutionContext
-import org.grails.cli.command.ProjectCommand
+import org.grails.cli.profile.Profile
+import org.grails.cli.profile.ProfileCommand
 
 /**
  * Generate command uses Groovy templates to create everything you need.
@@ -32,7 +33,7 @@ import org.grails.cli.command.ProjectCommand
  * @since 2023.2.0
  */
 @CompileStatic
-class GenerateCommand implements ProjectCommand {
+class GenerateCommand implements ProfileCommand {
 
     static final String USAGE = 'grace generate GENERATOR [args] [options]'
     static final String EXAMPLES = '''
@@ -43,6 +44,8 @@ class GenerateCommand implements ProjectCommand {
 
     final String name = 'generate'
     final CommandDescription description = new CommandDescription(name, 'Generate all for you need', USAGE, EXAMPLES, ['g'])
+
+    Profile profile
 
     GenerateCommand() {
         this.description.flag([name: 'help', aliases: '-h', type: 'boolean', description: "Print generator's options and usage", required: false])
@@ -99,7 +102,7 @@ class GenerateCommand implements ProjectCommand {
 
     void printCommandHelp(GrailsConsole console) {
         console.out.println('Usage:')
-        console.out.println('  ' + USAGE)
+        console.out.println('  ' + description.usage)
         console.out.println()
 
         if (!this.description.getFlags().isEmpty()) {
