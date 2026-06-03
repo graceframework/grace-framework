@@ -1,3 +1,76 @@
+=== 2024.1.0-RC1
+
+This release is based on Spring Boot 3.5.14 and Spring Framework to 6.2.18. link:{github}/releases/tag/v2024.1.0-RC1[release notes]
+
+* Upgrade to Maven 3.9.16, Gradle 8.14.5
+* Upgrade to Groovy 4.0.32, Liquibase 4.31.1
+
+For a complete list of changes made in this release see link:https://github.com/orgs/graceframework/projects/19[v2024.1.0-RC1 on GitHub].
+
+⭐️ New Features
+
+* Add `script` Generator link:{github}/issues/1523[#1523]
+* Add `views` Generator link:{github}/issues/1522[#1522]
+* Delegate `grailsCacheManager` to Spring's CacheManager if provide by user link:{github}/issues/1519[#1519]
+* Add actuator endpoint for exposing the application's URL mappings link:{github}/issues/1518[#1518]
+* Prefer to HikariCP as the default connection pool for its performance and concurrency link:{github}/issues/1516[#1516]
+* Support setting system properties from the command line arguments link:{github}/issues/1507[#1507]
+* Auto-configure `DatabaseMigration` Plugin link:{github}/issues/1502[#1502]
+
+🛠 Improvements
+
+* Add release notes for 2024.1.0-RC1
+* Update README - Update the badge version
+* Update guides for installation and introduction
+* Remove TomcatJDBCPoolMBeanExporter link:{github}/issues/1521[#1521]
+* Rename `CustomCacheKeyGenerator` to `SimpleCacheKeyGenerator` link:{github}/issues/1520[#1520]
+* Refine AnsiConsoleUrlMappingsRenderer to render url mappings link:{github}/issues/1517[#1517]
+* GrailsApplicationPidFileWriter and GrailsWebServerPortFileWriter are not active by default link:{github}/issues/1515[#1515]
+* Restore DataBinding as GrailsPlugin grace-plugin-databinding provides `grails.compiler.traits.WebDataBindingTraitInjector` link:{github}/issues/1514[#1514]
+* Add some examples to command `generate-views` link:{github}/issues/1513[#1513]
+* Add new method `invoke` to Generator link:{github}/issues/1512[#1512]
+* Raise the minimum supported version of Gradle to 8.4 link:{github}/issues/1511[#1511]
+* Refactor GrailsCli `initializeProfile` and `buildClasspathDependencies` link:{github}/issues/1510[#1510]
+* Rename AsyncSpec.groovy to AsyncControllerSpec.groovy, Spec.groovy to ControllerSpec.groovy in scaffolding plugin link:{github}/issues/1509[#1509]
+* Use `TraitInjector.supports()` to simplify TraitInjectionUtils link:{github}/issues/1508[#1508]
+* Add `@groovy.transform.Generated` annotation to TagLibraryInvoker link:{github}/issues/1506[#1506]
+* Restore tests in `DatabaseMigration` Plugin link:{github}/issues/1503[#1503]
+* Remove integration of liquibase-hibernate5 in the database-migration plugin link:{github}/issues/1500[#1500]
+
+🐞 Bug Fixes
+
+* Not found `migration` and `scaffold` generators when executing `generate` command link:{github}/issues/1524[#1524]
+* Don't exclude `opencsv` dependency of liquibase-core link:{github}/issues/1499[#1499]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Caffeine 3.2.4 link:{github}/issues/1493[#1493]
+* Upgrade to Grace Asset Pipeline Plugin 7.1.0-RC1 link:{github}/issues/1480[#1480]
+* Upgrade to Grace Async 7.1.0-RC1 link:{github}/issues/1481[#1481]
+* Upgrade to Grace Data 2024.1.0-RC1 link:{github}/issues/1483[#1483]
+* Upgrade to Grace Data Hibernate 2024.1.0-RC1 link:{github}/issues/1484[#1484]
+* Upgrade to Grace Data MongoDB 2024.1.0-RC1 link:{github}/issues/1485[#1485]
+* Upgrade to Grace Events 7.1.0-RC1 link:{github}/issues/1482[#1482]
+* Upgrade to Grace Profile: Base 2024.1.0-RC1 link:{github}/issues/1486[#1486]
+* Upgrade to Grace Profile: Plugin 2024.1.0-RC1 link:{github}/issues/1487[#1487]
+* Upgrade to Grace Profile: Profile 2024.1.0-RC1 link:{github}/issues/1488[#1488]
+* Upgrade to Grace Profile: Rest API 2024.1.0-RC1 link:{github}/issues/1489[#1489]
+* Upgrade to Grace Profile: Starter 2024.1.0-RC1 link:{github}/issues/1490[#1490]
+* Upgrade to Grace Profile: Web 2024.1.0-RC1 link:{github}/issues/1491[#1491]
+* Upgrade to Grace Profile: Web Plugin 2024.1.0-RC1 link:{github}/issues/1492[#1492]
+* Upgrade to Gradle 8.14.5 link:{github}/issues/1495[#1495]
+* Upgrade to Gradle Tooling API 8.14.5 link:{github}/issues/1496[#1496]
+* Upgrade to Groovy 4.0.32 link:{github}/issues/1494[#1494]
+* Upgrade to Jackson Databind 2.21.3 link:{github}/issues/1497[#1497]
+* Upgrade to Jakarta XML Bind 4.0.5 link:{github}/issues/1498[#1498]
+* Upgrade to Liquibase 4.31.1 link:{github}/issues/1501[#1501]
+* Upgrade to Maven 3.9.16 link:{github}/issues/1504[#1504]
+* Upgrade to SLF4J 2.0.18 link:{github}/issues/1505[#1505]
+
+⚙️ Tasks
+
+* Release v2024.1.0-RC1
+
 === 2024.1.0-M3
 
 This release is based on Spring Boot 3.5.14 and Spring Framework to 6.2.18. link:{github}/releases/tag/v2024.1.0-M3[release notes]
