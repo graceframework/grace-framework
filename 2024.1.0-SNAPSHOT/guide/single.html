@@ -120,7 +120,7 @@ function addJsClass(el) {
 <p>Spring is the foundation for Grace, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace has rewritten <code>Plugin.doWithSpring()</code> using Spring Boot&#8217;s <a href="https://docs.spring.io/spring-boot/3.3/reference/using/auto-configuration.html">Auto-configuration</a>, which also reduces redundant configurations and provides significant performance improvements. Grace has also provided <a href="https://docs.spring.io/spring-boot/3.3/specification/configuration-metadata/index.html">Configuration Metadata</a> files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.</p>
 </div>
 <div class="paragraph">
-<p>It is worth mentioning that Grace supports all current versions of Spring Boot, including <a href="https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9">2.7</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3">3.0</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0">3.1</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0">3.2</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.3</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0">3.4</a>, and  <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M2">3.5</a>. This makes the upgrade path easier and more manageable.</p>
+<p>It is worth mentioning that Grace supports all current versions of Spring Boot, including <a href="https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9">2.7</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3">3.0</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0">3.1</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0">3.2</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0">3.3</a>, <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0">3.4</a>, and  <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-RC1">3.5</a>. This makes the upgrade path easier and more manageable.</p>
 </div>
 <div class="paragraph">
 <p>Grace has been actively developing, bringing numerous improvements and new features, including Plugins, GSP, Console, Shell, and <a href="https://github.com/grace-profiles">Profiles</a>. Of course, it has also fixed a large number of legacy defects left in Grails 5, this makes developers happy.</p>
@@ -223,6 +223,207 @@ function addJsClass(el) {
 </div>
 
 
+<div class="sect2">
+<h3 id="_2024_1_0_rc1">2024.1.0-RC1</h3>
+<div class="paragraph">
+<p>This release is based on Spring Boot 3.5.14 and Spring Framework to 6.2.18. <a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-RC1">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Maven 3.9.16, Gradle 8.14.5</p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.32, Liquibase 4.31.1</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete list of changes made in this release see <a href="https://github.com/orgs/graceframework/projects/19">v2024.1.0-RC1 on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>script</code> Generator <a href="https://github.com/graceframework/grace-framework/issues/1523">#1523</a></p>
+</li>
+<li>
+<p>Add <code>views</code> Generator <a href="https://github.com/graceframework/grace-framework/issues/1522">#1522</a></p>
+</li>
+<li>
+<p>Delegate <code>grailsCacheManager</code> to Spring&#8217;s CacheManager if provide by user <a href="https://github.com/graceframework/grace-framework/issues/1519">#1519</a></p>
+</li>
+<li>
+<p>Add actuator endpoint for exposing the application&#8217;s URL mappings <a href="https://github.com/graceframework/grace-framework/issues/1518">#1518</a></p>
+</li>
+<li>
+<p>Prefer to HikariCP as the default connection pool for its performance and concurrency <a href="https://github.com/graceframework/grace-framework/issues/1516">#1516</a></p>
+</li>
+<li>
+<p>Support setting system properties from the command line arguments <a href="https://github.com/graceframework/grace-framework/issues/1507">#1507</a></p>
+</li>
+<li>
+<p>Auto-configure <code>DatabaseMigration</code> Plugin <a href="https://github.com/graceframework/grace-framework/issues/1502">#1502</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2024.1.0-RC1</p>
+</li>
+<li>
+<p>Update README - Update the badge version</p>
+</li>
+<li>
+<p>Update guides for installation and introduction</p>
+</li>
+<li>
+<p>Remove TomcatJDBCPoolMBeanExporter <a href="https://github.com/graceframework/grace-framework/issues/1521">#1521</a></p>
+</li>
+<li>
+<p>Rename <code>CustomCacheKeyGenerator</code> to <code>SimpleCacheKeyGenerator</code> <a href="https://github.com/graceframework/grace-framework/issues/1520">#1520</a></p>
+</li>
+<li>
+<p>Refine AnsiConsoleUrlMappingsRenderer to render url mappings <a href="https://github.com/graceframework/grace-framework/issues/1517">#1517</a></p>
+</li>
+<li>
+<p>GrailsApplicationPidFileWriter and GrailsWebServerPortFileWriter are not active by default <a href="https://github.com/graceframework/grace-framework/issues/1515">#1515</a></p>
+</li>
+<li>
+<p>Restore DataBinding as GrailsPlugin grace-plugin-databinding provides <code>grails.compiler.traits.WebDataBindingTraitInjector</code> <a href="https://github.com/graceframework/grace-framework/issues/1514">#1514</a></p>
+</li>
+<li>
+<p>Add some examples to command <code>generate-views</code> <a href="https://github.com/graceframework/grace-framework/issues/1513">#1513</a></p>
+</li>
+<li>
+<p>Add new method <code>invoke</code> to Generator <a href="https://github.com/graceframework/grace-framework/issues/1512">#1512</a></p>
+</li>
+<li>
+<p>Raise the minimum supported version of Gradle to 8.4 <a href="https://github.com/graceframework/grace-framework/issues/1511">#1511</a></p>
+</li>
+<li>
+<p>Refactor GrailsCli <code>initializeProfile</code> and <code>buildClasspathDependencies</code> <a href="https://github.com/graceframework/grace-framework/issues/1510">#1510</a></p>
+</li>
+<li>
+<p>Rename AsyncSpec.groovy to AsyncControllerSpec.groovy, Spec.groovy to ControllerSpec.groovy in scaffolding plugin <a href="https://github.com/graceframework/grace-framework/issues/1509">#1509</a></p>
+</li>
+<li>
+<p>Use <code>TraitInjector.supports()</code> to simplify TraitInjectionUtils <a href="https://github.com/graceframework/grace-framework/issues/1508">#1508</a></p>
+</li>
+<li>
+<p>Add <code>@groovy.transform.Generated</code> annotation to TagLibraryInvoker <a href="https://github.com/graceframework/grace-framework/issues/1506">#1506</a></p>
+</li>
+<li>
+<p>Restore tests in <code>DatabaseMigration</code> Plugin <a href="https://github.com/graceframework/grace-framework/issues/1503">#1503</a></p>
+</li>
+<li>
+<p>Remove integration of liquibase-hibernate5 in the database-migration plugin <a href="https://github.com/graceframework/grace-framework/issues/1500">#1500</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Not found <code>migration</code> and <code>scaffold</code> generators when executing <code>generate</code> command <a href="https://github.com/graceframework/grace-framework/issues/1524">#1524</a></p>
+</li>
+<li>
+<p>Don&#8217;t exclude <code>opencsv</code> dependency of liquibase-core <a href="https://github.com/graceframework/grace-framework/issues/1499">#1499</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Caffeine 3.2.4 <a href="https://github.com/graceframework/grace-framework/issues/1493">#1493</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 7.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1480">#1480</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 7.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1481">#1481</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1483">#1483</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data Hibernate 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1484">#1484</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1485">#1485</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 7.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1482">#1482</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Base 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1486">#1486</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Plugin 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1487">#1487</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Profile 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1488">#1488</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Rest API 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1489">#1489</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Starter 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1490">#1490</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Web 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1491">#1491</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Profile: Web Plugin 2024.1.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1492">#1492</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14.5 <a href="https://github.com/graceframework/grace-framework/issues/1495">#1495</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Tooling API 8.14.5 <a href="https://github.com/graceframework/grace-framework/issues/1496">#1496</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.32 <a href="https://github.com/graceframework/grace-framework/issues/1494">#1494</a></p>
+</li>
+<li>
+<p>Upgrade to Jackson Databind 2.21.3 <a href="https://github.com/graceframework/grace-framework/issues/1497">#1497</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta XML Bind 4.0.5 <a href="https://github.com/graceframework/grace-framework/issues/1498">#1498</a></p>
+</li>
+<li>
+<p>Upgrade to Liquibase 4.31.1 <a href="https://github.com/graceframework/grace-framework/issues/1501">#1501</a></p>
+</li>
+<li>
+<p>Upgrade to Maven 3.9.16 <a href="https://github.com/graceframework/grace-framework/issues/1504">#1504</a></p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.18 <a href="https://github.com/graceframework/grace-framework/issues/1505">#1505</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.1.0-RC1</p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_2024_1_0_m3">2024.1.0-M3</h3>
 <div class="paragraph">
@@ -8868,13 +9069,13 @@ existing Groovy installation is ignored).</p>
 Grace 2024.1.0-SNAPSHOT
 ------------------------------------------------------------
 
-Build time:   2026-04-01 13:30:19 UTC
-Revision:     b5a5f6d1d0932a269c9fbcbbffa2ead6f6347318
+Build time:   2026-06-03 15:36:54 UTC
+Revision:     440a1de00f185efb21309954726f27c822edf725
 
-Spring Boot:  3.4.13
-Gradle:       8.14.4
-Groovy:       4.0.30
-JVM:          17.0.15 (BellSoft 17.0.15+10-LTS)
+Spring Boot:  3.5.14
+Gradle:       8.14.5
+Groovy:       4.0.32
+JVM:          17.0.19 (Azul Systems, Inc. 17.0.19+10-LTS)
 OS:           Mac OS X 12.7.6 aarch64</code></pre>
 </div>
 </div>
