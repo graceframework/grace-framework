@@ -1,3 +1,21 @@
+=== 2024.1.0-RC2
+
+Please upgrade to this version, because some artifacts of the previous version `2024.1.0-RC1` was not successfully published to Maven Central Repository.
+
+🛠 Improvements
+
+* Add release notes for 2024.1.0-RC2
+
+🐞 Bug Fixes
+
+* Enhance HelpCommand link:{github}/issues/1529[#1529]
+* Not found `migration` and `scaffold` generators when executing `destroy` command link:{github}/issues/1527[#1527]
+* Command `generate` should only list in the project context link:{github}/issues/1526[#1526]
+
+⚙️ Tasks
+
+* Release v2024.1.0-RC2
+
 === 2024.1.0-RC1
 
 This release is based on Spring Boot 3.5.14 and Spring Framework to 6.2.18. link:{github}/releases/tag/v2024.1.0-RC1[release notes]
