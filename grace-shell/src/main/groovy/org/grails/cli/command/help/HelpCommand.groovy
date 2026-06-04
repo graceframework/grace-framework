@@ -147,17 +147,19 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
 
         boolean showAll = commandLine.hasOption('all')
         allCommands = findCommands(showAll)
+
+        console.addStatus('Usage:')
         console.log '''
-Usage (optionals marked with *):'
-grace [environment]* [target] [arguments]*'
+  grace [environment] COMMAND [arguments]
 
 '''
         console.addStatus('Examples:')
-        console.log('$ grace create-app blog')
-        console.log('$ grace dev run-app')
+        console.log('  grace create-app blog')
+        console.log('  grace dev run-app')
         console.log ''
-        console.addStatus('Available Commands (type grace help \'command-name\' for more info):')
-        console.addStatus("${'Command Name'.padRight(37)} Command Description")
+        console.addStatus('Available Commands (type grace help COMMAND for more info):')
+        console.println('-' * 100)
+        console.log("${'Command Name'.padRight(39)} Command Description")
         console.println('-' * 100)
         for (Command command : allCommands) {
             StringBuilder description = new StringBuilder()
