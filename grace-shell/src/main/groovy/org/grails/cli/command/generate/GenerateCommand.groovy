@@ -23,6 +23,7 @@ import grails.cli.generator.Generator
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.command.CommandDescription
 import org.grails.cli.command.ExecutionContext
+import org.grails.cli.command.ProjectCommand
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 
@@ -33,7 +34,7 @@ import org.grails.cli.profile.ProfileCommand
  * @since 2023.2.0
  */
 @CompileStatic
-class GenerateCommand implements ProfileCommand {
+class GenerateCommand implements ProjectCommand, ProfileCommand {
 
     static final String USAGE = 'grace generate GENERATOR [args] [options]'
     static final String EXAMPLES = '''
