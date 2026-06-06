@@ -1,3 +1,4 @@
+org.grails.cli.generator.CommandGenerator
 org.grails.cli.generator.ControllerGenerator
 org.grails.cli.generator.DomainGenerator
 org.grails.cli.generator.InterceptorGenerator
