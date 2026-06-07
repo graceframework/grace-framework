@@ -1,2 +1,3 @@
-// Generated in ${scriptFile}
-println 'This is a script'
+description 'Example description', 'grace ${scriptName}'
+
+println 'Example Script'

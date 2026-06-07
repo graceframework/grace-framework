@@ -18,6 +18,7 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
+import grails.util.GrailsNameUtils
 
 /**
  * @author Michael Yan
@@ -34,14 +35,15 @@ class ScriptGenerator extends AbstractGenerator {
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
-        String scriptFile = args[1]
-        if (!scriptFile.endsWith('.groovy')) {
-            scriptFile = scriptFile + '.groovy'
+        String scriptName = GrailsNameUtils.getNameFromScript(args[1])
+        if (scriptName.endsWith('.groovy')) {
+            scriptName = scriptName - '.groovy'
         }
 
         Map<String, Object> model = new HashMap<>()
-        model['scriptFile'] = scriptFile
+        model['scriptName'] = GrailsNameUtils.getScriptName(scriptName)
 
+        String scriptFile = 'src/main/scripts/' + scriptName + '.groovy'
         createFile('Script.groovy.tpl', scriptFile, model, overwrite)
 
         true
@@ -54,10 +56,11 @@ class ScriptGenerator extends AbstractGenerator {
             return false
         }
 
-        String scriptFile = args[1]
-        if (!scriptFile.endsWith('.groovy')) {
-            scriptFile = scriptFile + '.groovy'
+        String scriptName = GrailsNameUtils.getNameFromScript(args[1])
+        if (scriptName.endsWith('.groovy')) {
+            scriptName = scriptName - '.groovy'
         }
+        String scriptFile = 'src/main/scripts/' + scriptName + '.groovy'
 
         removeFile(scriptFile)
 
