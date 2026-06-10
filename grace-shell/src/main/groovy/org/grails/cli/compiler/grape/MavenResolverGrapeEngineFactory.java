@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2024 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,19 +23,15 @@ import groovy.lang.GroovyClassLoader;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
-import org.eclipse.aether.internal.impl.DefaultRepositorySystem;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.repository.RepositoryPolicy;
-import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
-import org.eclipse.aether.spi.connector.transport.TransporterFactory;
-import org.eclipse.aether.transport.file.FileTransporterFactory;
-import org.eclipse.aether.transport.http.HttpTransporterFactory;
+import org.eclipse.aether.supplier.RepositorySystemSupplier;
 
 /**
  * Utility class to create a pre-configured {@link MavenResolverGrapeEngine}.
  *
  * @author Andy Wilkinson
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public abstract class MavenResolverGrapeEngineFactory {
@@ -43,7 +39,7 @@ public abstract class MavenResolverGrapeEngineFactory {
     public static MavenResolverGrapeEngine create(GroovyClassLoader classLoader,
             List<RepositoryConfiguration> repositoryConfigurations,
             DependencyResolutionContext dependencyResolutionContext, boolean quiet) {
-        RepositorySystem repositorySystem = createRepositorySystem();
+        RepositorySystem repositorySystem = new RepositorySystemSupplier().get();
         DefaultRepositorySystemSession repositorySystemSession = MavenRepositorySystemUtils.newSession();
         repositorySystemSession.setSystemProperties(System.getProperties());
         ServiceLoader<RepositorySystemSessionAutoConfiguration> autoConfigurations = ServiceLoader
@@ -54,16 +50,6 @@ public abstract class MavenResolverGrapeEngineFactory {
         new DefaultRepositorySystemSessionAutoConfiguration().apply(repositorySystemSession, repositorySystem);
         return new MavenResolverGrapeEngine(classLoader, repositorySystem, repositorySystemSession,
                 createRepositories(repositoryConfigurations), dependencyResolutionContext, quiet);
-    }
-
-    @SuppressWarnings("deprecation")
-    private static RepositorySystem createRepositorySystem() {
-        org.eclipse.aether.impl.DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
-        locator.addService(RepositorySystem.class, DefaultRepositorySystem.class);
-        locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
-        locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
-        locator.addService(TransporterFactory.class, FileTransporterFactory.class);
-        return locator.getService(RepositorySystem.class);
     }
 
     private static List<RemoteRepository> createRepositories(List<RepositoryConfiguration> repositoryConfigurations) {

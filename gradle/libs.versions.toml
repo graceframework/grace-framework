@@ -167,11 +167,9 @@ junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", v
 junit-platform-runner = { module = "org.junit.platform:junit-platform-runner", version.ref = "junit-platform" }
 liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
 maven-model = { module = "org.apache.maven:maven-model", version.ref = "maven" }
-maven-resolver-connectorBasic = { module = "org.apache.maven.resolver:maven-resolver-connector-basic", version.ref = "maven-resolver" }
 maven-resolver-provider = { module = "org.apache.maven:maven-resolver-provider", version.ref = "maven" }
 maven-resolver-impl = { module = "org.apache.maven.resolver:maven-resolver-impl", version.ref = "maven-resolver" }
-maven-resolver-transportFile = { module = "org.apache.maven.resolver:maven-resolver-transport-file", version.ref = "maven-resolver" }
-maven-resolver-transportHttp = { module = "org.apache.maven.resolver:maven-resolver-transport-http", version.ref = "maven-resolver" }
+maven-resolver-supplier = { module = "org.apache.maven.resolver:maven-resolver-supplier", version.ref = "maven-resolver" }
 maven-settings-builder = { module = "org.apache.maven:maven-settings-builder", version.ref = "maven" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
