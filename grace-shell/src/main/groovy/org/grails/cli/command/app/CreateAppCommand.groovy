@@ -99,7 +99,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String PACKAGE_NAME_FLAG = 'package-name'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = ['2024', '2023', '2022', '6', '5', '4', '3']
-    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.4', '3.5']
+    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.5']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -112,7 +112,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     # Creates an application
         $ grace create-app com.example.blog
         $ grace create-app blog --package-name=com.example --profile=web
-        $ grace create-app blog --boot-version=3.4.0
+        $ grace create-app blog --boot-version=3.5.0
 '''
 
     ProfileRepository profileRepository
@@ -1160,7 +1160,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     @CompileDynamic
     protected void updateSpringDependencies(GrailsConsoleAntBuilder ant, String grailsVersion, String springBootVersion, File targetDirectory) {
         if (!springBootVersion || !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
-            // Currently already upgraded to Spring Boot 3.4
+            // Currently already upgraded to Spring Boot 3.5
             return
         }
 
