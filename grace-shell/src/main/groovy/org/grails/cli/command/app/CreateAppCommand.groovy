@@ -1246,8 +1246,8 @@ group """
                 replacevalue ''
             }
             replace(file: 'build.gradle') {
-                replacetoken '    developmentOnly("org.springframework.boot:spring-boot-devtools")\n'
-                replacevalue '    implementation "org.springframework.boot:spring-boot-web"\n'
+                replacetoken '    developmentOnly "org.springframework.boot:spring-boot-devtools"\n'
+                replacevalue '    implementation "org.springframework.boot:spring-boot-starter-web"\n'
             }
             replace(file: 'build.gradle') {
                 replacetoken '    console "org.graceframework:grace-console"\n'
