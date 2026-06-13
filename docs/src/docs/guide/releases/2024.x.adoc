@@ -1,3 +1,57 @@
+=== 2024.1.0
+
+This release is based on Spring Boot 3.5.15 and Spring Framework to 6.2.19. link:{github}/releases/tag/v2024.1.0[release notes]
+
+* Upgrade to Ant 1.10.17, Maven 3.9.16, Gradle 8.14.5
+* Upgrade to Groovy 4.0.32, SiteMesh 2.7.0, Tomcat 10.1.55
+
+For a complete list of changes made in this release see link:https://github.com/orgs/graceframework/projects/20[v2024.1.0 on GitHub].
+
+⭐️ New Features
+
+* Add `command` Generator link:{github}/issues/1549[#1549]
+
+🛠 Improvements
+
+* Add release notes for 2024.1.0
+* Update README - Update the badge version
+* Update guides: introduction and installation
+* Update the README.md in all modules link:{github}/issues/1558[#1558]
+* Update the module name and version of Groovy ExtensionModules link:{github}/issues/1557[#1557]
+* Spring Boot 3.4.x is no longer supported link:{github}/issues/1555[#1555]
+* Replace deprecated Maven Resolver components with new Maven Resolver API `RepositorySystemSupplier` link:{github}/issues/1554[#1554]
+* Rewrite `script` generator link:{github}/issues/1550[#1550]
+
+🐞 Bug Fixes
+
+* Add missing plugins for the generated grace-dependencies BOM link:{github}/issues/1559[#1559]
+* The fresh minimal app should work fine link:{github}/issues/1556[#1556]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 7.1.0 link:{github}/issues/1536[#1536]
+* Upgrade to Grace Async 7.1.0 link:{github}/issues/1537[#1537]
+* Upgrade to Grace Data 2024.1.0 link:{github}/issues/1539[#1539]
+* Upgrade to Grace Data Hibernate 2024.1.0 link:{github}/issues/1540[#1540]
+* Upgrade to Grace Data MongoDB 2024.1.0 link:{github}/issues/1541[#1541]
+* Upgrade to Grace Events 7.1.0 link:{github}/issues/1538[#1538]
+* Upgrade to Grace Profile: Web Plugin 2024.1.0 link:{github}/issues/1548[#1548]
+* Upgrade to Grace Profile: Web 2024.1.0 link:{github}/issues/1547[#1547]
+* Upgrade to Grace Profile: Starter 2024.1.0 link:{github}/issues/1546[#1546]
+* Upgrade to Grace Profile: Rest API 2024.1.0 link:{github}/issues/1545[#1545]
+* Upgrade to Grace Profile: Profile 2024.1.0 link:{github}/issues/1544[#1544]
+* Upgrade to Grace Profile: Plugin 2024.1.0 link:{github}/issues/1543[#1543]
+* Upgrade to Grace Profile: Base 2024.1.0 link:{github}/issues/1542[#1542]
+* Upgrade to Jackson Databind 2.21.4 link:{github}/issues/1532[#1532]
+* Upgrade to JavaParser Core 3.28.2 link:{github}/issues/1531[#1531]
+* Upgrade to Spring Boot 3.5.15 link:{github}/issues/1533[#1533]
+* Upgrade to Spring Framework 6.2.19 link:{github}/issues/1534[#1534]
+* Upgrade to Tomcat 10.1.55 link:{github}/issues/1535[#1535]
+
+⚙️ Tasks
+
+* Release v2024.1.0
+
 === 2024.1.0-RC2
 
 Please upgrade to this version, because some artifacts of the previous version `2024.1.0-RC1` was not successfully published to Maven Central Repository.
