@@ -18,6 +18,15 @@ Alternatively, you can set the JAVA_HOME environment variable to point a suitabl
 
 No specific environment variables are required to run the CLI, however, you may want to set GRACE_HOME to point to a specific installation. You should also add GRACE_HOME/bin to your PATH environment variable.
 
+=== Using SDKMAN
+
+SDKMAN! (The Software Development Kit Manager) can be used for managing multiple versions of various binary SDKs, including Groovy, Gradle and the Grace.
+Get SDKMAN! from sdkman.io and install Grace by using the following commands:
+
+```bash
+$ sdk install grace
+```
+
 === Checking Your Installation
 
 To test if you have successfully installed the CLI you can run the following command:
@@ -35,10 +44,10 @@ If you see the output like below, congratulations, you have installed it success
 Grace {version}
 ------------------------------------------------------------
 
-Build time:   2026-06-03 15:36:54 UTC
-Revision:     440a1de00f185efb21309954726f27c822edf725
+Build time:   2026-06-13 19:35:23 UTC
+Revision:     5044df133be187a7adb7c193b062a537606e6a6c
 
-Spring Boot:  3.5.14
+Spring Boot:  3.5.15
 Gradle:       8.14.5
 Groovy:       4.0.32
 JVM:          17.0.19 (Azul Systems, Inc. 17.0.19+10-LTS)
