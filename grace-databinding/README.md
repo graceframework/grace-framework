@@ -1,7 +1,18 @@
-## Grace Databinding
+# Grace Databinding
 
-This subproject contains much of the core data binding code. 
-The main class here is [SimpleDataBinder](./src/main/groovy/grails/databinding/SimpleDataBinder.groovy).
-Most of the other code here exists to support that.
+`grace-databinding` is a foundational module that contains the core data binding infrastructure for Grace applications, providing the base implementation for binding data from maps to object properties.
 
-The real databinding used in a Grails app is [GrailsWebDataBinder](../grails-web-databinding/src/main/groovy/grails/web/databinding/WebDataBinding.groovy) which extends `SimpleDataBinder` and is defined in the `grails-web-databinding` subproject.  `SimpleDataBinder` is where much of the core data binding logic is defined. The `GrailsWebDataBinder` subclass defines a lot of the logic that is specific to data binding in the context of a Grails app. For example, all of the GORM special handling that the data binder does is in `GrailsWebDataBinder`.
+
+### Core Data Binder
+
+`SimpleDataBinder` - The main class in the module that contains much of the core data binding logic. It serves as the base implementation for binding data from maps to object properties.
+
+## Module Relationships
+
+### grace-web-databinding
+
+The `grace-web-databinding` module extends `grace-databinding` with web-specific functionality. It depends on `grace-databinding`, `grace-util`, and `grace-web`. This module contains `GrailsWebDataBinder` which extends `SimpleDataBinder` and defines logic specific to data binding in the context of a Grace application, including GORM special handling.
+
+### grace-plugin-databinding
+
+The `grace-plugin-databinding` module provides Spring Boot auto-configuration for data binding. It depends on `grace-api`, `grace-web`, and `grace-web-databinding`. The plugin is configured via `DataBindingGrailsPlugin` which extends `AbstractDataBindingGrailsPlugin`.

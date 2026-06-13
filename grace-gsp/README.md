@@ -1,18 +1,54 @@
-## Grace GSP
+# Grace GSP
 
-This subproject is required for all Grace applications and plugins that require GSP processing.
+`grace-gsp` is the core module that provides the Groovy Server Pages (GSP) template engine for Grace Framework. It serves as the foundational view rendering technology that compiles `.gsp` files into Groovy classes for generating HTML output.
 
-``` gradle
-apply plugin: "org.graceframework.grace-gsp"
-```
+## Important APIs in grace-gsp
 
-It is typical of standard Grace application to use this in conjunction with `grace-web` as in the following example:
+### Core Template Engine
 
-``` gradle
-apply plugin: "org.graceframework.grace-web"
-apply plugin: "org.graceframework.grace-gsp"
-```
+`GroovyPagesTemplateEngine` - The heart of the GSP system, responsible for compiling `.gsp` files into Groovy classes that generate the final output. It provides:
 
-Dependencies
------
-To see what additional subprojects will be included with this, you can view this project's [build.gradle](https://github.com/graceframework/grace-framework/blob/2022.2.x/grace-gsp/build.gradle)
+- Template compilation and caching
+- Hot reloading support in development mode
+- Integration with tag libraries
+- Page cache management
+
+### Template Renderer
+
+`GroovyPagesTemplateRenderer` - Provides an internal service for rendering partial templates (fragments) within other views.
+
+### URI Service
+
+`GroovyPagesUriService` - Manages URI caching and resolution for GSP templates, cleared when changes are detected.
+
+
+## Module Relationships
+
+### grace-web-gsp
+
+The `grace-web-gsp` module depends on `grace-gsp` to provide web-specific GSP integration, including Sitemesh layout support and JSP compatibility. It adds:
+
+- Sitemesh integration for consistent layouts
+- JSP tag library support
+- Web-specific resource loading
+
+### grace-plugin-gsp
+
+The `grace-plugin-gsp` module depends on `grace-web-gsp` to provide Spring Boot auto-configuration and plugin lifecycle management for GSP. The `GroovyPagesGrailsPlugin` class:
+
+- Clears the page cache when the ApplicationContext is loaded 
+- Clears the URI cache after changes
+- Reinitializes filtering codecs on configuration changes
+
+### grace-web-mvc
+
+The `grace-web-mvc` module depends on `grace-gsp` for view rendering capabilities in the MVC layer.
+
+### Gradle Plugin Integration
+
+The Gradle plugin provides the `org.graceframework.grace-gsp` plugin that adds support for compiling Groovy Server Pages during the build proces.
+
+
+## Notes
+
+The `grace-gsp` module was imported into the framework during the 2023.x release as part of the Jakarta EE 9 migration. During the 2024.x refactoring, the GSP plugin was refactored to remove deprecated classes like `GrailsTagLibClass`, `DefaultGrailsTagLibClass`, and `TagLibArtefactHandler`, and to use `ArtefactTypes.TAG_LIBRARY` instead. The module structure follows a layered approach where `grace-gsp` provides the core engine, `grace-web-gsp` adds web-specific features, and `grace-plugin-gsp` provides Spring Boot integration.

@@ -1,14 +1,30 @@
-## grace-boot-mongodb
+# Grace Boot MongoDB
 
-[Grace Data MongoDB](https://github.com/graceframework/grace-data-mongodb) provides a GORM implementation for the [MongodB](https://www.mongodb.com) Document Database.
+`grace-boot-mongodb` is a Spring Boot auto-configuration module that provides MongoDB document database integration through GORM (Grails Object Relational Mapping) for Grace applications.
 
-MongoDB bridges the gap between key-value stores (which are fast and highly scalable) and traditional RDBMS systems (which provide rich queries and deep functionality).
+This module serves as a Spring Boot starter for MongoDB/GORM functionality, wrapping the MongoDB plugin which was merged into the framework during the 2024.x refactoring.
+Grace Data MongoDB provides a GORM implementation for the MongoDB Document Database, bridging the gap between key-value stores and traditional RDBMS systems. The module supports combined use of MongoDB and Hibernate in the same application, with entity routing based on the `mapWith` property.
 
-MongoDB (from "humongous") is a scalable, high-performance, open source, document-oriented database.
+### Auto-Configuration
 
-This project aims to provide an object-mapping layer on top of Mongo to ease common activities such as:
+`MongoDbGormAutoConfiguration` - The central Spring Boot auto-configuration class that:
 
-* Marshalling from Mongo to Groovy/Java types and back again
-* Support for GORM dynamic finders, criteria and named queries
-* Session-managed transactions
-* Validating domain instances backed by the Mongo datastore
+- Runs after Spring Boot's `MongoAutoConfiguration` with order 300
+- Creates the `MongoDatastore` bean by aggregating domain classes from `GrailsApplication` and scanning for `@Entity` annotated classes
+- Filters domain classes based on `mapWith` property - only classes with `mapWith = "mongo"` are routed to the MongoDB datastore when multiple datastores are present
+- Registers GORM services as Spring beans automatically
+
+### Registered Beans
+
+The auto-configuration registers the following beans:
+
+- `MongoMappingContext` - The GORM mapping context for MongoDB
+- `AutoTimestampEventListener` - Handles automatic timestamp updates
+- `DatastorePersistenceContextInterceptor` - Manages the MongoDB persistence context
+- `PersistenceContextInterceptorAggregator` - Coordinates multiple persistence contexts
+- `transactionManager` (aliased as `mongoTransactionManager`) - The MongoDB transaction manager
+- `mongoOpenSessionInViewInterceptor` - Binds MongoDB sessions to web requests
+
+### Plugin Definition
+
+`MongodbGrailsPlugin` - The Grace plugin that provides integration between Grace and MongoDB document datastore through GORM API. It observes domain class artefacts to respond to changes in the domain model.

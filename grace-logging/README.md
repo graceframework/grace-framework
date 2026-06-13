@@ -1,3 +1,5 @@
-## grace-logging
+# Grace Logging
 
-This subproject adds a log property to all artefacts. Refer to http://grails.github.io/grails-doc/latest/ref/Plug-ins/logging.html
+`grace-logging` is a core logging module that provides the foundational logging infrastructure for Grace applications.
+
+This module provides `LoggingTransformer` to inject a `log` property automatically for all the Grace artifacts (controllers, services …​).
