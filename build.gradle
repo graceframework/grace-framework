@@ -345,9 +345,10 @@ subprojects { project ->
         if (project.name != "grace-docs") {
             // Testing
             testImplementation libs.slf4j.simple
-            testImplementation libs.spock.core, { transitive = false }
+            testImplementation libs.spock.core
             // Required by Spock's Mocking
             testImplementation libs.bytebuddy
+            testImplementation libs.mockito.core
             testImplementation libs.objenesis
         }
     }

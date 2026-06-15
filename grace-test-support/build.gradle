@@ -23,7 +23,7 @@ dependencies {
     api libs.jakarta.servlet
     api libs.spring.test
     api libs.spring.boot.test
-    api libs.spock.core, { transitive = false }
-    api libs.spock.spring, { transitive = false }
+    api libs.spock.core
+    api libs.spock.spring
     runtimeOnly libs.junit.jupiter.engine
 }

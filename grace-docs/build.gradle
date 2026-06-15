@@ -20,7 +20,7 @@ dependencies {
     api libs.xhtmlrenderer
     runtimeOnly libs.slf4j.api
 
-    testImplementation libs.spock.core, { transitive = false }
+    testImplementation libs.spock.core
 }
 
 tasks.register('docResourcesJar', Jar) {
