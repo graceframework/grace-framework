@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.logging.Logger
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -52,8 +51,6 @@ import grails.doc.macros.HiddenMacro
 @DisableCachingByDefault(because = "DocPublisher use Ant tasks")
 abstract class PublishGuideTask extends DefaultTask {
 
-    private org.gradle.api.AntBuilder ant
-    private Logger logger
     private final FileSystemOperations fileSystemOperations
 
     @Internal
@@ -128,8 +125,6 @@ abstract class PublishGuideTask extends DefaultTask {
 
     @Inject
     PublishGuideTask(Project project, FileSystemOperations fileSystemOperations) {
-        this.ant = project.ant
-        this.logger = project.logger
         this.fileSystemOperations = fileSystemOperations
         getProjectName().convention(project.provider(project::getName))
         getProjectVersion().convention(project.provider(() -> project.getVersion().toString()))
@@ -143,9 +138,9 @@ abstract class PublishGuideTask extends DefaultTask {
 
     @TaskAction
     protected void publishGuide() {
-        DocPublisher docPublisher = new DocPublisher(getSourceDir().get().asFile, getTargetDir().get().asFile, this.logger)
+        DocPublisher docPublisher = new DocPublisher(getSourceDir().get().asFile, getTargetDir().get().asFile, getLogger())
 
-        docPublisher.ant = this.ant
+        docPublisher.ant = getAnt()
         docPublisher.asciidoc = getAsciidoc().getOrElse(true)
         docPublisher.bookmarks = getBookmarks().getOrElse(false)
         docPublisher.language = getLanguage().getOrElse('')
