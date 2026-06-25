@@ -1,3 +1,24 @@
+=== 2024.1.1
+
+This release is upgrade to Spring Boot 3.5.16.
+
+link:{github}/releases/tag/v2024.1.1[release notes].
+
+🛠 Improvements
+
+* Add release notes for 2024.1.1
+* Update README - Update the badge version
+* Prefer to use Task.ant and Task.logger instead of Project's link:{github}/issues/1565[#1565]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 7.1.1 link:{github}/issues/1563[#1563]
+* Upgrade to Spring Boot 3.5.16 link:{github}/issues/1561[#1561]
+
+⚙️ Tasks
+
+* Release v2024.1.1
+
 === 2024.1.0
 
 This release is based on Spring Boot 3.5.15 and Spring Framework to 6.2.19. link:{github}/releases/tag/v2024.1.0[release notes]
