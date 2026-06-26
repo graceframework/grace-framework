@@ -28,7 +28,7 @@ abstract class GrailsCreateStartScripts extends org.gradle.api.tasks.application
     }
 }
 
-task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
+tasks.register('grailsCreateStartScripts', GrailsCreateStartScripts) {
     description = "Creates OS specific scripts to run grace-shell as a JVM application."
     mainClass = 'org.grails.cli.GrailsCli'
     applicationName = 'grace'
@@ -55,27 +55,29 @@ task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
     }
 }
 
-task install(dependsOn: grailsCreateStartScripts) { task ->
+tasks.register('install') {
+    dependsOn = [grailsCreateStartScripts]
     subprojects { Project project ->
         if(project.name != 'docs' && !project.name.startsWith('grace-test-suite')) {
-            task.dependsOn("$project.name:publishToMavenLocal")
+            dependsOn("$project.name:publishToMavenLocal")
         }
     }
 }
 
-task publishToDist { task ->
+tasks.register('publishToDist') {
     subprojects { Project project ->
         if (project.name != 'docs' && !project.name.startsWith('grace-test-suite') && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
             project.tasks.named("generateMetadataFileForIvyPublication").configure {
                 enabled = false
             }
-            task.dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
+            dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
         }
     }
 }
 
-task binZip(type: Zip, dependsOn: [publishToDist, grailsCreateStartScripts]) {
-    destinationDirectory = "${buildDir}/distributions" as File
+tasks.register('binZip', Zip) {
+    dependsOn = [publishToDist, grailsCreateStartScripts]
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'bin'
@@ -102,8 +104,9 @@ task binZip(type: Zip, dependsOn: [publishToDist, grailsCreateStartScripts]) {
     }
 }
 
-task sourcesZip(type: Zip, dependsOn: [publishToDist]) {
-    destinationDirectory = "${buildDir}/distributions" as File
+tasks.register('sourcesZip', Zip) {
+    dependsOn = [publishToDist]
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'sources'
@@ -119,8 +122,9 @@ task sourcesZip(type: Zip, dependsOn: [publishToDist]) {
     }
 }
 
-task docsZip(type: Zip, dependsOn: ['docs:docs']) {
-    destinationDirectory = "${buildDir}/distributions" as File
+tasks.register('docsZip', Zip) {
+    dependsOn = ['docs:docs']
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'docs'
@@ -135,6 +139,10 @@ task docsZip(type: Zip, dependsOn: ['docs:docs']) {
     }
 }
 
-task zipDist(dependsOn: [binZip, sourcesZip, docsZip])
+tasks.register('zipDist') {
+    dependsOn = [binZip, sourcesZip, docsZip]
+}
 
-task assemble(dependsOn: [install, zipDist])
+tasks.register('assemble') {
+    dependsOn = [install, zipDist]
+}
