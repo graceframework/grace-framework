@@ -1,125 +1,55 @@
 // Gradle assemble tasks
+import org.grails.gradle.GraceCreateStartScripts
 
-def libsConfigurations = []
-subprojects { subproject ->
-    if (subproject.name == 'grace-dependencies') return
-    if (subproject.name == 'grace-bom') return
-    if (subproject.name == 'grace-shell') {
-        configurations {
-            libsConfigurations << libs {
-                extendsFrom runtimeClasspath
-                attributes {
-                    attribute(Usage.USAGE_ATTRIBUTE, subproject.objects.named(Usage, Usage.JAVA_RUNTIME))
-                    attribute(Category.CATEGORY_ATTRIBUTE, subproject.objects.named(Category, Category.LIBRARY))
-                }
-            }
-        }
-    }
-}
-
-task configurePopulateDependencies(dependsOn: 'publishToDist') {
-    doLast {
-        def projectNames = rootProject.subprojects*.name
-
-        def seen = []
-        libsConfigurations.each { configuration ->
-            for (artifact in configuration.resolvedConfiguration.resolvedArtifacts) {
-                if (artifact in seen) continue
-                seen << artifact
-                def dependency = artifact.moduleVersion.id
-                if (!projectNames.contains(dependency.name)) {
-                    if (dependency.group == 'org.graceframework') {
-                        populateDependencies.into('org.graceframework') {
-                            from artifact.file // this will trigger the actual download if necessary
-                        }
-                    } else {
-                        populateDependencies.into("$dependency.group/$dependency.name/jars") {
-                            from artifact.file // this will trigger the actual download if necessary
-                        }
-                    }
-                } else {
-                    populateDependencies.into('org.graceframework') {
-                        from(homeDistDir) {
-                            include artifact.file.name
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-task populateDependencies(type: Sync, dependsOn: configurePopulateDependencies) {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    into homeLibDir
-    includeEmptyDirs = false
-}
-
-task grailsCreateStartScripts(type: GrailsCreateStartScripts, dependsOn: populateDependencies) {
-    description = "Creates OS specific scripts to run grace-shell as a JVM application."
-    mainClass = 'org.grails.cli.GrailsCli'
-    applicationName = 'grace'
+tasks.register('createGraceStartScripts', GraceCreateStartScripts) {
     defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
     outputDir = file('bin')
     classpath = rootProject.childProjects['grace-shell'].configurations.runtimeClasspath
+    unixStartScriptTemplate = rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/unixStartScript.txt')
+    windowsStartScriptTemplate = rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/windowsStartScript.txt')
     projectArtifacts = rootProject.childProjects['grace-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
+
     doLast {
         ant.replace(file: file('bin/grace'), token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: file('bin/grace.bat'), token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: file('bin/grace'), token: 'media/gradle.icns', value: 'media/icons/grace.icns')
-        ant.chmod(file: file('bin/grace'), perm: 'ugo+rx')
-    }
-}
 
-class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
-    @org.gradle.api.tasks.Internal
-    Collection<String> projectArtifacts=[]
-
-    @org.gradle.api.tasks.TaskAction
-    void generate() {
-        def generator = new org.gradle.api.internal.plugins.StartScriptGenerator()
-        generator.unixStartScriptGenerator.template = project.rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/unixStartScript.txt')
-        generator.windowsStartScriptGenerator.template = project.rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/windowsStartScript.txt')
-        generator.applicationName = getApplicationName()
-        generator.mainClassName = getMainClass().get()
-        generator.defaultJvmOpts = getDefaultJvmOpts()
-        generator.optsEnvironmentVar = getOptsEnvironmentVar()
-        generator.exitEnvironmentVar = getExitEnvironmentVar()
-        generator.classpath = projectArtifacts + getClasspath().resolvedConfiguration.resolvedArtifacts.collect { artifact ->
+        def resolvedArtifacts = rootProject.childProjects['grace-shell']
+                .configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts
+        for (artifact in resolvedArtifacts) {
             def dependency = artifact.moduleVersion.id
-            String installedFile = "lib/$dependency.group/$dependency.name/jars/$artifact.file.name"
             if (dependency.group == 'org.graceframework') {
-                installedFile = "dist/$artifact.file.name"
+                ant.copy(file: artifact.file, todir: "${homeLibDir}/org.graceframework")
+            } else {
+                ant.copy(file: artifact.file, todir: "${homeLibDir}/${dependency.group}/${dependency.name}/jars")
             }
-            installedFile
         }
-        generator.scriptRelPath = "bin/${getUnixScript().name}"
-        generator.generateUnixScript(getUnixScript())
-        generator.generateWindowsScript(getWindowsScript())
     }
 }
 
-task install(dependsOn: populateDependencies) { task ->
+tasks.register('install') {
+    dependsOn = [createGraceStartScripts]
     subprojects { Project project ->
-        if(project.name != 'docs' && !project.name.startsWith('grace-test-suite')) {
-            task.dependsOn("$project.name:publishToMavenLocal")
+        if (project.name != 'docs' && !project.name.startsWith('grace-test-suite')) {
+            dependsOn("$project.name:publishToMavenLocal")
         }
     }
 }
 
-task publishToDist { task ->
+tasks.register('publishToDist') {
     subprojects { Project project ->
         if (project.name != 'docs' && !project.name.startsWith('grace-test-suite') && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
             project.tasks.named("generateMetadataFileForIvyPublication").configure {
                 enabled = false
             }
-            task.dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
+            dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
         }
     }
 }
 
-task binZip(type: Zip, dependsOn: [publishToDist, populateDependencies, grailsCreateStartScripts]) {
-    destinationDirectory = "${buildDir}/distributions" as File
+tasks.register('binZip', Zip) {
+    dependsOn = [publishToDist, createGraceStartScripts]
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'bin'
@@ -146,8 +76,9 @@ task binZip(type: Zip, dependsOn: [publishToDist, populateDependencies, grailsCr
     }
 }
 
-task sourcesZip(type: Zip, dependsOn: [publishToDist]) {
-    destinationDirectory = "${buildDir}/distributions" as File
+tasks.register('sourcesZip', Zip) {
+    dependsOn = [publishToDist]
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'sources'
@@ -163,8 +94,9 @@ task sourcesZip(type: Zip, dependsOn: [publishToDist]) {
     }
 }
 
-task docsZip(type: Zip, dependsOn: ['docs:docs']) {
-    destinationDirectory = "${buildDir}/distributions" as File
+tasks.register('docsZip', Zip) {
+    dependsOn = ['docs:docs']
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
     archiveClassifier = 'docs'
@@ -179,6 +111,10 @@ task docsZip(type: Zip, dependsOn: ['docs:docs']) {
     }
 }
 
-task zipDist(dependsOn: [binZip, sourcesZip, docsZip])
+tasks.register('zipDist') {
+    dependsOn = [binZip, sourcesZip, docsZip]
+}
 
-task assemble(dependsOn: [install, zipDist])
+tasks.register('assemble') {
+    dependsOn = [install, zipDist]
+}
