@@ -2,13 +2,18 @@
 
 abstract class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
     @org.gradle.api.tasks.Internal
-    Collection<String> projectArtifacts=[]
+    org.gradle.api.resources.TextResource unixStartScriptTemplate
+    @org.gradle.api.tasks.Internal
+    org.gradle.api.resources.TextResource windowsStartScriptTemplate
+
+    @org.gradle.api.tasks.Internal
+    Collection<String> projectArtifacts = []
 
     @org.gradle.api.tasks.TaskAction
     void generate() {
         def generator = new org.gradle.api.internal.plugins.StartScriptGenerator()
-        generator.unixStartScriptGenerator.template = project.rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/unixStartScript.txt')
-        generator.windowsStartScriptGenerator.template = project.rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/windowsStartScript.txt')
+        generator.unixStartScriptGenerator.template = unixStartScriptTemplate
+        generator.windowsStartScriptGenerator.template = windowsStartScriptTemplate
         generator.applicationName = getApplicationName()
         generator.mainClassName = getMainClass().get()
         generator.defaultJvmOpts = getDefaultJvmOpts()
@@ -35,12 +40,13 @@ tasks.register('grailsCreateStartScripts', GrailsCreateStartScripts) {
     defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
     outputDir = file('bin')
     classpath = rootProject.childProjects['grace-shell'].configurations.runtimeClasspath
+    unixStartScriptTemplate = rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/unixStartScript.txt')
+    windowsStartScriptTemplate = rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/windowsStartScript.txt')
     projectArtifacts = rootProject.childProjects['grace-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
     doLast {
         ant.replace(file: file('bin/grace'), token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: file('bin/grace.bat'), token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: file('bin/grace'), token: 'media/gradle.icns', value: 'media/icons/grace.icns')
-        ant.chmod(file: file('bin/grace'), perm: 'ugo+rx')
 
         def resolvedArtifacts = rootProject.childProjects['grace-shell']
                 .configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts
