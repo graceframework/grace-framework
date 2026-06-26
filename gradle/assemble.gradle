@@ -1,33 +1,6 @@
 // Gradle assemble tasks
 
-task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
-    description = "Creates OS specific scripts to run grace-shell as a JVM application."
-    mainClass = 'org.grails.cli.GrailsCli'
-    applicationName = 'grace'
-    defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
-    outputDir = file('bin')
-    classpath = rootProject.childProjects['grace-shell'].configurations.runtimeClasspath
-    projectArtifacts = rootProject.childProjects['grace-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
-    doLast {
-        ant.replace(file: file('bin/grace'), token: 'APP_HOME', value: 'GRACE_HOME')
-        ant.replace(file: file('bin/grace.bat'), token: 'APP_HOME', value: 'GRACE_HOME')
-        ant.replace(file: file('bin/grace'), token: 'media/gradle.icns', value: 'media/icons/grace.icns')
-        ant.chmod(file: file('bin/grace'), perm: 'ugo+rx')
-
-        def resolvedArtifacts = rootProject.childProjects['grace-shell']
-                .configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts
-        for (artifact in resolvedArtifacts) {
-            def dependency = artifact.moduleVersion.id
-            if (dependency.group == 'org.graceframework') {
-                ant.copy(file: artifact.file, todir: "${homeLibDir}/org.graceframework")
-            } else {
-                ant.copy(file: artifact.file, todir: "${homeLibDir}/${dependency.group}/${dependency.name}/jars")
-            }
-        }
-    }
-}
-
-class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
+abstract class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
     @org.gradle.api.tasks.Internal
     Collection<String> projectArtifacts=[]
 
@@ -52,6 +25,33 @@ class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateSt
         generator.scriptRelPath = "bin/${getUnixScript().name}"
         generator.generateUnixScript(getUnixScript())
         generator.generateWindowsScript(getWindowsScript())
+    }
+}
+
+task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
+    description = "Creates OS specific scripts to run grace-shell as a JVM application."
+    mainClass = 'org.grails.cli.GrailsCli'
+    applicationName = 'grace'
+    defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
+    outputDir = file('bin')
+    classpath = rootProject.childProjects['grace-shell'].configurations.runtimeClasspath
+    projectArtifacts = rootProject.childProjects['grace-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
+    doLast {
+        ant.replace(file: file('bin/grace'), token: 'APP_HOME', value: 'GRACE_HOME')
+        ant.replace(file: file('bin/grace.bat'), token: 'APP_HOME', value: 'GRACE_HOME')
+        ant.replace(file: file('bin/grace'), token: 'media/gradle.icns', value: 'media/icons/grace.icns')
+        ant.chmod(file: file('bin/grace'), perm: 'ugo+rx')
+
+        def resolvedArtifacts = rootProject.childProjects['grace-shell']
+                .configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts
+        for (artifact in resolvedArtifacts) {
+            def dependency = artifact.moduleVersion.id
+            if (dependency.group == 'org.graceframework') {
+                ant.copy(file: artifact.file, todir: "${homeLibDir}/org.graceframework")
+            } else {
+                ant.copy(file: artifact.file, todir: "${homeLibDir}/${dependency.group}/${dependency.name}/jars")
+            }
+        }
     }
 }
 
