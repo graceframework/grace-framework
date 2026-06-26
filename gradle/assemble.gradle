@@ -1,48 +1,14 @@
 // Gradle assemble tasks
+import org.grails.gradle.GraceCreateStartScripts
 
-abstract class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
-    @org.gradle.api.tasks.Internal
-    org.gradle.api.resources.TextResource unixStartScriptTemplate
-    @org.gradle.api.tasks.Internal
-    org.gradle.api.resources.TextResource windowsStartScriptTemplate
-
-    @org.gradle.api.tasks.Internal
-    Collection<String> projectArtifacts = []
-
-    @org.gradle.api.tasks.TaskAction
-    void generate() {
-        def generator = new org.gradle.api.internal.plugins.StartScriptGenerator()
-        generator.unixStartScriptGenerator.template = unixStartScriptTemplate
-        generator.windowsStartScriptGenerator.template = windowsStartScriptTemplate
-        generator.applicationName = getApplicationName()
-        generator.mainClassName = getMainClass().get()
-        generator.defaultJvmOpts = getDefaultJvmOpts()
-        generator.optsEnvironmentVar = getOptsEnvironmentVar()
-        generator.exitEnvironmentVar = getExitEnvironmentVar()
-        generator.classpath = projectArtifacts + getClasspath().resolvedConfiguration.resolvedArtifacts.collect { artifact ->
-            def dependency = artifact.moduleVersion.id
-            String installedFile = "lib/$dependency.group/$dependency.name/jars/$artifact.file.name"
-            if (dependency.group == 'org.graceframework') {
-                installedFile = "dist/$artifact.file.name"
-            }
-            installedFile
-        }
-        generator.scriptRelPath = "bin/${getUnixScript().name}"
-        generator.generateUnixScript(getUnixScript())
-        generator.generateWindowsScript(getWindowsScript())
-    }
-}
-
-tasks.register('grailsCreateStartScripts', GrailsCreateStartScripts) {
-    description = "Creates OS specific scripts to run grace-shell as a JVM application."
-    mainClass = 'org.grails.cli.GrailsCli'
-    applicationName = 'grace'
+tasks.register('createGraceStartScripts', GraceCreateStartScripts) {
     defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
     outputDir = file('bin')
     classpath = rootProject.childProjects['grace-shell'].configurations.runtimeClasspath
     unixStartScriptTemplate = rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/unixStartScript.txt')
     windowsStartScriptTemplate = rootProject.childProjects['grace-shell'].resources.text.fromFile('src/main/resources/windowsStartScript.txt')
     projectArtifacts = rootProject.childProjects['grace-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
+
     doLast {
         ant.replace(file: file('bin/grace'), token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: file('bin/grace.bat'), token: 'APP_HOME', value: 'GRACE_HOME')
@@ -62,9 +28,9 @@ tasks.register('grailsCreateStartScripts', GrailsCreateStartScripts) {
 }
 
 tasks.register('install') {
-    dependsOn = [grailsCreateStartScripts]
+    dependsOn = [createGraceStartScripts]
     subprojects { Project project ->
-        if(project.name != 'docs' && !project.name.startsWith('grace-test-suite')) {
+        if (project.name != 'docs' && !project.name.startsWith('grace-test-suite')) {
             dependsOn("$project.name:publishToMavenLocal")
         }
     }
@@ -82,7 +48,7 @@ tasks.register('publishToDist') {
 }
 
 tasks.register('binZip', Zip) {
-    dependsOn = [publishToDist, grailsCreateStartScripts]
+    dependsOn = [publishToDist, createGraceStartScripts]
     destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
