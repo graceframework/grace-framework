@@ -27,7 +27,7 @@ import org.gradle.api.tasks.JavaExec
  * @since 3.0
  */
 @CompileStatic
-class ApplicationContextCommandTask extends JavaExec {
+abstract class ApplicationContextCommandTask extends JavaExec {
 
     ApplicationContextCommandTask() {
         getMainClass().set('grails.ui.command.GrailsApplicationCommandRunner')

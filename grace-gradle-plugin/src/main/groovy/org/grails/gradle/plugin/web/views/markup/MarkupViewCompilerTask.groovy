@@ -31,7 +31,7 @@ import org.grails.gradle.plugin.web.views.AbstractGroovyTemplateCompileTask
  * @since 2024.0.0
  */
 @CompileStatic
-class MarkupViewCompilerTask extends AbstractGroovyTemplateCompileTask {
+abstract class MarkupViewCompilerTask extends AbstractGroovyTemplateCompileTask {
 
     final String description = 'Compiles the Grace markup views (GML).'
 

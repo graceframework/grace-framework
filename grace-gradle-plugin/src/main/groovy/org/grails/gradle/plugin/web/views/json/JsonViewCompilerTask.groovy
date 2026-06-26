@@ -31,7 +31,7 @@ import org.grails.gradle.plugin.web.views.AbstractGroovyTemplateCompileTask
  * @since 2024.0.0
  */
 @CompileStatic
-class JsonViewCompilerTask extends AbstractGroovyTemplateCompileTask {
+abstract class JsonViewCompilerTask extends AbstractGroovyTemplateCompileTask {
 
     final String description = 'Compiles the Grace JSON views (GSON).'
 
