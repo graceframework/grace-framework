@@ -4,13 +4,14 @@ buildscript {
     }
     dependencies {
         classpath libs.groovy.toml
-        classpath "org.graceframework:grace-gradle-plugin:2024.0.0"
     }
 }
 
-apply plugin: 'groovy'
-apply plugin: 'java-library'
-apply plugin: 'org.graceframework.grace-doc'
+plugins {
+    id 'groovy'
+    id 'java-library'
+    id 'org.graceframework.grace-doc' version '2024.1.1'
+}
 
 def DOCUMENTATION_GROUP = 'Documentation'
 
