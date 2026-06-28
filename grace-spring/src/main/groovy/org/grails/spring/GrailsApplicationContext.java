@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,15 +28,13 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.ui.context.Theme;
-import org.springframework.ui.context.ThemeSource;
-import org.springframework.ui.context.support.UiApplicationContextUtils;
 
 /**
  * An ApplicationContext that extends StaticApplicationContext and implements GroovyObject such that
  * beans can be retrieved with the dot de-reference syntax instead of using getBean('name').
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 public class GrailsApplicationContext extends GenericApplicationContext implements GroovyObject {
@@ -44,9 +42,6 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
     protected MetaClass metaClass;
 
     private final BeanWrapper ctxBean = new BeanWrapperImpl(this);
-
-    @Deprecated(since = "2024.0.0", forRemoval = true)
-    private ThemeSource themeSource;
 
     private static final String GRAILS_ENVIRONMENT_BEAN_NAME = "springEnvironment";
 
@@ -106,20 +101,6 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
     @Override
     public void setMetaClass(MetaClass metaClass) {
         this.metaClass = metaClass;
-    }
-
-    /**
-     * Initialize the theme capability.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    protected void onRefresh() {
-        this.themeSource = UiApplicationContextUtils.initThemeSource(this);
-    }
-
-    @Deprecated(since = "2024.0.0", forRemoval = true)
-    public Theme getTheme(String themeName) {
-        return this.themeSource.getTheme(themeName);
     }
 
     @Override

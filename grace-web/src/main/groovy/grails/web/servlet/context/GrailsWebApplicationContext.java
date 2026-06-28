@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.ui.context.ThemeSource;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ConfigurableWebEnvironment;
@@ -46,12 +45,12 @@ import org.grails.spring.GrailsApplicationContext;
  * A WebApplicationContext that extends StaticApplicationContext to allow for programmatic
  * configuration at runtime. The code is adapted from StaticWebApplicationContext.
  *
- * @author Graeme
+ * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.3
  */
-@SuppressWarnings("deprecation")
 public class GrailsWebApplicationContext extends GrailsApplicationContext
-        implements ConfigurableWebApplicationContext, ThemeSource {
+        implements ConfigurableWebApplicationContext {
 
     private ServletContext servletContext;
 
