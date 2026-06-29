@@ -2,7 +2,7 @@
 asset-pipeline = "7.2.0-M1"
 
 [profiles]
-base = "2024.1.0"
+base = "2024.2.0-M1"
 plugin = "2024.1.0"
 profile = "2024.1.0"
 rest-api = "2024.1.0"
