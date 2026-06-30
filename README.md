@@ -15,36 +15,91 @@
 [![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.5.16-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.5.16)
 
 
-[Grace framework](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
+[Grace Framework](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
 
-## Why Grace?
+## Why Grace Framework?
 
-Grace inherits the excellent concepts and designs of Grails, and based on this, has undergone significant restructuring to ensure that each module is independent and decoupled, such as [Grace API](/grace-api), [Grace Boot](/grace-boot), [Grace CLI](/grace-cli), [Grace Plugin API](/grace-plugin-api), [Grace Spring](/grace-spring), [Grace Util](/grace-util). Meanwhile, in order to better focus on maintenance and upgrades, Grace also merged the previously spun-off modules, [Converters plugin](/grace-plugin-converters), [GSP](/grace-plugin-gsp), [Grace Test Support](/grace-test-support). [Grace Boot](/grace-boot/README.md), as an [Auto-configuration](/grace-boot/src/main/groovy/grails/boot/config/GrailsAutoConfiguration.java), it will load all other modules and plugins. Grace follows good modular design, and these modules can be used independently in Spring Boot applications.
+Grace framework inherits the excellent concepts and designs of Grails, and based on this, has undergone significant restructuring to ensure that each module is independent and decoupled, such as [Grace API](/grace-api), [Grace Boot](/grace-boot), [Grace CLI](/grace-cli), [Grace Plugin API](/grace-plugin-api), [Grace Spring](/grace-spring), [Grace Util](/grace-util). Meanwhile, in order to better focus on maintenance and upgrades, Grace also merged the previously spun-off modules, [Converters plugin](/grace-plugin-converters), [GSP](/grace-plugin-gsp), [Grace Test Support](/grace-test-support). [Grace Boot](/grace-boot/README.md), as a Spring Boot [Auto-configuration](/grace-boot/src/main/groovy/grails/boot/config/GrailsAutoConfiguration.java), it will load all other modules and plugins. Grace framework follows good modular design, and these modules can be used independently in Spring Boot applications.
 
-Spring is the foundation for Grace, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace has rewritten `Plugin.doWithSpring()` using Spring Boot's [Auto-configuration](https://docs.spring.io/spring-boot/reference/using/auto-configuration.html), which also reduces redundant configurations and provides significant performance improvements. Grace has also provided [Configuration Metadata](https://docs.spring.io/spring-boot/specification/configuration-metadata/index.html) files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.
+Spring is the foundation for Grace framework, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace framework has rewritten `Plugin.doWithSpring()` using Spring Boot's [Auto-configuration](https://docs.spring.io/spring-boot/reference/using/auto-configuration.html), which also reduces redundant configurations and provides significant performance improvements. Grace framework has also provided [Configuration Metadata](https://docs.spring.io/spring-boot/specification/configuration-metadata/index.html) files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.
 
-It is worth mentioning that Grace supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0), and [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0). This makes the upgrade path easier and more manageable.
+It is worth mentioning that Grace framework supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0), and [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0). This makes the upgrade path easier and more manageable.
 
-Grace has been actively developing, bringing numerous improvements and new features, including [API](/grace-api/README.md), [Boot](/grace-boot/README.md), [Core](/grace-core/README.md), [Plugins](/grace-plugin-api/README.md), [Dynamic Modules](/grace-plugin-dynamic-modules/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), [Views](/grace-views-core/README.md), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5&6, this makes developers happy.
+Grace framework has been actively developing, bringing numerous improvements and new features, including [API](/grace-api/README.md), [Boot](/grace-boot/README.md), [Core](/grace-core/README.md), [Plugins](/grace-plugin-api/README.md), [Dynamic Modules](/grace-plugin-dynamic-modules/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), [Views](/grace-views-core/README.md), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5&6, this makes developers happy.
 
 You can learn more on the page [What's New in Grace Framework](https://github.com/graceframework/grace-framework/wiki/What's-New-in-Grace-Framework).
 
-### Grace vs Spring Boot
+### Grace Framework vs Spring Boot
 
 Grace and Spring Boot frameworks are excellent for building web applications, but their use depends on what you want. Generally, Grace framework may be advantageous in full-stack and monolithic applications, but Spring Boot is preferred for developing complex and microservice applications.
 
-Grace is not a replacement for Spring Boot, it is built on top of Spring Boot. It provides its' own [Spring Boot Starters](https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.custom-starter) - [Grace Boot](/grace-boot/README.md), as an [AutoConfiguration](/grace-boot/src/main/groovy/grails/boot/config/GrailsAutoConfiguration.java), it will load all other modules and plugins. Grace follows good modular design, and these modules can be used independently in Spring Boot applications. So, a Grace application is really a Spring Boot application.
+Grace framework is not a replacement for Spring Boot, it is a "framework of frameworks" built on top of Spring Boot. It provides its' own [Spring Boot Starters](https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.custom-starter) - [Grace Boot](/grace-boot/README.md), as an [AutoConfiguration](/grace-boot/src/main/groovy/grails/boot/config/GrailsAutoConfiguration.java), it will load all other modules and plugins. Grace framework follows good modular design, and these modules can be used independently in Spring Boot applications. So, a Grace application is really a Spring Boot application. And Grace plugins also gives your applications more extended capabilities, like Dynamic Modules, Runtime Hooks, Artifacts, Scaffold Templates and Taglibs, so you can write less code and get more done. That's the secret to boosting development efficiency.
 
-Grace has better developer productivity than Spring Boot. Because it follows the convention over the configuration principle, it minimizes code requirements. This enhances productivity and fosters faster app development. The framework creates faster and more functional prototypes than Spring Boot due to its simple code generation like scaffolding and CoC.
+Grace framework has better developer productivity than Spring Boot. Because it follows the convention over the configuration principle, it minimizes code requirements. This enhances productivity and fosters faster app development. The framework creates faster and more functional prototypes than Spring Boot due to its simple code generation like scaffolding and CoC.
 
-Grace has better support Groovy than Spring Boot. Grace fully embraces Groovy to enable many features that would not be possible using Java alone, including flexible and powerful [Plug-in architecture](/grace-plugin-api/README.md) and a rich [Plugin ecosystem](https://github.com/grace-plugins) and many built-in [Dynamic Module types](https://github.com/grace-plugins/grace-dynamic-modules), many [DSLs](https://docs.groovy-lang.org/latest/html/documentation/#_domain_specific_languages), [AST Transformations](https://docs.groovy-lang.org/latest/html/documentation/#_available_ast_transformations), [Trait](https://docs.groovy-lang.org/latest/html/documentation/#_traits)-based solutions, and much more.
+Grace framework has better support Groovy than Spring Boot. Grace framework fully embraces Groovy to enable many features that would not be possible using Java alone, including flexible and powerful [Plug-in architecture](/grace-plugin-api/README.md) and a rich [Plugin ecosystem](https://github.com/grace-plugins) and many built-in [Dynamic Module types](https://github.com/grace-plugins/grace-dynamic-modules), many [DSLs](https://docs.groovy-lang.org/latest/html/documentation/#_domain_specific_languages), [AST Transformations](https://docs.groovy-lang.org/latest/html/documentation/#_available_ast_transformations), [Trait](https://docs.groovy-lang.org/latest/html/documentation/#_traits)-based solutions, and much more.
 
-Grace provides a powerful [CLI](/grace-shell/README.md) that allows you to quickly create new projects of many different types using [Application Profiles](https://github.com/grace-profiles) and [Templates](https://github.com/grace-templates) and get started easily. These are all extensible and easy to customize, you can create your own Profiles, Templates, and Commands to meet any of your needs. The learning curve for Grace is moderate and more straightforward than Spring Boot due to its emphasis on convention and simplicity.
+Grace framework provides a powerful [CLI](/grace-shell/README.md) that allows you to quickly create new projects of many different types using [Application Profiles](https://github.com/grace-profiles) and [Templates](https://github.com/grace-templates) and get started easily. These are all extensible and easy to customize, you can create your own Profiles, Templates, and Commands to meet any of your needs. The learning curve for Grace framework is moderate and more straightforward than Spring Boot due to its emphasis on convention and simplicity.
 
 [Spring Boot 4 has refactored its codebase into a more modular structure](https://spring.io/blog/2025/10/28/modularizing-spring-boot), this is the right direction for the future.
-Grace framework 2024 & 2025 will also start doing this. Grace's plugins will be independent, more focused, and at the same time, they will integrate better with Spring Boot's modules.
+Grace framework 2024.0 and 2024.1 have been released, and have refactored a lot of the core plugins and modules. Grace's plugins will be independent, more focused, and at the same time, they will integrate better with Spring Boot's modules.
 
-You can learn more on the page [Grace vs Spring Boot](https://github.com/graceframework/grace-framework/wiki/Grace-vs-Spring-Boot).
+You can learn more on the page [Grace Framework vs Spring Boot](https://github.com/graceframework/grace-framework/wiki/Grace-vs-Spring-Boot).
+
+## What's New in Grace Framework?
+
+| Grace Version | Dependency Upgrades | New Features and Important Changes |
+|---------------|---------------------|------------------------------------|
+| 2024.2.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, Spock 2.4 | Improve support Hibernate 5&6, Gradle build performance |
+| 2024.1.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, SiteMesh 2.7.0 | New Commands and Generators, Restructure directory structure fro all Profiles, Restore dynamic-modules, Better integration for GORM Entity, Support combined use of MongoDB and Hibernate |
+| 2024.0.x      | Spring Boot 3.4, Spring Framework 6.2, Groovy 4.0, SiteMesh 2.6.2 | Modularize codebase, Migrate to Central Portal OSSRH Staging API, Core Plugins Merged into the Framework, Decouple GORM from Grace framework, Restore dynamic-modules |
+| 2023.3.x      | Spring Boot 3.3, Spring Framework 6.1, Groovy 4.0 | Refactoring `grace-docs` and Gradle Guide Publish plugin. Grace Data MongoDB. Many improvements for CLI, Support Groovy Template in the skeleton of Profile |
+| 2023.2.x      | Spring Boot 3.2, Spring Framework 6.1, Groovy 4.0 | GORM domain inheritance with Groovy 4. Gradle deprecation warning fixes. Upgraded to Spring 6.1.x, JUnit 5.10.x, H2 2.2.224. |
+| 2023.1.x      | Spring Boot 3.1, Spring Framework 6.0, Groovy 4.0 | Support for Groovy 4/5, Migrate many Plugins to Spring Boot's AutoConfiguration |
+| 2023.0.x      | Spring Boot 3.0, Spring Framework 6.0, Groovy 4.0 | Jakarta migration. JDK 17 baseline. Removal of GORM for JPA, Remove supports for Micronaut Spring, Better support integration with other View templates, Auto-configure GroovyPages plugin, Improve the Shell and Console, Application Templates with Groovy scripts and Ant tasks, Namespaced Command |
+| 2022.2.x      | Spring Boot 2.7, Spring Framework 5.3, Groovy 3.0, SiteMesh 2.4.4, JSP 2.2 and JSTL 1.2 | Migrated to Gradle 8, Merging GSP into the framework with many improvements for GSP, Support for RxJava 3.0, Removed support for JPA Entity from GORM, database-migration as a default feature |
+| 2022.1.x      | Spring Boot 2.7, Spring Framework 5.3, Groovy 3.0, Gradle 7.6 | Migrated to Gradle 7, Integrated Spring Boot CLI, Adding Grails Dynamic Modules |
+| 2022.0.x      | Spring Boot 2.7, Spring Framework 5.3, Groovy 3.0, Hibernate 5.6.15.Final | Migration and rebranding from Grails, initial release of the Grace Framework |
+
+## Grace Roadmap
+
+Grace framework 2025 will build on Spring Boot 4.x, upgrade to Spring Framework 7.x and Groovy 5.0, provides many more core plugins and modules, such as Admin, Jobs, Mail, Security, Web Async and Socket, also provides built-in support for [HTMX](https://htmx.org), [Unpoly](https://unpoly.com), and [Hotwire (Turbo & Stimulus)](https://hotwired.dev).
+
+### Grace 2025
+
+* Groovy 5
+* Java 25
+* Spring Boot 4
+* Spring Framework 7
+* Hibernate 7
+* Gradle 9
+
+### Grace 2024 (Active Development)
+
+* Groovy 4
+* Java 17
+* Spring Boot 3.5
+* Spring Framework 6.2
+* Hibernate 5&6
+* Gradle 8.14
+
+## Version Support
+
+To make it easier for users to use and upgrade, [Grace Framework](https://github.com/graceframework/grace-framework) adopts a version policy consistent with the [Spring Boot](https://github.com/spring-projects/spring-boot).
+
+
+| Grace Version | Groovy Version | Spring Boot Version |
+|---------------|----------------|---------------------|
+| [2024.2.x](/tree/2024.2.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.5.x](https://docs.spring.io/spring-boot/3.5/index.html) |
+| [2024.1.x](/tree/2024.1.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.5.x](https://docs.spring.io/spring-boot/3.5/index.html) |
+| [2024.0.x](/tree/2024.0.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.4.x](https://docs.spring.io/spring-boot/3.4/index.html) |
+| [2023.3.x](/tree/2023.3.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.3.x](https://docs.spring.io/spring-boot/3.3/index.html) |
+| [2023.2.x](/tree/2023.2.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.2.x](https://docs.spring.io/spring-boot/docs/3.2.12/reference/html/) |
+| [2023.1.x](/tree/2023.1.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.1.x](https://docs.spring.io/spring-boot/docs/3.1.12/reference/html/) |
+| [2023.0.x](/tree/2023.0.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.0.x](https://docs.spring.io/spring-boot/docs/3.0.13/reference/html/) |
+| [2022.2.x](/tree/2022.2.x) | [3.0](https://groovy-lang.org/releasenotes/groovy-3.0.html) | [2.7.x](https://docs.spring.io/spring-boot/docs/2.7.18/reference/html/) |
+| [2022.1.x](/tree/2022.1.x) | [3.0](https://groovy-lang.org/releasenotes/groovy-3.0.html) | [2.7.x](https://docs.spring.io/spring-boot/docs/2.7.18/reference/html/) |
+| [2022.0.x](/tree/2022.0.x) | [3.0](https://groovy-lang.org/releasenotes/groovy-3.0.html) | [2.7.x](https://docs.spring.io/spring-boot/docs/2.7.18/reference/html/) |
 
 ## Getting Started
 
@@ -138,7 +193,7 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 
 ## Ducumentation
 
-* [2024.1.x](https://graceframework.org/grace-framework/2024.1.x/)
+* [2024.2.x](https://graceframework.org/grace-framework/2024.2.x/)
 
 ## License
 
