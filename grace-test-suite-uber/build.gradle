@@ -13,49 +13,25 @@ dependencies {
 
     testImplementation project(":grace-boot")
     testImplementation project(":grace-plugin-codecs")
-    testImplementation project(":grace-plugin-domain-class")
-    testImplementation project(":grace-plugin-url-mappings")
-    testImplementation project(":grace-plugin-datasource")
-    testImplementation project(":grace-plugin-services")
-    testImplementation project(":grace-plugin-rest")
-    testImplementation project(":grace-plugin-i18n")
     testImplementation project(":grace-plugin-databinding")
+    testImplementation project(":grace-plugin-datasource")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-gsp")
+    testImplementation project(":grace-plugin-i18n")
+    testImplementation project(":grace-plugin-rest")
+    testImplementation project(":grace-plugin-services")
+    testImplementation project(":grace-plugin-url-mappings")
     testImplementation project(":grace-spring")
     testImplementation project(":grace-test-support")
-    testImplementation libs.grace.datastore.gorm.hibernate, {
-        exclude group: 'org.graceframework', module:'grace-datastore-gorm'
-        exclude group: 'org.graceframework', module:'grace-datastore-core'
-        exclude group: 'org.springframework', module:'spring-core'
-        exclude group: 'org.springframework', module:'spring-context'
-        exclude group: 'org.springframework', module:'spring-web'
-        exclude group: 'org.springframework', module:'spring-beans'
-        exclude group: 'org.springframework', module:'spring-tx'
-        exclude group: 'org.slf4j', module:'jcl-over-slf4j'
-        exclude group: 'org.slf4j', module:'jul-to-slf4j'
-        exclude group: 'org.slf4j', module:'slf4j-api'
-        exclude group: 'org.slf4j', module:'slf4j-simple'
-        exclude group: 'org.graceframework', module:'grace-bootstrap'
-        exclude group: 'org.graceframework', module:'grace-plugin-domain-class'
-        exclude group: 'org.graceframework', module:'grace-core'
-        exclude group: 'org.graceframework', module:'grace-web'
-        exclude group: 'org.graceframework', module:'grace-test'
-        exclude group: 'org.graceframework', module:'grace-async'
-        exclude group: 'org.graceframework', module:'grace-spring'
-        exclude group: 'commons-collections', module:'commons-collections'
-        exclude group: 'commons-lang', module:'commons-lang'
-        exclude group: 'javassit', module:'javassist'
-        exclude group: 'java-persistence', module:'persistence-api'
-        exclude group: 'javassist', module: 'javassist'
-    }
     testImplementation libs.grace.async.core
-    testImplementation project(":grace-plugin-gsp")
+    testImplementation libs.grace.datastore.gorm
 
-    testRuntimeOnly libs.h2
     testRuntimeOnly libs.aspectj.rt
     testRuntimeOnly libs.aspectj.weaver
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.jakarta.el
     testRuntimeOnly libs.jakarta.servlet.jsp
     testRuntimeOnly libs.jakarta.servlet.jsp.jstl
-    testRuntimeOnly libs.jakarta.el
     testRuntimeOnly libs.spring.aspects
 }
 

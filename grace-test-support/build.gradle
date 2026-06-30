@@ -8,22 +8,22 @@ dependencies {
     api project(":grace-plugin-rest")
     api project(":grace-test")
 
-    api libs.grace.async.core
     api project(":grace-plugin-gsp")
     api project(":grace-plugin-taglibs")
     api project(":grace-views-json")
     api project(":grace-web-gsp")
-    api libs.groovy.test.junit5
+    api libs.grace.async.core
     api libs.grace.datastore.gorm
     api libs.grace.datastore.gorm.support
     api libs.grace.datastore.gorm.test
+    api libs.groovy.test.junit5
     api libs.junit.jupiter.api
     api libs.junit.platform.runner
-    api libs.javassist
     api libs.jakarta.servlet
-    api libs.spring.test
-    api libs.spring.boot.test
+    api libs.javassist
     api libs.spock.core
     api libs.spock.spring
+    api libs.spring.boot.test
+    api libs.spring.test
     runtimeOnly libs.junit.jupiter.engine
 }

@@ -6,10 +6,10 @@ dependencies {
     api project(":grace-plugin-core")
     api project(":grace-plugin-domain-class")
     api project(":grace-spring")
-    api project(":grace-web")
     api project(":grace-test")
+    api project(":grace-web")
 
-    compileOnly libs.jakarta.servlet
     compileOnly libs.grace.datastore.gorm.support
+    compileOnly libs.jakarta.servlet
     testImplementation libs.jakarta.servlet
 }
