@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.grails.datastore.gorm.transform.GormASTTransformationClass;
  *
  * @author Jeff Brown
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2024.0.0
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
@@ -49,7 +50,7 @@ public @interface Cacheable {
      * <p>May be used to determine the target cache (or caches), matching the
      * qualifier value.
      */
-    String[] value();
+    String[] value() default {};
 
     /**
      * A closure for computing the key dynamically.

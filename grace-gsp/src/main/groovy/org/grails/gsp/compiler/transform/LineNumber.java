@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2022 the original author or authors.
+ * Copyright 2003-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,15 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
 
 /**
  * @author Andrew Eisenberg
+ * @author Michael Yan
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target({ ElementType.TYPE })
 @GroovyASTTransformationClass({ "org.grails.gsp.compiler.transform.LineNumberTransform" })
 public @interface LineNumber {
 
-    int[] lines();
+    int[] lines() default {};
 
-    String sourceName();
+    String sourceName() default "";
 
 }

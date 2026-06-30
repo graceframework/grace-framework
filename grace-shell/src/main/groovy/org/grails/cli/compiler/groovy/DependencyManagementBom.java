@@ -26,6 +26,7 @@ import java.lang.annotation.Target;
  * resolving {@code @Grab} dependencies.
  *
  * @author Andy Wilkinson
+ * @author Michael Yan
  * @since 2022.1.0
  */
 @Target({ ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD,
@@ -40,6 +41,6 @@ public @interface DependencyManagementBom {
      * default dependency management.
      * @return the BOM coordinates
      */
-    String[] value();
+    String[] value() default {};
 
 }

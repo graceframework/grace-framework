@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,14 @@ import java.lang.annotation.Target;
  * fallback to runtime enhancement if compile time enhancement does not occur.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 public @interface Enhanced {
 
-    String version();
+    String version() default "";
 
     String[] enhancedFor() default {};
 

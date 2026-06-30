@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  * argument to every method is 'this'.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @java.lang.annotation.Documented
@@ -38,6 +39,6 @@ public @interface ApiDelegate {
     /**
      * @return The super class to check for in the first argument of api methods
      */
-    Class<?> value();
+    Class<?> value() default Object.class;
 
 }

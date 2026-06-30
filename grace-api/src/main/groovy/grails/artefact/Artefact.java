@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  * Used to define the artefact type for classes declared outside of Grails' usual conventions.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,6 +34,6 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
 @GroovyASTTransformationClass("org.grails.compiler.injection.ArtefactTypeAstTransformation")
 public @interface Artefact {
 
-    String value();
+    String value() default "";
 
 }
