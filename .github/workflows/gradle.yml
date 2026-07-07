@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
       - name: Run Build
         id: build
         run: ./gradlew build -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
@@ -50,7 +50,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
       - name: Generate secring file
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
