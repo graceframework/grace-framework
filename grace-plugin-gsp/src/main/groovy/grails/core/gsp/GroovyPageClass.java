@@ -13,30 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.artefact;
+package grails.core.gsp;
+
+import grails.core.GrailsClass;
 
 /**
- * The definition of the artefact types.
+ * Groovy Page class
  *
  * @author Michael Yan
- * @since 2024.0.0
+ * @since 2024.2.0
  */
-public final class ArtefactTypes {
-
-    public static final String APPLICATION = "Application";
-
-    public static final String BOOTSTRAP = "Bootstrap";
-
-    public static final String CONTROLLER = "Controller";
-
-    public static final String DOMAIN_CLASS = "Domain";
-
-    public static final String GROOVY_PAGE = "GroovyPage";
-
-    public static final String SERVICE = "Service";
-
-    public static final String TAG_LIBRARY = "TagLib";
-
-    public static final String URL_MAPPINGS = "UrlMappings";
-
+public interface GroovyPageClass extends GrailsClass {
 }

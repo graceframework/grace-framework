@@ -13,30 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.artefact;
+package org.grails.core.gsp;
+
+import grails.core.gsp.GroovyPageClass;
+import org.grails.core.AbstractGrailsClass;
 
 /**
- * The definition of the artefact types.
+ * Default Groovy Page class
  *
  * @author Michael Yan
- * @since 2024.0.0
+ * @since 2024.2.0
  */
-public final class ArtefactTypes {
+public class DefaultGroovyPageClass extends AbstractGrailsClass implements GroovyPageClass {
 
-    public static final String APPLICATION = "Application";
-
-    public static final String BOOTSTRAP = "Bootstrap";
-
-    public static final String CONTROLLER = "Controller";
-
-    public static final String DOMAIN_CLASS = "Domain";
-
-    public static final String GROOVY_PAGE = "GroovyPage";
-
-    public static final String SERVICE = "Service";
-
-    public static final String TAG_LIBRARY = "TagLib";
-
-    public static final String URL_MAPPINGS = "UrlMappings";
+    /**
+     * Used by all child classes to create a new instance and get the name right.
+     *
+     * @param clazz the Grails class
+     */
+    public DefaultGroovyPageClass(Class<?> clazz) {
+        super(clazz, "_gsp");
+    }
 
 }
