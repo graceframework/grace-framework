@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,23 @@
  */
 package grails.compiler.ast;
 
+import org.codehaus.groovy.ast.ClassHelper;
+import org.codehaus.groovy.ast.ClassNode;
+
+import org.grails.gsp.GroovyPage;
+
 /**
  * Extended marker interface that indicates this ClassInjector applies to GSPs.
  *
  * @author Stephane Maldini
+ * @author Michael Yan
  * @since 2.0
  */
 public interface GroovyPageInjector extends ClassInjector {
-    // marker
+
+    @Override
+    default boolean shouldInject(ClassNode classNode) {
+        return classNode.isDerivedFrom(ClassHelper.make(GroovyPage.class));
+    }
+
 }

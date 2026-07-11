@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,15 @@ import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.Phases
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 
 import grails.config.ConfigMap
 
+import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.config.CodeGenConfig
+import org.grails.gsp.GroovyPageClassLoader
 import org.grails.gsp.GroovyPageMetaInfo
-import org.grails.gsp.compiler.transform.GroovyPageInjectionOperation
+import org.grails.gsp.compiler.transform.GroovyPageTransform
 import org.grails.taglib.encoder.OutputEncodingSettings
 
 /**
@@ -53,9 +56,9 @@ class GroovyPageCompiler {
     private final Object mutexObject = new Object()
     File generatedGroovyPagesDirectory
     File targetDir
-    CompilerConfiguration compilerConfig = new CompilerConfiguration()
-    GroovyPageInjectionOperation operation = new GroovyPageInjectionOperation()
-    GroovyClassLoader classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, compilerConfig)
+    CompilerConfiguration compilerConfig
+    GrailsAwareInjectionOperation operation
+    GroovyPageClassLoader classLoader
 
     List<File> srcFiles = []
     File viewsDir
@@ -67,14 +70,20 @@ class GroovyPageCompiler {
     ConfigMap configMap
     ExecutorService threadPool
 
+    GroovyPageCompiler() {
+        this.compilerConfig = new CompilerConfiguration()
+        this.operation = new GrailsAwareInjectionOperation()
+        this.classLoader = new GroovyPageClassLoader(Thread.currentThread().contextClassLoader, this.compilerConfig)
+    }
+
     void setCompilerConfig(CompilerConfiguration c) {
-        compilerConfig = c
-        classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, compilerConfig)
+        this.compilerConfig = c
+        this.classLoader = new GroovyPageClassLoader(Thread.currentThread().contextClassLoader, this.compilerConfig)
     }
 
     void setCleanCompilerConfig(CompilerConfiguration c) {
-        compilerConfig = c
-        classLoader = new GroovyClassLoader(System.classLoader, compilerConfig)
+        this.compilerConfig = c
+        this.classLoader = new GroovyPageClassLoader(System.classLoader, this.compilerConfig)
     }
 
     /**
@@ -121,7 +130,9 @@ class GroovyPageCompiler {
                         for (int gspIndex = 0; gspIndex < gspFiles.size(); gspIndex++) {
                             File gsp = gspFiles[gspIndex]
                             try {
-                                compileGSP(viewsDir, gsp, viewPrefix, packagePrefix, results)
+                                CompilerConfiguration configuration = new CompilerConfiguration(this.compilerConfig)
+                                configuration.addCompilationCustomizers(new ASTTransformationCustomizer(new GroovyPageTransform()))
+                                compileGSP(configuration, viewsDir, gsp, viewPrefix, packagePrefix, results)
                             }
                             catch (Exception ex) {
                                 LOG.error("Error Compiling GSP File: ${gsp.name} - ${ex.message}")
@@ -178,7 +189,7 @@ class GroovyPageCompiler {
      * @param packagePrefix The package prefix to use which allows scoping for different applications and plugins
      *
      */
-    protected Map compileGSP(File viewsDir, File gspfile, String viewPrefix, String packagePrefix, Map compileGSPResults) {
+    protected Map compileGSP(CompilerConfiguration configuration, File viewsDir, File gspfile, String viewPrefix, String packagePrefix, Map compileGSPResults) {
         String relPath = relativePath(viewsDir, gspfile)
         String viewuri = viewPrefix + relPath
 
@@ -236,7 +247,7 @@ class GroovyPageCompiler {
                 // register viewuri -> classname mapping
                 compileGSPResults[viewuri] = fullClassName
 
-                CompilationUnit unit = new CompilationUnit(compilerConfig, null, classLoader)
+                CompilationUnit unit = new CompilationUnit(configuration, null, classLoader)
                 unit.addPhaseOperation(operation, Phases.CANONICALIZATION)
                 unit.addSource(gspgroovyfile.name, gsptarget.toString())
                 // unit.addSource(gspgroovyfile)

@@ -1,2 +1,5 @@
+grails.core.ArtefactHandler=\
+org.grails.core.artefact.gsp.GroovyPageArtefactHandler
+
 grails.compiler.ast.ClassInjector=\
 org.grails.gsp.compiler.transform.GroovyPageBytecodeOptimizer
