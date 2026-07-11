@@ -15,12 +15,23 @@
  */
 package grails.compiler.ast;
 
+import org.codehaus.groovy.ast.ClassHelper;
+import org.codehaus.groovy.ast.ClassNode;
+
+import org.grails.gsp.GroovyPage;
+
 /**
  * Extended marker interface that indicates this ClassInjector applies to GSPs.
  *
  * @author Stephane Maldini
+ * @author Michael Yan
  * @since 2.0
  */
 public interface GroovyPageInjector extends ClassInjector {
-    // marker
+
+    @Override
+    default boolean shouldInject(ClassNode classNode) {
+        return classNode.isDerivedFrom(ClassHelper.make(GroovyPage.class));
+    }
+
 }

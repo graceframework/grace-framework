@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,10 @@ import org.grails.compiler.injection.GrailsAwareInjectionOperation;
  * attempt AST injection.
  *
  * @author Stephane Maldini
+ * @deprecated since 2024.2.0, in favor of {@link GrailsAwareInjectionOperation}
  * @since 2.0
  */
+@Deprecated(since = "2024.2.0", forRemoval = true)
 public class GroovyPageInjectionOperation extends GrailsAwareInjectionOperation {
 
     private GroovyPageInjector[] groovyPageInjectors;

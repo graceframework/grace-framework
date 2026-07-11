@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,13 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.Phases;
 
-import org.grails.gsp.compiler.transform.GroovyPageInjectionOperation;
+import org.grails.compiler.injection.GrailsAwareInjectionOperation;
 
 /**
  * A class loader that is aware of Groovy Pages and injection operations.
  *
  * @author Stephane Maldini
+ * @author Michael Yan
  * @since 2.0
  */
 public class GroovyPageClassLoader extends GroovyClassLoader {
@@ -57,14 +58,10 @@ public class GroovyPageClassLoader extends GroovyClassLoader {
      */
     @Override
     protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
-        CompilationUnit cu = super.createCompilationUnit(config, source);
-
-        GroovyPageInjectionOperation operation;
-
-        operation = new GroovyPageInjectionOperation();
-
-        cu.addPhaseOperation(operation, Phases.CANONICALIZATION);
-        return cu;
+        CompilationUnit compilationUnit = super.createCompilationUnit(config, source);
+        GrailsAwareInjectionOperation operation = new GrailsAwareInjectionOperation(compilationUnit);
+        compilationUnit.addPhaseOperation(operation, Phases.CANONICALIZATION);
+        return compilationUnit;
     }
 
 }
