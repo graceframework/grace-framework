@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2025 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ import grails.config.Settings;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.io.IOUtils;
+import grails.util.BuildSettings;
 import grails.util.CacheEntry;
 import grails.util.Environment;
 import grails.util.GrailsUtil;
@@ -564,14 +565,21 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         try {
             File file = res.getFile();
             if (file != null) {
-                path = file.getAbsolutePath();
+                String absolutePath = file.getAbsolutePath();
+                String basePath = BuildSettings.BASE_DIR.getAbsolutePath();
+                if (absolutePath.startsWith(basePath)) {
+                    path = absolutePath.substring(basePath.length());
+                }
+                else {
+                    path = absolutePath;
+                }
             }
         }
         catch (IOException e) {
             // ignore
         }
         if (path != null) {
-            return path;
+            return path.startsWith("/") ? path.substring(1) : path;
         }
         if (res.getDescription() != null) {
             return res.getDescription();
