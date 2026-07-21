@@ -53,22 +53,21 @@ class GroovyPageCompiler {
     private static final Log LOG = LogFactory.getLog(GroovyPageCompiler)
 
     private Map compileGSPRegistry = [:]
-    private final Object mutexObject = new Object()
-    File generatedGroovyPagesDirectory
-    File targetDir
+
     CompilerConfiguration compilerConfig
     GrailsAwareInjectionOperation operation
     GroovyPageClassLoader classLoader
 
     List<File> srcFiles = []
+    File generatedGroovyPagesDirectory
+    File targetDir
     File viewsDir
     String viewPrefix = '/'
-    String packagePrefix = 'default'
+    String packagePrefix = ''
     String encoding = 'UTF-8'
     String expressionCodec = OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.EXPRESSION_CODEC_NAME)
     String[] configs = []
     ConfigMap configMap
-    ExecutorService threadPool
 
     GroovyPageCompiler() {
         this.compilerConfig = new CompilerConfiguration()
@@ -183,11 +182,12 @@ class GroovyPageCompiler {
     /**
      * Compiles an individual GSP file
      *
+     * @param configuration The compiler configuration
      * @param viewsDir The base directory that contains the GSP view
      * @param gspfile The actual GSP file reference
      * @param viewPrefix The prefix to use for the path to the view
      * @param packagePrefix The package prefix to use which allows scoping for different applications and plugins
-     *
+     * @param compileGSPResults The compiled GSP files
      */
     protected Map compileGSP(CompilerConfiguration configuration, File viewsDir, File gspfile, String viewPrefix, String packagePrefix, Map compileGSPResults) {
         String relPath = relativePath(viewsDir, gspfile)
@@ -197,12 +197,12 @@ class GroovyPageCompiler {
 
         String packageDir = packagePrefix
         if (relPackagePath.length() > 0) {
-            if (!packageDir.endsWith('/')) {
+            if (!packageDir.isEmpty() && !packageDir.endsWith('/')) {
                 packageDir += '/'
             }
             packageDir += generateJavaName(relPackagePath)
         }
-        if (!packageDir.endsWith('/')) {
+        if (!packageDir.isEmpty() && !packageDir.endsWith('/')) {
             packageDir += '/'
         }
         String className = generateJavaName(packageDir.replace('/', '_'))

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.description = "Compiles the Groovy server pages (GSP) in 'src/main/webapp'."
             task.destinationDirectory.set(destDir)
             task.source = project.file("src/main/webapp")
-            task.packageName = project.name
+            task.packageName = ''
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/'
             task.classpath = allClasspath
@@ -77,7 +77,6 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.group = 'grace'
             task.description = 'Compiles the Groovy server pages (GSP).'
             task.destinationDirectory.set(destDir)
-            task.packageName = project.name
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/WEB-INF/grails-app/views/'
             task.classpath = allClasspath
@@ -91,6 +90,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             if (grailsAppPath) {
                 task.configDir = project.file("${grailsAppPath}/conf")
                 if (task.name == 'compileGroovyPages') {
+                    task.packageName = grailsAppPath + "/views"
                     task.source = project.file("${grailsAppPath}/views")
                 }
             }

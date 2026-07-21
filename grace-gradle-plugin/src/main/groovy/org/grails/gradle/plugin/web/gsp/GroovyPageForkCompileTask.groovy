@@ -86,7 +86,6 @@ abstract class GroovyPageForkCompileTask extends AbstractCompile {
     @Inject
     GroovyPageForkCompileTask(ExecOperations execOperations) {
         this.execOperations = execOperations
-        this.packageName = project.name ?: project.projectDir.canonicalFile.name
     }
 
     @Override
