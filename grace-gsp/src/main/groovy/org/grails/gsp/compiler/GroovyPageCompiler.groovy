@@ -32,6 +32,7 @@ import org.codehaus.groovy.control.Phases
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 
 import grails.config.ConfigMap
+import grails.util.OrderedProperties
 
 import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.config.CodeGenConfig
@@ -159,7 +160,7 @@ class GroovyPageCompiler {
                 // write the view registry to a properties file (this is read by GroovyPagesTemplateEngine at runtime)
                 File viewregistryFile = new File(targetDir, 'gsp/views.properties')
                 viewregistryFile.parentFile.mkdirs()
-                Properties views = new Properties()
+                Properties views = new OrderedProperties()
                 if (viewregistryFile.exists()) {
                     // only changed files are added to the mapping, read the existing mapping file
                     viewregistryFile.withInputStream { stream ->
