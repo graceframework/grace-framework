@@ -1,0 +1,3 @@
+<g:set var="controllerName" value="${persistentProperty.associatedEntity.decapitalizedName}"/>
+<g:set var="shortName" value="${persistentProperty.associatedEntity.javaClass.simpleName}"/>
+<g:select name="${property}" from="${type.list()}" optionKey="id" value="${value}" class="form-control custom-select col-2"/> <g:link controller="${controllerName}" action="create"><g:message code="default.create.label" args="[shortName]" default="${shortName}"/></g:link>

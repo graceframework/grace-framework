@@ -24,6 +24,27 @@ dependencies {
     testImplementation libs.jodd.wot
 }
 
+tasks.register("compileDefaultTemplates", JavaExec) {
+    it.dependsOn('classes')
+    it.mainClass.set("org.grails.web.pages.GroovyPageCompilerForkTask")
+    it.classpath(project.configurations.getByName('compileClasspath'))
+
+    def arguments = [
+            project.file("app/views").absolutePath,
+            project.layout.buildDirectory.dir("classes/gsp/main").get().asFile.canonicalPath,
+            project.layout.buildDirectory.dir('tmp/gsp').get().asFile.absolutePath,
+            '17',
+            'fields/views',
+            '/WEB-INF/grails-app/views/',
+            ',',
+            'UTF-8'
+    ]
+    it.args(arguments)
+    doFirst {
+        ant.delete(dir: 'build/classes/gsp/main')
+    }
+}
+
 tasks.register("syncScripts", Sync) {
     from("src/main/scripts")
     into("build/resources/main/META-INF/commands")
@@ -36,4 +57,9 @@ tasks.register("syncTemplates", Sync) {
 
 processResources {
     dependsOn = ["syncScripts", "syncTemplates"]
+}
+
+jar {
+    dependsOn = ["compileDefaultTemplates"]
+    from(project.layout.buildDirectory.dir("classes/gsp/main"))
 }

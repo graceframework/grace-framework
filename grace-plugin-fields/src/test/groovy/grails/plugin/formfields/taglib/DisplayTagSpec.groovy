@@ -35,8 +35,8 @@ class DisplayTagSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitT
 
         then: 'The result is a list'
         result.contains '<ol class="property-list person">'
-        result.contains '<span id="gender-label" class="property-label">Gender</span>'
-        result.contains '<div class="property-value" aria-labelledby="gender-label">Male</div>'
+        result.contains '<label id="gender-label" for="gender" class="property-label col-3 col-form-label text-end">Gender</label>'
+        result.contains '<div id="gender" class="property-value" aria-labelledby="gender-label">Male</div>'
     }
 
     void 'display tag allows to specify order'() {
@@ -45,7 +45,7 @@ class DisplayTagSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitT
         def ol = new XmlSlurper().parseText(result)
 
         then:
-        ol.li.span.collect { it.text().trim() } == ['Salutation', 'Name', 'Gender']
+        ol.li.label.collect { it.text().trim() } == ['Salutation', 'Name', 'Gender']
         ol.li.div.collect { it.text().trim() } == ['', 'Bart Simpson', 'Male']
     }
 
@@ -57,7 +57,7 @@ class DisplayTagSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitT
         def ol = new XmlSlurper().parseText(result)
 
         then:
-        ol.li.span.collect { it.text().trim() }.sort() == ['Address', 'Biography', 'Gender', 'Minor', 'Name']
+        ol.li.label.collect { it.text().trim() }.sort() == ['Address', 'Biography', 'Gender', 'Minor', 'Name']
         ol.li.div.collect { it.text().trim() }.sort() == ['', 'Bart Simpson', 'CitySpringfieldCountryUSAStreet94 Evergreen Terrace', 'Male', 'True']
     }
 
@@ -188,10 +188,10 @@ class DisplayTagSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitT
 
         then: 'the result contains all embedded address properties'
         result.contains('<ol class="property-list address">')
-        result.contains('<span id="street-label" class="property-label">Street</span>')
-        result.contains('<div class="property-value" aria-labelledby="street-label">94 Evergreen Terrace</div>')
-        result.contains('<div class="property-value" aria-labelledby="city-label">Springfield</div>')
-        result.contains('<div class="property-value" aria-labelledby="country-label">USA</div>')
+        result.contains('<label id="street-label" for="street" class="property-label col-3 col-form-label text-end">Street</label>')
+        result.contains('<div id="street" class="property-value" aria-labelledby="street-label">94 Evergreen Terrace</div>')
+        result.contains('<div id="city" class="property-value" aria-labelledby="city-label">Springfield</div>')
+        result.contains('<div id="country" class="property-value" aria-labelledby="country-label">USA</div>')
     }
 
     void 'renders many-side associations as a list of links'() {
@@ -204,7 +204,7 @@ class DisplayTagSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitT
         def result = applyTemplate('<f:display bean="author"/>', [author: author])
 
         then:
-        result.contains('<div class="property-value" aria-labelledby="books-label"><ul><li><a href="/book/show">book 1</a></li><li><a href="/book/show">book 2</a></li></ul></div>')
+        result.contains('<div id="books" class="property-value" aria-labelledby="books-label"><ul><li><a href="/book/show">book 1</a></li><li><a href="/book/show">book 2</a></li></ul></div>')
     }
 
     void 'renders one-side associations as a link'() {
@@ -216,7 +216,7 @@ class DisplayTagSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitT
         def result = applyTemplate('<f:display bean="book"/>', [book: book])
 
         then:
-        result.contains('<div class="property-value" aria-labelledby="author-label"><a href="/author/show">Bart Simpson</a></div>')
+        result.contains('<div id="author" class="property-value" aria-labelledby="author-label"><a href="/author/show">Bart Simpson</a></div>')
     }
 
     void 'render field template with the input inside of it'() {
