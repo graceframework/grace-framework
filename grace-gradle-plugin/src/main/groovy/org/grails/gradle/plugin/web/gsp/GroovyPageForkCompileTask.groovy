@@ -15,27 +15,26 @@
  */
 package org.grails.gradle.plugin.web.gsp
 
-import org.gradle.api.model.ObjectFactory
-
-import javax.inject.Inject
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+import javax.inject.Inject
+
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.gradle.api.Action
-import org.gradle.api.file.FileTree
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.FileCollection
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.LocalState
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.process.ExecOperations
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
@@ -51,9 +50,12 @@ import org.gradle.work.InputChanges
  * @since 4.0
  */
 @CompileStatic
-abstract class GroovyPageForkCompileTask extends AbstractCompile {
+abstract class GroovyPageForkCompileTask extends DefaultTask {
 
     private ExecOperations execOperations
+
+    @Nested
+    GspCompileOptions compileOptions = getObjectFactory().newInstance(GspCompileOptions.class)
 
     @Input
     @Optional
@@ -61,6 +63,9 @@ abstract class GroovyPageForkCompileTask extends AbstractCompile {
 
     @Internal
     File srcDir
+
+    @Internal
+    File destDir
 
     @Internal
     File configDir
@@ -80,32 +85,16 @@ abstract class GroovyPageForkCompileTask extends AbstractCompile {
     @Optional
     String serverpath
 
-    @Nested
-    GspCompileOptions compileOptions = getObjectFactory().newInstance(GspCompileOptions.class)
+    @Input
+    @Optional
+    String targetCompatibility = '17'
+
+    @Classpath
+    FileCollection classpath
 
     @Inject
     GroovyPageForkCompileTask(ExecOperations execOperations) {
         this.execOperations = execOperations
-    }
-
-    @Override
-    @PathSensitive(PathSensitivity.RELATIVE)
-    FileTree getSource() {
-        super.getSource()
-    }
-
-    @Override
-    void setSource(Object source) {
-        try {
-            srcDir = project.file(source)
-            if (srcDir.exists() && !srcDir.isDirectory()) {
-                throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
-            }
-            super.setSource(source)
-        }
-        catch (ignore) {
-            throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
-        }
     }
 
     @TaskAction
@@ -145,7 +134,7 @@ abstract class GroovyPageForkCompileTask extends AbstractCompile {
                         }
                         def arguments = [
                                 srcDir.canonicalPath,
-                                destinationDirectory.getAsFile().getOrNull()?.canonicalPath,
+                                destDir.canonicalPath,
                                 tmp.canonicalPath,
                                 targetCompatibility,
                                 packageName,

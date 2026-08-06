@@ -90,7 +90,7 @@ class GroovyPageCompiler {
      * Compiles the given GSP pages and returns a Map of URI to classname mappings
      */
     Map compile() {
-        if (srcFiles && targetDir && viewsDir) {
+        if (targetDir && viewsDir) {
             if (!generatedGroovyPagesDirectory) {
                 generatedGroovyPagesDirectory = new File(System.getProperty('java.io.tmpdir'), 'gspcompile')
                 generatedGroovyPagesDirectory.mkdirs()
@@ -158,19 +158,11 @@ class GroovyPageCompiler {
                 }
 
                 // write the view registry to a properties file (this is read by GroovyPagesTemplateEngine at runtime)
-                File viewregistryFile = new File(targetDir, 'gsp/views.properties')
-                viewregistryFile.parentFile.mkdirs()
+                File viewRegistryFile = new File(targetDir, 'gsp/views.properties')
+                viewRegistryFile.parentFile.mkdirs()
                 Properties views = new OrderedProperties()
-                if (viewregistryFile.exists()) {
-                    // only changed files are added to the mapping, read the existing mapping file
-                    viewregistryFile.withInputStream { stream ->
-                        views.load(new InputStreamReader(stream, 'UTF-8'))
-                    }
-                }
                 views.putAll(compileGSPRegistry)
-                viewregistryFile.withOutputStream { viewsOut ->
-                    views.store(viewsOut, "Precompiled views for ${packagePrefix}")
-                }
+                views.store(viewRegistryFile, "Precompiled views for /${packagePrefix}")
             }
             finally {
                 // eventListener?.triggerEvent("StatusUpdate", "Shutting Down ThreadPool")

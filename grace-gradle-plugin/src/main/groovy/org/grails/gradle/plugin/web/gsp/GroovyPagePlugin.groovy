@@ -59,12 +59,12 @@ class GroovyPagePlugin implements Plugin<Project> {
 
         TaskContainer tasks = project.tasks
 
-        TaskProvider<GroovyPageForkCompileTask> compileWebappGroovyPages = tasks.register(
-                'compileWebappGroovyPages', GroovyPageForkCompileTask) { GroovyPageForkCompileTask task ->
+        TaskProvider<GroovyPageWebappForkCompileTask> compileWebappGroovyPages = tasks.register(
+                'compileWebappGroovyPages', GroovyPageWebappForkCompileTask) { GroovyPageWebappForkCompileTask task ->
             task.group = 'grace'
             task.description = "Compiles the Groovy server pages (GSP) in 'src/main/webapp'."
-            task.destinationDirectory.set(destDir)
-            task.source = project.file("src/main/webapp")
+            task.destDir = destDir
+            task.srcDir = project.file("src/main/webapp")
             task.packageName = ''
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/'
@@ -72,16 +72,20 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.dependsOn(tasks.named(JavaPlugin.CLASSES_TASK_NAME))
         }
 
-        TaskProvider<GroovyPageForkCompileTask> compileGroovyPages = tasks.register(
-                'compileGroovyPages', GroovyPageForkCompileTask) { GroovyPageForkCompileTask task ->
+        TaskProvider<GroovyPageViewsForkCompileTask> compileGroovyPages = tasks.register(
+                'compileGroovyPages', GroovyPageViewsForkCompileTask) { GroovyPageViewsForkCompileTask task ->
             task.group = 'grace'
             task.description = 'Compiles the Groovy server pages (GSP).'
-            task.destinationDirectory.set(destDir)
+            task.destDir = destDir
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/WEB-INF/grails-app/views/'
             task.classpath = allClasspath
+            task.outputs.upToDateWhen { true }
+            task.inputs.file(
+                    tasks.named('compileWebappGroovyPages', GroovyPageWebappForkCompileTask)
+                            .map { GroovyPageWebappForkCompileTask t -> t.viewsPropertiesFile }
+            )
             task.dependsOn(tasks.named(JavaPlugin.CLASSES_TASK_NAME))
-            task.dependsOn(compileWebappGroovyPages)
         }
 
         tasks.withType(GroovyPageForkCompileTask).configureEach { GroovyPageForkCompileTask task ->
@@ -91,7 +95,7 @@ class GroovyPagePlugin implements Plugin<Project> {
                 task.configDir = project.file("${grailsAppPath}/conf")
                 if (task.name == 'compileGroovyPages') {
                     task.packageName = grailsAppPath + "/views"
-                    task.source = project.file("${grailsAppPath}/views")
+                    task.srcDir = project.file("${grailsAppPath}/views")
                 }
             }
 

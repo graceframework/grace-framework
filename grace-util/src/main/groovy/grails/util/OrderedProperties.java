@@ -16,14 +16,20 @@
 package grails.util;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Date;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Ordered Properties
@@ -33,54 +39,57 @@ import java.util.TreeMap;
  */
 public class OrderedProperties extends Properties {
 
-    private final Map<Object, Object> treeMap = new TreeMap<>();
+    private static final Comparator<Object> keyComparator = Comparator.comparing(String::valueOf);
 
+    private static final Comparator<Entry<Object, Object>> entryComparator = Entry.comparingByKey(keyComparator);
+
+    /**
+     * Return a sorted enumeration of the keys in this {@link Properties} object.
+     * @see #keySet()
+     */
     @Override
-    public Object put(Object key, Object value) {
-        this.treeMap.put(key, value);
-        return super.put(key, value);
+    public synchronized Enumeration<Object> keys() {
+        return Collections.enumeration(keySet());
     }
 
+    /**
+     * Return a sorted set of the keys in this {@link Properties} object.
+     */
     @Override
-    public synchronized void putAll(Map<?, ?> t) {
-        this.treeMap.putAll(t);
-        super.putAll(t);
+    public Set<Object> keySet() {
+        Set<Object> sortedKeys = new TreeSet<>(keyComparator);
+        sortedKeys.addAll(super.keySet());
+        return Collections.synchronizedSet(sortedKeys);
     }
 
+    /**
+     * Return a sorted set of the entries in this {@link Properties} object.
+     */
     @Override
     public Set<Map.Entry<Object, Object>> entrySet() {
-        return this.treeMap.entrySet();
+        Set<Entry<Object, Object>> sortedEntries = new TreeSet<>(entryComparator);
+        sortedEntries.addAll(super.entrySet());
+        return Collections.synchronizedSet(sortedEntries);
     }
 
-    @Override
-    public void clear() {
-        this.treeMap.clear();
-        super.clear();
-    }
-
-    @Override
-    public void store(OutputStream out, String comments) throws IOException {
-        storeOrdered(this.treeMap, out, comments);
-    }
-
-    private void storeOrdered(Map<Object, Object> map, OutputStream out, String comments) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "ISO-8859-1"));
-        if (comments != null) {
-            writer.write("#" + comments);
+    /**
+     * Writes this property list (key and element pairs) in this
+     * {@code Properties} table to the properties file.
+     * If the file exists, then it will append data to the end of the file.
+     *
+     * @param file a properties file.
+     * @param comments a description of the property list.
+     * @throws IOException if writing this property list to the specified
+     *             output stream throws an {@code IOException}.
+     */
+    public void store(File file, String comments) throws IOException {
+        boolean append = file.exists();
+        OutputStream out = new FileOutputStream(file, append);
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.ISO_8859_1));
+        if (append) {
             writer.newLine();
         }
-        writer.write("#" + new Date());
-        writer.newLine();
-
-        synchronized (this) {
-            for (Map.Entry<Object, Object> entry : map.entrySet()) {
-                String key = (String) entry.getKey();
-                String value = (String) entry.getValue();
-                writer.write(key + "=" + value);
-                writer.newLine();
-            }
-        }
-        writer.flush();
+        super.store(writer, comments);
     }
 
 }
