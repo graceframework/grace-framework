@@ -17,10 +17,15 @@ package org.grails.plugins.modules
 
 import groovy.transform.CompileStatic
 
+import grails.plugins.descriptors.WebItemModuleDescriptor
+import grails.plugins.descriptors.WebSectionModuleDescriptor
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 /**
+ * Dynamic Modules Plugin offer new ways of creating modular and maintainable applications.
+ *
+ * @author Michael Yan
  * @since 2022.1.0
  */
 @CompileStatic
@@ -32,5 +37,10 @@ class DynamicModulesGrailsPlugin extends Plugin {
     def description = '''\
 Grace Dynamic Modules Plugin offer new ways of creating modular and maintainable Grace applications.
 '''
+
+    def providedModules = [
+            WebItemModuleDescriptor,
+            WebSectionModuleDescriptor
+    ]
 
 }
