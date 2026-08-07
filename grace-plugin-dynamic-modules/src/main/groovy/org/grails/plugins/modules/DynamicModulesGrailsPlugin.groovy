@@ -27,6 +27,7 @@ import grails.util.GrailsUtil
 class DynamicModulesGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
+    def grailsVersion = "2024.0.0 > *"
     def title = 'Grace Dynamic Modules Plugin'
     def description = '''\
 Grace Dynamic Modules Plugin offer new ways of creating modular and maintainable Grace applications.
