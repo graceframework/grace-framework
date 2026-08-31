@@ -80,7 +80,7 @@ class ${className}Controller {
                     flash.message = message(code: 'default.updated.message', args: [message(code: '${className}.label', default: '${className}'), ${propertyName}.id])
                     redirect ${propertyName}
                 }
-                '*'{ respond ${propertyName}, [status: OK] }
+                '*' { respond ${propertyName}, [status: OK] }
             }
         }
     }
@@ -101,7 +101,7 @@ class ${className}Controller {
                     flash.message = message(code: 'default.deleted.message', args: [message(code: '${className}.label', default: '${className}'), ${propertyName}.id])
                     redirect action: 'index', method: 'GET'
                 }
-                '*'{ render status: NO_CONTENT }
+                '*' { render status: NO_CONTENT }
             }
         }
     }
@@ -112,7 +112,7 @@ class ${className}Controller {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: '${propertyName}.label', default: '${className}'), params.id])
                 redirect action: 'index', method: 'GET'
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 
