@@ -50,6 +50,29 @@ For a complete list of changes made in this release see link:https://github.com/
 * Update github workflows Switch to '2024.2.x' branch
 * Next development version: 2024.2.0-SNAPSHOT
 
+=== 2024.1.3
+
+link:{github}/releases/tag/v2024.1.3[release notes].
+
+🛠 Improvements
+
+* Add release notes for 2024.1.3
+* Code formatting in scaffolding templates link:{github}/issues/1612[#1612]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Jackson Databind 2.21.6 link:{github}/issues/1608[#1608]
+* Upgrade to Tomcat 10.1.59 link:{github}/issues/1610[#1610]
+
+⛏ Build
+
+* Upgrade Java version in sdkmanrc to 17.0.20-tem link:{github}/issues/1606[#1606]
+
+⚙️ Tasks
+
+* Release v2024.1.3
+* Next development version: 2024.1.3-SNAPSHOT
+
 === 2024.1.2
 
 link:{github}/releases/tag/v2024.1.2[release notes].
