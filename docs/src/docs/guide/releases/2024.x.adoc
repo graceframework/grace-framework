@@ -50,6 +50,28 @@ For a complete list of changes made in this release see link:https://github.com/
 * Update github workflows Switch to '2024.2.x' branch
 * Next development version: 2024.2.0-SNAPSHOT
 
+=== 2024.1.4
+
+link:{github}/releases/tag/v2024.1.4[release notes].
+
+🛠 Improvements
+
+* Add release notes for 2024.1.4
+
+🐞 Bug Fixes
+
+* Correct the plugin name of TagLibArtefactHandler link:{github}/issues/1616[#1616]
+
+🚀 Dependency Upgrades
+
+* Upgrade to SLF4J 2.0.19 link:{github}/issues/1620[#1620]
+* Upgrade to Tomcat 10.1.60 link:{github}/issues/1618[#1618]
+
+⚙️ Tasks
+
+* Release v2024.1.4
+* Next development version: 2024.1.4-SNAPSHOT
+
 === 2024.1.3
 
 link:{github}/releases/tag/v2024.1.3[release notes].
