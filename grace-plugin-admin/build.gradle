@@ -1,0 +1,85 @@
+plugins {
+    id "org.graceframework.asset-pipeline" version "7.2.0-M1"
+}
+
+dependencies {
+    implementation project(":grace-core")
+    compileOnly project(":grace-plugin-api")
+    implementation project(":grace-plugin-controllers")
+    implementation project(":grace-plugin-dynamic-modules")
+    implementation project(":grace-plugin-taglibs")
+    implementation project(":grace-plugin-url-mappings")
+    implementation project(":grace-web-gsp")
+    implementation libs.commons.lang3
+    compileOnly libs.spring.boot.autoconfigure
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs += ['app/controllers', 'app/taglibs']
+        }
+    }
+}
+
+assets {
+    assetsPath = 'app/assets'
+    packagePlugin = true
+}
+
+tasks.register("compileGroovyPages", JavaExec) {
+    it.dependsOn('classes')
+    it.mainClass.set("org.grails.web.pages.GroovyPageCompilerForkTask")
+    it.classpath(project.configurations.getByName('compileClasspath'))
+
+    def arguments = [
+            project.file("app/views").absolutePath,
+            project.layout.buildDirectory.dir("classes/gsp/main").get().asFile.canonicalPath,
+            project.layout.buildDirectory.dir('tmp/gsp').get().asFile.absolutePath,
+            '17',
+            'admin/views',
+            '/WEB-INF/grails-app/views/',
+            ',',
+            'UTF-8'
+    ]
+    it.args(arguments)
+    doFirst {
+        ant.delete(dir: 'build/classes/gsp/main')
+    }
+}
+
+tasks.register("i18nResources") {
+    ant.native2ascii(encoding: "UTF-8", src: "app/i18n", dest: "build/resources/main", includes: "**/*.properties")
+}
+
+configure([compileGroovy, compileTestGroovy]) {
+    groovyOptions.encoding = "UTF-8"
+    doFirst {
+        def groovyConfig = project.file('build/config.groovy')
+        if (!groovyConfig.exists()) {
+            groovyConfig.parentFile.mkdirs()
+            project.file('build/config.groovy') << """// A Groovy script file that configures the compiler, allowing extensive control over how the code is compiled.
+withConfig(configuration) {
+    inline(phase: 'CONVERSION') { source, context, classNode ->
+        source.ast.putNodeMetaData('PROJECT_NAME', 'adminConsole')
+        source.ast.putNodeMetaData('PROJECT_TYPE', 'PLUGIN')
+        source.ast.putNodeMetaData('PROJECT_VERSION', '$project.version')
+        source.ast.putNodeMetaData('PROJECT_DIR', '$project.projectDir')
+        source.ast.putNodeMetaData('GRAILS_APP_DIR', '$project.projectDir/app')
+    }
+}"""
+        }
+        groovyOptions.configurationScript = project.file('build/config.groovy')
+    }
+}
+
+processResources {
+    dependsOn = ["i18nResources"]
+}
+
+jar {
+    dependsOn = ["compileGroovyPages", "processResources"]
+    from sourceSets.main.output
+    from project.layout.buildDirectory.dir("assets")
+    from project.layout.buildDirectory.dir("classes/gsp/main")
+}

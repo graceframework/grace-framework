@@ -52,6 +52,7 @@ include (
         'grace-bom',
 
         // Plugins
+        'grace-plugin-admin',
         'grace-plugin-api',
         'grace-plugin-async',
         'grace-plugin-cache',

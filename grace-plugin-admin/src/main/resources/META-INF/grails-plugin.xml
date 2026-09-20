@@ -1,0 +1,3 @@
+<plugin name='adminConsole'>
+  <type>org.grails.plugins.admin.AdminConsoleGrailsPlugin</type>
+</plugin>
