@@ -40,7 +40,7 @@ import org.grails.core.gsp.DefaultGrailsTagLibClass;
  */
 public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final String PLUGIN_NAME = "groovyPages";
+    public static final String PLUGIN_NAME = "taglibs";
 
     public static final String TYPE = ArtefactTypes.TAG_LIBRARY;
 
