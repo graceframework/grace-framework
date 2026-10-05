@@ -7,7 +7,7 @@ include (
         'grace-boot-async',
         'grace-boot-cache',
         'grace-boot-events',
-        'grace-boot-hibernate',
+        // 'grace-boot-hibernate',
         'grace-boot-logging',
         'grace-boot-mongodb',
         'grace-boot-persistence',
