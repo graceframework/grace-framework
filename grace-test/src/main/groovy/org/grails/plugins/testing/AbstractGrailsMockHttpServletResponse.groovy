@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2025 the original author or authors.
+ * Copyright 2008-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,10 @@
  */
 package org.grails.plugins.testing
 
-import java.lang.reflect.Field
-
 import jakarta.servlet.http.HttpServletRequest
 
 import groovy.xml.slurpersupport.GPathResult
 import org.springframework.mock.web.MockHttpServletResponse
-import org.springframework.util.ReflectionUtils
 
 import grails.converters.JSON
 import grails.io.IOUtils
@@ -108,11 +105,8 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
         GrailsWebRequest webRequest = GrailsWebRequest.lookup()
         webRequest?.currentRequest?.removeAttribute(GrailsApplicationAttributes.REDIRECT_ISSUED)
         setCommitted(false)
-        Field field = ReflectionUtils.findField(MockHttpServletResponse, 'writer')
-        ReflectionUtils.makeAccessible(field)
-        field.set(this, null)
-        webRequest.setOut(getWriter())
         super.reset()
+        webRequest?.setOut(null)
     }
 
     String getRedirectUrl() {

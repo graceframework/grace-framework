@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.DefaultListableBeanFactory
 import org.springframework.beans.factory.support.RootBeanDefinition
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer
-import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext
+import org.springframework.boot.web.context.servlet.AnnotationConfigServletWebApplicationContext
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.AnnotationConfigUtils
@@ -128,7 +128,7 @@ class GrailsApplicationBuilder {
         if (IS_SERVLET_API_PRESENT && servletContext != null) {
             AnnotationConfigServletWebApplicationContext annotationConfigServletWebApplicationContext =
                     (AnnotationConfigServletWebApplicationContext) ClassUtils.forName(
-                            'org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext').newInstance()
+                            'org.springframework.boot.web.context.servlet.AnnotationConfigServletWebApplicationContext').newInstance()
             annotationConfigServletWebApplicationContext.setServletContext(servletContext)
             annotationConfigServletWebApplicationContext.register(DEFAULT_AUTO_CONFIGURATIONS)
             context = annotationConfigServletWebApplicationContext

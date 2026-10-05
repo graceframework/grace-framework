@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2025 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,8 +101,8 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
         String lookupPath = this.urlPathHelper.getLookupPathForRequest(request)
         for (HandlerInterceptor interceptor in this.adaptedInterceptors) {
             if (interceptor instanceof MappedInterceptor) {
-                MappedInterceptor mappedInterceptor = mappedInterceptor(interceptor)
-                if (mappedInterceptor.matches(lookupPath, this.pathMatcher)) {
+                MappedInterceptor mappedInterceptor = mappedInterceptor(lookupPath, interceptor)
+                if (mappedInterceptor.matches(request)) {
                     chain.addInterceptor(mappedInterceptor.getInterceptor())
                 }
             }
@@ -115,8 +115,8 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
         chain
     }
 
-    protected MappedInterceptor mappedInterceptor(HandlerInterceptor interceptor) {
-        (MappedInterceptor) interceptor
+    protected MappedInterceptor mappedInterceptor(String lookupPath, HandlerInterceptor interceptor) {
+        new MappedInterceptor([lookupPath] as String[], interceptor)
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ package org.grails.web.mapping.servlet
 
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.web.server.ErrorPage
+import org.springframework.boot.web.error.ErrorPage
 import org.springframework.boot.web.server.WebServerFactoryCustomizer
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory
+import org.springframework.boot.web.server.servlet.ConfigurableServletWebServerFactory
 import org.springframework.http.HttpStatus
 
 import grails.web.mapping.UrlMapping

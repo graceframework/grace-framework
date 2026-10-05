@@ -1,7 +1,7 @@
 package grails.boot
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
+import org.springframework.boot.web.server.servlet.context.AnnotationConfigServletWebServerApplicationContext
 import spock.lang.Specification
 
 import grails.artefact.Artefact

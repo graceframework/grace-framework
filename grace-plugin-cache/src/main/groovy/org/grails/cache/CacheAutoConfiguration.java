@@ -35,7 +35,7 @@ import grails.cache.SimpleCacheKeyGenerator;
  * @author Michael Yan
  * @since 2024.0.0
  */
-@AutoConfiguration(after = org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration.class)
+@AutoConfiguration(after = org.springframework.boot.cache.autoconfigure.CacheAutoConfiguration.class)
 @ConditionalOnProperty(name = "grails.cache.enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(CacheProperties.class)
 public class CacheAutoConfiguration {

@@ -9,6 +9,7 @@ dependencies {
     api(libs.grace.datastore.gorm)
     api(libs.grace.datastore.gorm.validation)
     api libs.spring.boot.autoconfigure
+    api libs.spring.boot.jdbc
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 

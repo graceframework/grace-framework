@@ -29,7 +29,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.beans.factory.support.RootBeanDefinition
-import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext
+import org.springframework.boot.web.context.servlet.AnnotationConfigServletWebApplicationContext
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.MessageSource

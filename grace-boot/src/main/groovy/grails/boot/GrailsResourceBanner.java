@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2025 the original author or authors.
+ * Copyright 2021-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,13 +128,6 @@ public class GrailsResourceBanner extends ResourceBanner {
         versions.put("grace.formatted-version", getVersionString(grailsVersion, true, defaultValue));
         versions.put("spring-boot.formatted-version", getVersionString(bootVersion, true, defaultValue));
         return versions;
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(since = "2024.0.0", forRemoval = true)
-    protected String getApplicationVersion(Class<?> sourceClass) {
-        String applicationVersion = Metadata.getCurrent().getApplicationVersion();
-        return (applicationVersion != null) ? applicationVersion : super.getApplicationVersion(sourceClass);
     }
 
     private String getApplicationVersion(Environment environment) {

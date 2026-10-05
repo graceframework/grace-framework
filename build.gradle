@@ -344,7 +344,6 @@ subprojects { project ->
 
         if (project.name != "grace-docs") {
             // Testing
-            testImplementation libs.slf4j.simple
             testImplementation libs.spock.core
             // Required by Spock's Mocking
             testImplementation libs.bytebuddy
@@ -405,9 +404,6 @@ subprojects { project ->
     configurations {
         meta
         published.extendsFrom archives, meta
-        testRuntimeOnly {
-            exclude group: 'commons-logging', module: 'commons-logging'
-        }
     }
 }
 

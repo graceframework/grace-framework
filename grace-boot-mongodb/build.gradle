@@ -11,6 +11,7 @@ dependencies {
     api libs.grace.datastore.web
 
     api libs.spring.boot.autoconfigure
+    api libs.spring.boot.mongodb
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
     testImplementation libs.spock.core

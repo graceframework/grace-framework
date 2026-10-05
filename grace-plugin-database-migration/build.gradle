@@ -11,6 +11,8 @@ dependencies {
     implementation libs.grace.datastore.gorm
 
     api libs.spring.boot.autoconfigure
+    api libs.spring.boot.jdbc
+    api libs.spring.boot.liquibase
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 

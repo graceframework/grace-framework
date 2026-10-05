@@ -6,6 +6,7 @@ dependencies {
 
     compileOnlyApi libs.jakarta.servlet
     compileOnly libs.spring.boot.autoconfigure
+    implementation libs.spring.boot.servlet
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test

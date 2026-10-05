@@ -11,6 +11,7 @@ dependencies {
     api libs.spring.beans
     api libs.spring.boot
     api libs.spring.boot.autoconfigure
+    api libs.spring.boot.web.server
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
     api libs.spring.context
@@ -30,7 +31,7 @@ dependencies {
     testImplementation libs.mockito.junit
     testImplementation libs.grace.datastore.gorm.support
     testImplementation libs.spring.boot.test
-    testImplementation libs.tomcat.embed.core
+    testImplementation libs.spring.boot.tomcat
     testRuntimeOnly project(":grace-plugin-i18n")
     testRuntimeOnly project(":grace-plugin-url-mappings")
 }

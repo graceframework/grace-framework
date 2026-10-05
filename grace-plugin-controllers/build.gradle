@@ -13,6 +13,7 @@ dependencies {
 
     compileOnly libs.jakarta.servlet
     api(libs.spring.boot.autoconfigure)
+    api(libs.spring.boot.webmvc)
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 

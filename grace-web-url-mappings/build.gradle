@@ -9,6 +9,8 @@ dependencies {
 
     compileOnlyApi libs.jakarta.servlet
     implementation libs.caffeine
+    implementation libs.spring.boot
+    implementation libs.spring.boot.web.server
 
     testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test-suite-base")

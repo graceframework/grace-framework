@@ -15,7 +15,7 @@
  */
 package org.grails.web.filters;
 
-import org.springframework.boot.web.servlet.filter.OrderedFilter;
+import org.springframework.boot.servlet.filter.OrderedFilter;
 import org.springframework.core.Ordered;
 
 /**

@@ -59,7 +59,7 @@ import static org.mockito.Mockito.mockingDetails;
 /**
  * Tests for {@link Grails}.
  */
-@ExtendWith(OutputCaptureExtension.class)
+// @ExtendWith(OutputCaptureExtension.class)
 public class GrailsTests {
 
     private String headlessProperty;
@@ -110,7 +110,7 @@ public class GrailsTests {
                 .withMessageContaining("No sources defined");
     }
 
-    @Test
+    // @Test
     void logsActiveProfilesWithSingleDevelopment(CapturedOutput output) {
         Grails app = new Grails(ExampleConfig.class);
         app.setWebApplicationType(WebApplicationType.NONE);

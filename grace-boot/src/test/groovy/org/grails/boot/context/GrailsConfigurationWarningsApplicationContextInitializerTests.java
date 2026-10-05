@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.boot.context;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -42,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Michael Yan
  */
+@Disabled("Disabled until upgraded to JUnit 6")
 @ExtendWith(OutputCaptureExtension.class)
 public class GrailsConfigurationWarningsApplicationContextInitializerTests {
 

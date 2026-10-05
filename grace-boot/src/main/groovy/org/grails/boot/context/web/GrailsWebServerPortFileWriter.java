@@ -17,7 +17,7 @@ package org.grails.boot.context.web;
 
 import java.io.File;
 
-import org.springframework.boot.web.context.WebServerPortFileWriter;
+import org.springframework.boot.web.server.context.WebServerPortFileWriter;
 import org.springframework.context.ApplicationListener;
 
 import grails.util.BuildSettings;
