@@ -98,8 +98,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String BOOT_VERSION_FLAG = 'boot-version'
     public static final String PACKAGE_NAME_FLAG = 'package-name'
 
-    public static final String[] SUPPORT_GRACE_VERSIONS = ['2024', '2023', '2022', '6', '5', '4', '3']
-    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.5']
+    public static final String[] SUPPORT_GRACE_VERSIONS = ['2025', '2024', '2023', '2022', '6', '5', '4', '3']
+    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['4.0', '4.1']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -112,7 +112,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     # Creates an application
         $ grace create-app com.example.blog
         $ grace create-app blog --package-name=com.example --profile=web
-        $ grace create-app blog --boot-version=3.5.0
+        $ grace create-app blog --boot-version=4.0.0
 '''
 
     ProfileRepository profileRepository
@@ -1100,7 +1100,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (isSnapshotVersion) {
             buildRepositoryUrls.add(0, 'mavenLocal()')
         }
-        boolean useGradleBuildSrc = GrailsVersion.isGrace2024(grailsVersion) || GrailsVersion.isGrace2023(grailsVersion)
+        boolean useGradleBuildSrc = GrailsVersion.isGrace2025(grailsVersion) || GrailsVersion.isGrace2024(grailsVersion) || GrailsVersion.isGrace2023(grailsVersion)
         String buildRepositoriesString = useGradleBuildSrc ?
                 buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln) :
                 buildRepositoryUrls.collect(repositoryUrl.curry(8)).unique().join(ln)
