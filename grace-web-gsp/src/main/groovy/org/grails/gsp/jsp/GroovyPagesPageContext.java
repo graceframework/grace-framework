@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,15 +42,10 @@ import jakarta.servlet.jsp.JspContext;
 import jakarta.servlet.jsp.JspFactory;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.PageContext;
-import jakarta.servlet.jsp.el.ELException;
-import jakarta.servlet.jsp.el.ExpressionEvaluator;
-import jakarta.servlet.jsp.el.VariableResolver;
 import jakarta.servlet.jsp.tagext.BodyContent;
 
 import groovy.lang.Binding;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import org.grails.gsp.GroovyPage;
@@ -416,31 +411,6 @@ public class GroovyPagesPageContext extends PageContext {
         out = new JspWriterDelegate(out);
         this.webRequest.setOut(out);
         return (JspWriter) out;
-    }
-
-    @Override
-    @Deprecated
-    public ExpressionEvaluator getExpressionEvaluator() {
-        try {
-            Class<?> type = ClassUtils.forName("org.apache.commons.el.ExpressionEvaluatorImpl", getClass().getClassLoader());
-            return (ExpressionEvaluator) ReflectionUtils.accessibleConstructor(type).newInstance();
-        }
-        catch (Exception e) {
-            throw new UnsupportedOperationException("In order for the getExpressionEvaluator() " +
-                    "method to work, you must have downloaded the apache commons-el jar and " +
-                    "made it available in the classpath.");
-        }
-    }
-
-    @Override
-    @Deprecated
-    public VariableResolver getVariableResolver() {
-        final PageContext ctx = this;
-        return new VariableResolver() {
-            public Object resolveVariable(String name) throws ELException {
-                return ctx.findAttribute(name);
-            }
-        };
     }
 
     static {
