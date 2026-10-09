@@ -15,7 +15,9 @@
  */
 package org.grails.core.artefact.gsp
 
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.MixinNode
 import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
@@ -55,7 +57,15 @@ class app_views_index_gsp extends GroovyPage {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grace', 'grace-demo-project', 'app', 'views', 'index.gsp'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -79,7 +89,15 @@ class app_views_index_jsp {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grace', 'grace-demo-project', 'app', 'views', 'index.jsp'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:

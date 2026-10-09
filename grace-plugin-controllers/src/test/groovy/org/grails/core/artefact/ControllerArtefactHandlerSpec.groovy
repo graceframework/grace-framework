@@ -15,7 +15,9 @@
  */
 package org.grails.core.artefact
 
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.MixinNode
 import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
@@ -38,7 +40,15 @@ class TestController {
 }
 ''')
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         handler.isArtefact(classNode)
@@ -55,7 +65,15 @@ class TestController {
 }
 ''')
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -78,7 +96,15 @@ class TestController {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'grails', 'demo', 'TestController.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -101,7 +127,15 @@ class TestController {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'controllers', 'org', 'grails', 'demo', 'TestController.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -124,7 +158,15 @@ class TestController {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'rest', 'org', 'grails', 'demo', 'TestController.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -147,7 +189,15 @@ class TestControl {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'grails', 'demo', 'TestControl.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -171,7 +221,15 @@ class TestController {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'rest', 'org', 'grails', 'demo', 'TestController.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -195,7 +253,15 @@ abstract class TestController {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'grails', 'demo', 'TestController.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -211,7 +277,15 @@ abstract class TestController {
 class TestController {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         handler.isArtefact(classNode)
@@ -226,7 +300,15 @@ class TestController {
 class TestController {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -242,7 +324,15 @@ class TestController {
 class TestController {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -258,7 +348,15 @@ class TestController {
 class TestControl {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -274,7 +372,15 @@ class TestControl {
 abstract class TestController {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)

@@ -15,7 +15,9 @@
  */
 package org.grails.core.artefact
 
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.MixinNode
 import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
@@ -44,7 +46,15 @@ class TestUrlMappings {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'grails', 'demo', 'TestUrlMappings.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -67,7 +77,15 @@ class TestUrlMappings {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'controllers', 'org', 'grails', 'demo', 'TestUrlMappings.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -90,7 +108,15 @@ class TestUrlMappings {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'grails', 'demo', 'TestUrlMappings.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -113,7 +139,15 @@ class TestUrlMapping {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'grails', 'demo', 'TestUrlMapping.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -137,7 +171,15 @@ class TestUrlMappings {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'boot', 'org', 'grails', 'demo', 'TestUrlMappings.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -161,7 +203,15 @@ abstract class TestUrlMappings {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'controllers', 'org', 'grails', 'demo', 'TestUrlMappings.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -177,7 +227,15 @@ abstract class TestUrlMappings {
 class TestUrlMappings {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         handler.isArtefact(classNode)
@@ -192,7 +250,15 @@ class TestUrlMappings {
 class TestUrlMappings {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -208,7 +274,15 @@ class TestUrlMappings {
 class TestUrlMappings {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -224,7 +298,15 @@ class TestUrlMappings {
 class TestUrlMapping {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -240,7 +322,15 @@ class TestUrlMapping {
 abstract class TestUrlMappings {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)

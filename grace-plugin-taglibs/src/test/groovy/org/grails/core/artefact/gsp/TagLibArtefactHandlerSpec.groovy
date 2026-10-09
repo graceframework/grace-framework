@@ -15,7 +15,9 @@
  */
 package org.grails.core.artefact.gsp
 
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.MixinNode
 import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
@@ -38,7 +40,15 @@ class TestTagLib {
 }
 ''')
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         handler.isArtefact(classNode)
@@ -61,7 +71,15 @@ class TestTagLib {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -84,7 +102,15 @@ class TestTagLib {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'app', 'taglibs', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -107,7 +133,15 @@ class TestTagLib {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'tags', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -130,7 +164,15 @@ class TestTag {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'grails', 'demo', 'TestTag.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -154,7 +196,15 @@ class TestTagLib {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'tags', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -178,7 +228,15 @@ abstract class TestTagLib {
         sourceUnit.getAST() >> moduleNode
         sourceUnit.getName() >> ['', 'Users', 'grails', 'grails-demo-project', 'grails-app', 'taglibs', 'org', 'grails', 'demo', 'TestTagLib.groovy'].join(File.separator)
 
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
         classNode.setModule(moduleNode)
 
         expect:
@@ -194,7 +252,15 @@ abstract class TestTagLib {
 class TestTagLib {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         handler.isArtefact(classNode)
@@ -225,7 +291,15 @@ class TestTagLib {
 class TestTagLib {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -241,7 +315,15 @@ class TestTagLib {
 class TestTag {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
@@ -257,7 +339,15 @@ class TestTag {
 abstract class TestTagLib {
 }
 ''')
-        ClassNode classNode = new ClassNode(clazz)
+        ClassNode proxyClassNode = ClassHelper.make(clazz)
+        ClassNode classNode = new ClassNode(
+                proxyClassNode.getName(),
+                proxyClassNode.getModifiers(),
+                proxyClassNode.getSuperClass(),
+                proxyClassNode.getInterfaces(),
+                MixinNode.EMPTY_ARRAY
+        )
+        classNode.addAnnotations(proxyClassNode.annotations)
 
         expect:
         !handler.isArtefact(classNode)
