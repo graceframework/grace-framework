@@ -82,7 +82,7 @@ nexusPublishing {
 
 allprojects {
     repositories {
-        mavenLocal()
+        // mavenLocal()
         mavenCentral()
         maven {
             url = "https://plugins.gradle.org/m2/"
