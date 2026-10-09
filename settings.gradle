@@ -20,7 +20,7 @@ include (
         'grace-cache-core',
         'grace-cli',
         'grace-codecs',
-        'grace-console',
+        // 'grace-console',
         'grace-core',
         'grace-databinding',
         'grace-docs',
