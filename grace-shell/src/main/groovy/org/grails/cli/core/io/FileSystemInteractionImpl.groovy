@@ -221,7 +221,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
      */
     @Override
     Resource resource(Object path) {
-        if (!path) {
+        if (path == null) {
             return null
         }
         if (path instanceof Resource) {
@@ -270,7 +270,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     @Override
     String projectPath(Object path) {
         def file = file(path)
-        if (file) {
+        if (file != null) {
             def basePath = executionContext.baseDir.canonicalPath
             return (file.canonicalPath - basePath).substring(1)
         }

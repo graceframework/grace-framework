@@ -268,7 +268,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     @Override
     String projectPath(Object path) {
         def file = file(path)
-        if (file) {
+        if (file != null) {
             def basePath = baseDir.canonicalPath
             return (file.canonicalPath - basePath).substring(1)
         }

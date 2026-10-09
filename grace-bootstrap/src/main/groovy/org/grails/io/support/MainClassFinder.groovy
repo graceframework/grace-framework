@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ class MainClassFinder {
                 searchDirs = [classesDir]
             }
 
-            if (rootDir) {
+            if (rootDir != null) {
                 File rootClassesDir = new File(rootDir, BuildSettings.BUILD_CLASSES_PATH)
                 if (rootClassesDir.exists()) {
                     searchDirs << rootClassesDir
@@ -102,7 +102,7 @@ class MainClassFinder {
     }
 
     private static File findRootDirectory(File file) {
-        if (file) {
+        if (file != null) {
             File parent = file.parentFile
 
             while (parent != null) {

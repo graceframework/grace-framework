@@ -90,7 +90,7 @@ class GroovyPageCompiler {
      * Compiles the given GSP pages and returns a Map of URI to classname mappings
      */
     Map compile() {
-        if (targetDir && viewsDir) {
+        if (targetDir != null && viewsDir != null) {
             if (!generatedGroovyPagesDirectory) {
                 generatedGroovyPagesDirectory = new File(System.getProperty('java.io.tmpdir'), 'gspcompile')
                 generatedGroovyPagesDirectory.mkdirs()

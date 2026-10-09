@@ -72,7 +72,7 @@ class GroovyPageCompilerForkTask {
         compiler.targetDir = destDir
         compiler.viewsDir = sourceDir
 
-        if (tmpdir) {
+        if (tmpdir != null) {
             compiler.generatedGroovyPagesDirectory = tmpdir
         }
 

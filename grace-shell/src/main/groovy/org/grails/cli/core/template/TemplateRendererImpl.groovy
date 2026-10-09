@@ -108,7 +108,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
      * @param model The model
      */
     void render(CharSequence template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
-        if (template && destination) {
+        if (template != null && destination != null) {
             if (destination.exists() && !overwrite) {
                 executionContext.console.warn("Destination file ${projectPath(destination)} already exists, skipping...")
             }
@@ -145,7 +145,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
      * @param model The model
      */
     void render(File template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
-        if (template && destination) {
+        if (template != null && destination != null) {
             if (destination.exists() && !overwrite) {
                 executionContext.console.warn("Destination file ${projectPath(destination)} already exists, skipping...")
             }
@@ -193,7 +193,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
      * @param model The model
      */
     void render(Resource template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
-        if (template && destination) {
+        if (template != null && destination != null) {
             if (destination.exists() && !overwrite) {
                 executionContext.console.warn("Destination file ${projectPath(destination)} already exists, skipping...")
             }

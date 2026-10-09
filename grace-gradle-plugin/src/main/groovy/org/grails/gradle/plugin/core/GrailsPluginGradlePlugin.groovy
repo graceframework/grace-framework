@@ -264,7 +264,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
         SourceSet sourceSet = project.getExtensions().getByType(JavaPluginExtension).getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME)
         SourceDirectorySet groovySourceSet = sourceSet.getExtensions().getByType(GroovySourceDirectorySet)
         File grailsPluginFile = groovySourceSet.getFiles().find { File f -> f.name.endsWith('GrailsPlugin.groovy') }
-        if (grailsPluginFile) {
+        if (grailsPluginFile != null) {
             return grailsPluginFile.name.substring(0, grailsPluginFile.name.indexOf('GrailsPlugin.groovy'))
         }
         return project.name
