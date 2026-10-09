@@ -117,7 +117,7 @@ abstract class DefaultViewRenderer<T> extends AbstractRenderer<T> {
         }
 
         if (view != null) {
-            Map<String, ?> model
+            Map<String, Object> model
             if (object instanceof Map) {
                 def map = (Map) object
                 model = map
@@ -126,7 +126,7 @@ abstract class DefaultViewRenderer<T> extends AbstractRenderer<T> {
                     model.put(MODEL_OBJECT, new LinkedHashMap(map))
                 }
             } else {
-                model = [(resolveModelVariableName(object)): object]
+                model = [(resolveModelVariableName(object)): (Object) object]
                 if (view == viewResolver.objectView) {
                     model.put(MODEL_OBJECT, object)
                 }

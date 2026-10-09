@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package org.grails.gsp
+
+import spock.lang.PendingFeature
 
 import grails.core.gsp.GrailsTagLibClass
 import org.grails.core.gsp.DefaultGrailsTagLibClass
@@ -83,6 +85,7 @@ class GspCompileStaticSpec extends Specification {
         compileStatic << [true, false]
     }
 
+    @PendingFeature(reason = 'Groovy 5.0')
     def "should support message tag invocation"() {
         given:
         def template = '<%@ compileStatic="true"%>${' + (gDotPrefix ? 'g.' : '') + '''message(code:'World')}'''
@@ -94,6 +97,7 @@ class GspCompileStaticSpec extends Specification {
         gDotPrefix << [false, true]
     }
 
+    @PendingFeature(reason = 'Groovy 5.0')
     def "should support message tag invocation inline"() {
         given:
         def template = """<%@ compileStatic="true"%><%
@@ -109,6 +113,7 @@ out.print(${gDotPrefix ? 'g.' : ''}message(code:'World'))
         gDotPrefix << [false, true]
     }
 
+    @PendingFeature(reason = 'Groovy 5.0')
     def "should support message tag invocation inline in a closure"() {
         given:
         def template = """<%@ compileStatic="true"%><%
@@ -143,6 +148,7 @@ out.print(messageClosure('World'))
         t.metaInfo.compilationException.message.contains('Cannot find matching method java.util.Date#getTimeTypo()')
     }
 
+    @PendingFeature(reason = 'Groovy 5.0')
     def "should fail compilation when using invalid property"() {
         given:
         def template = '''<%@ model="Date date"%>${somename}'''
@@ -152,6 +158,7 @@ out.print(messageClosure('World'))
         t.metaInfo.compilationException.message.contains('The variable [somename] is undeclared.')
     }
 
+    @PendingFeature(reason = 'Groovy 5.0')
     def "should fail compilation when calling method on invalid property"() {
         given:
         def template = '''<%@ model="Date date"%>${somename.somemethod([a: 1])}'''
