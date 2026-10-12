@@ -50,8 +50,7 @@ jodd = "3.3.8"
 json-unit = "4.1.1"
 jsoup = "1.21.2"
 jsr305 = "3.0.2"
-junit-jupiter = "5.14.4"
-junit-platform = "1.14.4"
+junit-jupiter = "6.0.3"
 liquibase = "4.31.1"
 maven = "3.9.16"
 maven-resolver = "1.9.27"
@@ -163,10 +162,9 @@ jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
-junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-platform" }
-junit-platform-runner = { module = "org.junit.platform:junit-platform-runner", version.ref = "junit-platform" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
-junit-platform-suite = { module = "org.junit.platform:junit-platform-suite", version.ref = "junit-platform" }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-jupiter" }
+junit-platform-suite = { module = "org.junit.platform:junit-platform-suite", version.ref = "junit-jupiter" }
 liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
 maven-model = { module = "org.apache.maven:maven-model", version.ref = "maven" }
 maven-resolver-provider = { module = "org.apache.maven:maven-resolver-provider", version.ref = "maven" }
