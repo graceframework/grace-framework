@@ -18,12 +18,11 @@ dependencies {
     api libs.grace.datastore.gorm.test
     api libs.groovy.test.junit5
     api libs.junit.jupiter.api
-    api libs.junit.platform.runner
+    api libs.junit.platform.engine
     api libs.jakarta.servlet
     api libs.javassist
     api libs.spock.core
     api libs.spock.spring
     api libs.spring.boot.test
     api libs.spring.test
-    runtimeOnly libs.junit.jupiter.engine
 }
