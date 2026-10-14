@@ -18,7 +18,7 @@ tasks.register('createGraceStartScripts', GraceCreateStartScripts) {
                 .configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts
         for (artifact in resolvedArtifacts) {
             def dependency = artifact.moduleVersion.id
-            if (dependency.group == 'org.graceframework') {
+            if (dependency.group.startsWith('org.graceframework')) {
                 ant.copy(file: artifact.file, todir: "${homeLibDir}/org.graceframework")
             } else {
                 ant.copy(file: artifact.file, todir: "${homeLibDir}/${dependency.group}/${dependency.name}/jars")
