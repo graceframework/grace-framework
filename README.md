@@ -10,9 +10,9 @@
 [![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
 [![Java Version](https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk&color=437291)](https://docs.oracle.com/en/java/javase/17/)
-[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.33-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Gradle Version](https://img.shields.io/badge/Gradle-8.14.5-blue?logo=gradle&style=flat&color=1da2bd)](https://docs.gradle.org/8.14.5/release-notes.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.5.16-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.5.16)
+[![Groovy Version](https://img.shields.io/badge/Groovy-5.0-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-5.0.html)
+[![Gradle Version](https://img.shields.io/badge/Gradle-8.14-blue?logo=gradle&style=flat&color=1da2bd)](https://docs.gradle.org/8.14.6/release-notes.html)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-4.0-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v4.0.8)
 
 
 [Grace Framework](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
@@ -50,6 +50,7 @@ You can learn more on the page [Grace Framework vs Spring Boot](https://github.c
 
 | Grace Version | Dependency Upgrades | New Features and Important Changes |
 |---------------|---------------------|------------------------------------|
+| 2025.0.x      | Spring Boot 4.0, Spring Framework 7.0, Groovy 5.0, SiteMesh 2.8.0 | Support Hibernate 7.2, Gradle 9 |
 | 2024.2.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, Spock 2.4 | Improve support Hibernate 5&6, Gradle build performance |
 | 2024.1.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, SiteMesh 2.7.0 | New Commands and Generators, Restructure directory structure fro all Profiles, Restore dynamic-modules, Better integration for GORM Entity, Support combined use of MongoDB and Hibernate |
 | 2024.0.x      | Spring Boot 3.4, Spring Framework 6.2, Groovy 4.0, SiteMesh 2.6.2 | Modularize codebase, Migrate to Central Portal OSSRH Staging API, Core Plugins Merged into the Framework, Decouple GORM from Grace framework, Restore dynamic-modules |
@@ -67,16 +68,16 @@ Grace framework 2025 will build on Spring Boot 4.x, upgrade to Spring Framework 
 
 ### Grace 2025
 
-* Groovy 5
+* Groovy 5.0
 * Java 25
-* Spring Boot 4
-* Spring Framework 7
-* Hibernate 7
+* Spring Boot 4.0
+* Spring Framework 7.0
+* Hibernate 7.2
 * Gradle 9
 
 ### Grace 2024 (Active Development)
 
-* Groovy 4
+* Groovy 4.0
 * Java 17
 * Spring Boot 3.5
 * Spring Framework 6.2
@@ -90,6 +91,7 @@ To make it easier for users to use and upgrade, [Grace Framework](https://github
 
 | Grace Version | Groovy Version | Spring Boot Version |
 |---------------|----------------|---------------------|
+| [2025.0.x](/tree/2025.0.x) | [5.0](https://groovy-lang.org/releasenotes/groovy-5.0.html) | [4.0.x](https://docs.spring.io/spring-boot/4.0/index.html) |
 | [2024.2.x](/tree/2024.2.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.5.x](https://docs.spring.io/spring-boot/3.5/index.html) |
 | [2024.1.x](/tree/2024.1.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.5.x](https://docs.spring.io/spring-boot/3.5/index.html) |
 | [2024.0.x](/tree/2024.0.x) | [4.0](https://groovy-lang.org/releasenotes/groovy-4.0.html) | [3.4.x](https://docs.spring.io/spring-boot/3.4/index.html) |
@@ -193,7 +195,7 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 
 ## Ducumentation
 
-* [2024.2.x](https://graceframework.org/grace-framework/2024.2.x/)
+* [2025.0.x](https://graceframework.org/grace-framework/2025.0.x/)
 
 ## License
 
