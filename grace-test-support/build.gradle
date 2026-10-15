@@ -10,12 +10,12 @@ dependencies {
 
     api project(":grace-plugin-gsp")
     api project(":grace-plugin-taglibs")
-    api project(":grace-views-json")
     api project(":grace-web-gsp")
     api libs.grace.async.core
     api libs.grace.datastore.gorm
     api libs.grace.datastore.gorm.support
     api libs.grace.datastore.gorm.test
+    compileOnly libs.grace.views.json
     api libs.groovy.test.junit5
     api libs.junit.jupiter.api
     api libs.junit.platform.engine

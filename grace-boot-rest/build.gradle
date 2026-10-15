@@ -7,7 +7,8 @@ dependencies {
     api project(":grace-plugin-mimetypes")
     api project(":grace-plugin-rest")
     api project(":grace-plugin-url-mappings")
-    api project(":grace-views-json")
-    api project(":grace-views-markup")
     api project(":grace-web")
+
+    api libs.grace.views.json
+    api libs.grace.views.markup
 }
