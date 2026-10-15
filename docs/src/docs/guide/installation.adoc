@@ -44,12 +44,12 @@ If you see the output like below, congratulations, you have installed it success
 Grace {version}
 ------------------------------------------------------------
 
-Build time:   2026-06-13 19:35:23 UTC
-Revision:     5044df133be187a7adb7c193b062a537606e6a6c
+Build time:   2026-10-15 10:00:44 UTC
+Revision:     aa25acc218c6aa3c263409c870543f61f8d71019
 
-Spring Boot:  3.5.15
-Gradle:       8.14.5
-Groovy:       4.0.32
-JVM:          17.0.19 (Azul Systems, Inc. 17.0.19+10-LTS)
-OS:           Mac OS X 12.7.6 aarch64
+Spring Boot:  4.0.8
+Gradle:       8.14.6
+Groovy:       5.0.8
+JVM:          25.0.2 (Azul Systems, Inc. 25.0.2+10-LTS)
+OS:           Mac OS X 15.6 aarch64
 ----
