@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>2 Release History 2024.2.0-RC1</title>
+    <title>2 Release History 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -87,17 +87,20 @@ function addJsClass() {
                 <div class="project">
                     <h1>2 Release History</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-RC1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#2024.x"><strong>2.1</strong><span>What's new in 2024.x</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#2025.x"><strong>2.1</strong><span>What's new in 2025.x</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#2023.x"><strong>2.2</strong><span>What's new in 2023.x</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#2024.x"><strong>2.2</strong><span>What's new in 2024.x</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#2023.x"><strong>2.3</strong><span>What's new in 2023.x</span></a>
                     </div>
                     
                 </div>
@@ -108,7 +111,7 @@ function addJsClass() {
 <h1 id="releases"><a class="anchor" href="#releases"></a>2 Release History</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2024.1.x/docs/src/docs/guide/releases.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2025.0.x/docs/src/docs/guide/releases.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -128,6 +131,11 @@ function addJsClass() {
 <td class="tableblock halign-left valign-top"><p class="tableblock">Grace Version</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Groovy Version</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Spring Boot Version</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/graceframework/grace-framework/tree/2025.0.x">2025.0.x</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://groovy-lang.org/releasenotes/groovy-5.0.html">5.0.x</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.spring.io/spring-boot/4.0/index.html">4.0.x</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/graceframework/grace-framework/tree/2024.2.x">2024.2.x</a></p></td>
@@ -183,10 +191,229 @@ function addJsClass() {
 </table>
 
 
-<h2 id="2024.x"><a class="anchor" href="#2024.x"></a>2.1 What's new in 2024.x</h2>
+<h2 id="2025.x"><a class="anchor" href="#2025.x"></a>2.1 What's new in 2025.x</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2024.1.x/docs/src/docs/guide/releases/2024.x.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2025.0.x/docs/src/docs/guide/releases/2025.x.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect2">
+<h3 id="_2025_0_0_m1">2025.0.0-M1</h3>
+<div class="paragraph">
+<p>This release is based on Spring Boot 4.0.8 and Spring Framework to 7.0.9.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Groovy 5.0.8, Gradle 8.14.6</p>
+</li>
+<li>
+<p>Upgrade to SiteMesh 2.8.0-M1, SnakeYAML 2.5, Tomcat 11.0.24</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete list of changes made in this release see <a href="https://github.com/graceframework/grace-framework/releases/tag/v2025.0.0-M1">release notes</a> and <a href="https://github.com/orgs/graceframework/projects/22">v2025.0.0 on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>⚠️ Noteworthy Changes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Drop Hibernate 5.6 support Grace 2025.0 will support Hibernate 7, <a href="https://github.com/graceframework/grace-framework/issues/1640">#1640</a> <a href="https://github.com/graceframework/grace-framework/issues/1641">#1641</a></p>
+</li>
+<li>
+<p>Temporarily remove support for Grace Console because the groovysh command-line repl has been migrated to JLine3 (GROOVY-8162)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add support for Grace 2025.0 and Spring Boot 4.0, 4.1 <a href="https://github.com/graceframework/grace-framework/issues/1636">#1636</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2025.0.0-M1</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Groovy 5 adds asBoolean for File and Path meaning the file or path exists See GROOVY-10949 <a href="https://github.com/graceframework/grace-framework/issues/1655">#1655</a></p>
+</li>
+<li>
+<p>Use Spock 2.4-groovy-5.0 to support Groovy 5 <a href="https://github.com/graceframework/grace-framework/issues/1655">#1655</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Some STC changes in Groovy 5 <a href="https://github.com/graceframework/grace-framework/issues/1655">#1655</a></p>
+</li>
+<li>
+<p>Can&#8217;t set module for a non-primary ClassNode in Groovy 5 See GROOVY-11159 <a href="https://github.com/graceframework/grace-framework/issues/1655">#1655</a></p>
+</li>
+<li>
+<p>Place all grace dependencies into the dist directory <a href="https://github.com/graceframework/grace-framework/issues/1679">#1679</a> <a href="https://github.com/graceframework/grace-framework/issues/1666">#1666</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Commons Codec 1.19.0 <a href="https://github.com/graceframework/grace-framework/issues/1646">#1646</a></p>
+</li>
+<li>
+<p>Upgrade to Commons Lang3 3.19.0 <a href="https://github.com/graceframework/grace-framework/issues/1647">#1647</a></p>
+</li>
+<li>
+<p>Upgrade to Commons Text 1.15.0 <a href="https://github.com/graceframework/grace-framework/issues/1648">#1648</a></p>
+</li>
+<li>
+<p>Upgrade to Commons Validator 1.11.0 <a href="https://github.com/graceframework/grace-framework/issues/1671">#1671</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1659">#1659</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 8.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1664">#1664</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1661">#1661</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2025.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1666">#1666</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1663">#1663</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2025.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1667">#1667</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1660">#1660</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 8.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1665">#1665</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1680">#1680</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 5.0.8 <a href="https://github.com/graceframework/grace-framework/issues/1655">#1655</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14.6 <a href="https://github.com/graceframework/grace-framework/issues/1656">#1656</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Tooling API 8.14.6 <a href="https://github.com/graceframework/grace-framework/issues/1668">#1668</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Annotation 3.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1644">#1644</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Expression Language 6.0.1 <a href="https://github.com/graceframework/grace-framework/issues/1645">#1645</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Servlet 6.1.0 <a href="https://github.com/graceframework/grace-framework/issues/1642">#1642</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Servlet JSP 4.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1643">#1643</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Persistence 3.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1672">#1672</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Validation 3.1.1 <a href="https://github.com/graceframework/grace-framework/issues/1673">#1673</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 5.14.4 and JUnit Platform 1.14.4 <a href="https://github.com/graceframework/grace-framework/issues/1677">#1677</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 6.0.3 <a href="https://github.com/graceframework/grace-framework/issues/1678">#1678</a></p>
+</li>
+<li>
+<p>Upgrade to H2 2.4.240 <a href="https://github.com/graceframework/grace-framework/issues/1649">#1649</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 8.0.5.Final <a href="https://github.com/graceframework/grace-framework/issues/1669">#1669</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 9.0.1.Final <a href="https://github.com/graceframework/grace-framework/issues/1670">#1670</a></p>
+</li>
+<li>
+<p>Upgrade to HikariCP 7.0.2 <a href="https://github.com/graceframework/grace-framework/issues/1650">#1650</a></p>
+</li>
+<li>
+<p>Upgrade to Mockito 5.20.0 <a href="https://github.com/graceframework/grace-framework/issues/1651">#1651</a></p>
+</li>
+<li>
+<p>Upgrade to Selenium 4.37.0 <a href="https://github.com/graceframework/grace-framework/issues/1674">#1674</a></p>
+</li>
+<li>
+<p>Upgrade to Selenium HtmlUnit 4.36.1 <a href="https://github.com/graceframework/grace-framework/issues/1675">#1675</a></p>
+</li>
+<li>
+<p>Upgrade to SiteMesh 2.8.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1676">#1676</a></p>
+</li>
+<li>
+<p>Upgrade to SnakeYAML 2.5 <a href="https://github.com/graceframework/grace-framework/issues/1654">#1654</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 4.0.8 <a href="https://github.com/graceframework/grace-framework/issues/1639">#1639</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 7.0.9 <a href="https://github.com/graceframework/grace-framework/issues/1637">#1637</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 11.0.24 <a href="https://github.com/graceframework/grace-framework/issues/1638">#1638</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2025.0.0-M1</p>
+</li>
+<li>
+<p>Update GitHub workflows - Switch to '2025.0.x'</p>
+</li>
+<li>
+<p>Next development version: 2025.0.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+<h2 id="2024.x"><a class="anchor" href="#2024.x"></a>2.2 What's new in 2024.x</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2025.0.x/docs/src/docs/guide/releases/2024.x.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -4792,10 +5019,10 @@ Now, in the upcoming Grace 2024 version, we take it a step further by allowing d
 </div>
 
 
-<h2 id="2023.x"><a class="anchor" href="#2023.x"></a>2.2 What's new in 2023.x</h2>
+<h2 id="2023.x"><a class="anchor" href="#2023.x"></a>2.3 What's new in 2023.x</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2024.1.x/docs/src/docs/guide/releases/2023.x.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-framework/edit/2025.0.x/docs/src/docs/guide/releases/2023.x.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
