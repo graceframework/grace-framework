@@ -126,6 +126,23 @@ For a complete list of changes made in this release see link:https://github.com/
 * Update github workflows Switch to '2024.2.x' branch
 * Next development version: 2024.2.0-SNAPSHOT
 
+=== 2024.1.5
+
+link:{github}/releases/tag/v2024.1.5[release notes].
+
+🛠 Improvements
+
+* Add release notes for 2024.1.5
+
+🚀 Dependency Upgrades
+
+* Upgrade to Tomcat 10.1.61 link:{github}/issues/1681[#1681]
+
+⚙️ Tasks
+
+* Release v2024.1.5
+* Next development version: 2024.1.5-SNAPSHOT
+
 === 2024.1.4
 
 link:{github}/releases/tag/v2024.1.4[release notes].
