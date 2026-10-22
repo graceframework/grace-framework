@@ -47,6 +47,17 @@ tasks.register('publishToDist') {
     }
 }
 
+tasks.register('publishToRepo') {
+    subprojects { Project project ->
+        if (project.name != 'docs' && !project.name.startsWith('grace-test-suite')) {
+            project.tasks.named("generateMetadataFileForMavenPublication").configure {
+                enabled = true
+            }
+            dependsOn("$project.name:publishMavenPublicationToGraceRepoRepository")
+        }
+    }
+}
+
 tasks.register('binZip', Zip) {
     dependsOn = [publishToDist, createGraceStartScripts]
     destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
@@ -111,8 +122,17 @@ tasks.register('docsZip', Zip) {
     }
 }
 
+tasks.register('bundleZip', Zip) {
+    dependsOn = [publishToRepo]
+    destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
+    archiveBaseName = 'grace'
+    archiveAppendix = grailsVersion
+    archiveClassifier = 'bundle'
+    from(homeRepoDir)
+}
+
 tasks.register('zipDist') {
-    dependsOn = [binZip, sourcesZip, docsZip]
+    dependsOn = [binZip, sourcesZip, docsZip, bundleZip]
 }
 
 tasks.register('assemble') {
