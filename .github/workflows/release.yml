@@ -54,17 +54,17 @@ jobs:
       - name: Set the current release version
         id: release_version
         run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
+      - name: Generate secring file
+        env:
+          SECRING_FILE: ${{ secrets.SECRING_FILE }}
+        run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: Run Assemble
         id: assemble
-        run: ./gradlew assemble
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: rainboyan/deploy-github-pages@v1.1.0
         env:
-          VERSION: ${{ steps.release_version.outputs.release_version }}
-          TOKEN: ${{ secrets.GH_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: docs/build/docs/manual
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
+          SECRING_FILE: ${{ secrets.SECRING_FILE }}
+        run: ./gradlew -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg assemble
       - name: Upload artifacts to the Github release
         id: upload_artifacts
         if: steps.assemble.outcome == 'success'
@@ -74,11 +74,16 @@ jobs:
           gh release upload --clobber "${{ github.ref_name }}" \
             build/distributions/grace-${{ steps.release_version.outputs.release_version }}-bin.zip \
             build/distributions/grace-${{ steps.release_version.outputs.release_version }}-docs.zip \
-            build/distributions/grace-${{ steps.release_version.outputs.release_version }}-sources.zip
-      - name: Generate secring file
+            build/distributions/grace-${{ steps.release_version.outputs.release_version }}-sources.zip \
+            build/distributions/grace-${{ steps.release_version.outputs.release_version }}-bundle.zip
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: rainboyan/deploy-github-pages@v1.1.0
         env:
-          SECRING_FILE: ${{ secrets.SECRING_FILE }}
-        run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
+          VERSION: ${{ steps.release_version.outputs.release_version }}
+          TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs/build/docs/manual
       - name: Publish to Maven Central Portal
         id: publish
         if: steps.upload_artifacts.outcome == 'success'
