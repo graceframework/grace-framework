@@ -22,7 +22,7 @@ grace-data-hibernate = "2024.2.0-RC1"
 grace-data-mongodb = "2025.0.0-M1"
 grace-doc-engine = "2.0.0"
 grace-events = "8.0.0-M1"
-grace-views = "7.2.0-RC1"
+grace-views = "7.2.0-RC2"
 gradle = "8.14.6"
 gradle-git-properties = "3.0.3"
 gradle-plugin-publish = "2.2.1"
@@ -119,9 +119,9 @@ grace-datastore-web = { module = "org.graceframework.data:grace-datastore-web", 
 grace-doc-engine = { module = "org.graceframework:grace-doc-engine", version.ref = "grace-doc-engine" }
 grace-views-core = { module = "org.graceframework.views:grace-views-core", version.ref = "grace-views" }
 grace-views-json = { module = "org.graceframework.views:grace-views-json", version.ref = "grace-views" }
-grace-views-json-templates = { module = "org.graceframework.views:grace-views-json-templates", version.ref = "grace-views" }
 grace-views-markup = { module = "org.graceframework.views:grace-views-markup", version.ref = "grace-views" }
-grace-views-testing-support = { module = "org.graceframework.views:grace-views-testing-support", version.ref = "grace-views" }
+grace-views-templates = { module = "org.graceframework.views:grace-views-templates", version.ref = "grace-views" }
+grace-views-test = { module = "org.graceframework.views:grace-views-test", version.ref = "grace-views" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 groovy-ant = { module = "org.apache.groovy:groovy-ant", version.ref = "groovy" }
 groovy-bom = { module = "org.apache.groovy:groovy-bom", version.ref = "groovy" }
@@ -250,7 +250,7 @@ grace-async-bundle = ["grace-async-core", "grace-async-gpars", "grace-async-rxja
 grace-data-bundle = ["grace-datastore-core", "grace-datastore-gorm", "grace-datastore-gorm-async", "grace-datastore-gorm-bson", "grace-datastore-gorm-hibernate", "grace-datastore-gorm-mongodb", "grace-datastore-gorm-support", "grace-datastore-gorm-tck", "grace-datastore-gorm-test", "grace-datastore-gorm-validation", "grace-datastore-web"]
 grace-dependencies-bundle = ["commons-text", "commons-validator", "gpars", "rxjava", "rxjava2", "rxjava3"]
 grace-events-bundle = ["grace-events-core", "grace-events-gpars", "grace-events-rxjava", "grace-events-rxjava2", "grace-events-rxjava3", "grace-events-spring", "grace-events-transform"]
-grace-views-bundle = ["grace-views-core", "grace-views-json", "grace-views-json-templates", "grace-views-markup", "grace-views-testing-support"]
+grace-views-bundle = ["grace-views-core", "grace-views-json", "grace-views-markup", "grace-views-templates", "grace-views-test"]
 groovy-bundle = ["groovy-bom"]
 h2-bundle = ["h2"]
 jakarta-bundle = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]
