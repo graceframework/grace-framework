@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath libs.groovy.toml
@@ -10,7 +11,7 @@ buildscript {
 plugins {
     id 'groovy'
     id 'java-library'
-    id 'org.graceframework.grace-doc' version '2024.1.1'
+    alias libs.plugins.grace.doc
 }
 
 def DOCUMENTATION_GROUP = 'Documentation'
