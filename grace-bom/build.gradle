@@ -89,6 +89,12 @@ for (profile in grace.profiles) {
 
 
 publishing {
+    repositories {
+        maven {
+            name = 'graceRepo'
+            url = homeRepoDir
+        }
+    }
     publications {
         maven(MavenPublication) {
             pom {
