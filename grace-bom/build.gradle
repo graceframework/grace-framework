@@ -10,14 +10,83 @@ buildscript {
 apply plugin: 'java-platform'
 apply plugin: 'maven-publish'
 
+class Dependency {
+    String groupId
+    String artifactId
+    String version
+    String type
+    String scope
+}
+
 def toml = new groovy.toml.TomlSlurper()
-def grails = toml.parse(rootProject.file('gradle/grails.versions.toml'))
+def grace = toml.parse(rootProject.file('gradle/grace.versions.toml'))
 def libs = toml.parse(rootProject.file('gradle/libs.versions.toml'))
 
-def tokens = [:]
 def bundles = libs.bundles
 def libraries = bundles*.value.flatten().unique().sort()
 def libraryVersions = libraries.collect({ libs.libraries[it] })*.version.ref.unique().sort()
+def properties = [:]
+def dependencies = []
+
+for (ver in libraryVersions) {
+    String version = libs.versions[ver]
+    properties["${ver}.version"] = version
+}
+
+for (dep in grace.plugins) {
+    String version = dep.value
+    properties["grace-plugin.${dep.key}.version"] = version
+}
+
+for (dep in grace.profiles) {
+    String version = dep.value
+    properties["grace-profile.${dep.key}.version"] = version
+}
+
+for (sub in project.parent.subprojects) {
+    if (sub.name == 'docs' || sub.name == 'grace-bom' || sub.name.contains('test-suite')) continue
+
+    dependencies << new Dependency(
+        groupId: sub.group,
+        artifactId: sub.name,
+        version: "\${grace.version}"
+    )
+}
+
+for (lib in libraries) {
+    def dep = libs.libraries[lib]
+    def groupId = dep.module.split(':')[0]
+    def artifactId = dep.module.split(':')[1]
+    def version = libs.versions[dep.version.ref]
+    dependencies << new Dependency(
+        groupId: groupId,
+        artifactId: artifactId,
+        version: "\${${dep.version.ref}.version}",
+        type: (lib in libs.bundles.boms) ? 'pom': '',
+        scope: (lib in libs.bundles.boms) ? 'import': ''
+    )
+}
+
+for (plugin in grace.plugins) {
+    String artifactId = plugin.key
+    String version = "\${grace-plugin.${plugin.key}.version}"
+    dependencies << new Dependency(
+        groupId: 'org.graceframework.plugins',
+        artifactId: artifactId,
+        version: version
+    )
+}
+
+for (profile in grace.profiles) {
+    String artifactId = profile.key
+    String version = "\${grace-profile.${profile.key}.version}"
+    dependencies << new Dependency(
+        groupId: 'org.graceframework.profiles',
+        artifactId: artifactId,
+        version: version
+    )
+}
+
 
 publishing {
     publications {
@@ -57,85 +126,30 @@ publishing {
 
                     mkp.properties {
 
-                        for (ver in libraryVersions) {
-                            String version = libs.versions[ver]
-                            tokens["${ver}.version"] = version
+                        properties.sort { it.key }.each { name, version ->
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on [$dep.key] for a release!")
                             }
-                            mkp."${ver}.version"(version)
+                            mkp."${name}"(version)
                         }
 
-                        for (dep in grails.plugins) {
-                            String version = dep.value
-                            tokens["grace-plugin-${dep.key}.version"] = version
-                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
-                                throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$dep.key] for a release!")
-                            }
-                            mkp."grace-plugin-${dep.key}.version"(version)
-                        }
-
-                        for (dep in grails.profiles) {
-                            String version = dep.value
-                            tokens["grace-profile-${dep.key}.version"] = version
-                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
-                                throw new RuntimeException("Cannot have a snapshot dependency on a profile [$dep.key] for a release!")
-                            }
-                            mkp."grace-profile-${dep.key}.version"(version)
-                        }
                     }
 
                     mkp.dependencyManagement {
                         mkp.dependencies {
-                            for (sub in project.parent.subprojects) {
-                                if (sub.name == 'docs' || sub.name == 'grace-bom' || sub.name.contains('test-suite')) continue
 
+                            for (dep in dependencies.sort { it.version }) {
                                 mkp.dependency {
-                                    mkp.groupId sub.group
-                                    mkp.artifactId sub.name
-                                    mkp.version sub.version
-                                    if (sub.name == 'grace-dependencies') {
+                                    mkp.groupId dep.groupId
+                                    mkp.artifactId dep.artifactId
+                                    mkp.version dep.version.contains('grace.version') ? projectVersion : dep.version
+                                    if (dep.type == 'pom') {
                                         mkp.type 'pom'
                                         mkp.scope 'import'
                                     }
                                 }
                             }
 
-                            for (lib in libraries) {
-                                def dep = libs.libraries[lib]
-                                def groupId = dep.module.split(':')[0]
-                                def artifactId = dep.module.split(':')[1]
-                                def version = libs.versions[dep.version.ref]
-                                mkp.dependency {
-                                    mkp.groupId groupId
-                                    mkp.artifactId artifactId
-                                    mkp.version "\${${dep.version.ref}.version}"
-                                    if (lib in libs.bundles.boms) {
-                                        mkp.type 'pom'
-                                        mkp.scope 'import'
-                                    }
-                                }
-                            }
-
-                            for (plugin in grails.plugins) {
-                                String artifactId = plugin.key
-                                String version = "\${grace-plugin-${plugin.key}.version}"
-                                mkp.dependency {
-                                    mkp.groupId 'org.graceframework.plugins'
-                                    mkp.artifactId artifactId
-                                    String versionValue = plugin.value
-                                    mkp.version version
-                                }
-                            }
-
-                            for (profile in grails.profiles) {
-                                mkp.dependency {
-                                    mkp.groupId 'org.graceframework.profiles'
-                                    mkp.artifactId profile.key
-                                    String version = profile.value
-                                    mkp.version("\${grace-profile-${profile.key}.version}")
-                                }
-                            }
                         }
                     }
                 }
@@ -154,7 +168,7 @@ task generateEffectiveBom(type: Copy) {
     dependsOn generatePomFileForMavenPublication
 	from("$buildDir/publications/maven") {
         include "pom-default.xml"
-        filter(org.apache.tools.ant.filters.ReplaceTokens, beginToken: '${', endToken: '}', tokens: tokens)
+        filter(org.apache.tools.ant.filters.ReplaceTokens, beginToken: '${', endToken: '}', tokens: properties)
     }
     destinationDir = file("$buildDir/generated/effective-bom")
     rename "pom-default.xml", "${project.name}-effective.xml"
