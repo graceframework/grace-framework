@@ -1,5 +1,5 @@
 plugins {
-    id "org.graceframework.asset-pipeline" version "7.2.0-M1"
+    alias libs.plugins.grace.asset.pipeline
 }
 
 dependencies {
