@@ -49,7 +49,7 @@ for (sub in project.parent.subprojects) {
     dependencies << new Dependency(
         groupId: sub.group,
         artifactId: sub.name,
-        version: "\${grace.version}"
+        version: "\${grace-framework.version}"
     )
 }
 
@@ -132,7 +132,7 @@ publishing {
 
                     mkp.properties {
 
-                        properties.sort { it.key }.each { name, version ->
+                        properties.sort { it.key[0..-9] }.each { name, version ->
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on [$dep.key] for a release!")
                             }
@@ -144,11 +144,11 @@ publishing {
                     mkp.dependencyManagement {
                         mkp.dependencies {
 
-                            for (dep in dependencies.sort { it.version }) {
+                            for (dep in dependencies.sort { it.version[2..-10] }) {
                                 mkp.dependency {
                                     mkp.groupId dep.groupId
                                     mkp.artifactId dep.artifactId
-                                    mkp.version dep.version.contains('grace.version') ? projectVersion : dep.version
+                                    mkp.version dep.version.contains('grace-framework.version') ? projectVersion : dep.version
                                     if (dep.type == 'pom') {
                                         mkp.type 'pom'
                                         mkp.scope 'import'
