@@ -177,17 +177,11 @@ subprojects { project ->
         }
     }
 
-    if (!project.hasProperty("artifactoryPublishPassword") && System.getenv("ARTIFACTORY_PASSWORD")) {
-        project.ext.artifactoryPublishPassword = System.getenv("ARTIFACTORY_PASSWORD")
-    }
+    if (project.name == 'docs') return
+    if (project.name == 'grace-bom') return
 
     apply plugin: 'java-library'
     apply plugin: 'groovy'
-    if (!isDocs && !isTestSuite) {
-        apply plugin: 'maven-publish'
-        apply plugin: 'ivy-publish'
-        apply plugin: 'signing'
-    }
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: 'checkstyle'
@@ -196,14 +190,10 @@ subprojects { project ->
     apply plugin: 'project-report'
     apply plugin: "org.gradle.test-retry"
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        withJavadocJar()
-        withSourcesJar()
-    }
-
-    if (!isDocs && !isTestSuite) {
+    if (!isTestSuite) {
+        apply plugin: 'maven-publish'
+        apply plugin: 'ivy-publish'
+        apply plugin: 'signing'
 
         publishing {
             repositories {
@@ -247,28 +237,27 @@ subprojects { project ->
         tasks.withType(PublishToMavenRepository).configureEach {
             mustRunAfter(signingTasks)
         }
-
-        javadoc {
-            if (JavaVersion.current().isJava9Compatible()) {
-                options.addBooleanOption('html5', true)
-            }
-        }
-
-        processResources {
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        }
-
-        jar {
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        }
-
     }
 
-    if (project.name == 'docs') return
-    if (project.name == 'grace-dependencies') return
-    if (project.name == 'grace-bom') return
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
+
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 
     jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
@@ -399,11 +388,6 @@ subprojects { project ->
         if (System.getProperty("debug.tests")) {
             jvmArgs debugArguments
         }
-    }
-
-    configurations {
-        meta
-        published.extendsFrom archives, meta
     }
 }
 
