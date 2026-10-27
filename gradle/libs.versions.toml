@@ -21,6 +21,7 @@ grace-data-hibernate = "2024.2.0-RC1"
 grace-data-mongodb = "2024.2.0-RC1"
 grace-doc-engine = "2.0.0"
 grace-events = "7.2.0-RC1"
+grace-gradle-plugin = "2024.1.1"
 grace-views = "7.2.0-RC2"
 gradle = "8.14.6"
 gradle-git-properties = "3.0.3"
@@ -259,5 +260,6 @@ tomcat-bundle = ["tomcat-annotations-api", "tomcat-jdbc", "tomcat-jsp-api", "tom
 
 [plugins]
 grace-asset-pipeline = { id = "org.graceframework.asset-pipeline", version.ref = "grace-asset-pipeline" }
+grace-doc = { id = "org.graceframework.grace-doc", version.ref = "grace-gradle-plugin" }
 gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gradle-git-properties" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
