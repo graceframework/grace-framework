@@ -204,6 +204,10 @@ subprojects { project ->
                         artifact '[artifact]-[revision](-[classifier])(.[ext])'
                     }
                 }
+                maven {
+                    name = 'graceRepo'
+                    url = homeRepoDir
+                }
             }
             publications {
                 maven(MavenPublication) {
@@ -235,6 +239,14 @@ subprojects { project ->
 
         TaskCollection<Sign> signingTasks = tasks.withType(Sign)
         tasks.withType(PublishToMavenRepository).configureEach {
+            mustRunAfter(signingTasks)
+        }
+
+        tasks.withType(PublishToMavenLocal).configureEach {
+            mustRunAfter(signingTasks)
+        }
+
+        tasks.withType(PublishToIvyRepository).configureEach {
             mustRunAfter(signingTasks)
         }
     }
