@@ -51,10 +51,10 @@ tasks.register('binZip', Zip) {
     dependsOn = [publishToDist, createGraceStartScripts]
     destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
-    archiveAppendix = grailsVersion
+    archiveAppendix = graceVersion
     archiveClassifier = 'bin'
 
-    into("grace-$grailsVersion") {
+    into("grace-$graceVersion") {
         from(projectDir) {
             include 'bin/grace', 'bin/grace.bat', 'LICENSE.txt', 'INSTALL.txt'
         }
@@ -80,10 +80,10 @@ tasks.register('sourcesZip', Zip) {
     dependsOn = [publishToDist]
     destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
-    archiveAppendix = grailsVersion
+    archiveAppendix = graceVersion
     archiveClassifier = 'sources'
 
-    into("grace-$grailsVersion") {
+    into("grace-$graceVersion") {
         from(projectDir) {
             include 'LICENSE.txt'
         }
@@ -98,10 +98,10 @@ tasks.register('docsZip', Zip) {
     dependsOn = ['docs:docs']
     destinationDirectory = rootProject.layout.buildDirectory.dir('distributions')
     archiveBaseName = 'grace'
-    archiveAppendix = grailsVersion
+    archiveAppendix = graceVersion
     archiveClassifier = 'docs'
 
-    into("grace-$grailsVersion") {
+    into("grace-$graceVersion") {
         from(projectDir) {
             include 'LICENSE.txt'
         }

@@ -15,10 +15,10 @@ buildscript {
 }
 
 ext {
-    grailsVersion = project.projectVersion
+    graceVersion = project.projectVersion
     groovyVersion = System.getenv('CI_GROOVY_VERSION') ?: libs.versions.groovy.get()
     spockVersion = libs.versions.spock.get()
-    isBuildSnapshot = grailsVersion.endsWith("-SNAPSHOT")
+    isBuildSnapshot = graceVersion.endsWith("-SNAPSHOT")
     isReleaseVersion = !isBuildSnapshot
     isCiBuild = System.getenv().get("CI") as Boolean
 
@@ -55,7 +55,7 @@ if (jointBuildGroovyJarProperty) {
     groovyDependency = dependencies.create("org.apache.groovy:groovy:${groovyVersion}")
 }
 
-version = grailsVersion
+version = graceVersion
 group = "org.graceframework"
 
 apply plugin: 'idea'
@@ -136,7 +136,7 @@ allprojects {
 }
 
 subprojects { project ->
-    version = grailsVersion
+    version = graceVersion
     group = "org.graceframework"
 
     configurations {
@@ -262,7 +262,7 @@ subprojects { project ->
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
             "Implementation-Title": "Grace Framework",
-            "Implementation-Version": grailsVersion,
+            "Implementation-Version": graceVersion,
             "Implementation-Vendor": 'graceframework.org')
     }
 
