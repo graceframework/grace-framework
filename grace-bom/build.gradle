@@ -7,6 +7,7 @@ buildscript {
     }
 }
 
+apply plugin: 'java-platform'
 apply plugin: 'maven-publish'
 
 def toml = new groovy.toml.TomlSlurper()
@@ -21,6 +22,33 @@ def libraryVersions = libraries.collect({ libs.libraries[it] })*.version.ref.uni
 publishing {
     publications {
         maven(MavenPublication) {
+            pom {
+                name = 'Grace BOM'
+                description = 'Grace Framework : Grace BOM'
+                url = 'https://github.com/graceframework/grace-framework'
+
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/graceframework/grace-framework'
+                    connection = 'scm:git:git://github.com/graceframework/grace-framework.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/graceframework/grace-framework.git'
+                }
+
+                developers {
+                    developer {
+                        id = 'rainboyan'
+                        name = 'Michael Yan'
+                        email = 'rain@rainboyan.com'
+                    }
+                }
+            }
             pom.withXml {
                 def xml = asNode()
 

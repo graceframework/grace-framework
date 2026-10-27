@@ -73,13 +73,6 @@ jar {
     enabled = false
 }
 
-javadocJar {
-    enabled = false
-}
-
-sourcesJar {
-    enabled = false
-}
 
 def cleanTask = project.tasks.findByName('clean')
 if (cleanTask == null) {

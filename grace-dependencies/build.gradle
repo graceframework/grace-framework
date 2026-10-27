@@ -1,87 +1,34 @@
-apply plugin: 'maven-publish'
-
-def PLUGINS = [
-    'async',
-    'cache',
-    'codecs',
-    'controllers',
-    'converters',
-    'core',
-    'database-migration',
-    'databinding',
-    'datasource',
-    'domain-class',
-    'dynamic-modules',
-    'events',
-    'fields',
-    'geb',
-    'gsp',
-    'i18n',
-    'interceptors',
-    'mimetypes',
-    'rest',
-    'scaffolding',
-    'services',
-    'taglibs',
-    'url-mappings',
-    'validation'
-]
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            pom.withXml {
-                def xml = asNode()
-
-                xml.children().last() + {
-                    delegate.dependencies {
-                        delegate.dependency {
-                            delegate.groupId "org.graceframework"
-                            delegate.artifactId "grace-bootstrap"
-                            delegate.version(project.version)
-                            delegate.scope "compile"
-                        }
-                        delegate.dependency {
-                            delegate.groupId "org.graceframework"
-                            delegate.artifactId "grace-boot"
-                            delegate.version(project.version)
-                            delegate.scope "provided"
-                        }
-                        delegate.dependency {
-                            delegate.groupId "org.graceframework"
-                            delegate.artifactId "grace-core"
-                            delegate.version(project.version)
-                            delegate.scope "compile"
-                        }
-                        for(plug in PLUGINS) {
-                            delegate.dependency {
-                                delegate.groupId "org.graceframework"
-                                delegate.artifactId "grace-plugin-${plug}"
-                                delegate.version(project.version)
-                                delegate.scope "compile"
-                            }
-                        }
-                        delegate.dependency {
-                            delegate.groupId "org.graceframework"
-                            delegate.artifactId "grace-test"
-                            delegate.version(project.version)
-                            delegate.scope "test"
-                        }
-                        delegate.dependency {
-                            delegate.groupId "org.graceframework"
-                            delegate.artifactId "grace-test-support"
-                            delegate.version(project.version)
-                            delegate.scope "test"
-                        }
-                        delegate.dependency {
-                            delegate.groupId "com.h2database"
-                            delegate.artifactId "h2"
-                            delegate.version libs.versions.h2.get()
-                            delegate.scope "test"
-                        }
-                    }
-                }
-            }
-        }
-    }
+dependencies {
+    api project(":grace-api")
+    compileOnlyApi project(":grace-boot")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-async")
+    api project(":grace-plugin-cache")
+    api project(":grace-plugin-codecs")
+    api project(":grace-plugin-controllers")
+    api project(":grace-plugin-converters")
+    api project(":grace-plugin-core")
+    api project(":grace-plugin-database-migration")
+    api project(":grace-plugin-databinding")
+    api project(":grace-plugin-datasource")
+    api project(":grace-plugin-domain-class")
+    api project(":grace-plugin-dynamic-modules")
+    api project(":grace-plugin-events")
+    api project(":grace-plugin-fields")
+    api project(":grace-plugin-geb")
+    api project(":grace-plugin-gsp")
+    api project(":grace-plugin-i18n")
+    api project(":grace-plugin-interceptors")
+    api project(":grace-plugin-mimetypes")
+    api project(":grace-plugin-rest")
+    api project(":grace-plugin-scaffolding")
+    api project(":grace-plugin-services")
+    api project(":grace-plugin-taglibs")
+    api project(":grace-plugin-url-mappings")
+    api project(":grace-plugin-validation")
+    testImplementation project(":grace-test")
+    testImplementation project(":grace-test-support")
+    testImplementation libs.h2
 }
