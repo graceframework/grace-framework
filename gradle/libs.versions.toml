@@ -258,5 +258,6 @@ snakeyaml-bundle = ["snakeyaml"]
 tomcat-bundle = ["tomcat-annotations-api", "tomcat-jdbc", "tomcat-jsp-api", "tomcat-embed-core", "tomcat-embed-el", "tomcat-embed-jasper", "tomcat-embed-websocket"]
 
 [plugins]
+grace-asset-pipeline = { id = "org.graceframework.asset-pipeline", version.ref = "grace-asset-pipeline" }
 gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gradle-git-properties" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
