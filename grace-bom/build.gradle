@@ -18,6 +18,8 @@ class Dependency {
     String scope
 }
 
+def projectVersion = project.version
+def isBuildSnapshot = projectVersion.endsWith("-SNAPSHOT")
 def toml = new groovy.toml.TomlSlurper()
 def grace = toml.parse(rootProject.file('gradle/grace.versions.toml'))
 def libs = toml.parse(rootProject.file('gradle/libs.versions.toml'))
