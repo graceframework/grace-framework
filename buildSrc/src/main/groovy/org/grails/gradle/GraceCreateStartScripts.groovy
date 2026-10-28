@@ -41,6 +41,9 @@ abstract class GraceCreateStartScripts extends CreateStartScripts {
     @Internal
     Collection<String> projectArtifacts = []
 
+    @Internal
+    Collection<String> dependentArtifacts = []
+
     GraceCreateStartScripts() {
         setDescription('Creates OS specific scripts to run grace-shell as a JVM application.')
         mainClass.set('org.grails.cli.GrailsCli')
@@ -57,14 +60,7 @@ abstract class GraceCreateStartScripts extends CreateStartScripts {
         generator.defaultJvmOpts = getDefaultJvmOpts()
         generator.optsEnvironmentVar = getOptsEnvironmentVar()
         generator.exitEnvironmentVar = getExitEnvironmentVar()
-        generator.classpath = projectArtifacts + getClasspath().resolvedConfiguration.resolvedArtifacts.collect { artifact ->
-            def dependency = artifact.moduleVersion.id
-            String installedFile = "lib/$dependency.group/$dependency.name/jars/$artifact.file.name"
-            if (dependency.group == 'org.graceframework') {
-                installedFile = "dist/$artifact.file.name"
-            }
-            installedFile
-        }
+        generator.classpath = projectArtifacts + dependentArtifacts
         generator.scriptRelPath = "bin/${getUnixScript().name}"
         generator.generateUnixScript(getUnixScript())
         generator.generateWindowsScript(getWindowsScript())

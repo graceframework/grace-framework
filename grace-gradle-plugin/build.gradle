@@ -172,9 +172,28 @@ project.afterEvaluate {
                 }
 
                 if (publication.name == "pluginMaven" || publication.name.endsWith("PluginMarkerMaven")) {
-                    withXml {
-                        def xml = asNode()
-                        xml.children().last() + pomInfo
+                    url = 'https://github.com/graceframework/grace-framework'
+
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+
+                    scm {
+                        url = 'https://github.com/graceframework/grace-framework'
+                        connection = 'scm:git:git://github.com/graceframework/grace-framework.git'
+                        developerConnection = 'scm:git:ssh://git@github.com/graceframework/grace-framework.git'
+                    }
+
+                    developers {
+                        developer {
+                            id = 'rainboyan'
+                            name = 'Michael Yan'
+                            email = 'rain@rainboyan.com'
+                        }
                     }
                 }
             }
