@@ -268,12 +268,19 @@ subprojects { project ->
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
-    jar {
+    tasks.withType(Jar) {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        metaInf {
+            from(rootProject.file('buildSrc/src/main/resources/legal')) {
+                include 'LICENSE.txt', 'NOTICE.txt'
+                expand(version: graceVersion)
+            }
+        }
         manifest.mainAttributes(
-            "Built-By": System.properties['user.name'],
-            "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grace Framework",
+            "Automatic-Module-Name": project.name.replace("-", "."),
+            "Built-By": 'Grace Framework',
+            "Build-Jdk-Spec": '17',
+            "Implementation-Title": "Grace Framework - ${project.name.split('-')*.capitalize().join(' ')}",
             "Implementation-Version": graceVersion,
             "Implementation-Vendor": 'graceframework.org')
     }
