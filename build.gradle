@@ -400,6 +400,7 @@ subprojects { project ->
             showCauses = true
             showStackTraces = true
         }
+        failOnNoDiscoveredTests = false
         excludes = ["**/*TestCase.class", "**/*\$*.class"]
         if (isCiBuild) {
             maxParallelForks = 2
