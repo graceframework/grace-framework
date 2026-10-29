@@ -74,9 +74,11 @@ nexusPublishing {
         }
     }
 
+    clientTimeout = java.time.Duration.ofMinutes(10)
+    connectTimeout = java.time.Duration.ofMinutes(10)
     transitionCheckOptions {
-        maxRetries.set(40)
-        delayBetween.set(java.time.Duration.ofMillis(2000))
+        maxRetries.set(100)
+        delayBetween.set(java.time.Duration.ofSeconds(120))
     }
 }
 
