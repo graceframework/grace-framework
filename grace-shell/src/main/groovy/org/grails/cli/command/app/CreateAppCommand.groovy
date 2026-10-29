@@ -1509,6 +1509,16 @@ group """
             }
             mpr.profileDependencyVersions.getProperties().each {
                 versions[it.key.toString()] = it.value.toString()
+                // Workaround for #1704, #1706, Grace 2024.2.0-RC2 changed the prefix of plugins' and profiles' properties
+                if (it.key.toString().startsWith('grace-asset-pipeline.')) {
+                    versions['grace-plugin-asset-pipeline.' + it.key.toString().substring(21)] = it.value.toString()
+                }
+                if (it.key.toString().startsWith('grace-plugin.')) {
+                    versions['grace-plugin-' + it.key.toString().substring(13)] = it.value.toString()
+                }
+                if (it.key.toString().startsWith('grace-profile.')) {
+                    versions['grace-profile-' + it.key.toString().substring(14)] = it.value.toString()
+                }
             }
         }
         versions
