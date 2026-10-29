@@ -52,27 +52,6 @@ tasks.register("i18nResources") {
     ant.native2ascii(encoding: "UTF-8", src: "app/i18n", dest: "build/resources/main", includes: "**/*.properties")
 }
 
-configure([compileGroovy, compileTestGroovy]) {
-    groovyOptions.encoding = "UTF-8"
-    doFirst {
-        def groovyConfig = project.file('build/config.groovy')
-        if (!groovyConfig.exists()) {
-            groovyConfig.parentFile.mkdirs()
-            project.file('build/config.groovy') << """// A Groovy script file that configures the compiler, allowing extensive control over how the code is compiled.
-withConfig(configuration) {
-    inline(phase: 'CONVERSION') { source, context, classNode ->
-        source.ast.putNodeMetaData('PROJECT_NAME', 'adminConsole')
-        source.ast.putNodeMetaData('PROJECT_TYPE', 'PLUGIN')
-        source.ast.putNodeMetaData('PROJECT_VERSION', '$project.version')
-        source.ast.putNodeMetaData('PROJECT_DIR', '$project.projectDir')
-        source.ast.putNodeMetaData('GRAILS_APP_DIR', '$project.projectDir/app')
-    }
-}"""
-        }
-        groovyOptions.configurationScript = project.file('build/config.groovy')
-    }
-}
-
 processResources {
     dependsOn = ["i18nResources"]
 }
