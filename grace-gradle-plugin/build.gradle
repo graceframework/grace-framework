@@ -162,8 +162,8 @@ if (isReleaseVersion) {
     }
 }
 
-project.afterEvaluate {
-    project.publishing.publications.each { publication->
+afterEvaluate {
+    publishing.publications.each { publication->
         if (publication instanceof MavenPublication) {
             publication.pom {
                 if (publication.name == "maven" || publication.name == "pluginMaven") {

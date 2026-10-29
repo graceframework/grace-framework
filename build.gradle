@@ -273,7 +273,7 @@ subprojects { project ->
     tasks.register('configGroovyScript', Copy) {
         mustRunAfter('clean')
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        destinationDir = project.layout.buildDirectory.getAsFile().get()
+        destinationDir = project.file('build/groovy')
         def properties = [
             projectName: project.name,
             projectType: 'PLUGIN',
@@ -285,7 +285,7 @@ subprojects { project ->
             pluginProperties.load(new FileInputStream(project.file('plugin.properties')))
             properties.put('projectName', pluginProperties.name ?: pluginProperties.pluginName)
 
-            from(rootProject.file('buildSrc/config/groovy')) {
+            from(rootProject.file('gradle/groovy')) {
                 include 'config.groovy'
                 expand(properties)
             }
@@ -343,8 +343,8 @@ subprojects { project ->
         options.compilerArgs << '-parameters'
         options.forkOptions.memoryInitialSize = '128M'
         options.forkOptions.memoryMaximumSize = '1G'
-        if (project.file('build/config.groovy').exists()) {
-            groovyOptions.configurationScript = project.file('build/config.groovy')
+        if (project.file('build/groovy/config.groovy').exists()) {
+            groovyOptions.configurationScript = project.file('build/groovy/config.groovy')
         }
     }
 
