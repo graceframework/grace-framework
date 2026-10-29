@@ -1,8 +1,5 @@
-apply plugin: 'application'
-
-application {
-    mainClass.set('org.grails.cli.GrailsCli')
-}
+import org.grails.gradle.Dependency
+import org.grails.gradle.GraceCreateStartScripts
 
 repositories {
     mavenCentral()
@@ -73,6 +70,68 @@ dependencies {
     implementation(libs.maven.resolver.supplier)
     implementation(libs.maven.settings.builder)
     runtimeOnly libs.slf4j.simple
+}
+
+tasks.register('createGraceStartScripts', GraceCreateStartScripts) {
+    defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
+    outputDir = rootProject.file('bin')
+    classpath = project.configurations.runtimeClasspath
+    unixStartScriptTemplate = project.resources.text.fromFile('src/main/resources/unixStartScript.txt')
+    windowsStartScriptTemplate = project.resources.text.fromFile('src/main/resources/windowsStartScript.txt')
+    projectArtifacts = project.tasks['jar'].outputs.files.collect { "dist/${it.name}" }
+
+    def homeLibDir = rootProject.file('lib')
+    def resolvedArtifacts = []
+    def artifactsPath = []
+    def configuration = project.configurations.runtimeClasspath
+    def artifactCollection = configuration.incoming.artifacts
+    def artifacts = artifactCollection.artifacts
+    artifacts.each { ResolvedArtifactResult artifact ->
+        String cid = artifact.id.componentIdentifier.displayName
+        String group
+        String name
+        String version
+        File file = artifact.file
+        if (cid.startsWith('project ')) {
+            group = 'org.graceframework'
+            name = cid.substring(9)
+            version = graceVersion
+        }
+        else {
+            String[] strs = cid.split(':')
+            group = strs[0]
+            name = strs[1]
+            version = strs[2]
+        }
+
+        resolvedArtifacts.add(new Dependency(group: group, name: name, version: version, file: file))
+
+        if (group.startsWith('org.graceframework')) {
+            artifactsPath.add("dist/${file.name}")
+        }
+        else {
+            artifactsPath.add("lib/$group/$name/jars/${file.name}")
+        }
+    }
+    dependentArtifacts = artifactsPath
+
+    def graceFile = rootProject.file('bin/grace')
+    def graceBatFile = rootProject.file('bin/grace.bat')
+    doLast {
+        resolvedArtifacts.each { Dependency dependency ->
+            String group = dependency.group
+            String name = dependency.name
+            if (group.startsWith('org.graceframework')) {
+                ant.copy(file: dependency.file, todir: "${homeLibDir}/org.graceframework")
+            }
+            else {
+                ant.copy(file: dependency.file, todir: "${homeLibDir}/${group}/${name}/jars")
+            }
+        }
+        ant.replace(file: graceFile, token: 'APP_HOME', value: 'GRACE_HOME')
+        ant.replace(file: graceFile, token: 'media/gradle.icns', value: 'media/icons/grace.icns')
+        ant.replace(file: graceBatFile, token: 'APP_HOME', value: 'GRACE_HOME')
+    }
 }
 
 task syncGrailsDependenciesBom(type: Sync) {
