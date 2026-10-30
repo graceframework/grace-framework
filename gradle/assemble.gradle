@@ -38,6 +38,7 @@ tasks.register('binZip', Zip) {
     archiveBaseName = 'grace'
     archiveAppendix = graceVersion
     archiveClassifier = 'bin'
+    preserveFileTimestamps = true
 
     into("grace-$graceVersion") {
         from(projectDir) {
@@ -78,6 +79,7 @@ tasks.register('sourcesZip', Zip) {
     archiveBaseName = 'grace'
     archiveAppendix = graceVersion
     archiveClassifier = 'sources'
+    preserveFileTimestamps = true
 
     into("grace-$graceVersion") {
         from(projectDir) {
@@ -96,6 +98,7 @@ tasks.register('docsZip', Zip) {
     archiveBaseName = 'grace'
     archiveAppendix = graceVersion
     archiveClassifier = 'docs'
+    preserveFileTimestamps = true
 
     into("grace-$graceVersion") {
         from(projectDir) {
@@ -114,6 +117,7 @@ tasks.register('bundleZip', Zip) {
     archiveAppendix = graceVersion
     archiveClassifier = 'bundle'
     from(homeRepoDir)
+    preserveFileTimestamps = true
 }
 
 tasks.register('zipDist') {
