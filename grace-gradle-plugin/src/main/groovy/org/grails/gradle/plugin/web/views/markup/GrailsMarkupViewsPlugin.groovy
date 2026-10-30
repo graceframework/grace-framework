@@ -16,6 +16,7 @@
 package org.grails.gradle.plugin.web.views.markup
 
 import groovy.transform.CompileStatic
+import org.gradle.work.DisableCachingByDefault
 
 import org.grails.gradle.plugin.web.views.AbstractGroovyTemplatePlugin
 
@@ -27,6 +28,7 @@ import org.grails.gradle.plugin.web.views.AbstractGroovyTemplatePlugin
  * @since 2024.0.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 class GrailsMarkupViewsPlugin extends AbstractGroovyTemplatePlugin {
 
     GrailsMarkupViewsPlugin() {

@@ -22,8 +22,11 @@ import org.gradle.api.internal.project.IsolatedAntBuilder
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
+import org.gradle.work.DisableCachingByDefault
 import org.gradle.work.InputChanges
 
 /**
@@ -34,6 +37,7 @@ import org.gradle.work.InputChanges
  * @since 3.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class GroovyPageCompileTask extends AbstractCompile {
 
     @Input
@@ -45,9 +49,11 @@ abstract class GroovyPageCompileTask extends AbstractCompile {
     String serverpath
 
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     File srcDir
 
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     File configDir
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,10 @@ import org.gradle.api.file.SyncSpec
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * {@link Task} for processing the resources of the Profile
@@ -36,24 +39,29 @@ import org.gradle.api.tasks.TaskAction
  * @since 2024.0.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class ProfileResourcesProcessTask extends DefaultTask {
 
     private final FileSystemOperations fileSystemOperations
 
     @Optional
     @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract DirectoryProperty getCommandsDir()
 
     @Optional
     @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract DirectoryProperty getFeaturesDir()
 
     @Optional
     @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract DirectoryProperty getSkeletonDir()
 
     @Optional
     @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract DirectoryProperty getTemplatesDir()
 
     @OutputDirectory

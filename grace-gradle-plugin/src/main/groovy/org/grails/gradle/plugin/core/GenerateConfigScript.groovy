@@ -28,6 +28,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Generate the Groovy configuration script for {@link org.gradle.api.tasks.compile.GroovyCompile}
@@ -36,6 +37,7 @@ import org.gradle.api.tasks.TaskAction
  * @since 2024.0.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class GenerateConfigScript extends DefaultTask {
 
     @Inject
