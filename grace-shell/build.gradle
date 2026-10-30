@@ -131,6 +131,7 @@ tasks.register('createGraceStartScripts', GraceCreateStartScripts) {
         ant.replace(file: graceFile, token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: graceFile, token: 'media/gradle.icns', value: 'media/icons/grace.icns')
         ant.replace(file: graceBatFile, token: 'APP_HOME', value: 'GRACE_HOME')
+        ant.chmod(file: graceFile, perm: 'ugo+rx')
     }
 }
 

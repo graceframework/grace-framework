@@ -41,7 +41,18 @@ tasks.register('binZip', Zip) {
 
     into("grace-$graceVersion") {
         from(projectDir) {
-            include 'bin/grace', 'bin/grace.bat', 'LICENSE.txt', 'INSTALL.txt'
+            include 'LICENSE.txt', 'INSTALL.txt'
+        }
+        from("bin") {
+            into "bin"
+            include 'grace'
+            filePermissions { unix(0755) }
+        }
+        from("bin") {
+            into "bin"
+            include 'grace.bat'
+            dirPermissions { unix(0755) }
+            filePermissions { unix(0644) }
         }
         from("lib") {
             into "lib"
