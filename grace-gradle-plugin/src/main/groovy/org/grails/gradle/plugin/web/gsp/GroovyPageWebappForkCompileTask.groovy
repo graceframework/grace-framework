@@ -22,6 +22,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.process.ExecOperations
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Gradle task for compiling GSP views in the src/main/webapp directory,
@@ -31,6 +32,7 @@ import org.gradle.process.ExecOperations
  * @since 2024.2.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class GroovyPageWebappForkCompileTask extends GroovyPageForkCompileTask {
 
     @Optional

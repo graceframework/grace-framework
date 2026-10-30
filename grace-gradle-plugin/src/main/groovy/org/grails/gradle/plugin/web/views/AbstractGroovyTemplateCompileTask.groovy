@@ -15,8 +15,6 @@
  */
 package org.grails.gradle.plugin.web.views
 
-import org.grails.config.CodeGenConfig
-
 import javax.inject.Inject
 
 import groovy.transform.CompileDynamic
@@ -27,12 +25,17 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.process.ExecOperations
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
+import org.gradle.work.DisableCachingByDefault
 import org.gradle.work.InputChanges
+
+import org.grails.config.CodeGenConfig
 
 /**
  * Abstract Gradle task for compiling templates, using GenericGroovyTemplateCompiler
@@ -42,6 +45,7 @@ import org.gradle.work.InputChanges
  * @since 2024.0.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
 
     protected ExecOperations execOperations
@@ -51,9 +55,11 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
     String packageName
 
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     File srcDir
 
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     File configDir
 
     @Nested

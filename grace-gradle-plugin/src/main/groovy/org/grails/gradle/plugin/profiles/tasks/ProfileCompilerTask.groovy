@@ -35,8 +35,11 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
+import org.gradle.work.DisableCachingByDefault
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
@@ -54,6 +57,7 @@ import org.grails.cli.profile.commands.script.GroovyScriptCommandTransform
  * @since 3.1
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class ProfileCompilerTask extends AbstractCompile {
 
     public static final String DEFAULT_COMPATIBILITY = '17'
@@ -67,14 +71,17 @@ abstract class ProfileCompilerTask extends AbstractCompile {
 
     @Optional
     @InputFile
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract RegularFileProperty getProfileConfig()
 
     @Optional
     @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract DirectoryProperty getFeaturesDir()
 
     @Optional
     @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract DirectoryProperty getTemplatesDir()
 
     @Input

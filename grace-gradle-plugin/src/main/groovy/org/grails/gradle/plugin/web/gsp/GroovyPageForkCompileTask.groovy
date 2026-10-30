@@ -34,10 +34,13 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.LocalState
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
+import org.gradle.work.DisableCachingByDefault
 import org.gradle.work.InputChanges
 
 /**
@@ -50,6 +53,7 @@ import org.gradle.work.InputChanges
  * @since 4.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class GroovyPageForkCompileTask extends DefaultTask {
 
     private ExecOperations execOperations
@@ -79,6 +83,7 @@ abstract class GroovyPageForkCompileTask extends DefaultTask {
     @Deprecated
     @Optional
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     File tmpDir
 
     @Input

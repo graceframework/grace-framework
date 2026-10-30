@@ -21,7 +21,10 @@ import groovy.transform.CompileStatic
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.process.ExecOperations
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Gradle task for compiling GSP views in the app/views directory,
@@ -31,10 +34,12 @@ import org.gradle.process.ExecOperations
  * @since 2024.2.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class GroovyPageViewsForkCompileTask extends GroovyPageForkCompileTask {
 
     @Optional
     @InputFile
+    @PathSensitive(PathSensitivity.RELATIVE)
     abstract RegularFileProperty getViewsPropertiesFile()
 
     @Inject

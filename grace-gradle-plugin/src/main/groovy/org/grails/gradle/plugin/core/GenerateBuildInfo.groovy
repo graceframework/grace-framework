@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 the original author or authors.
+ * Copyright 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * {@link Task} for generating a {@code grails.build.info} file from a
@@ -32,6 +33,7 @@ import org.gradle.api.tasks.TaskAction
  * @since 2024.0.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class GenerateBuildInfo extends DefaultTask {
 
     private static final String BUILD_INFO_FILE = 'META-INF/grails.build.info'

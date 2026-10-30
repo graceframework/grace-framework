@@ -16,6 +16,7 @@
 package org.grails.gradle.plugin.commands
 
 import groovy.transform.CompileStatic
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.JavaExec
 
 /**
@@ -27,6 +28,7 @@ import org.gradle.api.tasks.JavaExec
  * @since 3.0
  */
 @CompileStatic
+@CacheableTask
 abstract class ApplicationContextCommandTask extends JavaExec {
 
     ApplicationContextCommandTask() {

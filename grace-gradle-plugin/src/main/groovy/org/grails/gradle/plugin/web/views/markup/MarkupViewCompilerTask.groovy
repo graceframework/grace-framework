@@ -20,6 +20,7 @@ import javax.inject.Inject
 import groovy.transform.CompileStatic
 import org.gradle.api.tasks.Input
 import org.gradle.process.ExecOperations
+import org.gradle.work.DisableCachingByDefault
 
 import org.grails.gradle.plugin.web.views.AbstractGroovyTemplateCompileTask
 
@@ -31,6 +32,7 @@ import org.grails.gradle.plugin.web.views.AbstractGroovyTemplateCompileTask
  * @since 2024.0.0
  */
 @CompileStatic
+@DisableCachingByDefault(because = "Not worth caching")
 abstract class MarkupViewCompilerTask extends AbstractGroovyTemplateCompileTask {
 
     final String description = 'Compiles the Grace markup views (GML).'
