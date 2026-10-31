@@ -35,6 +35,7 @@ import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import grails.compiler.traits.TraitInjector
 import grails.core.ArtefactHandler
+import grails.util.OrderedProperties
 
 import org.grails.io.support.GrailsFactoriesLoader
 
@@ -123,7 +124,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
             String classNodeName = classNode.name
             String superTypeName = superType.name
-            Properties props = new Properties()
+            Properties props = new OrderedProperties(true)
 
             // generate META-INF/grails.factories
             File factoriesFile = new File(compilationTargetDirectory, 'META-INF/grails.factories')
