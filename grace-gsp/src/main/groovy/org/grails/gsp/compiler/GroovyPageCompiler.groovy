@@ -160,7 +160,7 @@ class GroovyPageCompiler {
                 // write the view registry to a properties file (this is read by GroovyPagesTemplateEngine at runtime)
                 File viewRegistryFile = new File(targetDir, 'gsp/views.properties')
                 viewRegistryFile.parentFile.mkdirs()
-                Properties views = new OrderedProperties()
+                Properties views = new OrderedProperties(true)
                 views.putAll(compileGSPRegistry)
                 views.store(viewRegistryFile, "Precompiled views for /${packagePrefix}")
             }
