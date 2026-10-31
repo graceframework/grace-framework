@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2025 the original author or authors.
+ * Copyright 2021-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,9 +48,9 @@ public final class GrailsVersion {
 
     public static final String RESOURCE_NAME = "/grails-build.properties";
 
-    public static final String VERSION_PROPERTY = "grails.version";
+    public static final String VERSION_PROPERTY = "git.build.version";
 
-    public static final String BUILD_TIME_PROPERTY = "grails.buildTime";
+    public static final String BUILD_TIME_PROPERTY = "git.commit.time";
 
     public static final String GIT_COMMIT_ID_PROPERTY = "git.commit.id";
 
