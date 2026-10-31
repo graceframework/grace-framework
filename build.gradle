@@ -302,6 +302,8 @@ subprojects { project ->
     tasks.withType(Jar) {
         dependsOn(tasks.named('classes'))
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        reproducibleFileOrder = true
+        preserveFileTimestamps = false
         metaInf {
             from(rootProject.file('buildSrc/src/main/resources/legal')) {
                 include 'LICENSE.txt', 'NOTICE.txt'
