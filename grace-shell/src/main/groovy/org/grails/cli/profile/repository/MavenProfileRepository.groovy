@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 the original author or authors.
+ * Copyright 2015-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     GroovyClassLoader classLoader
     DependencyResolutionContext resolutionContext
     GrailsDependenciesDependencyManagement profileDependencyVersions
-    private String grailsVersion = GrailsVersion.current().version
+    private GrailsVersion grailsVersion = GrailsVersion.current()
     private boolean resolved = false
 
     MavenProfileRepository() {
@@ -74,7 +74,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         this.grapeEngine = GrailsMavenGrapeEngineFactory.create(classLoader, repositoryConfigurations, resolutionContext)
         this.profileDependencyVersions = new GrailsDependenciesDependencyManagement(grailsVersion)
         this.resolutionContext.addDependencyManagement(profileDependencyVersions)
-        this.grailsVersion = grailsVersion != null ? grailsVersion : GrailsVersion.current().version
+        this.grailsVersion = grailsVersion != null ? GrailsVersion.version(grailsVersion) : GrailsVersion.current()
     }
 
     @Override
@@ -95,7 +95,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
     @Override
     String getDefaultGroupId() {
-        GrailsVersion.isGrace(this.grailsVersion) ? DEFAULT_PROFILE_GROUPID : GRAILS_PROFILE_GROUPID
+        this.grailsVersion.majorVersion >= 2020 ? DEFAULT_PROFILE_GROUPID : GRAILS_PROFILE_GROUPID
     }
 
     @Override
@@ -166,7 +166,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     }
 
     private static List<GrailsRepositoryConfiguration> getGrailsRepositoryConfigurations(String graceVersion) {
-        if (GrailsVersion.isGraceSnapshotVersion(graceVersion)) {
+        if (GrailsVersion.version(graceVersion).snapshot) {
             return [MAVEN_LOCAL_REPO, SONATYPE_SNAPSHOT_REPO]
         }
         else {

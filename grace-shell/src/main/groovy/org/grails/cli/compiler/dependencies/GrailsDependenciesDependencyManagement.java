@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     private static final String GRACE_BOM_SNAPSHOT_MAVEN_METADATA = SONATYPE_REPO_SNAPSHOT + "org/graceframework/grace-bom/%s/maven-metadata.xml";
 
     private final String grailsVersion;
+    private final int grailsMajorVersion;
 
     public GrailsDependenciesDependencyManagement() {
         this(null);
@@ -52,6 +53,7 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     public GrailsDependenciesDependencyManagement(String grailsVersion) {
         super(readModel(grailsVersion));
         this.grailsVersion = grailsVersion;
+        this.grailsMajorVersion = grailsVersion != null ? GrailsVersion.version(grailsVersion).getMajorVersion() : 0;
     }
 
     private static Model readModel(String grailsVersion) {
@@ -63,13 +65,14 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
             InputStream is;
             if (grailsVersion != null) {
                 URL url;
-                if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
+                GrailsVersion gv = GrailsVersion.version(grailsVersion);
+                if (gv.isSnapshot()) {
                     String mavenMetaUrl = String.format(GRACE_BOM_SNAPSHOT_MAVEN_METADATA, grailsVersion);
                     String buildSnapshotVersion = MavenVersionUtils.parseSnapshotVersion(mavenMetaUrl);
-                    String graceSnapshotVersion = grailsVersion.substring(0, grailsVersion.indexOf("-")) + "-" + buildSnapshotVersion;
+                    String graceSnapshotVersion = gv.getBaseVersion().getVersion() + "-" + buildSnapshotVersion;
                     url = new URL(String.format(GRACE_BOM_SNAPSHOT_URL, grailsVersion, graceSnapshotVersion));
                 }
-                else if (GrailsVersion.isGrace(grailsVersion)) {
+                else if (gv.getMajorVersion() >= 2020) {
                     url = new URL(String.format(GRACE_BOM_URL, grailsVersion, grailsVersion));
                 }
                 else {
@@ -88,38 +91,43 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     }
 
     public String getGrailsVersion() {
-        String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
+        String artifactId = (this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 2020) ?
                 "grace-core" : "grails-core";
-        return find(artifactId).getVersion();
+        Dependency dependency = find(artifactId);
+        return dependency != null ? dependency.getVersion() : "";
     }
 
     public String getGrailsGradlePluginVersion() {
-        String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
-                "grace-core" : "grails-gradle-plugin";
+        String artifactId = (this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 2020) ?
+                "grace-core" : (grailsMajorVersion >= 7 ? "grails-gradle-plugins" : "grails-gradle-plugin");
         Dependency dependency = find(artifactId);
-        if (dependency == null && GrailsVersion.isGrails(this.grailsVersion)) {
+        if (dependency == null && grailsMajorVersion < 2020) {
             // Workaround for Grails 4.1.x
             dependency = find("grails-core");
         }
-        return dependency.getVersion();
+        return dependency != null ? dependency.getVersion() : "";
     }
 
     public String getGroovyVersion() {
-        String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
+        String artifactId = (this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 2020) ?
                 "groovy-bom" : "groovy";
-        return find(artifactId).getVersion();
+        Dependency dependency = find(artifactId);
+        return dependency != null ? dependency.getVersion() : "";
     }
 
     public String getGormVersion() {
-        String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
+        String artifactId = (this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 2020) ?
                 "grace-datastore-core" : "grails-datastore-core";
-        return find(artifactId).getVersion();
+        Dependency dependency = find(artifactId);
+        return dependency != null ? dependency.getVersion() : "";
     }
 
     @Override
     public String getSpringBootVersion() {
-        return this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
-                find("spring-boot-dependencies").getVersion() : null;
+        String artifactId = this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 2020 ?
+                "spring-boot-dependencies" : "spring-boot";
+        Dependency dependency = find(artifactId);
+        return dependency != null ? dependency.getVersion() : "";
     }
 
 }
