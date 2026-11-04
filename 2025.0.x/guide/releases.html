@@ -420,51 +420,217 @@ function addJsClass() {
 
 
 <div class="sect2">
+<h3 id="_2024_2_0_rc2">2024.2.0-RC2</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.2.0-RC2">release notes</a>.</p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Restore support for generating old version apps of Grails and Grace <a href="https://github.com/graceframework/grace-framework/issues/1764">#1764</a></p>
+</li>
+<li>
+<p>Make reproducible builds with Gradle <a href="https://github.com/graceframework/grace-framework/issues/1752">#1752</a></p>
+</li>
+<li>
+<p>Provide a Groovy script file to configure the compiler for compiling Grace plugins <a href="https://github.com/graceframework/grace-framework/issues/1730">#1730</a></p>
+</li>
+<li>
+<p>Assemble LICENSE.txt and NOTICE.txt files to published jars <a href="https://github.com/graceframework/grace-framework/issues/1722">#1722</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2024.2.0-RC2</p>
+</li>
+<li>
+<p>Simplify GrailsVersion versions check usages <a href="https://github.com/graceframework/grace-framework/issues/1762">#1762</a></p>
+</li>
+<li>
+<p>Enhance GrailsVersion with support for comparing versions <a href="https://github.com/graceframework/grace-framework/issues/1760">#1760</a></p>
+</li>
+<li>
+<p>Use OrderedProperties to generate reproducible grails.factories <a href="https://github.com/graceframework/grace-framework/issues/1751">#1751</a></p>
+</li>
+<li>
+<p>Use OrderedProperties to generate reproducible GSP views.properties <a href="https://github.com/graceframework/grace-framework/issues/1750">#1750</a></p>
+</li>
+<li>
+<p>Enhance OrderedProperties <a href="https://github.com/graceframework/grace-framework/issues/1747">#1747</a></p>
+</li>
+<li>
+<p>Use <code>git.build.version</code> and <code>git.commit.time</code> in GrailsVersion <a href="https://github.com/graceframework/grace-framework/issues/1748">#1748</a></p>
+</li>
+<li>
+<p>Change the default to preserveFileTimestamps = false for all the archive tasks <a href="https://github.com/graceframework/grace-framework/issues/1744">#1744</a></p>
+</li>
+<li>
+<p>Configure the connectTimeout and clientTimeout properties for the Nexus Publishing <a href="https://github.com/graceframework/grace-framework/issues/1738">#1738</a></p>
+</li>
+<li>
+<p>Set environment variables for ORG_GRADLE_PROJECT_sonatypeUsername and ORG_GRADLE_PROJECT_sonatypePassword for Nexus credentials <a href="https://github.com/graceframework/grace-framework/issues/1736">#1736</a></p>
+</li>
+<li>
+<p>Create createGraceStartScripts task in grace-shell/build.gradle instead of gradle/assemble.gradle <a href="https://github.com/graceframework/grace-framework/issues/1734">#1734</a></p>
+</li>
+<li>
+<p>Move Groovy script config.groovy from /buildSrc/config to /gradle/groovy <a href="https://github.com/graceframework/grace-framework/issues/1732">#1732</a></p>
+</li>
+<li>
+<p>Add /repo to .gitignore</p>
+</li>
+<li>
+<p>Using the no-configuration-cache flag to disable Gradle configuration cache at build time <a href="https://github.com/graceframework/grace-framework/issues/1726">#1726</a></p>
+</li>
+<li>
+<p>Update build scripts to support Gradle&#8217;s configuration cache <a href="https://github.com/graceframework/grace-framework/issues/1724">#1724</a></p>
+</li>
+<li>
+<p>Declare Grace grace-doc plugin version in the Gradle version catalog <a href="https://github.com/graceframework/grace-framework/issues/1718">#1718</a></p>
+</li>
+<li>
+<p>Declare Grace asset-pipeline plugin version in the Gradle version catalog <a href="https://github.com/graceframework/grace-framework/issues/1716">#1716</a></p>
+</li>
+<li>
+<p>Make the dependencies ordered by the properties for generating the Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1714">#1714</a></p>
+</li>
+<li>
+<p>Upload maven bundle as a GitHub artifact in the release workflow <a href="https://github.com/graceframework/grace-framework/issues/1712">#1712</a></p>
+</li>
+<li>
+<p>Build Maven bundle for publishing to Maven Central <a href="https://github.com/graceframework/grace-framework/issues/1710">#1710</a></p>
+</li>
+<li>
+<p>Rename to graceVersion as the current version of project <a href="https://github.com/graceframework/grace-framework/issues/1708">#1708</a></p>
+</li>
+<li>
+<p>Refine the generated Grace BOM file <a href="https://github.com/graceframework/grace-framework/issues/1706">#1706</a></p>
+</li>
+<li>
+<p>Add asset-pipeline modules to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1704">#1704</a></p>
+</li>
+<li>
+<p>Add commons-codec and commons-lang3 to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1698">#1698</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Environment.getGrailsVersion() should read property 'git.build.version' from grails-build.properties <a href="https://github.com/graceframework/grace-framework/issues/1748">#1748</a> <a href="https://github.com/graceframework/grace-framework/issues/1754">#1754</a></p>
+</li>
+<li>
+<p>Fix file permissions in the Grace CLI&#8217;s zip <a href="https://github.com/graceframework/grace-framework/issues/1742">#1742</a></p>
+</li>
+<li>
+<p>Fixes Gradle plugins validation failed with problems <a href="https://github.com/graceframework/grace-framework/issues/1741">#1741</a></p>
+</li>
+<li>
+<p>Provide a workaround for the changed properties of plugins and profiles in the Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1728">#1728</a></p>
+</li>
+<li>
+<p>Only publish grace-bom as BOM file to the Maven Central repository <a href="https://github.com/graceframework/grace-framework/issues/1702">#1702</a></p>
+</li>
+<li>
+<p>Add explicit dependency on grace-plugin-datasource for grace-boot-hibernate <a href="https://github.com/graceframework/grace-framework/issues/1700">#1700</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Flying Saucer PDF 9.13.4 <a href="https://github.com/graceframework/grace-framework/issues/1694">#1694</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 7.2.0-RC2 <a href="https://github.com/graceframework/grace-framework/issues/1756">#1756</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Doc Engine 2.1.0 <a href="https://github.com/graceframework/grace-framework/issues/1758">#1758</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Gradle Plugin 2024.1.2 <a href="https://github.com/graceframework/grace-framework/issues/1720">#1720</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 7.2.0-RC2 <a href="https://github.com/graceframework/grace-framework/issues/1697">#1697</a></p>
+</li>
+<li>
+<p>Upgrade to Jackson Databind 2.21.7 <a href="https://github.com/graceframework/grace-framework/issues/1693">#1693</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.61 <a href="https://github.com/graceframework/grace-framework/issues/1682">#1682</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>v2024.2.0-RC2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_2024_2_0_rc1">2024.2.0-RC1</h3>
 <div class="paragraph">
 <p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.2.0-RC1">release notes</a>.</p>
 </div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
 </div>
-<div class="sect1">
-<h2 id="_dependency_upgrades">🚀 Dependency Upgrades</h2>
-<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>f4688050bc Upgrade to Grace Async 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1659">#1659</a></p>
+<p>Upgrade to Grace Async 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1659">#1659</a></p>
 </li>
 <li>
-<p>a03e8fdc36 Upgrade to Grace Data 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1661">#1661</a></p>
+<p>Upgrade to Grace Data 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1661">#1661</a></p>
 </li>
 <li>
-<p>0cfa581a78 Upgrade to Grace Data Hibernate 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1662">#1662</a></p>
+<p>Upgrade to Grace Data Hibernate 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1662">#1662</a></p>
 </li>
 <li>
-<p>d242550ecd Upgrade to Grace Data MongoDB 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1663">#1663</a></p>
+<p>Upgrade to Grace Data MongoDB 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1663">#1663</a></p>
 </li>
 <li>
-<p>401269ee33 Upgrade to Grace Events 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1660">#1660</a></p>
+<p>Upgrade to Grace Events 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1660">#1660</a></p>
 </li>
 <li>
-<p>cd81f1fe07 Upgrade to Grace Views 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1680">#1680</a></p>
+<p>Upgrade to Grace Views 7.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1680">#1680</a></p>
 </li>
 <li>
-<p>a9f0aa7e25 Upgrade to Gradle 8.14.6 <a href="https://github.com/graceframework/grace-framework/issues/1656">#1656</a></p>
+<p>Upgrade to Gradle 8.14.6 <a href="https://github.com/graceframework/grace-framework/issues/1656">#1656</a></p>
 </li>
 <li>
-<p>a5c4720176 Upgrade to Gradle Git Properties Plugin 3.0.3 <a href="https://github.com/graceframework/grace-framework/issues/1634">#1634</a></p>
+<p>Upgrade to Gradle Git Properties Plugin 3.0.3 <a href="https://github.com/graceframework/grace-framework/issues/1634">#1634</a></p>
 </li>
 <li>
-<p>91484cb6ea Upgrade to Gradle Plugin Publish Plugin 2.2.1 <a href="https://github.com/graceframework/grace-framework/issues/1635">#1635</a></p>
+<p>Upgrade to Gradle Plugin Publish Plugin 2.2.1 <a href="https://github.com/graceframework/grace-framework/issues/1635">#1635</a></p>
 </li>
 <li>
-<p>713f6a4506 Upgrade to Gradle Tooling API 8.14.6 <a href="https://github.com/graceframework/grace-framework/issues/1668">#1668</a></p>
+<p>Upgrade to Gradle Tooling API 8.14.6 <a href="https://github.com/graceframework/grace-framework/issues/1668">#1668</a></p>
 </li>
 <li>
-<p>13f7475bd8 Upgrade to Hibernate Validator 8.0.5.Final <a href="https://github.com/graceframework/grace-framework/issues/1669">#1669</a></p>
+<p>Upgrade to Hibernate Validator 8.0.5.Final <a href="https://github.com/graceframework/grace-framework/issues/1669">#1669</a></p>
 </li>
 <li>
-<p>7891265cdf Upgrade to JUnit Jupiter 5.14.4 and JUnit Platform 1.14.4 <a href="https://github.com/graceframework/grace-framework/issues/1677">#1677</a></p>
+<p>Upgrade to JUnit Jupiter 5.14.4 and JUnit Platform 1.14.4 <a href="https://github.com/graceframework/grace-framework/issues/1677">#1677</a></p>
 </li>
 </ul>
 </div>
@@ -477,6 +643,7 @@ function addJsClass() {
 <p>Release v2024.2.0-RC1</p>
 </li>
 </ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_2024_2_0_m2">2024.2.0-M2</h3>
@@ -5052,8 +5219,6 @@ Now, in the upcoming Grace 2024 version, we take it a step further by allowing d
 <p>Next development version: 2024.0.0-SNAPSHOT</p>
 </li>
 </ul>
-</div>
-</div>
 </div>
 </div>
 
