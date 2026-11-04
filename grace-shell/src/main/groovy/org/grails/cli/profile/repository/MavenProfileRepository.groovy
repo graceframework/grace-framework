@@ -45,6 +45,12 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     public static final GrailsRepositoryConfiguration SONATYPE_SNAPSHOT_REPO = new GrailsRepositoryConfiguration(
             'SonatypeSnapshot', new URI(GrailsDependenciesDependencyManagement.SONATYPE_REPO_SNAPSHOT), true)
 
+    public static final GrailsRepositoryConfiguration GRAILS_CORE_REPO = new GrailsRepositoryConfiguration(
+            'grailsCore', new URI(GrailsDependenciesDependencyManagement.GRAILS_CORE_REPO), false)
+
+    public static final GrailsRepositoryConfiguration GRADLE_RELEASES_REPO = new GrailsRepositoryConfiguration(
+            'gradleReleases', new URI(GrailsDependenciesDependencyManagement.GRADLE_RELEASES_REPO), false)
+
     public static final GrailsRepositoryConfiguration MAVEN_LOCAL_REPO = getMavenLocalRepoConfiguration()
 
     List<GrailsRepositoryConfiguration> repositoryConfigurations
@@ -95,7 +101,9 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
     @Override
     String getDefaultGroupId() {
-        this.grailsVersion.majorVersion >= 2020 ? DEFAULT_PROFILE_GROUPID : GRAILS_PROFILE_GROUPID
+        this.grailsVersion.majorVersion >= 2020 ?
+                DEFAULT_PROFILE_GROUPID : (this.grailsVersion.majorVersion >= 7 ?
+                APACHE_GRAILS_PROFILE_GROUPID : GRAILS_PROFILE_GROUPID)
     }
 
     @Override
@@ -105,11 +113,14 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
     protected Profile resolveProfile(String profileName) {
         Artifact art = getProfileArtifact(profileName)
+        String artVersion = art.version ?:
+                ((this.grailsVersion.majorVersion >= 7 && this.grailsVersion.majorVersion < 2020) ? this.grailsVersion.version : null)
 
         try {
-            this.grapeEngine.grab(group: art.groupId, module: art.artifactId, version: art.version ?: null)
+            this.grapeEngine.grab(group: art.groupId, module: art.artifactId, version: artVersion)
         }
-        catch (DependencyResolutionFailedException ignore) {
+        catch (DependencyResolutionFailedException fe) {
+            fe.printStackTrace()
         }
 
         processUrls()
@@ -129,7 +140,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             List<Map> profiles = []
             this.resolutionContext.managedDependencies.each { Dependency dep ->
                 if (dep.artifact.groupId == defaultGroupId) {
-                    profiles.add([group: dep.artifact.groupId, module: dep.artifact.artifactId])
+                    profiles.add([group: dep.artifact.groupId, module: dep.artifact.artifactId, version: dep.artifact.version])
                 }
             }
             profiles.sort { it.module }
@@ -170,7 +181,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             return [MAVEN_LOCAL_REPO, SONATYPE_SNAPSHOT_REPO]
         }
         else {
-            return [MAVEN_LOCAL_REPO, DEFAULT_REPO]
+            return [DEFAULT_REPO, GRAILS_CORE_REPO, GRADLE_RELEASES_REPO]
         }
     }
 

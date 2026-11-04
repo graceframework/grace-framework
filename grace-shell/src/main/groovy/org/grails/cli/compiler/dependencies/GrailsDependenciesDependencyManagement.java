@@ -37,7 +37,10 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
 
     public static final String MAVEN_CENTRAL = "https://repo1.maven.org/maven2/";
     public static final String SONATYPE_REPO_SNAPSHOT = "https://s01.oss.sonatype.org/content/repositories/snapshots/";
+    public static final String GRADLE_RELEASES_REPO = "https://repo.gradle.org/gradle/libs-releases/";
+    public static final String GRAILS_CORE_REPO = "https://repo.grails.org/grails/core/";
 
+    private static final String APACHE_GRAILS_BOM_URL = MAVEN_CENTRAL + "org/apache/grails/grails-bom/%s/grails-bom-%s.pom";
     private static final String GRAILS_BOM_URL = MAVEN_CENTRAL + "org/grails/grails-bom/%s/grails-bom-%s.pom";
     private static final String GRACE_BOM_URL = MAVEN_CENTRAL + "org/graceframework/grace-bom/%s/grace-bom-%s.pom";
     private static final String GRACE_BOM_SNAPSHOT_URL = SONATYPE_REPO_SNAPSHOT + "org/graceframework/grace-bom/%s/grace-bom-%s.pom";
@@ -75,6 +78,9 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
                 else if (gv.getMajorVersion() >= 2020) {
                     url = new URL(String.format(GRACE_BOM_URL, grailsVersion, grailsVersion));
                 }
+                else if (gv.getMajorVersion() >= 7) {
+                    url = new URL(String.format(APACHE_GRAILS_BOM_URL, grailsVersion, grailsVersion));
+                }
                 else {
                     url = new URL(String.format(GRAILS_BOM_URL, grailsVersion, grailsVersion));
                 }
@@ -109,7 +115,7 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     }
 
     public String getGroovyVersion() {
-        String artifactId = (this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 2020) ?
+        String artifactId = (this.grailsMajorVersion == 0 || this.grailsMajorVersion >= 7) ?
                 "groovy-bom" : "groovy";
         Dependency dependency = find(artifactId);
         return dependency != null ? dependency.getVersion() : "";
