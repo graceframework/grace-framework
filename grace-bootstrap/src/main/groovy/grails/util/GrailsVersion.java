@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Properties;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,17 +29,26 @@ import java.util.regex.Pattern;
  * @author Michael Yan
  * @since 2022.0.0
  */
-public final class GrailsVersion {
+public final class GrailsVersion implements Comparable<GrailsVersion> {
 
-    private static final Pattern VERSION_PATTERN = Pattern.compile("((\\d+)(\\.\\d+)+)(-(\\p{Alpha}+)(\\w+))?(-(SNAPSHOT|\\d{14}([-+]\\d{4})?))?");
+    private static final Pattern VERSION_PATTERN = Pattern.compile("((\\d+)(\\.\\d+)+)(-(\\w+))?(-(SNAPSHOT|(\\d{4})?))?");
+    private static final int STAGE_MILESTONE = 0;
+    private static final int STAGE_UNKNOWN = 1;
+    private static final int STAGE_RC = 2;
 
     private final String version;
+
+    private final int majorPart;
 
     private final String buildTime;
 
     private final String commitId;
 
     private final Long snapshot;
+
+    private final String versionPart;
+
+    private final Stage stage;
 
     private static final GrailsVersion CURRENT;
 
@@ -118,15 +124,15 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrace2024() {
-        return getMajorVersion(current().getVersion()).equals(GRACE_2024);
+        return GRACE_2024.equals(String.valueOf(current().getMajorVersion()));
     }
 
     public static boolean isGrace2023() {
-        return getMajorVersion(current().getVersion()).equals(GRACE_2023);
+        return GRACE_2023.equals(String.valueOf(current().getMajorVersion()));
     }
 
     public static boolean isGrace2022() {
-        return getMajorVersion(current().getVersion()).equals(GRACE_2022);
+        return GRACE_2022.equals(String.valueOf(current().getMajorVersion()));
     }
 
     public static boolean isGrace() {
@@ -138,15 +144,15 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrace2024(String graceVersion) {
-        return graceVersion != null && getMajorVersion(graceVersion).equals(GRACE_2024);
+        return graceVersion != null && GRACE_2024.equals(String.valueOf(version(graceVersion).getMajorVersion()));
     }
 
     public static boolean isGrace2023(String graceVersion) {
-        return graceVersion != null && getMajorVersion(graceVersion).equals(GRACE_2023);
+        return graceVersion != null && GRACE_2023.equals(String.valueOf(version(graceVersion).getMajorVersion()));
     }
 
     public static boolean isGrace2022(String graceVersion) {
-        return graceVersion != null && getMajorVersion(graceVersion).equals(GRACE_2022);
+        return graceVersion != null && GRACE_2022.equals(String.valueOf(version(graceVersion).getMajorVersion()));
     }
 
     public static boolean isGrace(String graceVersion) {
@@ -158,19 +164,19 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrails6(String grailsVersion) {
-        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_6);
+        return grailsVersion != null && GRAILS_6.equals(String.valueOf(version(grailsVersion).getMajorVersion()));
     }
 
     public static boolean isGrails5(String grailsVersion) {
-        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_5);
+        return grailsVersion != null && GRAILS_5.equals(String.valueOf(version(grailsVersion).getMajorVersion()));
     }
 
     public static boolean isGrails4(String grailsVersion) {
-        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_4);
+        return grailsVersion != null && GRAILS_4.equals(String.valueOf(version(grailsVersion).getMajorVersion()));
     }
 
     public static boolean isGrails3(String grailsVersion) {
-        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_3);
+        return grailsVersion != null && GRAILS_3.equals(String.valueOf(version(grailsVersion).getMajorVersion()));
     }
 
     public static boolean isGrails(String grailsVersion) {
@@ -186,53 +192,35 @@ public final class GrailsVersion {
                     "'%s' is not a valid Grails version string (examples: '1.0', '1.0-M1', '1.0-RC1')", version));
         }
 
-        this.commitId = setOrParseCommitId(commitId, matcher);
-        this.snapshot = version.endsWith("SNAPSHOT") ? Long.valueOf(0L) : parseSnapshot(matcher);
+        this.versionPart = matcher.group(1);
+        this.majorPart = Integer.parseInt(matcher.group(2), 10);
+
+        this.commitId = commitId;
+        this.stage = parseStage(matcher);
+        this.snapshot = parseSnapshot(matcher);
     }
 
     private Long parseSnapshot(Matcher matcher) {
-        if ("snapshot".equals(matcher.group(5)) || isCommitVersion(matcher)) {
+        if ("SNAPSHOT".equals(matcher.group(5))) {
             return 0L;
         }
-        else if (matcher.group(8) == null) {
+        return null;
+    }
+
+    private Stage parseStage(Matcher matcher) {
+        if (matcher.group(5) == null) {
             return null;
-        }
-        else if ("SNAPSHOT".equals(matcher.group(8))) {
-            return 0L;
-        }
-        else {
-            try {
-                if (matcher.group(9) != null) {
-                    return new SimpleDateFormat("yyyyMMddHHmmssZ").parse(matcher.group(8)).getTime();
-                }
-                else {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    return format.parse(matcher.group(8)).getTime();
-                }
-            }
-            catch (ParseException e) {
-                throw new IllegalArgumentException(e);
-            }
+        } else if (isStage("M", matcher)) {
+            return Stage.from(STAGE_MILESTONE, matcher.group(5));
+        } else if (isStage("RC", matcher)) {
+            return Stage.from(STAGE_RC, matcher.group(5));
+        } else {
+            return Stage.from(STAGE_UNKNOWN, matcher.group(5));
         }
     }
 
-    private boolean isCommitVersion(Matcher matcher) {
-        return "commit".equals(matcher.group(5));
-    }
-
-    private String setOrParseCommitId(String commitId, Matcher matcher) {
-        if (commitId != null || !isCommitVersion(matcher)) {
-            return commitId;
-        }
-        else {
-            return matcher.group(6);
-        }
-    }
-
-    private static String getMajorVersion(String grailsVersion) {
-        return grailsVersion != null && grailsVersion.contains(".") ?
-                grailsVersion.substring(0, grailsVersion.indexOf('.')) : grailsVersion;
+    private boolean isStage(String stage, Matcher matcher) {
+        return matcher.group(5).startsWith(stage);
     }
 
     @Override
@@ -242,6 +230,10 @@ public final class GrailsVersion {
 
     public String getVersion() {
         return this.version;
+    }
+
+    public int getMajorVersion() {
+        return this.majorPart;
     }
 
     public String getBuildTimestamp() {
@@ -254,6 +246,21 @@ public final class GrailsVersion {
 
     public boolean isSnapshot() {
         return this.snapshot != null;
+    }
+
+    public GrailsVersion getBaseVersion() {
+        if (isFinal()) {
+            return this;
+        }
+        return version(this.versionPart);
+    }
+
+    public boolean isFinal() {
+        return this.stage == null && this.snapshot == null;
+    }
+
+    public GrailsVersion getNextMajorVersion() {
+        return version((this.majorPart + 1) + ".0.0");
     }
 
     @Override
@@ -271,6 +278,91 @@ public final class GrailsVersion {
     @Override
     public int hashCode() {
         return this.version.hashCode();
+    }
+
+    @Override
+    public int compareTo(GrailsVersion grailsVersion) {
+        String[] majorVersionParts = this.versionPart.split("\\.");
+        String[] otherMajorVersionParts = grailsVersion.versionPart.split("\\.");
+
+        for (int i = 0; i < majorVersionParts.length && i < otherMajorVersionParts.length; i++) {
+            int part = Integer.parseInt(majorVersionParts[i]);
+            int otherPart = Integer.parseInt(otherMajorVersionParts[i]);
+
+            if (part > otherPart) {
+                return 1;
+            }
+            if (otherPart > part) {
+                return -1;
+            }
+        }
+        if (majorVersionParts.length > otherMajorVersionParts.length) {
+            return 1;
+        }
+        if (majorVersionParts.length < otherMajorVersionParts.length) {
+            return -1;
+        }
+
+        if (this.stage != null && grailsVersion.stage != null) {
+            int diff = this.stage.compareTo(grailsVersion.stage);
+            if (diff != 0) {
+                return diff;
+            }
+        }
+        if (this.stage == null && grailsVersion.stage != null) {
+            return 1;
+        }
+        if (this.stage != null && grailsVersion.stage == null) {
+            return -1;
+        }
+
+        Long thisSnapshot = this.snapshot == null ? Long.MAX_VALUE : this.snapshot;
+        Long theirSnapshot = grailsVersion.snapshot == null ? Long.MAX_VALUE : grailsVersion.snapshot;
+
+        if (thisSnapshot.equals(theirSnapshot)) {
+            return this.version.compareTo(grailsVersion.version);
+        } else {
+            return thisSnapshot.compareTo(theirSnapshot);
+        }
+    }
+
+    static final class Stage implements Comparable<Stage> {
+        final int stage;
+        final int number;
+
+        private Stage(int stage, int number) {
+            this.stage = stage;
+            this.number = number;
+        }
+
+        static Stage from(int stage, String stageString) {
+            Matcher m = Pattern.compile("(M|RC)(\\d+)?").matcher(stageString);
+            int number;
+            if (m.matches()) {
+                number = Integer.parseInt(m.group(2));
+            } else {
+                return null;
+            }
+
+            return new Stage(stage, number);
+        }
+
+        @Override
+        public int compareTo(Stage other) {
+            if (this.stage > other.stage) {
+                return 1;
+            }
+            if (this.stage < other.stage) {
+                return -1;
+            }
+            if (this.number > other.number) {
+                return 1;
+            }
+            if (this.number < other.number) {
+                return -1;
+            }
+            return 0;
+        }
     }
 
 }
