@@ -98,7 +98,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String BOOT_VERSION_FLAG = 'boot-version'
     public static final String PACKAGE_NAME_FLAG = 'package-name'
 
-    public static final String[] SUPPORT_GRACE_VERSIONS = ['2025', '2024', '2023', '2022', '6', '5', '4', '3']
     public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['4.0', '4.1']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
@@ -441,7 +440,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         String result = String.format("%s created by %s %s.", projectType == 'app' ? 'Application' : projectType.capitalize(),
-                GrailsVersion.isGrace(grailsVersion) ? 'Grace' : 'Grails', grailsVersion)
+                GrailsVersion.version(grailsVersion).majorVersion >= 2020 ? 'Grace' : 'Grails', grailsVersion)
 
         if (cmd.quiet) {
             console.updateStatus(result)
@@ -1028,14 +1027,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileName, Profile profile,
                                       List<Feature> features, Map<String, String> variables, Map<String, String> args,
                                       String grailsVersion, File targetDirectory) {
-        boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
+        boolean isSnapshotVersion = GrailsVersion.current().snapshot
         String ln = System.getProperty('line.separator')
 
         Closure repositoryUrl = { int spaces, String repo ->
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
         List<String> repositoryUrls = profile.repositories.sort().reverse()
-        if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
+        if (GrailsVersion.version(grailsVersion).snapshot) {
             repositoryUrls.add(0, """maven {
         name = 'Maven Central Portal Snapshots'
         url = 'https://central.sonatype.com/repository/maven-snapshots/'
@@ -1087,7 +1086,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         List<String> buildRepositoryUrls = buildRepositories.sort().reverse()
 
-        if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
+        if (GrailsVersion.version(grailsVersion).snapshot) {
             buildRepositoryUrls.add(0, """maven {
         name = 'Maven Central Portal Snapshots'
         url = 'https://central.sonatype.com/repository/maven-snapshots/'
@@ -1100,7 +1099,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (isSnapshotVersion) {
             buildRepositoryUrls.add(0, 'mavenLocal()')
         }
-        boolean useGradleBuildSrc = GrailsVersion.isGrace2025(grailsVersion) || GrailsVersion.isGrace2024(grailsVersion) || GrailsVersion.isGrace2023(grailsVersion)
+        boolean useGradleBuildSrc = GrailsVersion.version(grailsVersion).majorVersion >= 2023
         String buildRepositoriesString = useGradleBuildSrc ?
                 buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln) :
                 buildRepositoryUrls.collect(repositoryUrl.curry(8)).unique().join(ln)
@@ -1345,7 +1344,7 @@ group """
     private List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies, String grailsVersion) {
         List<GradleDependency> gradleDependencies = []
         gradleDependencies.addAll(dependencies.collect {
-            GrailsVersion.isGrails4(grailsVersion) || GrailsVersion.isGrails3(grailsVersion) ?
+            GrailsVersion.version(grailsVersion).majorVersion < 5 ?
                     new GradleDependency(it, false) :
                     new GradleDependency(it)
         })
@@ -1615,7 +1614,7 @@ group """
     }
 
     private static boolean validateSpecificGraceVersion(String specificGraceVersion) {
-        specificGraceVersion != null && specificGraceVersion.substring(0, specificGraceVersion.indexOf('.')) in SUPPORT_GRACE_VERSIONS
+        specificGraceVersion != null && GrailsVersion.version(specificGraceVersion).majorVersion >= 3
     }
 
     static class CreateAppCommandObject {
