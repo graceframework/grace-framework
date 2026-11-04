@@ -156,10 +156,6 @@ if (isReleaseVersion) {
             sign(publications)
         }
     }
-
-    tasks.withType(Sign) {
-        onlyIf { isReleaseVersion }
-    }
 }
 
 afterEvaluate {
