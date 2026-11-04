@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 the original author or authors.
+ * Copyright 2020-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,25 @@ import org.eclipse.aether.graph.Exclusion
 class ProfileUtil {
 
     static Dependency createDependency(String coords, String scope, Map configEntry) {
-        if (coords.count(':') == 1) {
-            coords = "$coords:BOM"
+        String variant = null
+        String inner = coords?.trim()
+
+        if (inner) {
+            // Detect variants like someVariant("group:artifact[:version]")
+            def m = inner =~ /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*["'](.+?)["']\s*\)\s*$/
+            if (m.matches()) {
+                variant = m[0][1]
+                inner = m[0][2]
+            }
         }
-        Dependency dependency = new Dependency(new DefaultArtifact(coords), scope.toString())
+
+        // Append a placeholder version when only group:artifact provided
+        if (inner?.count(':') == 1) {
+            inner = "$inner:BOM"
+        }
+
+        Dependency dependency = new Dependency((variant ? new DefaultArtifact(inner, ['variant': variant]) : new DefaultArtifact(inner)), scope.toString())
+
         if (configEntry.containsKey('excludes')) {
             List<Exclusion> dependencyExclusions = new ArrayList<>()
             List excludes = (List) configEntry.excludes

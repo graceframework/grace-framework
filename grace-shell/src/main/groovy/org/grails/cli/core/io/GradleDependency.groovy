@@ -51,6 +51,13 @@ class GradleDependency implements Comparable<GradleDependency> {
         this.scope = scope
         Artifact artifact = dependency.artifact
         String v = artifact.version.replace('BOM', '')
+        String groupArtifactVersion = artifact.groupId + ':' + artifact.artifactId + (v ? ':' + v : '')
+
+        String variantCall = null
+        String variant = artifact.properties?.'variant'
+        if (variant) {
+            variantCall = "${variant}(\"${groupArtifactVersion}\")"
+        }
         StringBuilder artifactString = new StringBuilder()
         if (dependency.exclusions != null && !dependency.exclusions.empty) {
             artifactString.append('(')
@@ -58,13 +65,7 @@ class GradleDependency implements Comparable<GradleDependency> {
         else {
             artifactString.append(' ')
         }
-        artifactString.append('"')
-        artifactString.append(artifact.groupId)
-        artifactString.append(':').append(artifact.artifactId)
-        if (v) {
-            artifactString.append(':').append(v)
-        }
-        artifactString.append('"')
+        artifactString.append(variantCall ?: '"' + groupArtifactVersion + '"')
 
         String ln = System.getProperty('line.separator')
 
@@ -72,7 +73,7 @@ class GradleDependency implements Comparable<GradleDependency> {
             artifactString.append(') {').append(ln)
             for (e in dependency.exclusions) {
                 artifactString.append('    ')
-                        .append('exclude')
+                              .append('exclude')
 
                 artifactString.append(' group: "').append(e.groupId).append('",')
                 artifactString.append(' module: "').append(e.artifactId).append('"')

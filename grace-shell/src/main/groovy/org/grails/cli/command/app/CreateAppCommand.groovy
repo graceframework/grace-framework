@@ -1105,9 +1105,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 buildRepositoryUrls.collect(repositoryUrl.curry(8)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
+            String artifactStr = resolveArtifactString(dep)
             useGradleBuildSrc ?
-                    "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\"" :
-                    "        classpath \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
+                    "    implementation \"${artifactStr}\"" :
+                    "        classpath \"${artifactStr}\""
         }.unique().join(ln)
 
         List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
@@ -1342,9 +1343,10 @@ group """
     }
 
     private List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies, String grailsVersion) {
+        int majorVersion = GrailsVersion.version(grailsVersion).majorVersion
         List<GradleDependency> gradleDependencies = []
         gradleDependencies.addAll(dependencies.collect {
-            GrailsVersion.version(grailsVersion).majorVersion < 5 ?
+            (majorVersion < 5 || (majorVersion >=7 && majorVersion < 2020)) ?
                     new GradleDependency(it, false) :
                     new GradleDependency(it)
         })
@@ -1521,6 +1523,13 @@ group """
             }
         }
         versions
+    }
+
+    private String resolveArtifactString(Dependency dep) {
+        def artifact = dep.artifact
+        def v = artifact.version.replace('BOM', '')
+
+        return v ? "${artifact.groupId}:${artifact.artifactId}:${v}" : "${artifact.groupId}:${artifact.artifactId}"
     }
 
     private Map<String, String> getCommandArguments(CommandLine commandLine) {

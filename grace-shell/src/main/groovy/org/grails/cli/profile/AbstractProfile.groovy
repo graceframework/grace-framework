@@ -149,10 +149,16 @@ abstract class AbstractProfile implements Profile {
             for (clsName in commandsMap.keySet()) {
                 String fileName = commandsMap[clsName]
                 if (fileName.endsWith('.groovy')) {
-                    GroovyScriptCommand cmd = (GroovyScriptCommand) classLoader.loadClass(clsName.toString()).newInstance()
-                    cmd.profile = this
-                    cmd.profileRepository = profileRepository
-                    internalCommands.add cmd
+                    GroovyScriptCommand cmd
+                    try {
+                        cmd = (GroovyScriptCommand) classLoader.loadClass(clsName.toString()).newInstance()
+                        cmd.profile = this
+                        cmd.profileRepository = profileRepository
+                        internalCommands.add cmd
+                    }
+                    catch (Exception ignore) {
+                        // Ignore any exceptions when creating the old version and incompatible apps
+                    }
                 }
                 else if (fileName.endsWith('.yml')) {
                     Resource yamlCommand = profileDir.createRelative("commands/$fileName")
