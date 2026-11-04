@@ -9,6 +9,7 @@ buildscript {
 
 apply plugin: 'java-platform'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 class Dependency {
     String groupId
@@ -185,5 +186,12 @@ task generateEffectiveBom(type: Copy) {
 artifacts {
     add("effectiveBom", effectiveBom) {
         builtBy(generateEffectiveBom)
+    }
+}
+
+afterEvaluate {
+    signing {
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
+        sign publishing.publications.maven
     }
 }

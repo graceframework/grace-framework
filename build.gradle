@@ -230,10 +230,6 @@ subprojects { project ->
             }
         }
 
-        tasks.withType(Sign) {
-            onlyIf { isReleaseVersion }
-        }
-
         TaskCollection<Sign> signingTasks = tasks.withType(Sign)
         tasks.withType(PublishToMavenRepository).configureEach {
             mustRunAfter(signingTasks)
