@@ -11,8 +11,8 @@
 
 [![Java Version](https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk&color=437291)](https://docs.oracle.com/en/java/javase/17/)
 [![Groovy Version](https://img.shields.io/badge/Groovy-5.0-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-5.0.html)
-[![Gradle Version](https://img.shields.io/badge/Gradle-8.14-blue?logo=gradle&style=flat&color=1da2bd)](https://docs.gradle.org/8.14.6/release-notes.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-4.0-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v4.0.8)
+[![Gradle Version](https://img.shields.io/badge/Gradle-9.8-blue?logo=gradle&style=flat&color=1da2bd)](https://docs.gradle.org/9.8.2/release-notes.html)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-4.0-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v4.0.9)
 
 
 [Grace Framework](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
