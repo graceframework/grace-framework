@@ -1,3 +1,79 @@
+=== 2025.0.0-M2
+
+This release is based on Spring Boot 4.0.9 and Spring Framework to 7.0.10.
+
+* Upgrade to Maven 3.10.0, Gradle 9.8.2
+* Upgrade to SiteMesh 2.8.0, Tomcat 11.0.27
+
+For a complete list of changes made in this release see https://github.com/orgs/graceframework/projects/22[v2025.0.0 on GitHub].
+
+⭐️ New Features
+
+* Restore support for generating old version apps of Grails and Grace link:{github}/issues/1765[#1765]
+* Make reproducible builds with Gradle link:{github}/issues/1753[#1753]
+* Assemble LICENSE.txt and NOTICE.txt files to published jars link:{github}/issues/1723[#1723]
+
+🛠 Improvements
+
+* Add release notes for 2025.0.0-M2
+* Update README
+* Simplify GrailsVersion versions check usages link:{github}/issues/1763[#1763]
+* Enhance GrailsVersion with support for comparing versions link:{github}/issues/1761[#1761]
+* Use `git.build.version` and `git.commit.time` in GrailsVersion link:{github}/issues/1749[#1749]
+* Update to latest Gradle's start script templates link:{github}/issues/1746[#1746]
+* Change the default to preserveFileTimestamps = false for all the archive tasks link:{github}/issues/1745[#1745]
+* Configure the connectTimeout and clientTimeout properties for the Nexus Publishing link:{github}/issues/1739[#1739]
+* Set environment variables for ORG_GRADLE_PROJECT_sonatypeUsername and ORG_GRADLE_PROJECT_sonatypePassword for Nexus credentials link:{github}/issues/1737[#1737]
+* Create createGraceStartScripts task in grace-shell/build.gradle instead of gradle/assemble.gradle link:{github}/issues/1735[#1735]
+* Move Groovy script config.groovy from /buildSrc/config to /gradle/groovy link:{github}/issues/1733[#1733]
+* Add /repo to .gitignore
+* Provide a Groovy script file to configure the compiler for compiling Grace plugins link:{github}/issues/1731[#1731]
+* Using the no-configuration-cache flag to disable Gradle configuration cache at build time link:{github}/issues/1727[#1727]
+* Update build scripts to support Gradle's configuration cache link:{github}/issues/1725[#1725]
+* Declare Grace grace-doc plugin version in the Gradle version catalog link:{github}/issues/1719[#1719]
+* Declare Grace asset-pipeline plugin version in the Gradle version catalog link:{github}/issues/1717[#1717]
+* Make the dependencies ordered by the properties for generating the Grace BOM link:{github}/issues/1715[#1715]
+* Upload maven bundle as a GitHub artifact in the release workflow link:{github}/issues/1713[#1713]
+* Build Maven bundle for publishing to Maven Central link:{github}/issues/1711[#1711]
+* Rename to graceVersion as the current version of project link:{github}/issues/1709[#1709]
+* Refine the generated Grace BOM file link:{github}/issues/1707[#1707]
+* Add asset-pipeline modules to Grace BOM link:{github}/issues/1705[#1705]
+* Add explicit dependency on grace-plugin-datasource for grace-boot-hibernate link:{github}/issues/1701[#1701]
+* Add commons-codec and commons-lang3 to Grace BOM link:{github}/issues/1699[#1699]
+
+🐞 Bug Fixes
+
+* Fix signing configuration link:{github}/issues/1767[#1767]
+* Environment.getGrailsVersion() should read property 'git.build.version' from grails-build.properties link:{github}/issues/1755[#1755]
+* Fix file permissions in the Grace CLI's zip link:{github}/issues/1743[#1743]
+* Fixes Gradle plugins validation failed with problems link:{github}/issues/1740[#1740]
+* Provide a workaround for the changed properties of plugins and profiles in the Grace BOM link:{github}/issues/1729[#1729]
+* Only publish grace-bom as BOM file to the Maven Central repository link:{github}/issues/1703[#1703]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Eclipse Expressly 6.0.0 link:{github}/issues/1769[#1769]
+* Upgrade to Flying Saucer PDF 9.13.4 link:{github}/issues/1696[#1696]
+* Upgrade to Grace Asset Pipeline Plugin 8.0.0-M2 link:{github}/issues/1757[#1757]
+* Upgrade to Grace Asset Pipeline Plugin 8.0.0-M1 link:{github}/issues/1691[#1691]
+* Upgrade to Grace Data Hibernate 2024.2.0-RC1 link:{github}/issues/1662[#1662]
+* Upgrade to Grace Doc Engine 2.1.0 link:{github}/issues/1759[#1759]
+* Upgrade to Grace Gradle Plugin 2025.0.0-M1 link:{github}/issues/1721[#1721]
+* Upgrade to Grace Views 8.0.0-M1 link:{github}/issues/1692[#1692]
+* Upgrade to Gradle 9.8.2 link:{github}/issues/1657[#1657]
+* Upgrade to Gradle Tooling API 9.8.2 link:{github}/issues/1658[#1658]
+* Upgrade to Hibernate Validator 9.0.2.Final link:{github}/issues/1770[#1770]
+* Upgrade to Jackson Databind 2.21.7 link:{github}/issues/1695[#1695]
+* Upgrade to Maven 3.10.0 link:{github}/issues/1653[#1653]
+* Upgrade to SiteMesh 2.8.0 link:{github}/issues/1771[#1771]
+* Upgrade to Spring Boot 4.0.9 link:{github}/issues/1687[#1687]
+* Upgrade to Spring Framework 7.0.10 link:{github}/issues/1688[#1688]
+* Upgrade to Tomcat 11.0.27 link:{github}/issues/1683[#1683]
+
+⚙️ Tasks
+
+* Release v2025.0.0-M2
+
 === 2025.0.0-M1
 
 This release is based on Spring Boot 4.0.8 and Spring Framework to 7.0.9.
