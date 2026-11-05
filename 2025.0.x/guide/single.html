@@ -325,6 +325,216 @@ Grace framework 2024.0 and 2024.1 have been released, and have refactored a lot 
 
 
 <div class="sect2">
+<h3 id="_2025_0_0_m2">2025.0.0-M2</h3>
+<div class="paragraph">
+<p>This release is based on Spring Boot 4.0.9 and Spring Framework to 7.0.10.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Maven 3.10.0, Gradle 9.8.2</p>
+</li>
+<li>
+<p>Upgrade to SiteMesh 2.8.0, Tomcat 11.0.27</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete list of changes made in this release see <a href="https://github.com/orgs/graceframework/projects/22">v2025.0.0 on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Restore support for generating old version apps of Grails and Grace <a href="https://github.com/graceframework/grace-framework/issues/1765">#1765</a></p>
+</li>
+<li>
+<p>Make reproducible builds with Gradle <a href="https://github.com/graceframework/grace-framework/issues/1753">#1753</a></p>
+</li>
+<li>
+<p>Assemble LICENSE.txt and NOTICE.txt files to published jars <a href="https://github.com/graceframework/grace-framework/issues/1723">#1723</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2025.0.0-M2</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Simplify GrailsVersion versions check usages <a href="https://github.com/graceframework/grace-framework/issues/1763">#1763</a></p>
+</li>
+<li>
+<p>Enhance GrailsVersion with support for comparing versions <a href="https://github.com/graceframework/grace-framework/issues/1761">#1761</a></p>
+</li>
+<li>
+<p>Use <code>git.build.version</code> and <code>git.commit.time</code> in GrailsVersion <a href="https://github.com/graceframework/grace-framework/issues/1749">#1749</a></p>
+</li>
+<li>
+<p>Update to latest Gradle&#8217;s start script templates <a href="https://github.com/graceframework/grace-framework/issues/1746">#1746</a></p>
+</li>
+<li>
+<p>Change the default to preserveFileTimestamps = false for all the archive tasks <a href="https://github.com/graceframework/grace-framework/issues/1745">#1745</a></p>
+</li>
+<li>
+<p>Configure the connectTimeout and clientTimeout properties for the Nexus Publishing <a href="https://github.com/graceframework/grace-framework/issues/1739">#1739</a></p>
+</li>
+<li>
+<p>Set environment variables for ORG_GRADLE_PROJECT_sonatypeUsername and ORG_GRADLE_PROJECT_sonatypePassword for Nexus credentials <a href="https://github.com/graceframework/grace-framework/issues/1737">#1737</a></p>
+</li>
+<li>
+<p>Create createGraceStartScripts task in grace-shell/build.gradle instead of gradle/assemble.gradle <a href="https://github.com/graceframework/grace-framework/issues/1735">#1735</a></p>
+</li>
+<li>
+<p>Move Groovy script config.groovy from /buildSrc/config to /gradle/groovy <a href="https://github.com/graceframework/grace-framework/issues/1733">#1733</a></p>
+</li>
+<li>
+<p>Add /repo to .gitignore</p>
+</li>
+<li>
+<p>Provide a Groovy script file to configure the compiler for compiling Grace plugins <a href="https://github.com/graceframework/grace-framework/issues/1731">#1731</a></p>
+</li>
+<li>
+<p>Using the no-configuration-cache flag to disable Gradle configuration cache at build time <a href="https://github.com/graceframework/grace-framework/issues/1727">#1727</a></p>
+</li>
+<li>
+<p>Update build scripts to support Gradle&#8217;s configuration cache <a href="https://github.com/graceframework/grace-framework/issues/1725">#1725</a></p>
+</li>
+<li>
+<p>Declare Grace grace-doc plugin version in the Gradle version catalog <a href="https://github.com/graceframework/grace-framework/issues/1719">#1719</a></p>
+</li>
+<li>
+<p>Declare Grace asset-pipeline plugin version in the Gradle version catalog <a href="https://github.com/graceframework/grace-framework/issues/1717">#1717</a></p>
+</li>
+<li>
+<p>Make the dependencies ordered by the properties for generating the Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1715">#1715</a></p>
+</li>
+<li>
+<p>Upload maven bundle as a GitHub artifact in the release workflow <a href="https://github.com/graceframework/grace-framework/issues/1713">#1713</a></p>
+</li>
+<li>
+<p>Build Maven bundle for publishing to Maven Central <a href="https://github.com/graceframework/grace-framework/issues/1711">#1711</a></p>
+</li>
+<li>
+<p>Rename to graceVersion as the current version of project <a href="https://github.com/graceframework/grace-framework/issues/1709">#1709</a></p>
+</li>
+<li>
+<p>Refine the generated Grace BOM file <a href="https://github.com/graceframework/grace-framework/issues/1707">#1707</a></p>
+</li>
+<li>
+<p>Add asset-pipeline modules to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1705">#1705</a></p>
+</li>
+<li>
+<p>Add explicit dependency on grace-plugin-datasource for grace-boot-hibernate <a href="https://github.com/graceframework/grace-framework/issues/1701">#1701</a></p>
+</li>
+<li>
+<p>Add commons-codec and commons-lang3 to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1699">#1699</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix signing configuration <a href="https://github.com/graceframework/grace-framework/issues/1767">#1767</a></p>
+</li>
+<li>
+<p>Environment.getGrailsVersion() should read property 'git.build.version' from grails-build.properties <a href="https://github.com/graceframework/grace-framework/issues/1755">#1755</a></p>
+</li>
+<li>
+<p>Fix file permissions in the Grace CLI&#8217;s zip <a href="https://github.com/graceframework/grace-framework/issues/1743">#1743</a></p>
+</li>
+<li>
+<p>Fixes Gradle plugins validation failed with problems <a href="https://github.com/graceframework/grace-framework/issues/1740">#1740</a></p>
+</li>
+<li>
+<p>Provide a workaround for the changed properties of plugins and profiles in the Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1729">#1729</a></p>
+</li>
+<li>
+<p>Only publish grace-bom as BOM file to the Maven Central repository <a href="https://github.com/graceframework/grace-framework/issues/1703">#1703</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Eclipse Expressly 6.0.0 <a href="https://github.com/graceframework/grace-framework/issues/1769">#1769</a></p>
+</li>
+<li>
+<p>Upgrade to Flying Saucer PDF 9.13.4 <a href="https://github.com/graceframework/grace-framework/issues/1696">#1696</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 8.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1757">#1757</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 8.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1691">#1691</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data Hibernate 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-framework/issues/1662">#1662</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Doc Engine 2.1.0 <a href="https://github.com/graceframework/grace-framework/issues/1759">#1759</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Gradle Plugin 2025.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1721">#1721</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 8.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1692">#1692</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 9.8.2 <a href="https://github.com/graceframework/grace-framework/issues/1657">#1657</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Tooling API 9.8.2 <a href="https://github.com/graceframework/grace-framework/issues/1658">#1658</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 9.0.2.Final <a href="https://github.com/graceframework/grace-framework/issues/1770">#1770</a></p>
+</li>
+<li>
+<p>Upgrade to Jackson Databind 2.21.7 <a href="https://github.com/graceframework/grace-framework/issues/1695">#1695</a></p>
+</li>
+<li>
+<p>Upgrade to Maven 3.10.0 <a href="https://github.com/graceframework/grace-framework/issues/1653">#1653</a></p>
+</li>
+<li>
+<p>Upgrade to SiteMesh 2.8.0 <a href="https://github.com/graceframework/grace-framework/issues/1771">#1771</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 4.0.9 <a href="https://github.com/graceframework/grace-framework/issues/1687">#1687</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 7.0.10 <a href="https://github.com/graceframework/grace-framework/issues/1688">#1688</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 11.0.27 <a href="https://github.com/graceframework/grace-framework/issues/1683">#1683</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2025.0.0-M2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_2025_0_0_m1">2025.0.0-M1</h3>
 <div class="paragraph">
 <p>This release is based on Spring Boot 4.0.8 and Spring Framework to 7.0.9.</p>
