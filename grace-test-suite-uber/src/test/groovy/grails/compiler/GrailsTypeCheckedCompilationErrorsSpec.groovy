@@ -23,7 +23,7 @@ class SomeClass {
     def someMethod() {
         List<Company> people = Company.findAll()
         people = Company.list()
-        int number = Company.count()
+        def number = Company.count()
         Company company = Company.findWhere([name: 'William'])
         company = Company.findOrCreateWhere([name: 'William'])
         company = Company.findOrSaveWhere([name: 'William'])
