@@ -15,6 +15,9 @@ dependencies {
     api libs.grace.datastore.web
 
     api libs.spring.boot.autoconfigure
+    api libs.spring.boot.hibernate, {
+        exclude group: 'org.hibernate.orm', module: 'hibernate-core'
+    }
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 

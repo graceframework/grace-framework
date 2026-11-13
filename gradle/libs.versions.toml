@@ -212,6 +212,7 @@ spring-boot-configurationProcessor = { module = "org.springframework.boot:spring
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "spring-boot" }
 spring-boot-gradle-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
+spring-boot-hibernate = { module = "org.springframework.boot:spring-boot-hibernate", version.ref = "spring-boot" }
 spring-boot-jackson = { module = "org.springframework.boot:spring-boot-starter-json", version.ref = "spring-boot" }
 spring-boot-jdbc = { module = "org.springframework.boot:spring-boot-jdbc", version.ref = "spring-boot" }
 spring-boot-liquibase = { module = "org.springframework.boot:spring-boot-liquibase", version.ref = "spring-boot" }
