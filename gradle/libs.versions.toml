@@ -17,7 +17,7 @@ gpars = "1.2.1"
 grace-asset-pipeline = "8.0.0-M2"
 grace-async = "8.0.0-M1"
 grace-data = "2025.0.0-SNAPSHOT"
-grace-data-hibernate = "2024.2.0-RC1"
+grace-data-hibernate = "2025.0.0-SNAPSHOT"
 grace-data-mongodb = "2025.0.0-M1"
 grace-doc-engine = "2.1.0"
 grace-events = "8.0.0-M1"
@@ -113,7 +113,7 @@ grace-datastore-core = { module = "org.graceframework.data:grace-datastore-core"
 grace-datastore-gorm = { module = "org.graceframework.data:grace-datastore-gorm", version.ref = "grace-data" }
 grace-datastore-gorm-async = { module = "org.graceframework.data:grace-datastore-gorm-async", version.ref = "grace-data" }
 grace-datastore-gorm-bson = { module = "org.graceframework.data:grace-datastore-gorm-bson", version.ref = "grace-data-mongodb" }
-grace-datastore-gorm-hibernate = { module = "org.graceframework:grace-datastore-gorm-hibernate", version.ref = "grace-data-hibernate" }
+grace-datastore-gorm-hibernate = { module = "org.graceframework.data:grace-datastore-gorm-hibernate", version.ref = "grace-data-hibernate" }
 grace-datastore-gorm-mongodb = { module = "org.graceframework.data:grace-datastore-gorm-mongodb", version.ref = "grace-data-mongodb" }
 grace-datastore-gorm-support = { module = "org.graceframework.data:grace-datastore-gorm-support", version.ref = "grace-data" }
 grace-datastore-gorm-tck = { module = "org.graceframework.data:grace-datastore-gorm-tck", version.ref = "grace-data" }
