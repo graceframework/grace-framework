@@ -35,6 +35,8 @@ public class LocalEntityResolver implements EntityResolver {
 
     @SuppressWarnings("unchecked")
     private static final Map<String, String> ENTITIES = CollectionUtils.<String, String>newMap(
+            // JSP taglib 4.0
+            "https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_4_0.xsd", "web-jsptaglibrary_4_0.xsd",
             // JSP taglib 3.1
             "https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_1.xsd", "web-jsptaglibrary_3_1.xsd",
             // JSP taglib 3.0
@@ -49,6 +51,8 @@ public class LocalEntityResolver implements EntityResolver {
             // JSP taglib 1.1
             "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN", "web-jsptaglibrary_1_1.dtd",
             "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd", "web-jsptaglibrary_1_1.dtd",
+            // Servlet 6.1
+            "https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd", "web-app_6_1.xsd",
             // Servlet 6.0
             "https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd", "web-app_6_0.xsd",
             // Servlet 5.0
