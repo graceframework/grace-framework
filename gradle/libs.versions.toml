@@ -122,10 +122,14 @@ grace-datastore-gorm-validation = { module = "org.graceframework.data:grace-data
 grace-datastore-web = { module = "org.graceframework.data:grace-datastore-web", version.ref = "grace-data" }
 grace-doc-engine = { module = "org.graceframework:grace-doc-engine", version.ref = "grace-doc-engine" }
 grace-views-core = { module = "org.graceframework.views:grace-views-core", version.ref = "grace-views" }
+grace-views-freemarker = { module = "org.graceframework.views:grace-views-freemarker", version.ref = "grace-views" }
+grace-views-groovy-templates = { module = "org.graceframework.views:grace-views-groovy-templates", version.ref = "grace-views" }
 grace-views-json = { module = "org.graceframework.views:grace-views-json", version.ref = "grace-views" }
 grace-views-markup = { module = "org.graceframework.views:grace-views-markup", version.ref = "grace-views" }
+grace-views-mustache = { module = "org.graceframework.views:grace-views-mustache", version.ref = "grace-views" }
 grace-views-templates = { module = "org.graceframework.views:grace-views-templates", version.ref = "grace-views" }
 grace-views-test = { module = "org.graceframework.views:grace-views-test", version.ref = "grace-views" }
+grace-views-thymeleaf = { module = "org.graceframework.views:grace-views-thymeleaf", version.ref = "grace-views" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 groovy-ant = { module = "org.apache.groovy:groovy-ant", version.ref = "groovy" }
 groovy-bom = { module = "org.apache.groovy:groovy-bom", version.ref = "groovy" }
@@ -256,7 +260,7 @@ grace-async-bundle = ["grace-async-core", "grace-async-gpars", "grace-async-rxja
 grace-data-bundle = ["grace-datastore-core", "grace-datastore-gorm", "grace-datastore-gorm-async", "grace-datastore-gorm-bson", "grace-datastore-gorm-hibernate", "grace-datastore-gorm-mongodb", "grace-datastore-gorm-support", "grace-datastore-gorm-tck", "grace-datastore-gorm-test", "grace-datastore-gorm-validation", "grace-datastore-web"]
 grace-dependencies-bundle = ["ant", "commons-codec", "commons-lang3", "commons-text", "commons-validator", "gpars", "rxjava", "rxjava2", "rxjava3"]
 grace-events-bundle = ["grace-events-core", "grace-events-gpars", "grace-events-rxjava", "grace-events-rxjava2", "grace-events-rxjava3", "grace-events-spring", "grace-events-transform"]
-grace-views-bundle = ["grace-views-core", "grace-views-json", "grace-views-markup", "grace-views-templates", "grace-views-test"]
+grace-views-bundle = ["grace-views-core", "grace-views-freemarker", "grace-views-groovy-templates", "grace-views-json", "grace-views-markup", "grace-views-mustache", "grace-views-templates", "grace-views-test", "grace-views-thymeleaf"]
 groovy-bundle = ["groovy-bom"]
 h2-bundle = ["h2"]
 jakarta-bundle = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]
