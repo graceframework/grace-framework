@@ -201,6 +201,132 @@ function addJsClass() {
 
 
 <div class="sect2">
+<h3 id="_2025_0_0_m3">2025.0.0-M3</h3>
+<div class="paragraph">
+<p>This release is based on Spring Boot 4.0.9 and Spring Framework to 7.0.10.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Maven 3.10.1</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete list of changes made in this release see <a href="https://github.com/orgs/graceframework/projects/22">v2025.0.0 on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add the modules of grace-views: grace-views-freemarker, grace-views-groovy-templates, grace-views-mustache, grace-views-thymeleaf to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1811">#1811</a></p>
+</li>
+<li>
+<p>Add ant to the generated Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1807">#1807</a></p>
+</li>
+<li>
+<p>Restore Hibernate 5.6 support Grace Data Hibernate 2025.0.0 will continue to support Hibernate 5.6, See <a href="https://github.com/graceframework/grace-data-hibernate/issues/214" class="bare">https://github.com/graceframework/grace-data-hibernate/issues/214</a>. <a href="https://github.com/graceframework/grace-framework/issues/1789">#1789</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2025.0.0-M3</p>
+</li>
+<li>
+<p>Update README - Update the version of Gradle badge - Update Grace Roadmap - Update links</p>
+</li>
+<li>
+<p>Remove grace-views-* modules grace-views has been move to it&#8217;s own repository, <a href="https://github.com/graceframework/grace-views" class="bare">https://github.com/graceframework/grace-views</a> <a href="https://github.com/graceframework/grace-framework/issues/1795">#1795</a></p>
+</li>
+<li>
+<p>Remove src and build.gradle in grace-spring-boot <a href="https://github.com/graceframework/grace-framework/issues/1793">#1793</a></p>
+</li>
+<li>
+<p>Enhance LocalEntityResolver: adding XML Schema for Jakarta Servlet 6.1 <a href="https://github.com/graceframework/grace-framework/issues/1791">#1791</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Exclude dependencies ant-antlr, ant-junit, ant-launcher for grace-plugin-i18n <a href="https://github.com/graceframework/grace-framework/issues/1809">#1809</a></p>
+</li>
+<li>
+<p>Fixes <code>event.source.file.canonicalFile</code> error in I18nGrailsPlugin <a href="https://github.com/graceframework/grace-framework/issues/1799">#1799</a></p>
+</li>
+<li>
+<p>Remove extra <code>@Configuration</code> on GrailsDevToolsConfiguration <a href="https://github.com/graceframework/grace-framework/issues/1797">#1797</a></p>
+</li>
+<li>
+<p>Correct the Jakarta Servlet version declared in Metadata <a href="https://github.com/graceframework/grace-framework/issues/1790">#1790</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to CodeNarc 3.7.0 <a href="https://github.com/graceframework/grace-framework/issues/1802">#1802</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 8.0.0-M3 <a href="https://github.com/graceframework/grace-framework/issues/1782">#1782</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 8.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1783">#1783</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2025.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1784">#1784</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data Hibernate 2025.0.0-M1 <a href="https://github.com/graceframework/grace-framework/issues/1785">#1785</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2025.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1786">#1786</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 8.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1787">#1787</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 8.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1788">#1788</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Gradle Plugin 2025.0.0-M2 <a href="https://github.com/graceframework/grace-framework/issues/1812">#1812</a></p>
+</li>
+<li>
+<p>Upgrade to JaCoCo 0.8.15 <a href="https://github.com/graceframework/grace-framework/issues/1803">#1803</a></p>
+</li>
+<li>
+<p>Upgrade to Maven 3.10.1 <a href="https://github.com/graceframework/grace-framework/issues/1804">#1804</a></p>
+</li>
+<li>
+<p>Upgrade to Maven Resolver 2.0.25 <a href="https://github.com/graceframework/grace-framework/issues/1805">#1805</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2025.0.0-M3</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_2025_0_0_m2">2025.0.0-M2</h3>
 <div class="paragraph">
 <p>This release is based on Spring Boot 4.0.9 and Spring Framework to 7.0.10.</p>
