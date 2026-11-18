@@ -25,7 +25,7 @@ Spring is the foundation for Grace framework, which is built on top of Spring Bo
 
 It is worth mentioning that Grace framework supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0), and [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0). This makes the upgrade path easier and more manageable.
 
-Grace framework has been actively developing, bringing numerous improvements and new features, including [API](/grace-api/README.md), [Boot](/grace-boot/README.md), [Core](/grace-core/README.md), [Plugins](/grace-plugin-api/README.md), [Dynamic Modules](/grace-plugin-dynamic-modules/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), [Views](/grace-views-core/README.md), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5&6, this makes developers happy.
+Grace framework has been actively developing, bringing numerous improvements and new features, including [API](/grace-api/README.md), [Boot](/grace-boot/README.md), [Core](/grace-core/README.md), [Plugins](/grace-plugin-api/README.md), [Dynamic Modules](/grace-plugin-dynamic-modules/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), [Views](https://github.com/graceframework/grace-views), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5&6, this makes developers happy.
 
 You can learn more on the page [What's New in Grace Framework](https://github.com/graceframework/grace-framework/wiki/What's-New-in-Grace-Framework).
 
@@ -50,8 +50,8 @@ You can learn more on the page [Grace Framework vs Spring Boot](https://github.c
 
 | Grace Version | Dependency Upgrades | New Features and Important Changes |
 |---------------|---------------------|------------------------------------|
-| 2025.0.x      | Spring Boot 4.0, Spring Framework 7.0, Groovy 5.0, SiteMesh 2.8.0 | Support Hibernate 7.2, Gradle 9 |
-| 2024.2.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, Spock 2.4 | Improve support Hibernate 5&6, Gradle build performance |
+| 2025.0.x      | Spring Boot 4.0, Spring Framework 7.0, Groovy 5.0, SiteMesh 2.8.0 | Support Groovy 5, Gradle 9 |
+| 2024.2.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, Spock 2.4 | Grace Views supports more template engines - FreeMarker, Groovy Markup, Mustache, Thymeleaf. Improve Gradle build performance |
 | 2024.1.x      | Spring Boot 3.5, Spring Framework 6.2, Groovy 4.0, SiteMesh 2.7.0 | New Commands and Generators, Restructure directory structure fro all Profiles, Restore dynamic-modules, Better integration for GORM Entity, Support combined use of MongoDB and Hibernate |
 | 2024.0.x      | Spring Boot 3.4, Spring Framework 6.2, Groovy 4.0, SiteMesh 2.6.2 | Modularize codebase, Migrate to Central Portal OSSRH Staging API, Core Plugins Merged into the Framework, Decouple GORM from Grace framework, Restore dynamic-modules |
 | 2023.3.x      | Spring Boot 3.3, Spring Framework 6.1, Groovy 4.0 | Refactoring `grace-docs` and Gradle Guide Publish plugin. Grace Data MongoDB. Many improvements for CLI, Support Groovy Template in the skeleton of Profile |
@@ -66,22 +66,22 @@ You can learn more on the page [Grace Framework vs Spring Boot](https://github.c
 
 Grace framework 2025 will build on Spring Boot 4.x, upgrade to Spring Framework 7.x and Groovy 5.0, provides many more core plugins and modules, such as Admin, Jobs, Mail, Security, Web Async and Socket, also provides built-in support for [HTMX](https://htmx.org), [Unpoly](https://unpoly.com), and [Hotwire (Turbo & Stimulus)](https://hotwired.dev).
 
-### Grace 2025
+### Grace 2025 (Active Development)
 
 * Groovy 5.0
 * Java 25
-* Spring Boot 4.0
-* Spring Framework 7.0
-* Hibernate 7.2
+* Spring Boot 4
+* Spring Framework 7
+* Hibernate 5
 * Gradle 9
 
-### Grace 2024 (Active Development)
+### Grace 2024
 
 * Groovy 4.0
 * Java 17
 * Spring Boot 3.5
 * Spring Framework 6.2
-* Hibernate 5&6
+* Hibernate 5
 * Gradle 8.14
 
 ## Version Support
@@ -145,17 +145,17 @@ Grace is first and foremost a web application framework, but it is also a platfo
 
 [Grace Framework](https://github.com/graceframework/) repository contains core plugins and most commonly used plugins, which are provided by default when creating a project.
 
-* [Grace Async](/grace-plugin-async/README.md) provides asynchronous, parallel programming, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
+* [Grace Async](https://github.com/graceframework/grace-async) provides asynchronous, parallel programming, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
 * [Grace Cache](/grace-plugin-cache/README.md) provides powerful and easy to use caching functionality to Grace applications and plugins.
 * [Grace Data](https://github.com/graceframework/grace-data) formerly known as `GORM` is the data access toolkit to provides a rich set of APIs for accessing relational and non-relational data including implementations for Hibernate (SQL), MongoDB, etc.
 * [Grace Data Hibernate](https://github.com/graceframework/grace-data-hibernate) provides a GORM implementation for Hibernate ORM.
 * [Grace Data MongoDB](https://github.com/graceframework/grace-data-mongodb) provides a GORM implementation for the MongodB Document Database.
 * [Grace Database Migration](/grace-plugin-database-migration/README.md) helps you manage database changes uses the Liquibase library.
-* [Grace Events](/grace-plugin-events/README.md) provides Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
+* [Grace Events](https://github.com/graceframework/grace-events) provides Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
 * [Grace Fields](/grace-plugin-fields/README.md) is a plugin allows you to customize the rendering of input fields for properties of domain objects, command beans and POGOs based on their type, name, etc.
 * [Grace Geb](/grace-plugin-geb/README.md) provides the Geb dependencies and a `create-functional-test` command for generating Geb tests.
 * [Grace Scaffolding](/grace-plugin-scaffolding/README.md) is a plugin to generate scaffolded controllers and views for your Grace application.
-* [Grace Views](/grace-views-core/README.md) includes JSON views powered by Groovy's JsonBuilder, also provides the basis for implementation other view types.
+* [Grace Views](https://github.com/graceframework/grace-views) includes JSON views powered by Groovy's JsonBuilder, also provides the basis for implementation other view types.
 
 [Grace Plugins](https://github.com/grace-plugins/) repository contains several plugins to develop applications more easier and productive.
 
