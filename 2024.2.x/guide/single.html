@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-        <title>Grace Framework 2024.2.0-RC2</title>
+        <title>Grace Framework 2024.2.0-SNAPSHOT</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
         <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
@@ -28,7 +28,7 @@ function addJsClass(el) {
                 <div class="docHeader">
                     <h1 class="docTitle">Grace Framework</h1>
                     <h3 class="docSubTitle">A powerful and open-source One-Person web framework used to build enterprise-grade Spring Boot applications</h3>
-                    <span class="docVersion">2024.2.0-RC2</span>
+                    <span class="docVersion">2024.2.0-SNAPSHOT</span>
                 </div>
             </div>
             <div class="navLinks">
@@ -72,7 +72,7 @@ function addJsClass(el) {
                         <div class="project">
                             <h1>Grace Framework</h1>
                             <p><strong>Authors:</strong> Michael Yan</p>
-                            <p><strong>Version:</strong> 2024.2.0-RC2</p>
+                            <p><strong>Version:</strong> 2024.2.0-SNAPSHOT</p>
                             
                         </div>
 
@@ -318,6 +318,120 @@ Grace framework 2024.0 and 2024.1 have been released, and have refactored a lot 
 
 
 <div class="sect2">
+<h3 id="_2024_2_0">2024.2.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.2.0">This release</a> is based on Spring Boot 3.5.16.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Groovy 4.0.33, Gradle 8.14.7</p>
+</li>
+<li>
+<p>Upgrade to Spock 2.4, Tomcat 10.1.61</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete list of changes made in this release see <a href="https://github.com/orgs/graceframework/projects/21">v2024.2.0 on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add the modules of grace-views: grace-views-freemarker, grace-views-groovy-templates, grace-views-mustache, grace-views-thymeleaf to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1810">#1810</a></p>
+</li>
+<li>
+<p>Add ant to the generated Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1806">#1806</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2024.2.0</p>
+</li>
+<li>
+<p>Remove extra <code>@Configuration</code> on GrailsDevToolsConfiguration <a href="https://github.com/graceframework/grace-framework/issues/1796">#1796</a></p>
+</li>
+<li>
+<p>Remove grace-views-* modules grace-views has been move to it&#8217;s own repository, <a href="https://github.com/graceframework/grace-views" class="bare">https://github.com/graceframework/grace-views</a> <a href="https://github.com/graceframework/grace-framework/issues/1794">#1794</a></p>
+</li>
+<li>
+<p>Remove src and build.gradle in grace-spring-boot <a href="https://github.com/graceframework/grace-framework/issues/1792">#1792</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Exclude dependencies ant-antlr, ant-junit, ant-launcher for grace-plugin-i18n <a href="https://github.com/graceframework/grace-framework/issues/1808">#1808</a></p>
+</li>
+<li>
+<p>Fixes <code>event.source.file.canonicalFile</code> error in I18nGrailsPlugin <a href="https://github.com/graceframework/grace-framework/issues/1798">#1798</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to CodeNarc 3.7.0 <a href="https://github.com/graceframework/grace-framework/issues/1800">#1800</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 7.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1775">#1775</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Async 7.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1776">#1776</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2024.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1777">#1777</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data Hibernate 2024.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1778">#1778</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data MongoDB 2024.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1779">#1779</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Events 7.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1780">#1780</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 7.2.0 <a href="https://github.com/graceframework/grace-framework/issues/1781">#1781</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14.7 <a href="https://github.com/graceframework/grace-framework/issues/1773">#1773</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Tooling API 8.14.7 <a href="https://github.com/graceframework/grace-framework/issues/1774">#1774</a></p>
+</li>
+<li>
+<p>Upgrade to JaCoCo 0.8.15 <a href="https://github.com/graceframework/grace-framework/issues/1801">#1801</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.2.0</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_2024_2_0_rc2">2024.2.0-RC2</h3>
 <div class="paragraph">
 <p><a href="https://github.com/graceframework/grace-framework/releases/tag/v2024.2.0-RC2">release notes</a>.</p>
@@ -338,6 +452,12 @@ Grace framework 2024.0 and 2024.1 have been released, and have refactored a lot 
 </li>
 <li>
 <p>Assemble LICENSE.txt and NOTICE.txt files to published jars <a href="https://github.com/graceframework/grace-framework/issues/1722">#1722</a></p>
+</li>
+<li>
+<p>Add asset-pipeline modules to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1704">#1704</a></p>
+</li>
+<li>
+<p>Add commons-codec and commons-lang3 to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1698">#1698</a></p>
 </li>
 </ul>
 </div>
@@ -412,12 +532,6 @@ Grace framework 2024.0 and 2024.1 have been released, and have refactored a lot 
 <li>
 <p>Refine the generated Grace BOM file <a href="https://github.com/graceframework/grace-framework/issues/1706">#1706</a></p>
 </li>
-<li>
-<p>Add asset-pipeline modules to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1704">#1704</a></p>
-</li>
-<li>
-<p>Add commons-codec and commons-lang3 to Grace BOM <a href="https://github.com/graceframework/grace-framework/issues/1698">#1698</a></p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -479,7 +593,7 @@ Grace framework 2024.0 and 2024.1 have been released, and have refactored a lot 
 <div class="ulist">
 <ul>
 <li>
-<p>v2024.2.0-RC2</p>
+<p>Release v2024.2.0-RC2</p>
 </li>
 </ul>
 </div>
@@ -10158,7 +10272,7 @@ Get SDKMAN! from sdkman.io and install Grace by using the following commands:</p
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="console">------------------------------------------------------------
-Grace 2024.2.0-RC2
+Grace 2024.2.0-SNAPSHOT
 ------------------------------------------------------------
 
 Build time:   2026-06-13 19:35:23 UTC
@@ -10188,7 +10302,7 @@ OS:           Mac OS X 12.7.6 aarch64</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="console">$ sdk use grace 2024.2.0-RC2
+<pre class="CodeRay highlight"><code data-lang="console">$ sdk use grace 2024.2.0-SNAPSHOT
 $ grace create-app com.examples.bookstore</code></pre>
 </div>
 </div>
@@ -10206,7 +10320,7 @@ $ grace create-app com.examples.bookstore</code></pre>
      Database:      h2
      Project root:  /Users/grace/bookstore
 
-| Application created by Grace 2024.2.0-RC2.</code></pre>
+| Application created by Grace 2024.2.0-SNAPSHOT.</code></pre>
 </div>
 </div>
 <div class="listingblock">
