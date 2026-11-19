@@ -1105,7 +1105,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 buildRepositoryUrls.collect(repositoryUrl.curry(8)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
-            String artifactStr = resolveArtifactString(dep)
+            def artifact = dep.artifact
+            def version = artifact.version.replace('BOM', '')
+            String artifactStr = version ? "${artifact.groupId}:${artifact.artifactId}:${version}" : "${artifact.groupId}:${artifact.artifactId}"
             useGradleBuildSrc ?
                     "    implementation \"${artifactStr}\"" :
                     "        classpath \"${artifactStr}\""
@@ -1523,13 +1525,6 @@ group """
             }
         }
         versions
-    }
-
-    private String resolveArtifactString(Dependency dep) {
-        def artifact = dep.artifact
-        def v = artifact.version.replace('BOM', '')
-
-        return v ? "${artifact.groupId}:${artifact.artifactId}:${v}" : "${artifact.groupId}:${artifact.artifactId}"
     }
 
     private Map<String, String> getCommandArguments(CommandLine commandLine) {
