@@ -12,7 +12,7 @@ commons-text = "1.15.0"
 commons-validator = "1.11.0"
 geb = "8.0.1"
 glassfish-expressly = "6.0.0"
-glassfish-web-jsp-jstl = "3.0.1"
+glassfish-jstl = "3.0.1"
 gpars = "1.2.1"
 grace-asset-pipeline = "8.0.0-M3"
 grace-async = "8.0.0-M2"
@@ -91,7 +91,7 @@ hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
 geb-core = { module = "org.apache.groovy.geb:geb-core", version.ref = "geb" }
 geb-spock = { module = "org.apache.groovy.geb:geb-spock", version.ref = "geb" }
 glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
-glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
+glassfish-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-jstl" }
 gpars = { module = "org.codehaus.gpars:gpars", version.ref = "gpars" }
 grace-asset-pipeline-core = { module = "org.graceframework.plugins:asset-pipeline-core", version.ref = "grace-asset-pipeline" }
 grace-asset-pipeline-gradle = { module = "org.graceframework.plugins:asset-pipeline-gradle", version.ref = "grace-asset-pipeline" }

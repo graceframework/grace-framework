@@ -18,7 +18,7 @@ dependencies {
         exclude group: 'jakarta.el', module: 'jakarta.el-api'
         exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
     }
-    compileOnly libs.glassfish.web.jsp.jstl
+    compileOnly libs.glassfish.jstl
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
