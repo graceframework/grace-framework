@@ -24,7 +24,7 @@ dependencies {
     testImplementation project(":grace-test-support")
 
     api libs.jakarta.servlet
-    testImplementation libs.glassfish.web.jsp.jstl
+    testImplementation libs.glassfish.jstl
     testImplementation libs.grace.async.core
     testImplementation libs.grace.datastore.gorm
     testImplementation libs.jakarta.el
