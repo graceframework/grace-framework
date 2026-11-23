@@ -18,16 +18,20 @@ package org.grails.cli.command.completers;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import jline.console.completer.Completer;
-import jline.internal.Preconditions;
+import org.jline.reader.Candidate;
+import org.jline.reader.Completer;
+import org.jline.reader.LineReader;
+import org.jline.reader.ParsedLine;
 
 /**
  * A completer that completes based on a collection of Strings
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 public class StringsCompleter implements Completer {
@@ -39,7 +43,7 @@ public class StringsCompleter implements Completer {
     }
 
     public StringsCompleter(final Collection<String> strings) {
-        Preconditions.checkNotNull(strings);
+        Objects.requireNonNull(strings, "completers");
         getStrings().addAll(strings);
     }
 
@@ -55,24 +59,22 @@ public class StringsCompleter implements Completer {
         this.strings = strings;
     }
 
-    public int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    @Override
+    public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
         // buffer could be null
-        Preconditions.checkNotNull(candidates);
-
-        if (buffer == null) {
-            candidates.addAll(getStrings());
+        if (line.line() == null) {
+            candidates.addAll(getStrings().stream().map(Candidate::new).toList());
         }
         else {
-            for (String match : getStrings().tailSet(buffer)) {
-                if (!match.startsWith(buffer)) {
+            for (String match : getStrings().tailSet(line.line())) {
+                if (!match.startsWith(line.line())) {
                     break;
                 }
 
-                candidates.add(match);
+                candidates.add(new Candidate(match));
             }
         }
-
-        return candidates.isEmpty() ? -1 : 0;
     }
+
 
 }

@@ -15,41 +15,41 @@
  */
 package grails.build.logging;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.Flushable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
 
-import jline.Terminal;
-import jline.TerminalFactory;
-import jline.UnixTerminal;
-import jline.console.ConsoleReader;
-import jline.console.completer.Completer;
-import jline.console.history.FileHistory;
-import jline.console.history.History;
-import jline.internal.Log;
-import jline.internal.ShutdownHooks;
-import jline.internal.TerminalLineSettings;
 import org.apache.tools.ant.BuildException;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Color;
+import org.jline.jansi.Ansi;
+import org.jline.jansi.Ansi.Color;
+import org.jline.reader.Completer;
+import org.jline.reader.EndOfFileException;
+import org.jline.reader.History;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.UserInterruptException;
+import org.jline.reader.impl.LineReaderImpl;
+import org.jline.reader.impl.completer.AggregateCompleter;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+import org.springframework.boot.ansi.AnsiOutput;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.ReflectionUtils;
 
 import grails.util.Environment;
 
-import org.grails.build.interactive.CandidateListCompletionHandler;
 import org.grails.build.logging.GrailsConsoleErrorPrintStream;
 import org.grails.build.logging.GrailsConsolePrintStream;
 
@@ -127,7 +127,7 @@ public class GrailsConsole implements ConsoleLogger {
     /**
      * The reader to read info from the console
      */
-    ConsoleReader reader;
+    LineReader reader;
 
     Terminal terminal;
 
@@ -136,6 +136,8 @@ public class GrailsConsole implements ConsoleLogger {
     PrintStream err;
 
     History history;
+
+    private final List<Completer> completers = new ArrayList<>();
 
     /**
      * The category of the current output
@@ -190,8 +192,8 @@ public class GrailsConsole implements ConsoleLogger {
      * @throws IOException
      */
     public void reinitialize(InputStream systemIn, PrintStream systemOut, PrintStream systemErr) throws IOException {
-        if (this.reader != null) {
-            this.reader.close();
+        if (this.terminal != null) {
+            this.terminal.close();
         }
         initialize(systemIn, systemOut, systemErr);
     }
@@ -201,19 +203,15 @@ public class GrailsConsole implements ConsoleLogger {
 
         redirectSystemOutAndErr(true);
 
-        System.setProperty(ShutdownHooks.JLINE_SHUTDOWNHOOK, "false");
-
         if (isInteractiveEnabled()) {
-            this.reader = createConsoleReader(systemIn);
-            this.reader.setBellEnabled(false);
-            this.reader.setCompletionHandler(new CandidateListCompletionHandler());
             if (isActivateTerminal()) {
                 this.terminal = createTerminal();
             }
-
-            this.history = prepareHistory();
-            if (this.history != null) {
-                this.reader.setHistory(this.history);
+            if (this.terminal != null) {
+                this.reader = createLineReader(this.terminal, this.history);
+                if (this.history == null) {
+                    this.history = this.reader.getHistory();
+                }
             }
         }
         else if (isActivateTerminal()) {
@@ -273,72 +271,62 @@ public class GrailsConsole implements ConsoleLogger {
         return property == null || Boolean.parseBoolean(property);
     }
 
-    protected ConsoleReader createConsoleReader(InputStream systemIn) throws IOException {
-        // need to swap out the output to avoid logging during init
-        PrintStream nullOutput = new PrintStream(new ByteArrayOutputStream());
-        PrintStream originalOut = Log.getOutput();
-        try {
-            Log.setOutput(nullOutput);
-            ConsoleReader consoleReader = new ConsoleReader(systemIn, this.out);
-            consoleReader.setExpandEvents(false);
-            return consoleReader;
+    protected LineReader createLineReader(Terminal terminal, History history) {
+        LineReaderBuilder builder = LineReaderBuilder.builder()
+                .terminal(terminal)
+                .appName("Grace")
+                .option(LineReader.Option.DISABLE_EVENT_EXPANSION, true);
+        if (history != null) {
+            builder.variable(LineReader.HISTORY_FILE, new File(System.getProperty("user.home"), HISTORYFILE).toPath());
+            builder.history(history);
         }
-        finally {
-            Log.setOutput(originalOut);
-        }
+        return builder.build();
     }
 
     /**
      * Creates the instance of Terminal used directly in GrailsConsole. Note that there is also
      * another terminal instance created implicitly inside of ConsoleReader. That instance
-     * is controlled by the jline.terminal system property.
+     * is controlled by the org.jline.Terminal system property.
      */
-    protected Terminal createTerminal() {
-        this.terminal = TerminalFactory.create();
-        if (isWindows()) {
-            this.terminal.setEchoEnabled(true);
-        }
-        return this.terminal;
+    protected Terminal createTerminal() throws IOException {
+        Terminal terminal = TerminalBuilder.builder()
+                .system(true).build();
+
+        return terminal;
     }
 
     public void resetCompleters() {
-        ConsoleReader reader = getReader();
-        if (reader != null) {
-            Collection<Completer> completers = reader.getCompleters();
-            for (Completer completer : completers) {
-                reader.removeCompleter(completer);
-            }
+        if (this.completers != null) {
+            this.completers.clear();
+        }
+        updateCompleter();
+    }
 
-            // for some unknown reason / bug in JLine you have to iterate over twice to clear the completers (WTF)
-            completers = reader.getCompleters();
-            for (Completer completer : completers) {
-                reader.removeCompleter(completer);
-            }
+    public void addCompleter(Completer completer) {
+        if (completer != null) {
+            this.completers.add(completer);
+            updateCompleter();
+        }
+    }
+
+    private void updateCompleter() {
+        if (this.reader == null || !(this.reader instanceof LineReaderImpl)) {
+            return;
+        }
+        LineReaderImpl lineReader = (LineReaderImpl) this.reader;
+        if (this.completers.isEmpty()) {
+            lineReader.setCompleter(null);
+        }
+        else {
+            lineReader.setCompleter(new AggregateCompleter(this.completers));
         }
     }
 
     /**
-     * Prepares a history file to be used by the ConsoleReader. This file
-     * will live in the home directory of the user.
-     */
-    protected History prepareHistory() throws IOException {
-        File file = new File(System.getProperty("user.home"), HISTORYFILE);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            }
-            catch (IOException ignored) {
-                // can't create the file, so no history for you
-            }
-        }
-        return file.canWrite() ? new FileHistory(file) : null;
-    }
-
-    /**
-     * Hook method that allows controlling whether or not output streams should be wrapped by
+     * Hook method that allows controlling whether output streams should be wrapped by
      * AnsiConsole.wrapOutputStream. Unfortunately, Eclipse consoles will look to the AnsiWrap
-     * like they do not understand ansi, even if we were to implement support in Eclipse to'
-     * handle it and the wrapped stream will not pass the ansi chars on to Eclipse).
+     * like they do not understand ansi, even if we were to implement support in Eclipse to
+     * handle it and the wrapped stream will not pass the ansi chars on to Eclipse.
      */
     protected OutputStream ansiWrap(OutputStream out) {
         return new PrintStream(out, true); //AnsiConsole.wrapOutputStream(out);
@@ -356,7 +344,7 @@ public class GrailsConsole implements ConsoleLogger {
                 setInstance(console);
             }
             catch (IOException e) {
-                throw new RuntimeException("Cannot create grails console: " + e.getMessage(), e);
+                throw new RuntimeException("Cannot create Grails console: " + e.getMessage(), e);
             }
         }
         return instance;
@@ -366,8 +354,12 @@ public class GrailsConsole implements ConsoleLogger {
         if (instance != null) {
             instance.removeShutdownHook();
             instance.restoreOriginalSystemOutAndErr();
-            if (instance.getReader() != null) {
-                instance.getReader().close();
+            if (instance.terminal != null) {
+                try {
+                    instance.terminal.close();
+                }
+                catch (IOException ignored) {
+                }
             }
             instance = null;
         }
@@ -380,24 +372,18 @@ public class GrailsConsole implements ConsoleLogger {
 
     protected void restoreTerminal() {
         try {
-            this.terminal.restore();
-        }
-        catch (Exception ignored) {
-        }
-        if (this.terminal instanceof UnixTerminal) {
-            // workaround for GRAILS-11494
-            try {
-                TerminalLineSettings.getSettings(TerminalLineSettings.DEFAULT_TTY).set("sane");
+            if (this.terminal != null) {
+                this.terminal.close();
             }
-            catch (Exception ignored) {
-            }
+        }
+        catch (IOException ignored) {
         }
     }
 
     protected void persistHistory() {
-        if (this.history instanceof Flushable) {
+        if (this.history != null && this.reader != null) {
             try {
-                ((Flushable) this.history).flush();
+                this.history.save();
             }
             catch (Throwable ignored) {
             }
@@ -476,7 +462,7 @@ public class GrailsConsole implements ConsoleLogger {
      */
     public InputStream getInput() {
         assertAllowInput();
-        return this.reader.getInput();
+        return this.terminal != null ? this.terminal.input() : System.in;
     }
 
     private void assertAllowInput() {
@@ -505,12 +491,16 @@ public class GrailsConsole implements ConsoleLogger {
         this.lastMessage = lastMessage;
     }
 
-    public ConsoleReader getReader() {
+    public LineReader getReader() {
         return this.reader;
     }
 
     public Terminal getTerminal() {
         return this.terminal;
+    }
+
+    public History getHistory() {
+        return this.history;
     }
 
     public PrintStream getOut() {
@@ -750,7 +740,28 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public boolean isAnsiEnabled() {
-        return Ansi.isEnabled() && (this.terminal != null && this.terminal.isAnsiSupported()) && this.ansiEnabled;
+        ConfigurableEnvironment environment = new StandardEnvironment();
+        AnsiOutput.setConsoleAvailable(environment.getProperty("spring.output.ansi.console-available", Boolean.class));        
+        String property = environment.getProperty("spring.output.ansi.enabled", String.class);
+        if (property == null) {
+            AnsiOutput.setEnabled(AnsiOutput.Enabled.DETECT);
+        }
+        else {
+            try {
+                AnsiOutput.setEnabled(AnsiOutput.Enabled.valueOf(property.trim().toUpperCase(Locale.ROOT)));
+            }
+            catch (IllegalArgumentException ignored) {
+                AnsiOutput.setEnabled(AnsiOutput.Enabled.DETECT);
+            }
+        }
+        AnsiOutput.Enabled springAnsiEnabled = AnsiOutput.getEnabled();
+        if (springAnsiEnabled == AnsiOutput.Enabled.NEVER) {
+            return false;
+        }
+        else if (springAnsiEnabled == AnsiOutput.Enabled.ALWAYS) {
+            return this.ansiEnabled;
+        }
+        return this.ansiEnabled && this.terminal != null && !"dumb".equals(this.terminal.getType());
     }
 
     /**
@@ -961,8 +972,8 @@ public class GrailsConsole implements ConsoleLogger {
             Character inputMask = secure ? SECURE_MASK_CHAR : this.defaultInputMask;
             return this.reader.readLine(prompt, inputMask);
         }
-        catch (IOException e) {
-            throw new RuntimeException("Error reading input: " + e.getMessage());
+        catch (UserInterruptException | EndOfFileException ignored) {
+            return null;
         }
         finally {
             this.userInputActive = false;

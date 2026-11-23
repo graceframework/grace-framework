@@ -16,8 +16,11 @@
 package org.grails.cli.command.gradle
 
 import groovy.transform.CompileStatic
-import jline.console.completer.Completer
 import org.gradle.tooling.BuildLauncher
+import org.jline.reader.Candidate
+import org.jline.reader.Completer
+import org.jline.reader.LineReader
+import org.jline.reader.ParsedLine
 
 import org.grails.cli.command.CommandDescription
 import org.grails.cli.command.ExecutionContext
@@ -31,6 +34,8 @@ import org.grails.cli.gradle.GradleUtil
  * A command for invoking Gradle commands
  *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 3.0
  */
 @CompileStatic
 class GradleCommand implements ProjectCommand, Completer, ProjectContextAware {
@@ -61,14 +66,12 @@ class GradleCommand implements ProjectCommand, Completer, ProjectContextAware {
     }
 
     @Override
-    int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
         initializeCompleter()
 
         if (completer) {
-            return completer.complete(buffer, cursor, candidates)
+            completer.complete(reader, line, candidates)
         }
-
-        cursor
     }
 
     private void initializeCompleter() {

@@ -18,19 +18,21 @@ package org.grails.cli.command.completers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Objects;
 
-import jline.console.completer.Completer;
-import jline.internal.Preconditions;
+import org.jline.reader.Candidate;
+import org.jline.reader.Completer;
+import org.jline.reader.LineReader;
+import org.jline.reader.ParsedLine;
 
 /**
- * Copied from jline AggregateCompleter
+ * Copied from jline AggregateCompleter sorts aggregated completions
  *
- * sorts aggregated completions
- *
+ * @author Lari Hotari
+ * @author Michael Yan
+ * @since 3.0
  */
 public class SortedAggregateCompleter implements Completer {
 
@@ -47,7 +49,7 @@ public class SortedAggregateCompleter implements Completer {
      * @param completers the collection of completers
      */
     public SortedAggregateCompleter(final Collection<Completer> completers) {
-        Preconditions.checkNotNull(completers);
+        Objects.requireNonNull(completers, "completers");
         this.completers.addAll(completers);
     }
 
@@ -73,39 +75,22 @@ public class SortedAggregateCompleter implements Completer {
     /**
      * Perform a completion operation across all aggregated completers.
      *
-     * @see Completer#complete(String, int, java.util.List)
      * @return the highest completion return value from all completers
      */
-    public int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
         // buffer could be null
-        Preconditions.checkNotNull(candidates);
+        Objects.requireNonNull(candidates, "candidates");
 
-        List<Completion> completions = new ArrayList<>(this.completers.size());
+        List<Candidate> allCandidates = new ArrayList<>();
 
-        // Run each completer, saving its completion results
-        int max = -1;
         for (Completer completer : this.completers) {
-            Completion completion = new Completion(candidates);
-            completion.complete(completer, buffer, cursor);
-
-            // Compute the max cursor position
-            max = Math.max(max, completion.cursor);
-
-            completions.add(completion);
+            List<Candidate> completerCandidates = new ArrayList<>();
+            completer.complete(reader, line, completerCandidates);
+            allCandidates.addAll(completerCandidates);
         }
 
-        SortedSet<CharSequence> allCandidates = new TreeSet<>();
-
-        // Append candidates from completions which have the same cursor position as max
-        for (Completion completion : completions) {
-            if (completion.cursor == max) {
-                allCandidates.addAll(completion.candidates);
-            }
-        }
-
+        allCandidates.sort(Comparator.comparing(Candidate::value));
         candidates.addAll(allCandidates);
-
-        return max;
     }
 
     /**
@@ -116,24 +101,6 @@ public class SortedAggregateCompleter implements Completer {
         return getClass().getSimpleName() + "{" +
                 "completers=" + this.completers +
                 '}';
-    }
-
-    private class Completion {
-
-        public final List<CharSequence> candidates;
-
-        public int cursor;
-
-        Completion(final List<CharSequence> candidates) {
-            Preconditions.checkNotNull(candidates);
-            this.candidates = new LinkedList<>(candidates);
-        }
-
-        public void complete(Completer completer, String buffer, int cursor) {
-            Preconditions.checkNotNull(completer);
-            this.cursor = completer.complete(buffer, cursor, this.candidates);
-        }
-
     }
 
 }

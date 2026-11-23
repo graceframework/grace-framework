@@ -17,15 +17,21 @@ package org.grails.cli.command.completers
 
 import java.util.regex.Pattern
 
-import jline.console.completer.Completer
+import groovy.transform.CompileStatic
+import org.jline.reader.Candidate
+import org.jline.reader.Completer
+import org.jline.reader.LineReader
+import org.jline.reader.ParsedLine
 
 /**
  * JLine Completor that accepts a string if it matches a given regular
  * expression pattern.
  *
  * @author Peter Ledbrook
+ * @author Michael Yan
  * @since 2.0
  */
+@CompileStatic
 class RegexCompletor implements Completer {
 
     Pattern pattern
@@ -47,13 +53,12 @@ class RegexCompletor implements Completer {
      * <p>If the buffer doesn't match the configured pattern, this returns
      * -1 and the <tt>candidates</tt> list is left empty.</p>
      */
-    int complete(String buffer, int cursor, List candidates) {
+    @Override
+    void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
+        String buffer = line.word()
         if (buffer ==~ pattern) {
-            candidates << buffer
-            return 0
+            candidates << new Candidate(buffer)
         }
-
-        -1
     }
 
 }

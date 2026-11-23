@@ -15,14 +15,20 @@
  */
 package org.grails.cli.command
 
-import jline.console.completer.Completer
+import groovy.transform.CompileStatic
+import org.jline.reader.Candidate
+import org.jline.reader.Completer
+import org.jline.reader.LineReader
+import org.jline.reader.ParsedLine
 
 /**
  * A completer for commands
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
+@CompileStatic
 class CommandCompleter implements Completer {
 
     Collection<Command> commands
@@ -32,7 +38,8 @@ class CommandCompleter implements Completer {
     }
 
     @Override
-    int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
+        String buffer = line.line()
         Command cmd = commands.find {
             String trimmed = buffer.trim()
             if (trimmed.split(/\s/).size() > 1) {
@@ -42,9 +49,8 @@ class CommandCompleter implements Completer {
             trimmed == it.name
         }
         if (cmd instanceof Completer) {
-            return ((Completer) cmd).complete(buffer, cursor, candidates)
+            ((Completer) cmd).complete(reader, line, candidates)
         }
-        cursor
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package grails.build.logging;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import jline.Terminal;
-import jline.UnsupportedTerminal;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 /**
  * This class is meant to keep changes made in support of Eclipse separate from
@@ -34,8 +34,8 @@ import jline.UnsupportedTerminal;
  * anticipated needs.
  *
  * @author Kris De Volder
- *
- * @since 2.0.0.M2
+ * @author Michael Yan
+ * @since 2.0
  */
 public class GrailsEclipseConsole extends GrailsConsole {
 
@@ -90,8 +90,11 @@ public class GrailsEclipseConsole extends GrailsConsole {
     }
 
     @Override
-    protected Terminal createTerminal() {
+    protected Terminal createTerminal() throws IOException {
         // unix or windows terminal have no relation at all to the behavior of an Eclipse console.
-        return new UnsupportedTerminal();
+        return TerminalBuilder.builder()
+                .dumb(true)
+                .build();
     }
+
 }

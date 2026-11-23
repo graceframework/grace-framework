@@ -15,26 +15,31 @@
  */
 package org.grails.cli.command
 
-import jline.console.completer.Completer
+import org.jline.reader.Candidate
+import org.jline.reader.Completer
+import org.jline.reader.LineReader
+import org.jline.reader.ParsedLine
 
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
 
 /**
  * @author graemerocher
+ * @author Michael Yan
+ * @since 3.0
  */
 abstract class ArgumentCompletingCommand implements Command, Completer {
 
     CommandLineParser cliParser = new CommandLineParser()
 
     @Override
-    int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
         CommandDescription desc = getDescription()
-        CommandLine commandLine = cliParser.parseString(buffer)
-        complete(commandLine, desc, candidates, cursor)
+        CommandLine commandLine = cliParser.parseString(line.line())
+        complete(commandLine, desc, candidates)
     }
 
-    protected int complete(CommandLine commandLine, CommandDescription desc, List<CharSequence> candidates, int cursor) {
+    protected void complete(CommandLine commandLine, CommandDescription desc, List<Candidate> candidates) {
         Set<String> invalidOptions = commandLine.undeclaredOptions.keySet().findAll { String str ->
             desc.getFlag(str.trim()) == null
         }
@@ -48,18 +53,17 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
                 if (lastOption) {
                     String lastArg = lastOption.key
                     if (arg.name.startsWith(lastArg)) {
-                        candidates.add("${argName.substring(lastArg.length())} ".toString())
+                        candidates.add(new Candidate("${argName.substring(lastArg.length())} ".toString()))
                     }
                     else if (!invalidOptions) {
-                        candidates.add "$flag ".toString()
+                        candidates.add(new Candidate("$flag ".toString()))
                     }
                 }
                 else {
-                    candidates.add "$flag ".toString()
+                    candidates.add(new Candidate("$flag ".toString()))
                 }
             }
         }
-        cursor
     }
 
 }

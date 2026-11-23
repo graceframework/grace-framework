@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.build.logging
 
-import jline.console.ConsoleReader
-import org.fusesource.jansi.Ansi
+import java.nio.charset.StandardCharsets
+
+import org.jline.jansi.Ansi
+import org.jline.reader.LineReaderBuilder
+import org.jline.terminal.Terminal
+import org.jline.terminal.impl.ExternalTerminal
 import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Issue
@@ -47,16 +50,19 @@ class GrailsConsoleSpec extends Specification {
     PrintStream out
     GrailsConsole console
     String output
+    Terminal terminal
+    ByteArrayOutputStream terminalOut
 
     def setup() {
-        InputStream systemIn = Mock(InputStream)
-        systemIn.read(* _) >> -1
         out = Mock(PrintStream)
+        terminal = new ExternalTerminal('grace-console-spec', 'xterm-256color',
+                new ByteArrayInputStream(('\n' * 10).bytes), terminalOut,
+                StandardCharsets.UTF_8)
 
         console = GrailsConsole.getInstance()
         console.ansiEnabled = true
         console.out = out
-        console.reader = new ConsoleReader(systemIn, out)
+        console.reader = LineReaderBuilder.builder().terminal(terminal).build()
 
         output = ""
     }

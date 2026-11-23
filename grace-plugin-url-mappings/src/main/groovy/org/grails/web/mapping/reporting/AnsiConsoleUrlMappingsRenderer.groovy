@@ -16,8 +16,8 @@
 package org.grails.web.mapping.reporting
 
 import groovy.transform.CompileStatic
-import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.Ansi.Color
+import org.jline.jansi.Ansi
+import org.jline.jansi.Ansi.Color
 
 import grails.build.logging.GrailsConsole
 import grails.gorm.validation.Constrained

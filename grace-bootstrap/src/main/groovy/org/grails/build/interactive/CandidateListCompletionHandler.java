@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,60 +15,34 @@
  */
 package org.grails.build.interactive;
 
-import java.io.IOException;
 import java.util.List;
 
-import jline.console.ConsoleReader;
-import jline.console.CursorBuffer;
-import jline.console.completer.CompletionHandler;
+import org.jline.reader.Candidate;
+import org.jline.reader.Completer;
+import org.jline.reader.LineReader;
+import org.jline.reader.ParsedLine;
 
 /**
  * Fixes issues with the default CandidateListCompletionHandler such as clearing out the whole buffer when
  * a completion matches a list of candidates
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
-public class CandidateListCompletionHandler implements CompletionHandler {
+public class CandidateListCompletionHandler implements Completer {
 
-    private boolean eagerNewlines = true;
+    private final Completer delegate;
 
-    public void setAlwaysIncludeNewline(boolean eagerNewlines) {
-        this.eagerNewlines = eagerNewlines;
+    public CandidateListCompletionHandler(Completer delegate) {
+        this.delegate = delegate;
     }
 
-    public boolean complete(ConsoleReader reader, List<CharSequence> candidates, int pos) throws IOException {
-        CursorBuffer buf = reader.getCursorBuffer();
-
-        // if there is only one completion, then fill in the buffer
-        if (candidates.size() == 1) {
-            String value = candidates.get(0).toString();
-
-            // fail if the only candidate is the same as the current buffer
-            if (value.equals(buf.toString())) {
-                return false;
-            }
-
-            jline.console.completer.CandidateListCompletionHandler.setBuffer(reader, value, pos);
-
-            return true;
+    @Override
+    public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
+        if (this.delegate != null) {
+            this.delegate.complete(reader, line, candidates);
         }
-
-        if (candidates.size() > 1) {
-            String value = getUnambiguousCompletions(candidates);
-
-            jline.console.completer.CandidateListCompletionHandler.setBuffer(reader, value, pos);
-        }
-
-        if (this.eagerNewlines) {
-            reader.println();
-        }
-        jline.console.completer.CandidateListCompletionHandler.printCandidates(reader, candidates);
-
-        // redraw the current console buffer
-        reader.drawLine();
-
-        return true;
     }
 
     /**
@@ -78,13 +52,16 @@ public class CandidateListCompletionHandler implements CompletionHandler {
      * <i>foobar</i>, <i>foobaz</i>, <i>foobuz</i>, the
      * method will return <i>foob</i>.
      */
-    private String getUnambiguousCompletions(final List<?> candidates) {
+    private String getUnambiguousCompletions(final List<Candidate> candidates) {
         if (candidates == null || candidates.isEmpty()) {
             return null;
         }
 
         // convert to an array for speed
         String[] strings = candidates.toArray(new String[0]);
+        for (int i = 0; i < candidates.size(); i++) {
+            strings[i] = candidates.get(i).value();
+        }
 
         String first = strings[0];
         StringBuilder candidate = new StringBuilder();
@@ -106,12 +83,13 @@ public class CandidateListCompletionHandler implements CompletionHandler {
      *         start with <i>starts</i>
      */
     private boolean startsWith(String starts, String[] candidates) {
-        for (String candidate : candidates) {
-            if (!candidate.startsWith(starts)) {
+        for (int i = 0; i < candidates.length; i++) {
+            if (!candidates[i].startsWith(starts)) {
                 return false;
             }
         }
 
         return true;
     }
+
 }

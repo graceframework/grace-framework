@@ -40,6 +40,7 @@ import org.apache.tools.ant.types.resources.URLResource
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
+import org.jline.reader.Candidate
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import org.yaml.snakeyaml.LoaderOptions
@@ -154,7 +155,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @Override
-    protected int complete(CommandLine commandLine, CommandDescription desc, List<CharSequence> candidates, int cursor) {
+    protected void complete(CommandLine commandLine, CommandDescription desc, List<Candidate> candidates) {
         Map.Entry<String, Object> lastOption = commandLine.lastOption()
         if (lastOption != null) {
             // if value == true it means no profile is specified and only the flag is present
@@ -162,8 +163,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (lastOption.key == PROFILE_FLAG) {
                 def val = lastOption.value
                 if (val == true) {
-                    candidates.addAll(profileNames)
-                    return cursor
+                    profileNames.each { candidates.add(new Candidate(it)) }
                 }
                 else if (!profileNames.contains(val)) {
                     String valStr = val.toString()
@@ -173,8 +173,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }.collect { String pn ->
                         "${pn.substring(valStr.size())} ".toString()
                     }
-                    candidates.addAll candidateProfiles
-                    return cursor
+                    candidateProfiles.each { candidates.add(new Candidate(it)) }
                 }
             }
             else if (lastOption.key == FEATURES_FLAG) {
@@ -183,17 +182,17 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                         commandLine.optionValue(PROFILE_FLAG).toString() : getDefaultProfile())
                 List<String> featureNames = profile.features*.name
                 if (val == true) {
-                    candidates.addAll(featureNames)
-                    return cursor
+                    featureNames.each { candidates.add(new Candidate(it)) }
                 }
                 else if (!profileNames.contains(val)) {
                     String valStr = val.toString()
                     if (valStr.endsWith(',')) {
                         String[] specified = valStr.split(',')
-                        candidates.addAll(featureNames.findAll { String f ->
+                        featureNames.findAll { String f ->
                             !specified.contains(f)
-                        })
-                        return cursor
+                        }.each {
+                            candidates.add(new Candidate(it))
+                        }
                     }
 
                     List<String> candidatesFeatures = featureNames.findAll { String pn ->
@@ -201,12 +200,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }.collect { String pn ->
                         "${pn.substring(valStr.size())} ".toString()
                     }
-                    candidates.addAll candidatesFeatures
-                    return cursor
+                    candidatesFeatures.each { candidates.add(new Candidate(it)) }
                 }
             }
         }
-        super.complete(commandLine, desc, candidates, cursor)
+        super.complete(commandLine, desc, candidates)
     }
 
     @Override

@@ -16,7 +16,7 @@
 package org.grails.cli.profile.commands
 
 import groovy.transform.CompileDynamic
-import jline.console.completer.Completer
+import org.jline.reader.Completer
 
 import grails.build.logging.GrailsConsole
 

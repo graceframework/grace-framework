@@ -15,7 +15,10 @@
  */
 package org.grails.cli.command.help
 
-import jline.console.completer.Completer
+import org.jline.reader.Candidate
+import org.jline.reader.Completer
+import org.jline.reader.LineReader
+import org.jline.reader.ParsedLine
 
 import grails.build.logging.GrailsConsole
 
@@ -173,20 +176,20 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
     }
 
     @Override
-    int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
+        String buffer = line.line()
         List<Command> allCommands = findCommands(false)
 
         for (Command cmd in allCommands) {
             if (buffer) {
                 if (cmd.fullName.startsWith(buffer)) {
-                    candidates << cmd.name.substring(buffer.size())
+                    candidates << new Candidate(cmd.name.substring(buffer.size()))
                 }
             }
             else {
-                candidates << cmd.fullName
+                candidates << new Candidate(cmd.fullName)
             }
         }
-        cursor
     }
 
     private Collection<Command> findCommands(boolean showAll) {

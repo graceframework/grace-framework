@@ -19,8 +19,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-import jline.console.completer.Completer;
 import org.eclipse.aether.graph.Dependency;
+import org.jline.reader.Completer;
 import org.springframework.core.io.Resource;
 
 import org.grails.cli.command.Command;
@@ -142,7 +142,7 @@ public interface Profile {
     /**
      * The profile completers
      * @param context The {@link org.grails.cli.command.ProjectContext} instance
-     * @return An {@link java.lang.Iterable} of {@link jline.console.completer.Completer} instances
+     * @return An {@link java.lang.Iterable} of {@link Completer} instances
      */
     Iterable<Completer> getCompleters(ProjectContext context);
 

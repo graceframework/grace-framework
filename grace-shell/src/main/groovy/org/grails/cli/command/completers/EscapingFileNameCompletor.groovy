@@ -15,7 +15,11 @@
  */
 package org.grails.cli.command.completers
 
-import jline.console.completer.FileNameCompleter
+import groovy.transform.CompileStatic
+import org.jline.builtins.Completers.FileNameCompleter
+import org.jline.reader.Candidate
+import org.jline.reader.LineReader
+import org.jline.reader.ParsedLine
 
 /**
  * JLine Completor that does file path matching like FileNameCompletor,
@@ -23,8 +27,10 @@ import jline.console.completer.FileNameCompleter
  * character.
  *
  * @author Peter Ledbrook
+ * @author Michael Yan
  * @since 2.0
  */
+@CompileStatic
 class EscapingFileNameCompletor extends FileNameCompleter {
 
     /**
@@ -33,15 +39,16 @@ class EscapingFileNameCompletor extends FileNameCompleter {
      * If a candidate ends in a whitespace character, then that is <em>not</em>
      * escaped.</p>
      */
-    int complete(String buffer, int cursor, List candidates) {
-        int retval = super.complete(buffer, cursor, candidates)
+    @Override
+    void complete(LineReader reader, ParsedLine commandLine, final List<Candidate> candidates) {
+        List<Candidate> tempCandidates = []
+        super.complete(reader, commandLine, tempCandidates)
 
-        int count = candidates.size()
-        for (int i = 0; i < count; i++) {
-            candidates[i] = candidates[i].replaceAll(/(\s)(?!$)/, '\\\\$1')
+        for (Candidate candidate : tempCandidates) {
+            String value = candidate.value().replaceAll(/(\s)(?!$)/, '\\\\$1')
+            candidates.add(new Candidate(value, candidate.displ(), candidate.group(), candidate.descr(),
+                    candidate.suffix(), candidate.key(), candidate.complete()))
         }
-
-        retval
     }
 
 }

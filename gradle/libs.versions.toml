@@ -44,10 +44,9 @@ jakarta-servlet-jsp-jstl = "3.0.2"
 jakarta-transaction = "2.0.1"
 jakarta-validation = "3.1.1"
 jakarta-xml-bind = "4.0.5"
-jansi = "1.18"
 javaparser = "3.28.2"
 javassist = "3.30.2-GA"
-jline = "2.14.6"
+jline = "3.30.17"
 jodd = "3.3.8"
 json-unit = "4.1.1"
 jsoup = "1.21.2"
@@ -166,10 +165,10 @@ jakarta-servlet-jsp-jstl = { module = "jakarta.servlet.jsp.jstl:jakarta.servlet.
 jakarta-transaction = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction" }
 jakarta-validation = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation" }
 jakarta-xml-bind-api = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jakarta-xml-bind" }
-jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
+jansi = { module = "org.jline:jansi", version.ref = "jline" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
-jline = { module = "jline:jline", version.ref = "jline" }
+jline = { module = "org.jline:jline", version.ref = "jline" }
 jodd-wot = { module = "org.jodd:jodd-wot", version.ref = "jodd" }
 json-unit = { module = "net.javacrumbs.json-unit:json-unit", version.ref = "json-unit" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }

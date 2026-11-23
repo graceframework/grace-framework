@@ -23,20 +23,19 @@ import java.util.concurrent.Future
 
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic
-import jline.Terminal
-import jline.UnixTerminal
-import jline.console.ConsoleReader
-import jline.console.UserInterruptException
-import jline.console.completer.ArgumentCompleter
-import jline.console.completer.Completer
-import jline.console.history.History
-import jline.internal.NonBlockingInputStream
 import org.gradle.tooling.BuildActionExecuter
 import org.gradle.tooling.BuildCancelledException
 import org.gradle.tooling.ProgressEvent
 import org.gradle.tooling.ProgressListener
 import org.gradle.tooling.ProjectConnection
 import org.gradle.util.internal.DefaultGradleVersion
+import org.jline.reader.Completer
+import org.jline.reader.EndOfFileException
+import org.jline.reader.History
+import org.jline.reader.UserInterruptException
+import org.jline.reader.impl.completer.ArgumentCompleter
+import org.jline.terminal.Terminal
+import org.jline.utils.NonBlockingInputStream
 
 import grails.build.logging.GrailsConsole
 import grails.build.proxy.SystemPropertiesAuthenticator
@@ -46,6 +45,7 @@ import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsVersion
 
+import org.grails.build.interactive.CandidateListCompletionHandler
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
 import org.grails.build.parsing.DefaultCommandLine
@@ -282,8 +282,8 @@ class GrailsCli {
                 // force resolve of all profiles
                 profileRepository.getAllProfiles()
                 List<String> commandNames = CommandRegistry.findCommands(profileRepository)*.fullName
-                console.reader.addCompleter(new StringsCompleter(commandNames))
-                console.reader.addCompleter(new CommandCompleter(CommandRegistry.findCommands(profileRepository)))
+                console.addCompleter(new StringsCompleter(commandNames))
+                console.addCompleter(new CommandCompleter(CommandRegistry.findCommands(profileRepository)))
                 profile = [handleCommand: { ExecutionContext context ->
                     CommandLine cl = context.commandLine
                     String name = cl.commandName
@@ -477,8 +477,6 @@ class GrailsCli {
         System.setProperty(Environment.INTERACTIVE_MODE_ENABLED, 'true')
         GrailsConsole console = projectContext.console
 
-        ConsoleReader consoleReader = console.reader
-        consoleReader.setHandleUserInterrupt(true)
         Collection<Completer> completers = aggregateCompleter.getCompleters()
 
         console.resetCompleters()
@@ -493,7 +491,7 @@ class GrailsCli {
         else {
             completers.addAll(getCompleters(projectContext))
         }
-        consoleReader.addCompleter(aggregateCompleter)
+        console.addCompleter(new CandidateListCompletionHandler(aggregateCompleter))
         console
     }
 
@@ -553,7 +551,7 @@ class GrailsCli {
     }
 
     private void interactiveModeLoop(GrailsConsole console, ExecutorService commandExecutor) {
-        NonBlockingInputStream nonBlockingInput = (NonBlockingInputStream) console.reader.getInput()
+        NonBlockingInputStream nonBlockingInput = (NonBlockingInputStream) console.getInput()
         interactiveModeActive = true
         boolean firstRun = true
         while (keepRunning) {
@@ -568,18 +566,16 @@ class GrailsCli {
                     exitInteractiveMode()
                 }
                 else if (commandLine.trim()) {
-                    if (nonBlockingInput.isNonBlockingEnabled()) {
-                        handleCommandWithCancellationSupport(console, commandLine, commandExecutor, nonBlockingInput)
-                    }
-                    else {
-                        handleCommand(cliParser.parseString(commandLine))
-                    }
+                    handleCommandWithCancellationSupport(console, commandLine, commandExecutor)
                 }
             }
             catch (BuildCancelledException ignored) {
                 console.updateStatus('Build stopped.')
             }
             catch (UserInterruptException ignored) {
+                exitInteractiveMode()
+            }
+            catch (EndOfFileException ignored) {
                 exitInteractiveMode()
             }
             catch (Throwable e) {
@@ -589,32 +585,43 @@ class GrailsCli {
     }
 
     private Boolean handleCommandWithCancellationSupport(GrailsConsole console, String commandLine,
-                                                         ExecutorService commandExecutor, NonBlockingInputStream nonBlockingInput) {
+                                                         ExecutorService commandExecutor) {
         ExecutionContext executionContext = createExecutionContext(cliParser.parseString(commandLine))
         Future<?> commandFuture = commandExecutor.submit({ handleCommand(executionContext) } as Callable<Boolean>)
-        Terminal terminal = console.reader.terminal
-        if (terminal instanceof UnixTerminal) {
-            ((UnixTerminal) terminal).disableInterruptCharacter()
-        }
+
+        Terminal.SignalHandler previousHandler = null
         try {
+            if (console?.terminal) {
+                previousHandler = console.terminal.handle(Terminal.Signal.INT) { signal ->
+                    executionContext.console.log('  ')
+                    executionContext.console.updateStatus('Stopping build. Please wait...')
+                    executionContext.cancel()
+                }
+            }
+
+            InputStream terminalInput = console?.terminal?.input()
             while (!commandFuture.done) {
-                if (nonBlockingInput.nonBlockingEnabled) {
-                    int peeked = nonBlockingInput.peek(100L)
-                    if (peeked > 0) {
-                        // read peeked character from buffer
-                        nonBlockingInput.read(1L)
-                        if (peeked == KEYPRESS_CTRL_C || peeked == KEYPRESS_ESC) {
-                            executionContext.console.log('  ')
-                            executionContext.console.updateStatus('Stopping build. Please wait...')
-                            executionContext.cancel()
-                        }
+                if (terminalInput != null && terminalInput.available() > 0) {
+                    int peeked = terminalInput.read()
+                    if (peeked == KEYPRESS_ESC) {
+                        executionContext.console.log('  ')
+                        executionContext.console.updateStatus('Stopping build. Please wait...')
+                        executionContext.cancel()
                     }
+                }
+                else {
+                    Thread.sleep(100)
                 }
             }
         }
+        catch (InterruptedException ignored) {
+            executionContext.console.log('  ')
+            executionContext.console.updateStatus('Stopping build. Please wait...')
+            executionContext.cancel()
+        }
         finally {
-            if (terminal instanceof UnixTerminal) {
-                ((UnixTerminal) terminal).enableInterruptCharacter()
+            if (previousHandler != null && console?.terminal) {
+                console.terminal.handle(Terminal.Signal.INT, previousHandler)
             }
         }
         if (!commandFuture.isCancelled()) {
@@ -625,7 +632,9 @@ class GrailsCli {
                 throw e.cause
             }
         }
-        false
+        else {
+            return false
+        }
     }
 
     private void initializeProfile() {
@@ -761,7 +770,7 @@ class GrailsCli {
 
     protected Boolean bang(ExecutionContext context) {
         GrailsConsole console = context.console
-        History history = console.reader.history
+        History history = console.history
 
         //move one step back to !
         history.previous()

@@ -20,12 +20,12 @@ import java.util.regex.Pattern
 
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
-import jline.console.completer.ArgumentCompleter
-import jline.console.completer.Completer
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
 import org.eclipse.aether.graph.Exclusion
 import org.eclipse.aether.util.graph.selector.ExclusionDependencySelector
+import org.jline.reader.Completer
+import org.jline.reader.impl.completer.ArgumentCompleter
 import org.springframework.core.io.Resource
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
