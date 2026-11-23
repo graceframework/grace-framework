@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,12 @@ package grails.ui.shell
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
-import org.apache.groovy.groovysh.Groovysh
-import org.apache.groovy.groovysh.InteractiveShellRunner
-import org.codehaus.groovy.control.CompilerConfiguration
-import org.codehaus.groovy.tools.shell.IO
+import org.apache.groovy.groovysh.Main
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 
-import grails.binding.GroovyShellBindingCustomizer
 import grails.boot.Grails
 import grails.core.GrailsApplication
-import grails.persistence.support.PersistenceContextInterceptor
 
 /**
  * A Shell
@@ -39,14 +34,6 @@ import grails.persistence.support.PersistenceContextInterceptor
 @CompileStatic
 @InheritConstructors
 class GrailsShell extends Grails {
-
-    static final String[] BANNER = [
-            '  _____                         ______       ____',
-            ' / ___/______  ___ _  ____ __  / __/ /  ___ / / /',
-            '/ (_ / __/ _ \\/ _ \\ |/ / // / _\\ \\/ _ \\/ -_) / /',
-            '\\___/_/  \\___/\\___/___/\\_, / /___/_//_/\\__/_/_/',
-            '                      /___/'
-    ]
 
     GrailsShell(Class<?>... sources) {
         super(sources)
@@ -67,71 +54,12 @@ class GrailsShell extends Grails {
 
     protected void startConsole(ConfigurableApplicationContext context) {
         GrailsApplication grailsApplication = context.getBean(GrailsApplication)
-        Collection<GroovyShellBindingCustomizer> bindingCustomizers = context.getBeansOfType(GroovyShellBindingCustomizer).values()
-        Set<String> packageNames = (getAllSources() as Set<Class>)*.package.name as Set<String>
-
-        Binding binding = new Binding()
-        binding.setVariable('app', this)
-        binding.setVariable('ctx', context)
-        binding.setVariable('config', grailsApplication.getConfig())
-        binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
-        bindingCustomizers?.each { customizer -> customizer.customize(binding) }
-
-        IO io = new IO()
-        io.verbosity = IO.Verbosity.VERBOSE
-        Groovysh groovysh = new Groovysh(binding, io) {
-
-            CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
-            Closure beforeExecution
-            Closure afterExecution
-
-            @Override
-            void displayWelcomeBanner(InteractiveShellRunner runner) {
-                io.out.println()
-
-                for (String line : BANNER) {
-                    io.out.println(String.format('@|green  %s|@', line))
-                }
-
-                io.out.println('-' * (95 - 1))
-                io.out.println(String.format('Groovy: %s, JVM: %s',
-                        GroovySystem.version,
-                        System.properties['java.version']))
-                io.out.println("Type '@|bold :help|@' or '@|bold :h|@' for help.")
-                io.out.println('-' * (95 - 1))
-            }
-
-            @Override
-            Object execute(String line) {
-                if (!isExecutable(line) && beforeExecution) {
-                    beforeExecution()
-                }
-
-                Object result = super.execute(line)
-
-                if (!isExecutable(line) && afterExecution) {
-                    afterExecution()
-                }
-
-                result
-            }
-
-        }
-
-        Collection<PersistenceContextInterceptor> interceptors = context.getBeansOfType(PersistenceContextInterceptor).values()
-        groovysh.beforeExecution = {
-            for (i in interceptors) {
-                i.init()
-            }
-        }
-        groovysh.afterExecution = {
-            for (i in interceptors) {
-                i.destroy()
-            }
-        }
-        groovysh.historyFull = true
-        groovysh.imports.addAll(packageNames.collect({ it + '.*' }).toList())
-        groovysh.run('')
+        Main.start([
+                'app': this,
+                'ctx': context,
+                'config': grailsApplication.getConfig(),
+                (GrailsApplication.APPLICATION_ID): grailsApplication
+        ])
     }
 
     /**

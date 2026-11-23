@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package grails.ui.shell.support
 
-import org.apache.groovy.groovysh.Groovysh
-import org.codehaus.groovy.tools.shell.IO
+import org.apache.groovy.groovysh.Main
 import org.springframework.context.support.GenericApplicationContext
 
 import grails.core.GrailsApplication
 
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 class GroovyshApplicationContext extends GenericApplicationContext {
@@ -34,11 +34,10 @@ class GroovyshApplicationContext extends GenericApplicationContext {
     }
 
     protected void startConsole() {
-        Binding binding = new Binding()
-        binding.setVariable('ctx', this)
-        binding.setVariable(GrailsApplication.APPLICATION_ID, getBean(GrailsApplication))
-
-        new Groovysh(binding, new IO()).run('')
+        Main.start([
+                'ctx': this,
+                (GrailsApplication.APPLICATION_ID): getBean(GrailsApplication)
+        ])
     }
 
 }
