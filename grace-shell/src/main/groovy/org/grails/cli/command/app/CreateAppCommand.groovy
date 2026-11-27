@@ -421,16 +421,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
-                replaceBuildTokens(ant, profileName, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
                 applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose, cmd.quiet)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
                         features, cmd.template, grailsVersion, variables, args, projectTargetDirectory, cmd.verbose, cmd.quiet)
             }
-        }
-        else {
-            replaceBuildTokens(ant, profileName, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
         }
 
         updateSpringDependencies(ant, grailsVersion, cmd.springBootVersion, projectTargetDirectory)
@@ -606,6 +602,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                         profileInstance.binaryExtensions, variables, targetDirectory)
             }
         }
+
+        replaceBuildTokens(ant, profileInstance.name, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
 
         // Cleanup temporal directories
         unzippedDirectories.values().each { File tmpDir ->
@@ -928,6 +926,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             ant.chmod(dir: targetDirectory, includes: executablePatterns.join(' '), perm: 'u+x')
 
+            replaceBuildTokens(ant, profile.name, profile, features, variables, args, grailsVersion, targetDirectory)
+
             if (!verbose && !quiet) {
                 ant.setLoggerLevel(Project.MSG_INFO)
             }
@@ -943,8 +943,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (!verbose || quiet) {
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
-
-            replaceBuildTokens(ant, profile.name, profile, features, variables, args, grailsVersion, targetDirectory)
 
             String postGenerateProjectFile = navigableConfig.get('scripts.postGenerateProject', 'scripts/post_generate_project.groovy')
             File postGenerateProjectScript = new File(projectDir, postGenerateProjectFile)
