@@ -101,8 +101,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['4.0', '4.1']
 
-    public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
-    public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
+    protected static final String UNZIP_PROJECT_TEMP_DIR = 'grace-project-'
+    protected static final String UNZIP_TEMPLATE_TEMP_DIR = 'grace-template-'
 
     protected static final String APPLICATION_YML = 'application.yml'
     protected static final String BUILD_GRADLE = 'build.gradle'
@@ -414,8 +414,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Project root:".padRight(20) + projectTargetDirectory.absolutePath)
         console.println()
 
+        File projectTempDir = Files.createTempDirectory(UNZIP_PROJECT_TEMP_DIR).toFile()
+
         generateProjectSkeleton(ant, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion,
-                variables, args, projectTargetDirectory, cmd.verbose, cmd.quiet)
+                variables, args, projectTargetDirectory, projectTempDir, cmd.verbose, cmd.quiet)
 
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
@@ -423,7 +425,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
-                        features, cmd.template, grailsVersion, variables, args, projectTargetDirectory, cmd.verbose, cmd.quiet)
+                        features, cmd.template, grailsVersion, variables, args, projectTargetDirectory, projectTempDir, cmd.verbose, cmd.quiet)
             }
         }
 
@@ -432,6 +434,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (cmd.minimal) {
             generateMinimalProject(ant, grailsVersion, projectTargetDirectory)
         }
+
+        deleteDirectoryOrFile(projectTempDir)
 
         String result = String.format("%s created by %s %s.", projectType == 'app' ? 'Application' : projectType.capitalize(),
                 GrailsVersion.version(grailsVersion).majorVersion >= 2020 ? 'Grace' : 'Grails', grailsVersion)
@@ -535,10 +539,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, String appName, String groupName, String packageName,
                                            Profile profileInstance, List<Feature> features, String templateUrl, String grailsVersion,
                                            Map<String, String> variables, Map<String, String> args,
-                                           File projectTargetDirectory, boolean verbose, boolean quiet = false) {
+                                           File projectTargetDirectory, File projectTempDir, boolean verbose, boolean quiet = false) {
         List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
 
-        final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
+        final Map<String, File> unzippedDirectories = new LinkedHashMap<String, File>()
         Map<Profile, File> targetDirs = [:]
         buildTargetFolders(profileInstance, targetDirs, projectTargetDirectory)
 
@@ -558,7 +562,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
 
-            copySkeleton(ant, profileInstance, p, variables, binding, targetDirectory, unzippedDirectories)
+            copySkeleton(ant, profileInstance, p, variables, binding, targetDirectory, projectTempDir, unzippedDirectories, verbose, quiet)
 
             ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
                 if (applicationYmlFile.exists()) {
@@ -576,7 +580,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 skeletonDir = location.createRelative('skeleton').getFile()
             }
             else {
-                tmpDir = unzipProfile(ant, unzippedDirectories, location)
+                tmpDir = unzipProfile(ant, f.profile, projectTempDir, unzippedDirectories)
                 skeletonDir = new File(tmpDir, "META-INF/grails-profile/features/$f.name/skeleton")
             }
 
@@ -602,17 +606,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         replaceBuildTokens(ant, profileInstance.name, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
-
-        // Cleanup temporal directories
-        unzippedDirectories.values().each { File tmpDir ->
-            deleteDirectoryOrFile(tmpDir)
-        }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile,
                                 Map<String, String> variables, Map<String, Object> binding,
-                                File targetDirectory, Map<URL, File> unzippedDirectories) {
+                                File targetDirectory, File projectTempDir, Map<String, File> unzippedDirectories, boolean verbose, boolean quiet) {
         List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
@@ -623,11 +622,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         File skeletonDir
         File tmpDir
         if (skeletonResource instanceof FileSystemResource) {
-            skeletonDir = skeletonResource.file
+            skeletonDir = skeletonResource.getFile()
         }
         else {
             // establish the JAR file name and extract
-            tmpDir = unzipProfile(ant, unzippedDirectories, skeletonResource)
+            tmpDir = unzipProfile(ant, participatingProfile, projectTempDir, unzippedDirectories)
             skeletonDir = new File(tmpDir, 'META-INF/grails-profile/skeleton')
         }
 
@@ -744,7 +743,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
                                            String appName, String groupName, String packageName, Profile profile,
                                            List<Feature> features, String templateUrl, String grailsVersion,
-                                           Map<String, String> variables, Map<String, String> args, File targetDirectory,
+                                           Map<String, String> variables, Map<String, String> args, File targetDirectory, File projectTempDir,
                                            boolean verbose, boolean quiet = false) {
         if (quiet) {
             console.updateStatus('Applying Template')
@@ -768,7 +767,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 tempZipFile = Files.createTempFile(UNZIP_TEMPLATE_TEMP_DIR, '.zip').toFile()
                 ant.get(src: templateUrl, dest: tempZipFile)
 
-                tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
+                tempDir = new File(projectTempDir, "template")
                 ant.unzip(src: tempZipFile, dest: tempDir)
                 if (quiet) {
                     console.updateStatus('Unzip template: ' + templateUrl)
@@ -796,7 +795,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 if (!quiet) {
                     console.println("      [git] clone: " + templateUrl)
                 }
-                tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
+                tempDir = new File(projectTempDir, "template")
                 ant.exec(executable: 'git') {
                     arg value: 'clone'
                     arg value: templateUrl
@@ -826,7 +825,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 })
             }
             else {
-                tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
+                tempDir = new File(projectTempDir, "template")
                 ant.copy(todir: tempDir) {
                     fileSet(dir: templateUrl)
                 }
@@ -967,7 +966,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         finally {
             // Cleanup temporal directories
             deleteDirectoryOrFile(tempZipFile)
-            deleteDirectoryOrFile(tempDir)
         }
     }
 
@@ -1322,19 +1320,18 @@ group """
     }
 
     @CompileDynamic
-    private File unzipProfile(AntBuilder ant, Map<URL, File> unzippedDirectories, Resource location) {
+    private File unzipProfile(AntBuilder ant, Profile profile, File projectTempDir, Map<String, File> unzippedDirectories) {
         File tmpDir = null
-        URL url = location.URL
+        String profileKey = 'profile/' + profile.name
+        URL url = profile.profileDir.URL
         if (url && url.protocol == 'jar') {
-            String absolutePath = url.path
-            URL jarUrl = new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!')))
-            tmpDir = unzippedDirectories.get(jarUrl)
+            tmpDir = unzippedDirectories.get(profileKey)
 
             if (tmpDir == null) {
                 File jarFile = IOUtils.findJarFile(url)
-                tmpDir = Files.createTempDirectory(UNZIP_PROFILE_TEMP_DIR).toFile()
+                tmpDir = new File(projectTempDir, profileKey)
                 ant.unzip(src: jarFile, dest: tmpDir)
-                unzippedDirectories.put(jarUrl, tmpDir)
+                unzippedDirectories.put(profileKey, tmpDir)
             }
         }
         tmpDir
