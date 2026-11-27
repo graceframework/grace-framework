@@ -376,7 +376,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<Feature> features = cmd.minimal ? [] : evaluateFeatures(profileInstance, cmd.features, cmd.skippedFeatures, cmd.console)
         List<String> featureNames = features*.name
 
-        Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
+        Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileInstance.name, features, cmd.template, cmd.grailsVersion)
         Map<String, String> args = new HashMap<>()
         args.putAll(cmd.args)
         args.put(FEATURES_FLAG, featureNames?.join(','))
@@ -403,7 +403,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (projectType == 'app' || projectType == 'plugin') {
             console.println("     Package:".padRight(20) + defaultPackageName)
         }
-        console.println("     Profile:".padRight(20) + profileName)
+        console.println("     Profile:".padRight(20) + profileInstance.name)
         console.println("     Features:".padRight(20) + featureNames?.join(', '))
         if ((projectType == 'app' || projectType == 'plugin') && databaseType) {
             console.println("     Database:".padRight(20) + databaseType)
