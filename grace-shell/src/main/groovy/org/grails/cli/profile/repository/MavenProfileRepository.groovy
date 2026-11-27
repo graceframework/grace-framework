@@ -62,7 +62,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     private boolean resolved = false
 
     MavenProfileRepository() {
-        this([MAVEN_LOCAL_REPO, DEFAULT_REPO])
+        this([MAVEN_LOCAL_REPO, SONATYPE_SNAPSHOT_REPO, DEFAULT_REPO])
     }
 
     MavenProfileRepository(String grailsVersion) {
@@ -178,7 +178,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
     private static List<GrailsRepositoryConfiguration> getGrailsRepositoryConfigurations(String graceVersion) {
         if (GrailsVersion.version(graceVersion).snapshot) {
-            return [MAVEN_LOCAL_REPO, SONATYPE_SNAPSHOT_REPO]
+            return [MAVEN_LOCAL_REPO, SONATYPE_SNAPSHOT_REPO, DEFAULT_REPO, GRAILS_CORE_REPO, GRADLE_RELEASES_REPO]
         }
         else {
             return [DEFAULT_REPO, GRAILS_CORE_REPO, GRADLE_RELEASES_REPO]

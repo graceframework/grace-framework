@@ -141,6 +141,7 @@ class GrailsCli {
     Profile profile = null
     List<GrailsRepositoryConfiguration> profileRepositories = [
             MavenProfileRepository.MAVEN_LOCAL_REPO,
+            MavenProfileRepository.SONATYPE_SNAPSHOT_REPO,
             MavenProfileRepository.DEFAULT_REPO
     ]
 

@@ -36,7 +36,7 @@ import org.grails.cli.compiler.maven.MavenVersionUtils;
 public class GrailsDependenciesDependencyManagement extends MavenModelDependencyManagement {
 
     public static final String MAVEN_CENTRAL = "https://repo1.maven.org/maven2/";
-    public static final String SONATYPE_REPO_SNAPSHOT = "https://s01.oss.sonatype.org/content/repositories/snapshots/";
+    public static final String SONATYPE_REPO_SNAPSHOT = "https://central.sonatype.com/repository/maven-snapshots/";
     public static final String GRADLE_RELEASES_REPO = "https://repo.gradle.org/gradle/libs-releases/";
     public static final String GRAILS_CORE_REPO = "https://repo.grails.org/grails/core/";
 
