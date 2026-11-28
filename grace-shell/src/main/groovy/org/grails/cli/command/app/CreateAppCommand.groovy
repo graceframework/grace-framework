@@ -416,7 +416,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         File projectTempDir = Files.createTempDirectory(UNZIP_PROJECT_TEMP_DIR).toFile()
 
-        generateProjectSkeleton(ant, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion,
+        generateProjectSkeleton(ant, console, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion,
                 variables, args, projectTargetDirectory, projectTempDir, cmd.verbose, cmd.quiet)
 
         if (cmd.template) {
@@ -536,7 +536,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, String appName, String groupName, String packageName,
+    protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, GrailsConsole console, String appName, String groupName, String packageName,
                                            Profile profileInstance, List<Feature> features, String templateUrl, String grailsVersion,
                                            Map<String, String> variables, Map<String, String> args,
                                            File projectTargetDirectory, File projectTempDir, boolean verbose, boolean quiet = false) {
@@ -548,6 +548,25 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profileInstance,
                 features, args, grailsVersion, templateUrl)
+
+        // Get the current profile's unzipped temporary directory
+        Resource profileResource = profileInstance.profileDir
+        File profileDir
+        if (profileResource instanceof FileSystemResource) {
+            profileDir = profileResource.getFile()
+        }
+        else {
+            File profileTmpDir = unzipProfile(ant, profileInstance, projectTempDir, unzippedDirectories)
+            profileDir = new File(profileTmpDir, 'META-INF/grails-profile')
+        }
+
+        File profileHooksDir = new File(profileDir, 'hooks')
+        File preGenProjectScript = new File(profileHooksDir, 'pre_gen_project.groovy')
+        File postGenProjectScript = new File(profileHooksDir, 'post_gen_project.groovy')
+
+        if (preGenProjectScript.exists()) {
+            applyProfileHooks(ant, console, appName, preGenProjectScript, projectTargetDirectory, verbose, quiet)
+        }
 
         for (Profile p : profiles) {
             Set<File> ymlFiles = findAllFilesByName(projectTargetDirectory, APPLICATION_YML)
@@ -606,9 +625,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         replaceBuildTokens(ant, profileInstance.name, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
+
+        if (postGenProjectScript.exists()) {
+            applyProfileHooks(ant, console, appName, postGenProjectScript, projectTargetDirectory, verbose, quiet)
+        }
     }
 
-    @CompileStatic(TypeCheckingMode.SKIP)
+    @CompileDynamic
     protected void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile,
                                 Map<String, String> variables, Map<String, Object> binding,
                                 File targetDirectory, File projectTempDir, Map<String, File> unzippedDirectories, boolean verbose, boolean quiet) {
@@ -940,25 +963,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (!verbose || quiet) {
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
-
-            String postGenerateProjectFile = navigableConfig.get('scripts.postGenerateProject', 'scripts/post_generate_project.groovy')
-            File postGenerateProjectScript = new File(projectDir, postGenerateProjectFile)
-
-            if (!verbose && !quiet) {
-                ant.setLoggerLevel(Project.MSG_INFO)
-            }
-            if (postGenerateProjectScript.exists()) {
-                ant.groovy(src: postGenerateProjectScript)
-                if (quiet) {
-                    console.updateStatus('Apply template: ' + postGenerateProjectScript.canonicalPath)
-                }
-                else {
-                    console.println()
-                }
-            }
-            if (!verbose || quiet) {
-                ant.setLoggerLevel(Project.MSG_ERR)
-            }
         }
         catch (Exception ex) {
             console.error("Can not apply template `${templateUrl}`!", ex)
@@ -966,6 +970,38 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         finally {
             // Cleanup temporal directories
             deleteDirectoryOrFile(tempZipFile)
+        }
+    }
+
+    @CompileDynamic
+    protected void applyProfileHooks(GrailsConsoleAntBuilder ant, GrailsConsole console,
+                                     String appName, File script, File projectTargetDirectory,
+                                     boolean verbose, boolean quiet) {
+        if (!quiet) {
+            console.addStatus('Applying Profile Hooks')
+            console.println()
+        }
+
+        ant.taskdef(resource: 'org/grails/cli/ant/tasks/antlib.xml')
+
+        if (!verbose && !quiet) {
+            ant.setLoggerLevel(Project.MSG_INFO)
+        }
+
+        if (!script.exists()) {
+            console.error("Hook script `${script.canonicalPath}` is not exists!\n")
+            return
+        }
+        if (quiet) {
+            console.updateStatus('Apply Profile Hook: ' + script.canonicalPath)
+        }
+        ant.groovy(src: script)
+
+        if (!verbose || quiet) {
+            ant.setLoggerLevel(Project.MSG_ERR)
+        }
+        if (!quiet) {
+            console.println()
         }
     }
 
